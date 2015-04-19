@@ -4,7 +4,7 @@ Forget <markup> and use {code} instead. Program instead of jumping between scrip
 
 ### Extend your classes with curly.Container to obtain the following DOM methods:  ###
 
-- **addToBody**, use this in your entry point to attach all your classes to the DOM  
+- **addToBody(child:HTMLElement)**, use this in your entry point to attach all your classes to the DOM  
 
 - **set(vars:Object)**, pass an object to set any CSS value  
 
