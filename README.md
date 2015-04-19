@@ -61,3 +61,6 @@ Forget <markup> and use {code} instead. Program instead of jumping between scrip
 - **Resize**, some simple resize algorithms  
 
 - **Window**, some Window polyfill methods
+
+### Usage ###
+See [https://bitbucket.org/gmccallin/curly-culture](https://bitbucket.org/gmccallin/curly-culture) for a starter template
