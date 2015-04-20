@@ -63,4 +63,4 @@ Forget <markup> and use {code} instead. Program instead of jumping between scrip
 - **Window**, some Window polyfill methods
 
 ### Usage ###
-See [https://bitbucket.org/gmccallin/curly-culture](https://bitbucket.org/gmccallin/curly-culture) for a starter template
+See [https://bitbucket.org/gmccallin/curly-culture](https://bitbucket.org/gmccallin/curly-culture) for a starter template or [https://bitbucket.org/gmccallin/curly-demo-app](https://bitbucket.org/gmccallin/curly-demo-app) for a more complex example application.
