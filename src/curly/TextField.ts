@@ -33,19 +33,16 @@ module curly {
                 height = "auto";
             }
 
+            //default
             this.set({
                 width: width,
                 height: height,
-                color: vars.fontColour,
                 top: 0,
                 left: 0,
                 overflow: "hidden",
-                fontSize: vars.fontSize,
-                fontFamily: vars.fontFamily,
-                fontWeight: vars.fontWeight,
-                msUserSelect: "text",
-                textAlign: vars.align
+                msUserSelect: "text"
             });
+            this.set(vars);
 
 
             this.setText(vars.text);

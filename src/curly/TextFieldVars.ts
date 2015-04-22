@@ -6,9 +6,9 @@
         fontSize: string;
         fontFamily: string;
         fontWeight: string;
-        fontColour: string;
+        color: string;
         id: string;
-        align: string;
+        textAlign: string;
 
         constructor() {
         }

@@ -6,10 +6,12 @@ module curly {
     export class Container extends EventDispatcher {
         element: HTMLElement;
 
-        constructor(id: string, elementType?: string) {
+        constructor(id: string, type?: string);
+        constructor(id: string, type?: boolean);
+        constructor(id: string, type?: any) {
             super();
-            if (elementType) {
-                this.element = document.createElement(elementType);
+            if (type) {
+                this.element = document.createElement(type);
             }
             else {
                 this.element = document.createElement("div");
@@ -24,7 +26,13 @@ module curly {
                 height: "100%",
                 display: "block"
             });
+
+            if (typeof type == "boolean") {
+                document.body.appendChild(this.element);
+            }
+
         }
+
 
         addToBody() {
             document.body.appendChild(this.element);

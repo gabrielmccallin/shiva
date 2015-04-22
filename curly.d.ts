@@ -25,7 +25,8 @@ declare module curly {
 declare module curly {
     class Container extends EventDispatcher {
         public element: HTMLElement;
-        constructor(id: string, elementType?: string);
+        constructor(id: string, type?: string);
+        constructor(id: string, type?: boolean);
         public addToBody(): void;
         public set(vars: Object): void;
         public addChild(child: any): void;
@@ -86,9 +87,9 @@ declare module curly {
         public fontSize: string;
         public fontFamily: string;
         public fontWeight: string;
-        public fontColour: string;
+        public color: string;
         public id: string;
-        public align: string;
+        public textAlign: string;
         constructor();
     }
 }

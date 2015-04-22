@@ -36,7 +36,7 @@ module curly {
                 textFieldVars[i] = this.vars[i];
             }
             //textFieldVars.text = this.vars.text;
-            textFieldVars.fontColour = this.vars.fontColourOut;
+            textFieldVars.color = this.vars.fontColourOut;
             textFieldVars.height = "auto";
             //textFieldVars.fontFamily = this.vars.fontFamily;
             //textFieldVars.fontSize = this.vars.fontSize;

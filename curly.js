@@ -145,10 +145,10 @@ var curly;
 (function (curly) {
     var Container = (function (_super) {
         __extends(Container, _super);
-        function Container(id, elementType) {
+        function Container(id, type) {
             _super.call(this);
-            if (elementType) {
-                this.element = document.createElement(elementType);
+            if (type) {
+                this.element = document.createElement(type);
             } else {
                 this.element = document.createElement("div");
             }
@@ -162,6 +162,10 @@ var curly;
                 height: "100%",
                 display: "block"
             });
+
+            if (typeof type == "boolean") {
+                document.body.appendChild(this.element);
+            }
         }
         Container.prototype.addToBody = function () {
             document.body.appendChild(this.element);
@@ -458,16 +462,12 @@ var curly;
             this.set({
                 width: width,
                 height: height,
-                color: vars.fontColour,
                 top: 0,
                 left: 0,
                 overflow: "hidden",
-                fontSize: vars.fontSize,
-                fontFamily: vars.fontFamily,
-                fontWeight: vars.fontWeight,
-                msUserSelect: "text",
-                textAlign: vars.align
+                msUserSelect: "text"
             });
+            this.set(vars);
 
             this.setText(vars.text);
         }
@@ -582,7 +582,7 @@ var curly;
                 textFieldVars[i] = this.vars[i];
             }
 
-            textFieldVars.fontColour = this.vars.fontColourOut;
+            textFieldVars.color = this.vars.fontColourOut;
             textFieldVars.height = "auto";
 
             this.field = new curly.TextField(textFieldVars);
