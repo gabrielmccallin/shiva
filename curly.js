@@ -148,7 +148,12 @@ var curly;
         function Container(id, type) {
             _super.call(this);
             if (type) {
-                this.element = document.createElement(type);
+                if (typeof type == "boolean") {
+                    this.element = document.createElement("div");
+                    document.body.appendChild(this.element);
+                } else {
+                    this.element = document.createElement(type);
+                }
             } else {
                 this.element = document.createElement("div");
             }
@@ -162,10 +167,6 @@ var curly;
                 height: "100%",
                 display: "block"
             });
-
-            if (typeof type == "boolean") {
-                document.body.appendChild(this.element);
-            }
         }
         Container.prototype.addToBody = function () {
             document.body.appendChild(this.element);
@@ -651,6 +652,8 @@ var curly;
         };
 
         LabelButton.prototype.select = function () {
+            _super.prototype.select.call(this);
+
             this.selected = true;
 
             TweenMax.to(this.field.element, 0.5, { color: this.vars.fontColourOver, alpha: 1 });
