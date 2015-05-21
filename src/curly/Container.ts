@@ -11,7 +11,13 @@ module curly {
         constructor(id: string, type?: any) {
             super();
             if (type) {
-                this.element = document.createElement(type);
+                if (typeof type == "boolean") {
+                    this.element = document.createElement("div");
+                    document.body.appendChild(this.element);
+                }
+                else {
+                    this.element = document.createElement(type);                    
+                }
             }
             else {
                 this.element = document.createElement("div");
@@ -26,11 +32,6 @@ module curly {
                 height: "100%",
                 display: "block"
             });
-
-            if (typeof type == "boolean") {
-                document.body.appendChild(this.element);
-            }
-
         }
 
 

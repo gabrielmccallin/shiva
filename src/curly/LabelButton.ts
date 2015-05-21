@@ -123,7 +123,7 @@ module curly {
         }
 
         select() {
-            //super.select();
+            super.select();
 
             this.selected = true;
 
