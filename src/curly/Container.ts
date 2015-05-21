@@ -6,6 +6,12 @@ module curly {
     export class Container extends EventDispatcher {
         element: HTMLElement;
 
+        private calculatedWidth: number;
+        private calculatedHeight: number;
+        private calculatedX: number;
+        private calculatedY: number;
+
+
         constructor(id: string, type?: string);
         constructor(id: string, type?: boolean);
         constructor(id: string, type?: any) {
@@ -32,6 +38,31 @@ module curly {
                 height: "100%",
                 display: "block"
             });
+        }
+
+        private measure() {
+            if (!document.body.contains(this.element)) {
+                var parent = this.element.parentElement;
+                document.body.appendChild(this.element);
+
+                this.calculatedWidth = this.element.offsetWidth;
+                this.calculatedHeight = this.element.offsetHeight;
+
+                if (parent) {
+                    parent.appendChild(this.element);
+                }
+                else {
+                    document.body.removeChild(this.element);
+                }
+            }
+            else {
+                if (!this.calculatedWidth) {
+                    this.calculatedWidth = this.element.offsetWidth;
+                }
+                if (!this.calculatedHeight) {
+                    this.calculatedHeight = this.element.offsetHeight;
+                }
+            }
         }
 
 
@@ -123,19 +154,23 @@ module curly {
         }
 
         get width(): number {
-            return this.element.scrollWidth;
+            this.measure();
+            return this.calculatedWidth;
         }
 
         set width(w: number) {
             curly.Properties.set(this.element, { width: w });
+            this.calculatedWidth = this.element.offsetWidth;
         }
 
         get height(): number {
-            return this.element.scrollHeight;
+            this.measure();
+            return this.calculatedHeight;
         }
 
         set height(h: number) {
             curly.Properties.set(this.element, { height: h });
+            this.calculatedHeight = this.element.offsetHeight;
         }
 
         get y(): number {

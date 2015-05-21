@@ -50,24 +50,18 @@ module curly {
         }
 
 
-        setText(text) {
+        setText(text: string) {
             this.element.innerHTML = text;
         }
 
 
-        addText(text) {
-            this.element.innerHTML += text + "<br/>";
+        addText(text: string) {
+            text = this.element.innerHTML + text;
+            this.element.innerHTML = text + "<br/>";
         }
 
 
-        get width() {
-            return this.element.clientWidth;
-        }
-
-        get height() {
-            return this.element.clientHeight;
-
-        }
+        
 
 
         addBorder(thickness: number, style: string, colour: number) {

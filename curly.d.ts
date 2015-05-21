@@ -25,8 +25,13 @@ declare module curly {
 declare module curly {
     class Container extends EventDispatcher {
         public element: HTMLElement;
+        private calculatedWidth;
+        private calculatedHeight;
+        private calculatedX;
+        private calculatedY;
         constructor(id: string, type?: string);
         constructor(id: string, type?: boolean);
+        private measure();
         public addToBody(): void;
         public set(vars: Object): void;
         public addChild(child: any): void;
@@ -96,10 +101,8 @@ declare module curly {
 declare module curly {
     class TextField extends Container {
         constructor(vars: TextFieldVars);
-        public setText(text: any): void;
-        public addText(text: any): void;
-        public width : number;
-        public height : number;
+        public setText(text: string): void;
+        public addText(text: string): void;
         public addBorder(thickness: number, style: string, colour: number): void;
     }
 }

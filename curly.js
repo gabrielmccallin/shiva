@@ -168,6 +168,29 @@ var curly;
                 display: "block"
             });
         }
+        Container.prototype.measure = function () {
+            if (!document.body.contains(this.element)) {
+                var parent = this.element.parentElement;
+                document.body.appendChild(this.element);
+
+                this.calculatedWidth = this.element.offsetWidth;
+                this.calculatedHeight = this.element.offsetHeight;
+
+                if (parent) {
+                    parent.appendChild(this.element);
+                } else {
+                    document.body.removeChild(this.element);
+                }
+            } else {
+                if (!this.calculatedWidth) {
+                    this.calculatedWidth = this.element.offsetWidth;
+                }
+                if (!this.calculatedHeight) {
+                    this.calculatedHeight = this.element.offsetHeight;
+                }
+            }
+        };
+
         Container.prototype.addToBody = function () {
             document.body.appendChild(this.element);
         };
@@ -247,10 +270,12 @@ var curly;
 
         Object.defineProperty(Container.prototype, "width", {
             get: function () {
-                return this.element.scrollWidth;
+                this.measure();
+                return this.calculatedWidth;
             },
             set: function (w) {
                 curly.Properties.set(this.element, { width: w });
+                this.calculatedWidth = this.element.offsetWidth;
             },
             enumerable: true,
             configurable: true
@@ -259,10 +284,12 @@ var curly;
 
         Object.defineProperty(Container.prototype, "height", {
             get: function () {
-                return this.element.scrollHeight;
+                this.measure();
+                return this.calculatedHeight;
             },
             set: function (h) {
                 curly.Properties.set(this.element, { height: h });
+                this.calculatedHeight = this.element.offsetHeight;
             },
             enumerable: true,
             configurable: true
@@ -477,24 +504,9 @@ var curly;
         };
 
         TextField.prototype.addText = function (text) {
-            this.element.innerHTML += text + "<br/>";
+            text = this.element.innerHTML + text;
+            this.element.innerHTML = text + "<br/>";
         };
-
-        Object.defineProperty(TextField.prototype, "width", {
-            get: function () {
-                return this.element.clientWidth;
-            },
-            enumerable: true,
-            configurable: true
-        });
-
-        Object.defineProperty(TextField.prototype, "height", {
-            get: function () {
-                return this.element.clientHeight;
-            },
-            enumerable: true,
-            configurable: true
-        });
 
         TextField.prototype.addBorder = function (thickness, style, colour) {
             if (thickness == null) {
@@ -576,8 +588,7 @@ var curly;
 
             _super.call(this, vars);
             this.vars = vars;
-        }
-        LabelButton.prototype.init = function () {
+
             var textFieldVars = new curly.TextFieldVars();
             for (var i in this.vars) {
                 textFieldVars[i] = this.vars[i];
@@ -623,6 +634,8 @@ var curly;
             var fieldY = (this.btnHeight / 2) - (this.field.height / 2);
             this.field.set({ x: this.vars.margin, y: fieldY });
             this.set({ width: this.btnWidth, height: this.btnHeight, cursor: "pointer" });
+        }
+        LabelButton.prototype.init = function () {
         };
 
         LabelButton.prototype.over = function () {

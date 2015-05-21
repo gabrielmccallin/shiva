@@ -27,9 +27,6 @@ module curly {
 
             super(vars);
             this.vars = vars;
-        }
-
-        init() {
 
             var textFieldVars = new TextFieldVars();
             for (var i in this.vars) {
@@ -74,7 +71,7 @@ module curly {
             this.bg = new Rectangle(this.btnWidth, this.btnHeight, this.vars.bgColourOut, "buttonBg");
             if (this.vars.cornerRadius) {
                 this.bg.set({
-                    borderRadius:this.vars.cornerRadius
+                    borderRadius: this.vars.cornerRadius
                 });
             }
             if (this.vars.border) {
@@ -87,6 +84,11 @@ module curly {
             var fieldY = (this.btnHeight / 2) - (this.field.height / 2);
             this.field.set({ x: this.vars.margin, y: fieldY });
             this.set({ width: this.btnWidth, height: this.btnHeight, cursor: "pointer" });
+        }
+
+        init() {
+
+            
 
         }
 
