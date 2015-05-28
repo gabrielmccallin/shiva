@@ -594,6 +594,9 @@ var curly;
                 textFieldVars[i] = this.vars[i];
             }
 
+            if (this.vars.width) {
+                textFieldVars.width = this.vars.width - (this.vars.margin * 2);
+            }
             textFieldVars.color = this.vars.fontColourOut;
             textFieldVars.height = "auto";
 
@@ -805,7 +808,6 @@ var curly;
 
             console.log("LOADING", url);
             this.http.timeout = 20000;
-            this.http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
             if (!cache) {
                 this.http.setRequestHeader("If-Modified-Since", "Sat, 01 Jan 2005 00:00:00 GMT");

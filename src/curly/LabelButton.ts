@@ -32,12 +32,12 @@ module curly {
             for (var i in this.vars) {
                 textFieldVars[i] = this.vars[i];
             }
-            //textFieldVars.text = this.vars.text;
+
+            if (this.vars.width) {
+                textFieldVars.width = this.vars.width - (this.vars.margin * 2);
+            }
             textFieldVars.color = this.vars.fontColourOut;
             textFieldVars.height = "auto";
-            //textFieldVars.fontFamily = this.vars.fontFamily;
-            //textFieldVars.fontSize = this.vars.fontSize;
-            //textFieldVars.fontWeight = this.vars.fontWeight;
 
             this.field = new curly.TextField(textFieldVars);
 
