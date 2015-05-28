@@ -827,8 +827,6 @@ var curly;
 
             console.log("LOADING", url);
             this.http.timeout = 20000;
-            this.http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-            this.http.setRequestHeader("Content-type", "application/json");
 
             if (!cache) {
                 this.http.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2005 00:00:00 GMT");
