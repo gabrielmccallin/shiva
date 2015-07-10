@@ -580,6 +580,9 @@ var curly;
                 textFieldVars[i] = this.vars[i];
             }
 
+            if (this.vars.width) {
+                textFieldVars.width = this.vars.width - (this.vars.margin * 2);
+            }
             textFieldVars.color = this.vars.fontColourOut;
             textFieldVars.height = "auto";
 
