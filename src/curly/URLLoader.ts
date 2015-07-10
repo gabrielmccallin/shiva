@@ -23,8 +23,6 @@ module curly {
             }
             this.http.open(method, url, true);
             this.http.timeout = 20000;
-
-            // this might freak out some firewalls
             //this.http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');  
 
             for (var i in headers) {

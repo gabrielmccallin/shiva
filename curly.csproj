@@ -30,6 +30,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="src\curly\Dimensions.ts" />
     <TypeScriptCompile Include="src\curly\Button.ts" />
     <TypeScriptCompile Include="src\curly\ButtonVars.ts" />
     <TypeScriptCompile Include="src\curly\Container.ts" />

@@ -13,35 +13,35 @@ module curly {
                 super("TextField");
             }
 
-            if (vars.fontSize == "") {
-                vars.fontSize = "1em";
-            }
+            //if (vars.fontSize == "") {
+            //    vars.fontSize = "1em";
+            //}
 
-            var width: any;
-            if (vars.width) {
-                width = vars.width;
-            }
-            else {
-                width = "auto";
-            }
+            //var width: any;
+            //if (vars.width) {
+            //    width = vars.width;
+            //}
+            //else {
+            //    //width = "auto";
+            //}
 
-            var height: any;
-            if (vars.height) {
-                height = vars.height;
-            }
-            else {
-                height = "auto";
-            }
+            //var height: any;
+            //if (vars.height) {
+            //    height = vars.height;
+            //}
+            //else {
+            //    //height = "auto";
+            //}
 
             //default
-            this.set({
-                width: width,
-                height: height,
-                top: 0,
-                left: 0,
-                overflow: "hidden",
-                msUserSelect: "text"
-            });
+            //this.set({
+            //    width: width,
+            //    height: height,
+            //    top: 0,
+            //    left: 0,
+            //    overflow: "hidden",
+            //    msUserSelect: "text"
+            //});
             this.set(vars);
 
 

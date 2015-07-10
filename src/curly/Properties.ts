@@ -47,6 +47,7 @@
                         }
                     }
                 }
+
                 var styleName: string = i;
                 switch (i) {
                     case "x":
@@ -65,6 +66,11 @@
                 element.style[styleName] = value;
             }
         }
+
+        private setWidth() {
+
+        }
+
     }
 }
 
