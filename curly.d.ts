@@ -1,4 +1,4 @@
-﻿declare module curly {
+declare module curly {
     class Event {
         private _type;
         private _target;
@@ -179,9 +179,14 @@ declare module curly {
     class URLLoader extends EventDispatcher {
         static COMPLETE: string;
         static ERROR: string;
+        static GET: string;
+        static PUT: string;
+        static POST: string;
+        static UPDATE: string;
         private http;
         constructor();
-        public load(url: any, method: any, params: any, scope: any, cache?: boolean): void;
+        public load(url: string, method: string, params: any, scope: any, headers?: any[], cache?: boolean): void;
+        private setRequestHeader(header);
         public post(url: any, params: any, scope: any, cache?: boolean): void;
         private handleResponse();
     }

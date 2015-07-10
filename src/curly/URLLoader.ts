@@ -3,6 +3,10 @@ module curly {
     export class URLLoader extends EventDispatcher {
         static COMPLETE: string = "COMPLETE";
         static ERROR: string = "ERROR";
+        static GET: string = "GET";
+        static PUT: string = "PUT";
+        static POST: string = "POST";
+        static UPDATE: string = "UPDATE";
         private http: XMLHttpRequest;
 
         constructor() {
@@ -10,26 +14,36 @@ module curly {
             
         }
 
-        load(url, method, params, scope, cache:boolean = false) {           
+        load(url: string, method:string, params:any, scope:any, headers?:Array<any>, cache?:boolean) {           
             if (this.http) {
                 this.http.abort();
             }
-            this.http = new XMLHttpRequest();
+            else {
+                this.http = new XMLHttpRequest();
+            }
             this.http.open(method, url, true);
-
-            console.log("LOADING", url);
             this.http.timeout = 20000;
 
             // this might freak out some firewalls
             //this.http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');  
 
-            if (!cache) {
-                this.http.setRequestHeader("If-Modified-Since", "Sat, 01 Jan 2005 00:00:00 GMT");
+            for (var i in headers) {
+                this.http.setRequestHeader(headers[i].value, headers[i].variable);
             }
+
+            //if (!cache) {
+            //    this.http.setRequestHeader("If-Modified-Since", "Sat, 01 Jan 2005 00:00:00 GMT");
+            //}
+
+
 
             this.http.onreadystatechange = this.handleResponse.bind(this);
             this.http.send(params);
 
+        }
+
+        private setRequestHeader(header:any) {
+            this.http.setRequestHeader(header.value, header.variable);
         }
 
         post(url, params, scope, cache: boolean = false) {
@@ -44,11 +58,7 @@ module curly {
             
             // this might freak out some firewalls
             //this.http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-            //this.http.setRequestHeader("Content-type", "application/json");
-
-            if (!cache) {
-                this.http.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2005 00:00:00 GMT");
-            }
+            this.http.setRequestHeader("Content-type", "application/json");
 
             this.http.onreadystatechange = this.handleResponse.bind(this);
             this.http.send(params);

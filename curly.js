@@ -798,23 +798,25 @@ var curly;
         function URLLoader() {
             _super.call(this);
         }
-        URLLoader.prototype.load = function (url, method, params, scope, cache) {
-            if (typeof cache === "undefined") { cache = false; }
+        URLLoader.prototype.load = function (url, method, params, scope, headers, cache) {
             if (this.http) {
                 this.http.abort();
+            } else {
+                this.http = new XMLHttpRequest();
             }
-            this.http = new XMLHttpRequest();
             this.http.open(method, url, true);
-
-            console.log("LOADING", url);
             this.http.timeout = 20000;
 
-            if (!cache) {
-                this.http.setRequestHeader("If-Modified-Since", "Sat, 01 Jan 2005 00:00:00 GMT");
+            for (var i in headers) {
+                this.http.setRequestHeader(headers[i].value, headers[i].variable);
             }
 
             this.http.onreadystatechange = this.handleResponse.bind(this);
             this.http.send(params);
+        };
+
+        URLLoader.prototype.setRequestHeader = function (header) {
+            this.http.setRequestHeader(header.value, header.variable);
         };
 
         URLLoader.prototype.post = function (url, params, scope, cache) {
@@ -828,9 +830,7 @@ var curly;
             console.log("LOADING", url);
             this.http.timeout = 20000;
 
-            if (!cache) {
-                this.http.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2005 00:00:00 GMT");
-            }
+            this.http.setRequestHeader("Content-type", "application/json");
 
             this.http.onreadystatechange = this.handleResponse.bind(this);
             this.http.send(params);
@@ -857,6 +857,10 @@ var curly;
         };
         URLLoader.COMPLETE = "COMPLETE";
         URLLoader.ERROR = "ERROR";
+        URLLoader.GET = "GET";
+        URLLoader.PUT = "PUT";
+        URLLoader.POST = "POST";
+        URLLoader.UPDATE = "UPDATE";
         return URLLoader;
     })(curly.EventDispatcher);
     curly.URLLoader = URLLoader;
