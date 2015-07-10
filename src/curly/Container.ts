@@ -174,5 +174,13 @@ module curly {
         set x(xPos:number) {
             curly.Properties.set(this.element, { x: xPos });
         }
+
+        set alpha(value: number) {
+            curly.Properties.set(this.element, { alpha: value });
+        }
+
+        get alpha(): number {
+            return parseFloat(this.element.style.opacity);
+        }
     }
 } 

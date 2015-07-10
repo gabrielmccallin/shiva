@@ -1,4 +1,4 @@
-declare module curly {
+﻿declare module curly {
     class Event {
         private _type;
         private _target;
@@ -42,6 +42,7 @@ declare module curly {
         public height : number;
         public y : number;
         public x : number;
+        public alpha : number;
     }
 }
 declare module curly {

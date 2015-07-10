@@ -33,7 +33,7 @@ module curly {
             //    this.http.setRequestHeader("If-Modified-Since", "Sat, 01 Jan 2005 00:00:00 GMT");
             //}
 
-
+            
 
             this.http.onreadystatechange = this.handleResponse.bind(this);
             this.http.send(params);

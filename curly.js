@@ -312,6 +312,18 @@ var curly;
         });
 
 
+
+
+        Object.defineProperty(Container.prototype, "alpha", {
+            get: function () {
+                return parseFloat(this.element.style.opacity);
+            },
+            set: function (value) {
+                curly.Properties.set(this.element, { alpha: value });
+            },
+            enumerable: true,
+            configurable: true
+        });
         return Container;
     })(curly.EventDispatcher);
     curly.Container = Container;
