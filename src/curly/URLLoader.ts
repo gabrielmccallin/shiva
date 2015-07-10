@@ -19,7 +19,7 @@ module curly {
 
             console.log("LOADING", url);
             this.http.timeout = 20000;
-            this.http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');  
+            //this.http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');  
 
             if (!cache) {
                 this.http.setRequestHeader("If-Modified-Since", "Sat, 01 Jan 2005 00:00:00 GMT");

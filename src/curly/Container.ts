@@ -6,12 +6,6 @@ module curly {
     export class Container extends EventDispatcher {
         element: HTMLElement;
 
-        private calculatedWidth: number;
-        private calculatedHeight: number;
-        private calculatedX: number;
-        private calculatedY: number;
-
-
         constructor(id: string, type?: string);
         constructor(id: string, type?: boolean);
         constructor(id: string, type?: any) {
@@ -33,20 +27,19 @@ module curly {
             this.set({
                 position: "absolute",
                 top: "0px",
-                left: "0px",
-                width: "100%",
-                height: "100%",
-                display: "block"
+                left: "0px"
+                //width: "auto",
+                //height: "auto"
+                //display: "block"
             });
         }
 
-        private measure() {
+        private shadow():curly.Dimensions {
             if (!document.body.contains(this.element)) {
                 var parent = this.element.parentElement;
                 document.body.appendChild(this.element);
 
-                this.calculatedWidth = this.element.offsetWidth;
-                this.calculatedHeight = this.element.offsetHeight;
+                var dimensions = new curly.Dimensions(this.element.scrollWidth, this.element.scrollHeight);
 
                 if (parent) {
                     parent.appendChild(this.element);
@@ -56,13 +49,10 @@ module curly {
                 }
             }
             else {
-                if (!this.calculatedWidth) {
-                    this.calculatedWidth = this.element.offsetWidth;
-                }
-                if (!this.calculatedHeight) {
-                    this.calculatedHeight = this.element.offsetHeight;
-                }
+                var dimensions = new curly.Dimensions(this.element.scrollWidth, this.element.scrollHeight);
             }
+
+            return dimensions;
         }
 
 
@@ -154,23 +144,19 @@ module curly {
         }
 
         get width(): number {
-            this.measure();
-            return this.calculatedWidth;
+            return this.shadow().width;
         }
 
         set width(w: number) {
             curly.Properties.set(this.element, { width: w });
-            this.calculatedWidth = this.element.offsetWidth;
         }
 
         get height(): number {
-            this.measure();
-            return this.calculatedHeight;
+            return this.shadow().height;
         }
 
         set height(h: number) {
             curly.Properties.set(this.element, { height: h });
-            this.calculatedHeight = this.element.offsetHeight;
         }
 
         get y(): number {
@@ -179,6 +165,14 @@ module curly {
 
         get x(): number {
             return this.element.offsetLeft;
+        }
+
+        set y(yPos:number) {
+            curly.Properties.set(this.element, { y: yPos });
+        }
+
+        set x(xPos:number) {
+            curly.Properties.set(this.element, { x: xPos });
         }
     }
 } 

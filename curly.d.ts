@@ -20,18 +20,15 @@
 declare module curly {
     class Properties {
         static set(object: any, vars: Object): void;
+        private setWidth();
     }
 }
 declare module curly {
     class Container extends EventDispatcher {
         public element: HTMLElement;
-        private calculatedWidth;
-        private calculatedHeight;
-        private calculatedX;
-        private calculatedY;
         constructor(id: string, type?: string);
         constructor(id: string, type?: boolean);
-        private measure();
+        private shadow();
         public addToBody(): void;
         public set(vars: Object): void;
         public addChild(child: any): void;
@@ -74,6 +71,13 @@ declare module curly {
         public select(): void;
         public enable(): void;
         public setId(identifier: string): void;
+    }
+}
+declare module curly {
+    class Dimensions {
+        public height: number;
+        public width: number;
+        constructor(width: number, height: number);
     }
 }
 declare module curly {

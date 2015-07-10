@@ -114,6 +114,7 @@ var curly;
                         }
                     }
                 }
+
                 var styleName = i;
                 switch (i) {
                     case "x":
@@ -130,6 +131,9 @@ var curly;
                 }
                 element.style[styleName] = value;
             }
+        };
+
+        Properties.prototype.setWidth = function () {
         };
         return Properties;
     })();
@@ -162,19 +166,15 @@ var curly;
             this.set({
                 position: "absolute",
                 top: "0px",
-                left: "0px",
-                width: "100%",
-                height: "100%",
-                display: "block"
+                left: "0px"
             });
         }
-        Container.prototype.measure = function () {
+        Container.prototype.shadow = function () {
             if (!document.body.contains(this.element)) {
                 var parent = this.element.parentElement;
                 document.body.appendChild(this.element);
 
-                this.calculatedWidth = this.element.offsetWidth;
-                this.calculatedHeight = this.element.offsetHeight;
+                var dimensions = new curly.Dimensions(this.element.scrollWidth, this.element.scrollHeight);
 
                 if (parent) {
                     parent.appendChild(this.element);
@@ -182,13 +182,10 @@ var curly;
                     document.body.removeChild(this.element);
                 }
             } else {
-                if (!this.calculatedWidth) {
-                    this.calculatedWidth = this.element.offsetWidth;
-                }
-                if (!this.calculatedHeight) {
-                    this.calculatedHeight = this.element.offsetHeight;
-                }
+                var dimensions = new curly.Dimensions(this.element.scrollWidth, this.element.scrollHeight);
             }
+
+            return dimensions;
         };
 
         Container.prototype.addToBody = function () {
@@ -270,12 +267,10 @@ var curly;
 
         Object.defineProperty(Container.prototype, "width", {
             get: function () {
-                this.measure();
-                return this.calculatedWidth;
+                return this.shadow().width;
             },
             set: function (w) {
                 curly.Properties.set(this.element, { width: w });
-                this.calculatedWidth = this.element.offsetWidth;
             },
             enumerable: true,
             configurable: true
@@ -284,12 +279,10 @@ var curly;
 
         Object.defineProperty(Container.prototype, "height", {
             get: function () {
-                this.measure();
-                return this.calculatedHeight;
+                return this.shadow().height;
             },
             set: function (h) {
                 curly.Properties.set(this.element, { height: h });
-                this.calculatedHeight = this.element.offsetHeight;
             },
             enumerable: true,
             configurable: true
@@ -300,6 +293,9 @@ var curly;
             get: function () {
                 return this.element.offsetTop;
             },
+            set: function (yPos) {
+                curly.Properties.set(this.element, { y: yPos });
+            },
             enumerable: true,
             configurable: true
         });
@@ -308,9 +304,14 @@ var curly;
             get: function () {
                 return this.element.offsetLeft;
             },
+            set: function (xPos) {
+                curly.Properties.set(this.element, { x: xPos });
+            },
             enumerable: true,
             configurable: true
         });
+
+
         return Container;
     })(curly.EventDispatcher);
     curly.Container = Container;
@@ -417,6 +418,17 @@ var curly;
 })(curly || (curly = {}));
 var curly;
 (function (curly) {
+    var Dimensions = (function () {
+        function Dimensions(width, height) {
+            this.height = height;
+            this.width = width;
+        }
+        return Dimensions;
+    })();
+    curly.Dimensions = Dimensions;
+})(curly || (curly = {}));
+var curly;
+(function (curly) {
     var Image = (function (_super) {
         __extends(Image, _super);
         function Image(id) {
@@ -469,32 +481,6 @@ var curly;
                 _super.call(this, "TextField");
             }
 
-            if (vars.fontSize == "") {
-                vars.fontSize = "1em";
-            }
-
-            var width;
-            if (vars.width) {
-                width = vars.width;
-            } else {
-                width = "auto";
-            }
-
-            var height;
-            if (vars.height) {
-                height = vars.height;
-            } else {
-                height = "auto";
-            }
-
-            this.set({
-                width: width,
-                height: height,
-                top: 0,
-                left: 0,
-                overflow: "hidden",
-                msUserSelect: "text"
-            });
             this.set(vars);
 
             this.setText(vars.text);
@@ -805,7 +791,6 @@ var curly;
 
             console.log("LOADING", url);
             this.http.timeout = 20000;
-            this.http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
             if (!cache) {
                 this.http.setRequestHeader("If-Modified-Since", "Sat, 01 Jan 2005 00:00:00 GMT");
