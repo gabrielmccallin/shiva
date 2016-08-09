@@ -43,7 +43,7 @@ gulp.task("transpile-curly", function () {
         }));
         
   return merge([
-    tsResult.dts.pipe(gulp.dest("deploy")),
+    tsResult.dts.pipe(gulp.dest("typings")),
     tsResult
       .js
       .pipe(sourcemaps.write("", {
