@@ -1,0 +1,11 @@
+﻿module curly {
+    export interface ButtonConfig extends HoverStyleDeclaration {
+        id?: string;
+        href?: string;
+        target?: string;
+        style?: ButtonIconConfig;
+        text?: string;
+        data?: any;
+        icon?: ButtonIconConfig;
+    }
+}

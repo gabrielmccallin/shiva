@@ -1,1 +1,0 @@
-﻿ajaxmin libs/TweenMax.min.js curly.js -out curly.min.js -clobber

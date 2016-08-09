@@ -1,0 +1,21 @@
+{
+    "version": "1.5.0",
+    "compilerOptions": {
+        "target": "ES5",
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": false,
+        "noLib": false,
+        "sourceMap": true,
+        "out": "app.js"
+    },
+    
+    "exclude":[
+        "typings/curly.d.ts",
+        "deploy/libs/curly.js",
+        "deploy/libs/curly.min.js",
+        "deploy/libs/app.js"
+        
+    ]
+    
+}
