@@ -16,13 +16,9 @@ Forget <markup> and use {code} instead. Program instead of jumping between scrip
 
 - **fromTo(duration: number, vars: Object)**, wraps TweenMax to provide easy animation methods  
 
-- **addDomEventListener(scope: any, typeStr: string, listenerFunc: Function)**, listen for DOM events  
+- **addEventListener(scope: any, typeStr: string, listenerFunc: Function)**, listen for DOM and custom events  
 
-- **removeDomEventListener(typeStr: string, listenerFunc: Function)**, remove DOM event listeners   
-
-- **addEventListener(scope: any, typeStr: string, listenerFunc: Function)**, listen for custom events  
-
-- **removeEventListener(typeStr: string, listenerFunc: Function)**, remove custom event listeners  
+- **removeEventListener(typeStr: string, listenerFunc: Function)**, remove DOM and custom event listeners  
 
 - **preventDefault(e:Event)**, polyfill prevent default event behavior  
 

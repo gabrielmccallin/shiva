@@ -46,7 +46,7 @@ gulp.task("transpile-curly", function () {
     tsResult.dts.pipe(gulp.dest("typings")),
     tsResult
       .js
-      .pipe(sourcemaps.write("", {
+      .pipe(sourcemaps.write("/", {
           sourceRoot:"../../src/"
       }))
       // .pipe(uglify())

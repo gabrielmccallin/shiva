@@ -18,12 +18,11 @@ module curly {
             super({
                 id: config.id,
                 type: type,
-                cursor: "pointer",
-                style: Styles.button
+                cursor: "pointer"
             });
 
             this.href = config.href;
-            this.enabled = true;
+            this.enabled = true;  
 
             if (config.icon && config.icon.code) {
                 this.icon = new Container({
@@ -37,6 +36,10 @@ module curly {
 
         update(config: ButtonConfig) {
             this.config = {};
+            for (let i in Styles.button){
+                this.config[i] = Styles.button[i];
+            }
+            
             if (config && config.style) {
                 for (let i in config.style) {
                     this.config[i] = config.style[i];
