@@ -493,7 +493,8 @@ var curly;
             _super.call(this, {
                 id: config.id,
                 type: type,
-                cursor: "pointer"
+                cursor: "pointer",
+                display: "inline-block"
             });
             this.href = config.href;
             this.enabled = true;

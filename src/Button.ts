@@ -18,7 +18,8 @@ module curly {
             super({
                 id: config.id,
                 type: type,
-                cursor: "pointer"
+                cursor: "pointer",
+                display: "inline-block"
             });
 
             this.href = config.href;
