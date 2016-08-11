@@ -1,7 +1,7 @@
 ﻿module curly {
-    export interface CheckBoxConfig {
+    export interface InputConfig {
         id?: string;
-        style?: CheckBoxConfig;
+        style?: InputConfig;
         checked?: boolean;
     }
 }

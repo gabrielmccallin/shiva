@@ -1,6 +1,6 @@
 ﻿/// <reference path="container.ts" />
 module curly {
-    export class CheckBox extends Container {
+    export class RadioButton extends Container {
         static CLICK: string = "click";
         private enabled: boolean;
 
@@ -11,7 +11,7 @@ module curly {
             });
 
             let element = <HTMLInputElement>this.element;
-            element.type = "checkbox";
+            element.type = "radio";
 
             if (config) {
                 if (config.id) {

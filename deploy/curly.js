@@ -706,6 +706,40 @@ var curly;
     }());
     curly.Observer = Observer;
 })(curly || (curly = {}));
+/// <reference path="container.ts" />
+var curly;
+(function (curly) {
+    var RadioButton = (function (_super) {
+        __extends(RadioButton, _super);
+        function RadioButton(config) {
+            _super.call(this, {
+                type: "input"
+            });
+            var element = this.element;
+            element.type = "radio";
+            if (config) {
+                if (config.id) {
+                    this.id = config.id;
+                }
+                this.style(config.style);
+                //anything else in the config
+                this.style(config);
+                element.checked = config.checked;
+            }
+        }
+        Object.defineProperty(RadioButton.prototype, "checked", {
+            get: function () {
+                var element = this.element;
+                return element.checked;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        RadioButton.CLICK = "click";
+        return RadioButton;
+    }(curly.Container));
+    curly.RadioButton = RadioButton;
+})(curly || (curly = {}));
 var curly;
 (function (curly) {
     var Resize = (function () {

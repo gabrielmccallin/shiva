@@ -66,7 +66,7 @@ module curly {
             }))
         }
 
-        addChild(child) {
+        addChild(child: Container) {
             let childElement: HTMLElement;
             if (child.element) {
                 childElement = child.element;
@@ -79,7 +79,7 @@ module curly {
             this._element.appendChild(childElement);
         }
 
-        removeChild(child) {
+        removeChild(child: Container) {
             if (this._element === child.element.parentNode) {
                 this._element.removeChild(child.element);
             }
