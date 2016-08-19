@@ -490,6 +490,9 @@ var curly;
             else {
                 type = "button";
             }
+            if (config.type) {
+                type = config.type;
+            }
             _super.call(this, {
                 id: config.id,
                 type: type,
@@ -910,8 +913,8 @@ var curly;
             boxShadow: "0px 6px 12px rgba(0,0,0,0.175)",
             fontWeight: "300",
             paddingLeft: "0px",
-            durationExpand: "2",
-            durationContract: "2"
+            durationExpand: "0.5",
+            durationContract: "0.5"
         };
         return Styles;
     }());
@@ -1058,10 +1061,17 @@ var curly;
             this.items = [];
             this.button = new curly.Button({
                 style: curly.Styles.button,
-                display: "block"
+                display: "inline-block",
+                text: "button",
+                type: "div",
+                zIndex: "1001",
+                position: "absolute"
             });
-            config.button.text = buttonText;
-            this.button.update(config.button);
+            if (config.button) {
+                config.button.text = buttonText;
+                this.button.update(config.button);
+            }
+            this.addChild(this.button);
             var caret = new curly.Container({
                 id: "drop-caret",
                 style: curly.Styles.caret,
@@ -1071,7 +1081,6 @@ var curly;
                 caret.style(config.caret);
             }
             this.button.addChild(caret);
-            this.addChild(this.button);
             this.button.addEventListener(this, "mousedown", this.buttonClicked);
             this.unorderedList = new curly.Container({
                 type: "ul",
@@ -1152,9 +1161,9 @@ var curly;
             this.unorderedList.style({
                 display: "block",
                 alpha: 0,
-                top: "0%"
+                top: "0px"
             });
-            this.unorderedList.to(this.dropConfig.durationExpand, { ease: Strong.easeOut, alpha: 1, top: "100%" });
+            this.unorderedList.to(this.dropConfig.durationExpand, { ease: Strong.easeOut, alpha: 1, top: this.button.height });
             this.scopedEventHandler = function (g) { _this.closeDrop(g); };
             // ! Don't think this will work in IE8, need attachEvent or polyfill
             document.body.addEventListener("mousedown", this.scopedEventHandler, true);

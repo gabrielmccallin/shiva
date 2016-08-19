@@ -66,8 +66,8 @@
             boxShadow: "0px 6px 12px rgba(0,0,0,0.175)",
             fontWeight: "300",
             paddingLeft: "0px",
-            durationExpand: "2",
-            durationContract: "2"
+            durationExpand: "0.5",
+            durationContract: "0.5"
 
         };
     }

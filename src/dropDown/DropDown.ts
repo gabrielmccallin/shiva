@@ -22,13 +22,21 @@ module curly {
             this.items = [];
 
             this.button = new Button({
-                style: Styles.button,
-                display: "block"
+                style: Styles.button, 
+                display: "inline-block",
+                text: "button",
+                type: "div",
+                zIndex: "1001",
+                position: "absolute"
             });
 
-            config.button.text = buttonText;
+            if (config.button) {
+                config.button.text = buttonText;
+                this.button.update(config.button);
+            }
 
-            this.button.update(config.button);
+            this.addChild(this.button);
+
 
             let caret = new curly.Container({
                 id: "drop-caret",
@@ -42,7 +50,6 @@ module curly {
 
             this.button.addChild(caret);
 
-            this.addChild(this.button);
             this.button.addEventListener(this, "mousedown", this.buttonClicked);
 
             this.unorderedList = new Container({
@@ -149,10 +156,10 @@ module curly {
             this.unorderedList.style({
                 display: "block",
                 alpha: 0,
-                top: "0%"
+                top: "0px"
             });
 
-            this.unorderedList.to(this.dropConfig.durationExpand, { ease: Strong.easeOut, alpha: 1, top: "100%" });
+            this.unorderedList.to(this.dropConfig.durationExpand, { ease: Strong.easeOut, alpha: 1, top: this.button.height });
             this.scopedEventHandler = (g: MouseEvent) => { this.closeDrop(g) };
 
             // ! Don't think this will work in IE8, need attachEvent or polyfill

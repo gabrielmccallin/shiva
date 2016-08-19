@@ -15,6 +15,9 @@ module curly {
             else {
                 type = "button";
             }
+            if (config.type) {
+                type = config.type;
+            }
             super({
                 id: config.id,
                 type: type,
@@ -23,7 +26,7 @@ module curly {
             });
 
             this.href = config.href;
-            this.enabled = true;  
+            this.enabled = true;
 
             if (config.icon && config.icon.code) {
                 this.icon = new Container({
@@ -37,10 +40,10 @@ module curly {
 
         update(config: ButtonConfig) {
             this.config = {};
-            for (let i in Styles.button){
+            for (let i in Styles.button) {
                 this.config[i] = Styles.button[i];
             }
-            
+
             if (config && config.style) {
                 for (let i in config.style) {
                     this.config[i] = config.style[i];
@@ -79,7 +82,7 @@ module curly {
                     fontSize: this.config.icon.fontSize,
                     float: this.config.icon.align,
                     pointerEvents: "none"
-                }); 
+                });
 
                 this.addChild(this.icon);
 
@@ -98,13 +101,13 @@ module curly {
             this.to(this.config.durationIn, {
                 backgroundColor: this.config.backgroundColorHover,
                 // backgroundColor: "#ff0000",
-                color: this.config.colorHover  
+                color: this.config.colorHover
             });
         }
 
         out() {
             this.to(this.config.durationOut, {
-                backgroundColor: this.config.backgroundColor,   
+                backgroundColor: this.config.backgroundColor,
                 color: this.config.color
             });
         }

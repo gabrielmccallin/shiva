@@ -7,5 +7,6 @@
         text?: string;
         data?: any;
         icon?: ButtonIconConfig;
+        type?: string;
     }
 }
