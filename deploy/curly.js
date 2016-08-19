@@ -191,6 +191,14 @@ var curly;
             if (config) {
                 if (config.root) {
                     this._element = document.createElement("div");
+                    // recommended properties
+                    this._element.style.position = "absolute";
+                    this._element.style.height = "100%";
+                    this._element.style.width = "100%";
+                    this._element.style.top = "0px";
+                    this._element.style.left = "0px";
+                    this._element.style.margin = "0px";
+                    this._element.id = "app";
                     document.body.appendChild(this._element);
                 }
                 else {
