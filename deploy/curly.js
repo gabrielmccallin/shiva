@@ -122,6 +122,16 @@ var curly;
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(Event.prototype, "sourceData", {
+            get: function () {
+                return this._sourceData;
+            },
+            set: function (data) {
+                this._sourceData = data;
+            },
+            enumerable: true,
+            configurable: true
+        });
         return Event;
     }());
     curly.Event = Event;
@@ -149,7 +159,8 @@ var curly;
                 type: typeStr,
                 listener: listenerFunc,
                 useCapture: useCapture,
-                scopedEventListener: scopedEventListener
+                scopedEventListener: scopedEventListener,
+                sourceData: data
             });
         };
         EventDispatcher.prototype.removeEventListener = function (typeStr, listenerFunc) {
@@ -164,6 +175,9 @@ var curly;
         EventDispatcher.prototype.dispatchEvent = function (evt) {
             for (var i = 0; i < this._listeners.length; i++) {
                 if (this._listeners[i].type === evt.type) {
+                    if (this._listeners[i].sourceData) {
+                        evt.sourceData = this._listeners[i].sourceData;
+                    }
                     this._listeners[i].listener.call(this._listeners[i].scope, evt);
                 }
             }

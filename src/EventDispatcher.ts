@@ -13,6 +13,7 @@ module curly {
         private _target: any;
         private _data: any;
         private _sourceEvent: any;
+        private _sourceData: any;
 
         constructor(type: string, targetObj: any, data?: any, sourceEvent?: any) {
             this._type = type;
@@ -40,6 +41,14 @@ module curly {
         get sourceEvent(): any {
             return this._sourceEvent;
         }
+
+        set sourceData(data:any){
+            this._sourceData = data;
+        }
+
+        get sourceData(): any {
+            return this._sourceData;
+        }
     }
 
     export class EventDispatcher {
@@ -66,7 +75,8 @@ module curly {
                 type: typeStr,
                 listener: listenerFunc,
                 useCapture: useCapture,
-                scopedEventListener: scopedEventListener
+                scopedEventListener: scopedEventListener,
+                sourceData: data
             });
         }
 
@@ -85,6 +95,9 @@ module curly {
         dispatchEvent(evt: Event) {
             for (var i = 0; i < this._listeners.length; i++) {
                 if (this._listeners[i].type === evt.type) {
+                    if(this._listeners[i].sourceData){
+                        evt.sourceData = this._listeners[i].sourceData;
+                    }
                     this._listeners[i].listener.call(this._listeners[i].scope, evt);
                 }
             }
