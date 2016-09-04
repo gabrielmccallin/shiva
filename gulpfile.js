@@ -46,17 +46,17 @@ gulp.task("transpile-curly", function () {
     tsResult.dts.pipe(gulp.dest("typings")),
     tsResult
       .js
+      .pipe(uglify())
       .pipe(sourcemaps.write("/", {
           sourceRoot:"../../src/"
       }))
-      // .pipe(uglify())
       .pipe(gulp.dest("deploy"))
     ]);
       
 });
 
 gulp.task("rollup-curly", ["transpile-curly"], function(){
-  gulp.src(["libs/TweenMax.min.js", "deploy/curly.js"])
+  gulp.src(["libs/*.js", "deploy/curly.js"])
     .pipe(concat("curly.min.js"))
     .pipe(gulp.dest("deploy"));
 });

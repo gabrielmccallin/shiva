@@ -120,7 +120,7 @@ module curly {
 
             this.dispatchEvent(new curly.Event(DropDown.CHANGE, this, element.id));
 
-            TweenMax.killTweensOf(this.unorderedList.element);
+            TweenLite.killTweensOf(this.unorderedList.element);
             this.unorderedList.alpha = 1;
 
             this.unorderedList.to(
@@ -151,7 +151,7 @@ module curly {
         }
 
         private buttonClicked(e: Event) {
-            TweenMax.killTweensOf(this.unorderedList.element);
+            TweenLite.killTweensOf(this.unorderedList.element);
 
             this.unorderedList.style({
                 display: "block",
@@ -172,7 +172,7 @@ module curly {
             // ! Don't think this will work in IE8, need attachEvent or polyfill
             document.body.removeEventListener("mousedown", this.scopedEventHandler, true);
 
-            TweenMax.delayedCall(0, (() => {
+            TweenLite.delayedCall(0, (() => {
                 this.button.addEventListener(this, "mousedown", this.buttonClicked);
             }), null, this);
 

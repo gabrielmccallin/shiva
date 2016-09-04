@@ -95,17 +95,17 @@ module curly {
             }
         }
 
-        to(duration: number, vars: Object): TweenMax {
-            return TweenMax.to(this._element, duration, vars);
+        to(duration: number, vars: Object): TweenLite {
+            return TweenLite.to(this._element, duration, vars);
         }
 
-        fromTo(duration: number, fromVars: Object, toVars: Object): TweenMax {
-            return TweenMax.fromTo(this._element, duration, fromVars, toVars);
+        fromTo(duration: number, fromVars: Object, toVars: Object): TweenLite {
+            return TweenLite.fromTo(this._element, duration, fromVars, toVars);
         }
 
-        from(duration: number, vars: Object): TweenMax {
-            return TweenMax.from(this._element, duration, vars);
-        }
+        from(duration: number, vars: Object): TweenLite {
+            return TweenLite.from(this._element, duration, vars);
+        } 
 
         addEventListener(scope: any, typeStr: string, listenerFunc: Function, data?:any, useCapture = false): void {
             let that = this;
@@ -114,12 +114,11 @@ module curly {
                 listenerFunc.apply(scope, [new curly.Event(typeStr, that, data, e)]);
             };
 
-            super.addEventListener(scope, typeStr, listenerFunc, useCapture, data,  scopedEventListener);
-
+            super.addEventListener(scope, typeStr, listenerFunc, useCapture, data,  scopedEventListener);  
             // add to element 
             if (this._element.addEventListener) {
                 // Firefox, Google Chrome and Safari (and Opera and Internet Explorer from
-                // version 9).
+                // version 9). 
                 this._element.addEventListener(typeStr, scopedEventListener, useCapture);
             } else if (this._element["attachEvent"]) {
                 // Opera and Explorer (version < 9).
