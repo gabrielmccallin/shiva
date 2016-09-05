@@ -81,9 +81,9 @@ module curly {
             if (child.element) {
                 childElement = child.element;
             }
-            else {
-                childElement = child;
-            }
+            // else {
+            //     childElement = <HTMLElement>child;
+            // }
 
 
             this._element.appendChild(childElement);
