@@ -279,6 +279,11 @@ module curly {
             let inputElement = <HTMLInputElement>this._element;
             return inputElement.value;
         }
+        
+        set value(_value:string) {
+            let inputElement = <HTMLInputElement>this._element;
+            inputElement.value = _value; 
+        }
 
         get id(): string {
             return this._element.id;
