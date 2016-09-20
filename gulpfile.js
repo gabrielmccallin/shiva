@@ -6,7 +6,8 @@ var ts = require("gulp-typescript");
 var merge = require("merge2");
 var concat = require("gulp-concat");
 var uglify = require("gulp-uglify");
- 
+var version = "0.3.0"; 
+
 gulp.task("webserver", function() {
   connect.server({
     livereload: true,
@@ -31,7 +32,7 @@ gulp.task("watch-curly", function() {
 gulp.task("transpile-curly", function () {
   var tsResult = gulp
         .src(["src/**/*.ts", "typings/greensock.d.ts"]) 
-        .pipe(sourcemaps.init())
+        // .pipe(sourcemaps.init())
         .pipe(ts({
           "target": "ES5",
           "declaration": true,
@@ -47,9 +48,9 @@ gulp.task("transpile-curly", function () {
     tsResult
       .js
       .pipe(uglify())
-      .pipe(sourcemaps.write("/", {
-          sourceRoot:"../../src/"
-      }))
+      // .pipe(sourcemaps.write("/", {
+      //     sourceRoot:"../../src/"
+      // }))
       .pipe(gulp.dest("deploy"))
     ]);
       
@@ -57,7 +58,7 @@ gulp.task("transpile-curly", function () {
 
 gulp.task("rollup-curly", ["transpile-curly"], function(){
   gulp.src(["libs/*.js", "deploy/curly.js"])
-    .pipe(concat("curly.min.js"))
+    .pipe(concat("curly."+ version + ".js"))
     .pipe(gulp.dest("deploy"));
 });
 

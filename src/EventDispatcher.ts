@@ -13,7 +13,7 @@ module curly {
         private _target: any;
         private _data: any;
         private _sourceEvent: any;
-        private _sourceData: any;
+        private _attributes: any;
 
         constructor(type: string, targetObj: any, data?: any, sourceEvent?: any) {
             this._type = type;
@@ -42,12 +42,12 @@ module curly {
             return this._sourceEvent;
         }
 
-        set sourceData(data:any){
-            this._sourceData = data;
+        set attributes(data:any){
+            this._attributes = data;
         }
 
-        get sourceData(): any {
-            return this._sourceData;
+        get attributes(): any {
+            return this._attributes;
         }
     }
 
@@ -65,7 +65,7 @@ module curly {
             return exists;
         }
 
-        addEventListener(scope: any, typeStr: string, listenerFunc: Function, data?:any, useCapture = false, scopedEventListener: Function = undefined): void {
+        addEventListener(scope: any, typeStr: string, listenerFunc: Function, attributes?:any, useCapture = false, scopedEventListener: Function = undefined): void {
             if (this.hasEventListener(typeStr, listenerFunc)) { 
                 return;
             }
@@ -76,7 +76,7 @@ module curly {
                 listener: listenerFunc,
                 useCapture: useCapture,
                 scopedEventListener: scopedEventListener,
-                sourceData: data
+                attributes: attributes
             });
         }
 
@@ -87,7 +87,7 @@ module curly {
 
             this._listeners = this._listeners.filter(item => {
                 return (!(item.type === typeStr && item.listener.toString() === listenerFunc.toString()));
-            });
+            }); 
 
             return listener[0];
         }
@@ -95,8 +95,8 @@ module curly {
         dispatchEvent(evt: Event) {
             for (var i = 0; i < this._listeners.length; i++) {
                 if (this._listeners[i].type === evt.type) {
-                    if(this._listeners[i].sourceData){
-                        evt.sourceData = this._listeners[i].sourceData;
+                    if(this._listeners[i].attributes){
+                        evt.attributes = this._listeners[i].attributes;
                     }
                     this._listeners[i].listener.call(this._listeners[i].scope, evt);
                 }

@@ -8,19 +8,24 @@ module curly {
         static POST: string = "POST";
         static UPDATE: string = "UPDATE";
         private http: XMLHttpRequest;
-        
-        constructor(){
+
+        constructor() {
             super();
         }
 
 
-        load(url: string, method: string, params: any, scope: any, headers?: Array<any>, cache?: boolean) {
+        load(url: string, method: string, params?: any, headers?: Array<any>, cache?: boolean) {
             if (this.http) {
                 this.http.abort();
             }
             else {
                 this.http = new XMLHttpRequest();
             }
+
+            if (method === curly.URLLoader.GET) {
+                url = url + this.concatParams(params);
+            }
+
             this.http.open(method, url, true);
             this.http.timeout = 20000;
             //this.http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');  
@@ -43,7 +48,7 @@ module curly {
             let queryString: string = "?";
             for (var i in params) {
                 if (params.hasOwnProperty(i)) {
-                    queryString.concat(i, "=", params[i], "&");
+                    queryString = queryString.concat(i, "=", encodeURI(params[i]), "&");
                 }
             }
             queryString = queryString.slice(0, -1);

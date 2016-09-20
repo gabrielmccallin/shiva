@@ -11,7 +11,7 @@
                     id: config.id
                 });
                 this.config = config;
-                this.style(config.style);
+                this.style(config.style); 
                 this.style(config);
             }
 
