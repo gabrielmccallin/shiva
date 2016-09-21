@@ -10,14 +10,14 @@ var version = "0.3.0";
 
 gulp.task("webserver", function() {
   connect.server({
-    livereload: true,
+    // livereload: true,
     port: 1337
   });
 });
  
 gulp.task("reload", function() {
-  gulp.src(["deploy/**/*.js"])
-    .pipe(watch(["deploy/**/*.js"]))
+  gulp.src(["dist/**/*.js"])
+    .pipe(watch(["dist/**/*.js"]))
     .pipe(connect.reload());
 });
 
@@ -51,15 +51,15 @@ gulp.task("transpile-curly", function () {
       // .pipe(sourcemaps.write("/", {
       //     sourceRoot:"../../src/"
       // }))
-      .pipe(gulp.dest("deploy"))
+      .pipe(gulp.dest("dist"))
     ]);
       
 });
 
 gulp.task("rollup-curly", ["transpile-curly"], function(){
-  gulp.src(["libs/*.js", "deploy/curly.js"])
+  gulp.src(["libs/*.js", "dist/curly.js"])
     .pipe(concat("curly."+ version + ".js"))
-    .pipe(gulp.dest("deploy"));
+    .pipe(gulp.dest("dist"));
 });
 
-gulp.task("default", ["reload", "webserver", "watch-curly"]);
+gulp.task("default", ["webserver", "watch-curly"]);

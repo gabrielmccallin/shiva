@@ -20,7 +20,7 @@ module curly {
             this._target = targetObj;
             this._sourceEvent = sourceEvent;
             this._data = data;
-        }
+        } 
 
         get target(): Container {
             return this._target;
