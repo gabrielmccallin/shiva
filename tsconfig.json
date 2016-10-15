@@ -11,10 +11,9 @@
     },
     
     "exclude":[
-        "typings/curly.d.ts",
-        "deploy/libs/curly.js",
-        "deploy/libs/curly.min.js",
-        "deploy/libs/app.js"
+        "typings",
+        "dist",
+        "serve"
         
     ]
     

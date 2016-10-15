@@ -14,6 +14,7 @@
 
 module curly {
     export class Container extends EventDispatcher {
+        static TRANSITION_COMPLETE = "TRANSITION_COMPLETE";
         private _element: HTMLElement;
 
         constructor(config?: ContainerConfig) {
@@ -31,7 +32,7 @@ module curly {
                     this._element.style.left = "0px";
                     this._element.style.margin = "0px";
                     this._element.id = "app";
-                    
+
                     document.body.appendChild(this._element);
                 }
                 else {
@@ -95,26 +96,65 @@ module curly {
             }
         }
 
-        to(duration: number, vars: Object): TweenLite {
-            return TweenLite.to(this._element, duration, vars);
+        to(duration: number, vars: Object) {
+            let transitionString = "";
+            for (let i in vars) {
+                if (transitionString !== "") {
+                    transitionString += ", ";
+                }
+                let hyphenCaseIndex = this.camelToHyphen(i);
+                
+                let payload = {};
+                payload[hyphenCaseIndex] = vars[i];
+
+                transitionString += hyphenCaseIndex + " " + duration + "s";
+
+                setTimeout(() => {
+                    this.style(payload);
+                }, 10);
+            }
+            this.style({
+                transition: transitionString
+            });
+            setTimeout(() => {
+                this.dispatchEvent(new Event("TRANSITION_COMPLETE", this));
+            }, duration * 1000);
         }
 
-        fromTo(duration: number, fromVars: Object, toVars: Object): TweenLite {
-            return TweenLite.fromTo(this._element, duration, fromVars, toVars);
+        fromTo(duration: number, fromVars: Object, toVars: Object) {
+            this.style(fromVars);
+            this.to(duration, toVars);
         }
 
-        from(duration: number, vars: Object): TweenLite {
-            return TweenLite.from(this._element, duration, vars);
-        } 
+        private camelToHyphen(camel): string {
+            return camel.replace(/[a-z][A-Z]/g, (match, index) => {
+                console.log("index: ", index);
+                let matchArray = match.split("");
+                matchArray[2] = matchArray[1];
+                matchArray[1] = "-";
+                matchArray[2] = matchArray[2].toLowerCase();
 
-        addEventListener(scope: any, typeStr: string, listenerFunc: Function, data?:any, useCapture = false): void {
+                let result = "";
+                matchArray.map((char) => {
+                    result += char;
+                });
+                return result;
+            });
+
+        }
+
+        // from(duration: number, vars: Object): TweenLite {
+        //     return TweenLite.from(this._element, duration, vars);
+        // } 
+
+        addEventListener(scope: any, typeStr: string, listenerFunc: Function, data?: any, useCapture = false): void {
             let that = this;
             let scopedEventListener: EventListener = function (e) {
                 // console.log("captured at add", e); 
                 listenerFunc.apply(scope, [new curly.Event(typeStr, that, data, e)]);
             };
 
-            super.addEventListener(scope, typeStr, listenerFunc, useCapture, data,  scopedEventListener);  
+            super.addEventListener(scope, typeStr, listenerFunc, useCapture, data, scopedEventListener);
             // add to element 
             if (this._element.addEventListener) {
                 // Firefox, Google Chrome and Safari (and Opera and Internet Explorer from
@@ -279,10 +319,10 @@ module curly {
             let inputElement = <HTMLInputElement>this._element;
             return inputElement.value;
         }
-        
-        set value(_value:string) {
+
+        set value(_value: string) {
             let inputElement = <HTMLInputElement>this._element;
-            inputElement.value = _value; 
+            inputElement.value = _value;
         }
 
         get id(): string {
