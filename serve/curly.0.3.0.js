@@ -301,7 +301,6 @@ var curly;
         };
         Container.prototype.camelToHyphen = function (camel) {
             return camel.replace(/[a-z][A-Z]/g, function (match, index) {
-                console.log("index: ", index);
                 var matchArray = match.split("");
                 matchArray[2] = matchArray[1];
                 matchArray[1] = "-";
@@ -1200,11 +1199,12 @@ var curly;
         DropDown.prototype.itemClicked = function (e) {
             var element = e.target;
             this.dispatchEvent(new curly.Event(DropDown.CHANGE, this, element.id));
-            TweenLite.killTweensOf(this.unorderedList.element);
-            this.unorderedList.alpha = 1;
+            this.unorderedList.style({
+                opacity: "1"
+            });
             this.unorderedList.to(this.dropConfig.durationContract, {
                 delay: 0.3,
-                alpha: 0,
+                opacity: 0,
                 onComplete: this.hideList,
                 onCompleteScope: this
             });
@@ -1225,13 +1225,12 @@ var curly;
         };
         DropDown.prototype.buttonClicked = function (e) {
             var _this = this;
-            TweenLite.killTweensOf(this.unorderedList.element);
             this.unorderedList.style({
                 display: "block",
-                alpha: 0,
+                opacity: "0",
                 top: "0px"
             });
-            this.unorderedList.to(this.dropConfig.durationExpand, { ease: Strong.easeOut, alpha: 1, top: this.button.height });
+            this.unorderedList.to(this.dropConfig.durationExpand, { opacity: 1, top: this.button.height });
             this.scopedEventHandler = function (g) { _this.closeDrop(g); };
             // ! Don't think this will work in IE8, need attachEvent or polyfill
             document.body.addEventListener("mousedown", this.scopedEventHandler, true);
@@ -1241,11 +1240,11 @@ var curly;
             var _this = this;
             // ! Don't think this will work in IE8, need attachEvent or polyfill
             document.body.removeEventListener("mousedown", this.scopedEventHandler, true);
-            TweenLite.delayedCall(0, (function () {
+            setTimeout(function () {
                 _this.button.addEventListener(_this, "mousedown", _this.buttonClicked);
-            }), null, this);
+            }, 10);
             this.unorderedList.to(this.dropConfig.durationContract, {
-                alpha: 0,
+                opacity: 0,
                 onComplete: this.hideList,
                 onCompleteScope: this
             });

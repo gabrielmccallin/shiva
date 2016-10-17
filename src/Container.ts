@@ -128,7 +128,6 @@ module curly {
 
         private camelToHyphen(camel): string {
             return camel.replace(/[a-z][A-Z]/g, (match, index) => {
-                console.log("index: ", index);
                 let matchArray = match.split("");
                 matchArray[2] = matchArray[1];
                 matchArray[1] = "-";

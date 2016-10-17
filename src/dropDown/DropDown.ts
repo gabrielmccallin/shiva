@@ -22,7 +22,7 @@ module curly {
             this.items = [];
 
             this.button = new Button({
-                style: Styles.button, 
+                style: Styles.button,
                 display: "inline-block",
                 text: "button",
                 type: "div",
@@ -120,14 +120,15 @@ module curly {
 
             this.dispatchEvent(new curly.Event(DropDown.CHANGE, this, element.id));
 
-            TweenLite.killTweensOf(this.unorderedList.element);
-            this.unorderedList.alpha = 1;
+            this.unorderedList.style({
+                opacity:"1"
+            });
 
             this.unorderedList.to(
                 this.dropConfig.durationContract,
                 {
                     delay: 0.3,
-                    alpha: 0,
+                    opacity: 0,
                     onComplete: this.hideList,
                     onCompleteScope: this
                 }
@@ -151,15 +152,13 @@ module curly {
         }
 
         private buttonClicked(e: Event) {
-            TweenLite.killTweensOf(this.unorderedList.element);
-
             this.unorderedList.style({
                 display: "block",
-                alpha: 0,
+                opacity: "0",
                 top: "0px"
             });
 
-            this.unorderedList.to(this.dropConfig.durationExpand, { ease: Strong.easeOut, alpha: 1, top: this.button.height });
+            this.unorderedList.to(this.dropConfig.durationExpand, { opacity: 1, top: this.button.height });
             this.scopedEventHandler = (g: MouseEvent) => { this.closeDrop(g) };
 
             // ! Don't think this will work in IE8, need attachEvent or polyfill
@@ -172,15 +171,14 @@ module curly {
             // ! Don't think this will work in IE8, need attachEvent or polyfill
             document.body.removeEventListener("mousedown", this.scopedEventHandler, true);
 
-            TweenLite.delayedCall(0, (() => {
+            setTimeout(() => {
                 this.button.addEventListener(this, "mousedown", this.buttonClicked);
-            }), null, this);
-
+            }, 10);
 
             this.unorderedList.to(
                 this.dropConfig.durationContract,
                 {
-                    alpha: 0,
+                    opacity: 0,
                     onComplete: this.hideList,
                     onCompleteScope: this
                 }
