@@ -11,7 +11,7 @@ var version = "0.3.0";
 gulp.task("webserver", function() {
   connect.server({
     // livereload: true,
-    port: 1337
+    port: 34567
   });
 });
  
@@ -22,16 +22,42 @@ gulp.task("reload", function() {
 });
 
 
-
-gulp.task("watch-curly", function() {
-    gulp.watch("src/**/*.ts", ["transpile-curly", "rollup-curly"]);
+gulp.task("watch", function() {
+    gulp.watch("src/**/*.ts", ["transpile-dev"]);
 }); 
  
 
-
-gulp.task("transpile-curly", function () {
+gulp.task("transpile-dev", function () {
   var tsResult = gulp
-        .src(["src/**/*.ts", "typings/greensock.d.ts"]) 
+        .src(["src/**/*.ts"]) 
+        .pipe(sourcemaps.init())
+        .pipe(ts({
+          "target": "ES5",
+          "declaration": true,
+          "noImplicitAny": false,
+          "removeComments": false,
+          "noLib": false,
+          "out": "curly."+ version + ".js",
+          "noExternalResolve":true  
+        }));
+        
+  return merge([
+    tsResult.dts.pipe(gulp.dest("typings")),
+    tsResult
+      .js
+      // .pipe(uglify())
+      .pipe(sourcemaps.write("/", {
+          sourceRoot:"../src/"
+      }))
+      .pipe(gulp.dest("serve"))
+    ]);
+      
+});
+
+
+gulp.task("transpile", function () {
+  var tsResult = gulp
+        .src(["src/**/*.ts"]) 
         // .pipe(sourcemaps.init())
         .pipe(ts({
           "target": "ES5",
@@ -39,7 +65,7 @@ gulp.task("transpile-curly", function () {
           "noImplicitAny": false,
           "removeComments": false,
           "noLib": false,
-          "out": "curly.js",
+          "out": "curly."+ version + ".js",
           "noExternalResolve":true  
         }));
         
@@ -51,15 +77,15 @@ gulp.task("transpile-curly", function () {
       // .pipe(sourcemaps.write("/", {
       //     sourceRoot:"../../src/"
       // }))
-      .pipe(gulp.dest("dist"))
+      .pipe(gulp.dest("serve"))
     ]);
       
 });
 
-gulp.task("rollup-curly", ["transpile-curly"], function(){
-  gulp.src(["libs/*.js", "dist/curly.js"])
-    .pipe(concat("curly."+ version + ".js"))
+gulp.task("npm-publish", ["transpile"], function(){
+  gulp.src(["serve/curly."+ version + ".js", "node-module-converter.js"])
+    .pipe(concat("curly.js"))
     .pipe(gulp.dest("dist"));
 });
 
-gulp.task("default", ["webserver", "watch-curly"]);
+gulp.task("default", ["webserver", "watch"]);
