@@ -11,7 +11,7 @@
                     id: config.id
                 });
                 this.config = config;
-                this.style(config.style); 
+                this.style(config.style);
                 this.style(config);
             }
 
@@ -40,7 +40,15 @@
 
                         if (this.currentView) {
                             if (from.duration > 0) {
-                                this.currentView.to(from.duration, { left: from.left, top: from.top, alpha: 0, onComplete: this.removeView, onCompleteScope: this, onCompleteParams: [this.currentView] });
+                                this.currentView.addEventListener(this, curly.Container.TRANSITION_COMPLETE, this.removeView, this.currentView);
+                                this.currentView.to({
+                                    duration: from.duration,
+                                    toVars: {
+                                        left: from.left,
+                                        top: from.top,
+                                        alpha: 0
+                                    }
+                                });
                             }
                             else {
                                 this.removeChild(this.currentView);
@@ -64,7 +72,16 @@
                         });
 
                         if (to.duration > 0) {
-                            this.currentView.to(to.duration, { left: to.left, top: to.top, alpha: 1, onComplete: (view) => view.style({ display: "block" }), onCompleteParams: [this.currentView] });
+                            this.currentView.addEventListener(this, curly.Container.TRANSITION_COMPLETE, this.transitionComplete, this.currentView);
+                            this.currentView.to({
+                                duration: to.duration,
+                                toVars:
+                                {
+                                    left: to.left,
+                                    top: to.top,
+                                    alpha: 1
+                                }
+                            });
                         }
                         else {
                             this.currentView.style({
@@ -84,7 +101,15 @@
                 }
             }
 
-            private removeView(view: Container) {
+            private transitionComplete(e: curly.Event) {
+                let view = <curly.Container>e.data;
+                view.style({ display: "block" });
+                view.removeEventListener(curly.Container.TRANSITION_COMPLETE, this.transitionComplete);
+            }
+
+            private removeView(e: curly.Event) {
+                let view = <curly.Container>e.data;
+                view.removeEventListener(curly.Container.TRANSITION_COMPLETE, this.transitionComplete);
                 this.removeChild(view);
             }
         }

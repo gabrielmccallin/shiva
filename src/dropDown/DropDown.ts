@@ -121,33 +121,39 @@ module curly {
             this.dispatchEvent(new curly.Event(DropDown.CHANGE, this, element.id));
 
             this.unorderedList.style({
-                opacity:"1"
+                opacity: "1"
             });
 
-            this.unorderedList.to(
-                this.dropConfig.durationContract,
-                {
-                    delay: 0.3,
-                    opacity: 0,
-                    onComplete: this.hideList,
-                    onCompleteScope: this
+            this.unorderedList.addEventListener(this, curly.Container.TRANSITION_COMPLETE, this.hideList);
+            this.unorderedList.to({
+                duration: this.dropConfig.durationContract,
+                delay: 0.3,
+                toVars: {
+                    opacity: "0"
                 }
-            )
+            });
+
         }
 
         itemOver(e: curly.Event) {
             let element = e.target;
-            element.to(this.dropConfig.durationIn, {
-                backgroundColor: this.dropConfig.backgroundColorHover,
-                color: this.dropConfig.colorHover
+            element.to({
+                duration: this.dropConfig.durationIn,
+                toVars: {
+                    backgroundColor: this.dropConfig.backgroundColorHover,
+                    color: this.dropConfig.colorHover
+                }
             });
         }
 
         itemOut(e: curly.Event) {
             let element = e.target;
-            element.to(this.dropConfig.durationOut, {
-                backgroundColor: this.dropConfig.backgroundColor,
-                color: this.dropConfig.color
+            element.to({
+                duration: this.dropConfig.durationOut,
+                toVars: {
+                    backgroundColor: this.dropConfig.backgroundColor,
+                    color: this.dropConfig.color
+                }
             });
         }
 
@@ -158,7 +164,13 @@ module curly {
                 top: "0px"
             });
 
-            this.unorderedList.to(this.dropConfig.durationExpand, { opacity: 1, top: this.button.height });
+            this.unorderedList.to({
+                duration: this.dropConfig.durationExpand,
+                toVars: {
+                    alpha: 1,
+                    y: this.button.height
+                }
+            });
             this.scopedEventHandler = (g: MouseEvent) => { this.closeDrop(g) };
 
             // ! Don't think this will work in IE8, need attachEvent or polyfill
@@ -174,19 +186,18 @@ module curly {
             setTimeout(() => {
                 this.button.addEventListener(this, "mousedown", this.buttonClicked);
             }, 10);
-
-            this.unorderedList.to(
-                this.dropConfig.durationContract,
+            this.unorderedList.addEventListener(this, curly.Container.TRANSITION_COMPLETE, this.hideList);
+            this.unorderedList.to({
+                duration: this.dropConfig.durationContract,
+                toVars:
                 {
-                    opacity: 0,
-                    onComplete: this.hideList,
-                    onCompleteScope: this
+                    opacity: "0",
                 }
-            );
-
+            });
         }
 
         private hideList() {
+            this.unorderedList.removeEventListener(curly.Container.TRANSITION_COMPLETE, this.hideList);
             this.unorderedList.style({
                 display: "none"
             });

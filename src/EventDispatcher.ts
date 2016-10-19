@@ -13,7 +13,6 @@ module curly {
         private _target: any;
         private _data: any;
         private _sourceEvent: any;
-        private _attributes: any;
 
         constructor(type: string, targetObj: any, data?: any, sourceEvent?: any) {
             this._type = type;
@@ -38,17 +37,14 @@ module curly {
             return this._data;
         }
 
+        set data(payload: any) {
+            this._data = payload;
+        }
+
         get sourceEvent(): any {
             return this._sourceEvent;
         }
 
-        set attributes(data:any){
-            this._attributes = data;
-        }
-
-        get attributes(): any {
-            return this._attributes;
-        }
     }
 
     export class EventDispatcher {
@@ -65,7 +61,7 @@ module curly {
             return exists;
         }
 
-        addEventListener(scope: any, typeStr: string, listenerFunc: Function, attributes?:any, useCapture = false, scopedEventListener: Function = undefined): void {
+        addEventListener(scope: any, typeStr: string, listenerFunc: Function, data?:any, useCapture = false, scopedEventListener: Function = undefined): void {
             if (this.hasEventListener(typeStr, listenerFunc)) { 
                 return;
             }
@@ -76,7 +72,7 @@ module curly {
                 listener: listenerFunc,
                 useCapture: useCapture,
                 scopedEventListener: scopedEventListener,
-                attributes: attributes
+                data: data
             });
         }
 
@@ -95,9 +91,11 @@ module curly {
         dispatchEvent(evt: Event) {
             for (var i = 0; i < this._listeners.length; i++) {
                 if (this._listeners[i].type === evt.type) {
-                    if(this._listeners[i].attributes){
-                        evt.attributes = this._listeners[i].attributes;
+                    console.log("any data", this._listeners[i]);
+                    if(this._listeners[i].data){
+                        evt.data = this._listeners[i].data;
                     }
+                    console.log("attached data", evt.data);
                     this._listeners[i].listener.call(this._listeners[i].scope, evt);
                 }
             }

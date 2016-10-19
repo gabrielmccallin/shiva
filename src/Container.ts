@@ -96,34 +96,62 @@ module curly {
             }
         }
 
-        to(duration: number, vars: Object) {
+        to(config: TransitionToConfig) {
             let transitionString = "";
-            for (let i in vars) {
+
+            for (let i in config.toVars) {
                 if (transitionString !== "") {
                     transitionString += ", ";
                 }
                 let hyphenCaseIndex = this.camelToHyphen(i);
-                
-                let payload = {};
-                payload[hyphenCaseIndex] = vars[i];
-
-                transitionString += hyphenCaseIndex + " " + duration + "s";
-
-                setTimeout(() => {
-                    this.style(payload);
-                }, 10);
+                transitionString += hyphenCaseIndex + " " + config.duration + "s";
             }
+
             this.style({
                 transition: transitionString
             });
+
+            if(config.ease){
+                this.style({
+                    transitionTimingFunction: config.ease.toString()
+                })
+            }
+
+            if (config.delay) {
+                config.delay = config.delay * 1000;
+            }
+            else {
+                config.delay = 10;
+            }
+
+            setTimeout(() => {
+                this.style(config.toVars);
+            }, config.delay);
+
             setTimeout(() => {
                 this.dispatchEvent(new Event("TRANSITION_COMPLETE", this));
-            }, duration * 1000);
+            }, (config.duration * 1000) + config.delay);
         }
 
-        fromTo(duration: number, fromVars: Object, toVars: Object) {
-            this.style(fromVars);
-            this.to(duration, toVars);
+        fromTo(config: TransitionFromToConfig) {
+            if (config.delay) {
+                config.delay = config.delay * 1000;
+            }
+            else {
+                config.delay = 10;
+            }
+
+            setTimeout(() => {
+                this.style(config.fromVars);
+                setTimeout(() => {
+                    this.to({
+                        duration: config.duration,
+                        ease: config.ease,
+                        toVars: config.toVars                        
+                    });
+                }, 10);
+            }, config.delay);
+
         }
 
         private camelToHyphen(camel): string {
@@ -153,7 +181,7 @@ module curly {
                 listenerFunc.apply(scope, [new curly.Event(typeStr, that, data, e)]);
             };
 
-            super.addEventListener(scope, typeStr, listenerFunc, useCapture, data, scopedEventListener);
+            super.addEventListener(scope, typeStr, listenerFunc, data, useCapture, scopedEventListener);
             // add to element 
             if (this._element.addEventListener) {
                 // Firefox, Google Chrome and Safari (and Opera and Internet Explorer from

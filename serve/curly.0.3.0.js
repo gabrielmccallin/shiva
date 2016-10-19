@@ -112,22 +112,15 @@ var curly;
             get: function () {
                 return this._data;
             },
+            set: function (payload) {
+                this._data = payload;
+            },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(Event.prototype, "sourceEvent", {
             get: function () {
                 return this._sourceEvent;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Event.prototype, "attributes", {
-            get: function () {
-                return this._attributes;
-            },
-            set: function (data) {
-                this._attributes = data;
             },
             enumerable: true,
             configurable: true
@@ -148,7 +141,7 @@ var curly;
             }
             return exists;
         };
-        EventDispatcher.prototype.addEventListener = function (scope, typeStr, listenerFunc, attributes, useCapture, scopedEventListener) {
+        EventDispatcher.prototype.addEventListener = function (scope, typeStr, listenerFunc, data, useCapture, scopedEventListener) {
             if (useCapture === void 0) { useCapture = false; }
             if (scopedEventListener === void 0) { scopedEventListener = undefined; }
             if (this.hasEventListener(typeStr, listenerFunc)) {
@@ -160,7 +153,7 @@ var curly;
                 listener: listenerFunc,
                 useCapture: useCapture,
                 scopedEventListener: scopedEventListener,
-                attributes: attributes
+                data: data
             });
         };
         EventDispatcher.prototype.removeEventListener = function (typeStr, listenerFunc) {
@@ -175,9 +168,11 @@ var curly;
         EventDispatcher.prototype.dispatchEvent = function (evt) {
             for (var i = 0; i < this._listeners.length; i++) {
                 if (this._listeners[i].type === evt.type) {
-                    if (this._listeners[i].attributes) {
-                        evt.attributes = this._listeners[i].attributes;
+                    console.log("any data", this._listeners[i]);
+                    if (this._listeners[i].data) {
+                        evt.data = this._listeners[i].data;
                     }
+                    console.log("attached data", evt.data);
                     this._listeners[i].listener.call(this._listeners[i].scope, evt);
                 }
             }
@@ -269,35 +264,55 @@ var curly;
                 this._element.removeChild(child.element);
             }
         };
-        Container.prototype.to = function (duration, vars) {
+        Container.prototype.to = function (config) {
             var _this = this;
             var transitionString = "";
-            var _loop_1 = function(i) {
+            for (var i in config.toVars) {
                 if (transitionString !== "") {
                     transitionString += ", ";
                 }
-                var hyphenCaseIndex = this_1.camelToHyphen(i);
-                var payload = {};
-                payload[hyphenCaseIndex] = vars[i];
-                transitionString += hyphenCaseIndex + " " + duration + "s";
-                setTimeout(function () {
-                    _this.style(payload);
-                }, 10);
-            };
-            var this_1 = this;
-            for (var i in vars) {
-                _loop_1(i);
+                var hyphenCaseIndex = this.camelToHyphen(i);
+                transitionString += hyphenCaseIndex + " " + config.duration + "s";
             }
             this.style({
                 transition: transitionString
             });
+            if (config.ease) {
+                this.style({
+                    transitionTimingFunction: config.ease.toString()
+                });
+            }
+            if (config.delay) {
+                config.delay = config.delay * 1000;
+            }
+            else {
+                config.delay = 10;
+            }
+            setTimeout(function () {
+                _this.style(config.toVars);
+            }, config.delay);
             setTimeout(function () {
                 _this.dispatchEvent(new curly.Event("TRANSITION_COMPLETE", _this));
-            }, duration * 1000);
+            }, (config.duration * 1000) + config.delay);
         };
-        Container.prototype.fromTo = function (duration, fromVars, toVars) {
-            this.style(fromVars);
-            this.to(duration, toVars);
+        Container.prototype.fromTo = function (config) {
+            var _this = this;
+            if (config.delay) {
+                config.delay = config.delay * 1000;
+            }
+            else {
+                config.delay = 10;
+            }
+            setTimeout(function () {
+                _this.style(config.fromVars);
+                setTimeout(function () {
+                    _this.to({
+                        duration: config.duration,
+                        ease: config.ease,
+                        toVars: config.toVars
+                    });
+                }, 10);
+            }, config.delay);
         };
         Container.prototype.camelToHyphen = function (camel) {
             return camel.replace(/[a-z][A-Z]/g, function (match, index) {
@@ -322,7 +337,7 @@ var curly;
                 // console.log("captured at add", e); 
                 listenerFunc.apply(scope, [new curly.Event(typeStr, that, data, e)]);
             };
-            _super.prototype.addEventListener.call(this, scope, typeStr, listenerFunc, useCapture, data, scopedEventListener);
+            _super.prototype.addEventListener.call(this, scope, typeStr, listenerFunc, data, useCapture, scopedEventListener);
             // add to element 
             if (this._element.addEventListener) {
                 // Firefox, Google Chrome and Safari (and Opera and Internet Explorer from
@@ -617,16 +632,21 @@ var curly;
             this.style(this.config);
         };
         Button.prototype.over = function () {
-            this.to(this.config.durationIn, {
-                backgroundColor: this.config.backgroundColorHover,
-                // backgroundColor: "#ff0000",
-                color: this.config.colorHover
+            this.to({
+                duration: this.config.durationIn,
+                vars: {
+                    backgroundColor: this.config.backgroundColorHover,
+                    color: this.config.colorHover
+                }
             });
         };
         Button.prototype.out = function () {
-            this.to(this.config.durationOut, {
-                backgroundColor: this.config.backgroundColor,
-                color: this.config.color
+            this.to({
+                duration: this.config.durationOut,
+                vars: {
+                    backgroundColor: this.config.backgroundColor,
+                    color: this.config.color
+                }
             });
         };
         Button.prototype.click = function (e) {
@@ -715,6 +735,20 @@ var curly;
         return Dimensions;
     }());
     curly.Dimensions = Dimensions;
+})(curly || (curly = {}));
+var curly;
+(function (curly) {
+    var Ease = (function () {
+        function Ease() {
+        }
+        Ease.Linear = "linear";
+        Ease.Ease = "ease";
+        Ease.EaseIn = "ease-in";
+        Ease.EaseOut = "ease-out";
+        Ease.EaseInOut = "ease-in-out";
+        return Ease;
+    }());
+    curly.Ease = Ease;
 })(curly || (curly = {}));
 var curly;
 (function (curly) {
@@ -1202,25 +1236,33 @@ var curly;
             this.unorderedList.style({
                 opacity: "1"
             });
-            this.unorderedList.to(this.dropConfig.durationContract, {
+            this.unorderedList.addEventListener(this, curly.Container.TRANSITION_COMPLETE, this.hideList);
+            this.unorderedList.to({
+                duration: this.dropConfig.durationContract,
                 delay: 0.3,
-                opacity: 0,
-                onComplete: this.hideList,
-                onCompleteScope: this
+                toVars: {
+                    opacity: "0"
+                }
             });
         };
         DropDown.prototype.itemOver = function (e) {
             var element = e.target;
-            element.to(this.dropConfig.durationIn, {
-                backgroundColor: this.dropConfig.backgroundColorHover,
-                color: this.dropConfig.colorHover
+            element.to({
+                duration: this.dropConfig.durationIn,
+                toVars: {
+                    backgroundColor: this.dropConfig.backgroundColorHover,
+                    color: this.dropConfig.colorHover
+                }
             });
         };
         DropDown.prototype.itemOut = function (e) {
             var element = e.target;
-            element.to(this.dropConfig.durationOut, {
-                backgroundColor: this.dropConfig.backgroundColor,
-                color: this.dropConfig.color
+            element.to({
+                duration: this.dropConfig.durationOut,
+                toVars: {
+                    backgroundColor: this.dropConfig.backgroundColor,
+                    color: this.dropConfig.color
+                }
             });
         };
         DropDown.prototype.buttonClicked = function (e) {
@@ -1230,7 +1272,13 @@ var curly;
                 opacity: "0",
                 top: "0px"
             });
-            this.unorderedList.to(this.dropConfig.durationExpand, { opacity: 1, top: this.button.height });
+            this.unorderedList.to({
+                duration: this.dropConfig.durationExpand,
+                toVars: {
+                    alpha: 1,
+                    y: this.button.height
+                }
+            });
             this.scopedEventHandler = function (g) { _this.closeDrop(g); };
             // ! Don't think this will work in IE8, need attachEvent or polyfill
             document.body.addEventListener("mousedown", this.scopedEventHandler, true);
@@ -1243,13 +1291,16 @@ var curly;
             setTimeout(function () {
                 _this.button.addEventListener(_this, "mousedown", _this.buttonClicked);
             }, 10);
-            this.unorderedList.to(this.dropConfig.durationContract, {
-                opacity: 0,
-                onComplete: this.hideList,
-                onCompleteScope: this
+            this.unorderedList.addEventListener(this, curly.Container.TRANSITION_COMPLETE, this.hideList);
+            this.unorderedList.to({
+                duration: this.dropConfig.durationContract,
+                toVars: {
+                    opacity: "0",
+                }
             });
         };
         DropDown.prototype.hideList = function () {
+            this.unorderedList.removeEventListener(curly.Container.TRANSITION_COMPLETE, this.hideList);
             this.unorderedList.style({
                 display: "none"
             });
@@ -1305,7 +1356,15 @@ var curly;
                         }
                         if (this.currentView) {
                             if (from.duration > 0) {
-                                this.currentView.to(from.duration, { left: from.left, top: from.top, alpha: 0, onComplete: this.removeView, onCompleteScope: this, onCompleteParams: [this.currentView] });
+                                this.currentView.addEventListener(this, curly.Container.TRANSITION_COMPLETE, this.removeView, this.currentView);
+                                this.currentView.to({
+                                    duration: from.duration,
+                                    toVars: {
+                                        left: from.left,
+                                        top: from.top,
+                                        alpha: 0
+                                    }
+                                });
                             }
                             else {
                                 this.removeChild(this.currentView);
@@ -1326,7 +1385,15 @@ var curly;
                             alpha: 0
                         });
                         if (to.duration > 0) {
-                            this.currentView.to(to.duration, { left: to.left, top: to.top, alpha: 1, onComplete: function (view) { return view.style({ display: "block" }); }, onCompleteParams: [this.currentView] });
+                            this.currentView.addEventListener(this, curly.Container.TRANSITION_COMPLETE, this.transitionComplete, this.currentView);
+                            this.currentView.to({
+                                duration: to.duration,
+                                toVars: {
+                                    left: to.left,
+                                    top: to.top,
+                                    alpha: 1
+                                }
+                            });
                         }
                         else {
                             this.currentView.style({
@@ -1345,7 +1412,14 @@ var curly;
                     console.log("view already loaded: ", state);
                 }
             };
-            StateMachine.prototype.removeView = function (view) {
+            StateMachine.prototype.transitionComplete = function (e) {
+                var view = e.data;
+                view.style({ display: "block" });
+                view.removeEventListener(curly.Container.TRANSITION_COMPLETE, this.transitionComplete);
+            };
+            StateMachine.prototype.removeView = function (e) {
+                var view = e.data;
+                view.removeEventListener(curly.Container.TRANSITION_COMPLETE, this.transitionComplete);
                 this.removeChild(view);
             };
             return StateMachine;

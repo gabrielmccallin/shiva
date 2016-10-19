@@ -98,17 +98,22 @@ module curly {
 
 
         over() {
-            this.to(this.config.durationIn, {
-                backgroundColor: this.config.backgroundColorHover,
-                // backgroundColor: "#ff0000",
-                color: this.config.colorHover
+            this.to({
+                duration: this.config.durationIn,
+                vars: {
+                    backgroundColor: this.config.backgroundColorHover,
+                    color: this.config.colorHover
+                }
             });
         }
 
         out() {
-            this.to(this.config.durationOut, {
-                backgroundColor: this.config.backgroundColor,
-                color: this.config.color
+            this.to({
+                duration: this.config.durationOut,
+                vars: {
+                    backgroundColor: this.config.backgroundColor,
+                    color: this.config.color
+                }
             });
         }
 
