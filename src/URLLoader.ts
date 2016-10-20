@@ -34,7 +34,6 @@ module curly {
                     this.http.setRequestHeader(header.value, header.variable);
                 });
             }
-
             //if (!cache) {
             //    this.http.setRequestHeader("If-Modified-Since", "Sat, 01 Jan 2005 00:00:00 GMT");
             //}
@@ -63,7 +62,7 @@ module curly {
         private handleResponse() {
             if (this.http.readyState === 4) {
                 if (this.http.status === 200) {
-                    let event: Event = new Event(URLLoader.COMPLETE, this, this.http.responseText);
+                    let event: URLLoaderEvent = new URLLoaderEvent(URLLoader.COMPLETE, this, this.http.responseText, this.http.status, this.http);
                     super.dispatchEvent(event);
 
                     this.http.onreadystatechange = undefined;
@@ -71,14 +70,13 @@ module curly {
                 else {
                     let error: string;
                     if (this.http.status === 0) {
-                        error = "Network Error 0x2ee2";
+                        error = "Network Error 0x2ee7";
                     }
                     else {
-                        error = this.http.status.toString();
+                        error = this.http.statusText;
                     }
-                    let event: Event = new Event(URLLoader.ERROR, this, this.http.status);
+                    let event: URLLoaderEvent = new URLLoaderEvent(URLLoader.ERROR, this, error, this.http.status, this.http);
                     super.dispatchEvent(event);
-
                 }
             }
         }

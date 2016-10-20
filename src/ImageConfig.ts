@@ -1,5 +1,6 @@
 ﻿module curly {
-    export interface ImageConfig extends ContainerConfig {
+    export interface ImageConfig {
         path?: any;
+        style?: StyleDeclaration;
     }
 }

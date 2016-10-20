@@ -91,11 +91,9 @@ module curly {
         dispatchEvent(evt: Event) {
             for (var i = 0; i < this._listeners.length; i++) {
                 if (this._listeners[i].type === evt.type) {
-                    console.log("any data", this._listeners[i]);
                     if(this._listeners[i].data){
                         evt.data = this._listeners[i].data;
                     }
-                    console.log("attached data", evt.data);
                     this._listeners[i].listener.call(this._listeners[i].scope, evt);
                 }
             }

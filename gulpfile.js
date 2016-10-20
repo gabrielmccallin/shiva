@@ -60,12 +60,12 @@ gulp.task("transpile", function () {
         .src(["src/**/*.ts"]) 
         // .pipe(sourcemaps.init())
         .pipe(ts({
-          "target": "ES5",
+          "target": "es5",
           "declaration": true,
           "noImplicitAny": false,
-          "removeComments": false,
+          "removeComments": true,
           "noLib": false,
-          "out": "curly."+ version + ".js",
+          "out": "curly.js",
           "noExternalResolve":true  
         }));
         
@@ -83,7 +83,7 @@ gulp.task("transpile", function () {
 });
 
 gulp.task("npm-publish", ["transpile"], function(){
-  gulp.src(["serve/curly."+ version + ".js", "node-module-converter.js"])
+  gulp.src(["serve/curly.js", "node-module-converter.js"])
     .pipe(concat("curly.js"))
     .pipe(gulp.dest("dist"));
 });

@@ -1,14 +1,25 @@
 ﻿module curly {
     export class Image extends Container {
 
-        constructor(config:ImageConfig) {
-            config.type = "img";
-            super(config);
-            
+        static COMPLETE: string = "load";
+        static ERROR: string = "error";
+
+        constructor(config: ImageConfig) {
+            let containerConfig;
+            if (config.style) {
+                containerConfig = <ContainerConfig>config.style;
+            }
+            else {
+                containerConfig = {};
+            }
+
+            containerConfig.type = "img";
+            super(containerConfig);
+
             this.load(config.path);
 
-            // this.addEventListener(this, "load", this.loaded);
-            // this.addEventListener(this, "error", this.error);
+            // this.addEventListener(this, Image.COMPLETE, this.loaded);
+            // this.addEventListener(this, Image.ERROR, this.error);
         }
 
         load(path: string) {
@@ -16,6 +27,7 @@
         }
 
         // private loaded(e: Event) {
+        //     super.dispatchEvent(new Event(Image.COMPLETE, this, e.data, e));
         //     console.log("picture loaded: ", e);
         // }
 

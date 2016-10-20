@@ -107,16 +107,6 @@ module curly {
                 transitionString += hyphenCaseIndex + " " + config.duration + "s";
             }
 
-            this.style({
-                transition: transitionString
-            });
-
-            if(config.ease){
-                this.style({
-                    transitionTimingFunction: config.ease.toString()
-                })
-            }
-
             if (config.delay) {
                 config.delay = config.delay * 1000;
             }
@@ -125,6 +115,17 @@ module curly {
             }
 
             setTimeout(() => {
+
+                this.style({
+                    transition: transitionString
+                });
+
+                if (config.ease) {
+                    this.style({
+                        transitionTimingFunction: config.ease.toString()
+                    })
+                }
+
                 this.style(config.toVars);
             }, config.delay);
 
@@ -138,6 +139,7 @@ module curly {
                 config.delay = config.delay * 1000;
             }
             else {
+                this.style(config.fromVars);
                 config.delay = 10;
             }
 
@@ -147,7 +149,7 @@ module curly {
                     this.to({
                         duration: config.duration,
                         ease: config.ease,
-                        toVars: config.toVars                        
+                        toVars: config.toVars
                     });
                 }, 10);
             }, config.delay);

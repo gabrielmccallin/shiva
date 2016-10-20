@@ -100,7 +100,7 @@ module curly {
         over() {
             this.to({
                 duration: this.config.durationIn,
-                vars: {
+                toVars: {
                     backgroundColor: this.config.backgroundColorHover,
                     color: this.config.colorHover
                 }
@@ -110,7 +110,7 @@ module curly {
         out() {
             this.to({
                 duration: this.config.durationOut,
-                vars: {
+                toVars: {
                     backgroundColor: this.config.backgroundColor,
                     color: this.config.color
                 }

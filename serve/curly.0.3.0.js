@@ -168,11 +168,9 @@ var curly;
         EventDispatcher.prototype.dispatchEvent = function (evt) {
             for (var i = 0; i < this._listeners.length; i++) {
                 if (this._listeners[i].type === evt.type) {
-                    console.log("any data", this._listeners[i]);
                     if (this._listeners[i].data) {
                         evt.data = this._listeners[i].data;
                     }
-                    console.log("attached data", evt.data);
                     this._listeners[i].listener.call(this._listeners[i].scope, evt);
                 }
             }
@@ -274,14 +272,6 @@ var curly;
                 var hyphenCaseIndex = this.camelToHyphen(i);
                 transitionString += hyphenCaseIndex + " " + config.duration + "s";
             }
-            this.style({
-                transition: transitionString
-            });
-            if (config.ease) {
-                this.style({
-                    transitionTimingFunction: config.ease.toString()
-                });
-            }
             if (config.delay) {
                 config.delay = config.delay * 1000;
             }
@@ -289,6 +279,14 @@ var curly;
                 config.delay = 10;
             }
             setTimeout(function () {
+                _this.style({
+                    transition: transitionString
+                });
+                if (config.ease) {
+                    _this.style({
+                        transitionTimingFunction: config.ease.toString()
+                    });
+                }
                 _this.style(config.toVars);
             }, config.delay);
             setTimeout(function () {
@@ -301,6 +299,7 @@ var curly;
                 config.delay = config.delay * 1000;
             }
             else {
+                this.style(config.fromVars);
                 config.delay = 10;
             }
             setTimeout(function () {
@@ -634,7 +633,7 @@ var curly;
         Button.prototype.over = function () {
             this.to({
                 duration: this.config.durationIn,
-                vars: {
+                toVars: {
                     backgroundColor: this.config.backgroundColorHover,
                     color: this.config.colorHover
                 }
@@ -643,7 +642,7 @@ var curly;
         Button.prototype.out = function () {
             this.to({
                 duration: this.config.durationOut,
-                vars: {
+                toVars: {
                     backgroundColor: this.config.backgroundColor,
                     color: this.config.color
                 }
@@ -755,15 +754,24 @@ var curly;
     var Image = (function (_super) {
         __extends(Image, _super);
         function Image(config) {
-            config.type = "img";
-            _super.call(this, config);
+            var containerConfig;
+            if (config.style) {
+                containerConfig = config.style;
+            }
+            else {
+                containerConfig = {};
+            }
+            containerConfig.type = "img";
+            _super.call(this, containerConfig);
             this.load(config.path);
-            // this.addEventListener(this, "load", this.loaded);
-            // this.addEventListener(this, "error", this.error);
+            // this.addEventListener(this, Image.COMPLETE, this.loaded);
+            // this.addEventListener(this, Image.ERROR, this.error);
         }
         Image.prototype.load = function (path) {
             this.element.setAttribute("src", path);
         };
+        Image.COMPLETE = "load";
+        Image.ERROR = "error";
         return Image;
     }(curly.Container));
     curly.Image = Image;
@@ -777,7 +785,6 @@ var curly;
             if (!this.observers[type]) {
                 this.observers[type] = [];
             }
-            console.log("ADDING OBSERVER: ", type);
             this.observers[type].push({ scope: scope, type: type, callback: callback });
         };
         Observer.removeEventListener = function (type, callback) {
@@ -785,7 +792,6 @@ var curly;
             for (var i = 0; i < this.observers[type].length; i++) {
                 if (this.observers[type].callback === callback) {
                     indexOfClosureToRemove = i;
-                    console.log("REMOVING OBSERVER: ", type);
                     break;
                 }
             }
@@ -1067,19 +1073,19 @@ var curly;
         URLLoader.prototype.handleResponse = function () {
             if (this.http.readyState === 4) {
                 if (this.http.status === 200) {
-                    var event_1 = new curly.Event(URLLoader.COMPLETE, this, this.http.responseText);
+                    var event_1 = new curly.URLLoaderEvent(URLLoader.COMPLETE, this, this.http.responseText, this.http.status, this.http);
                     _super.prototype.dispatchEvent.call(this, event_1);
                     this.http.onreadystatechange = undefined;
                 }
                 else {
                     var error = void 0;
                     if (this.http.status === 0) {
-                        error = "Network Error 0x2ee2";
+                        error = "Network Error 0x2ee7";
                     }
                     else {
-                        error = this.http.status.toString();
+                        error = this.http.statusText;
                     }
-                    var event_2 = new curly.Event(URLLoader.ERROR, this, this.http.status);
+                    var event_2 = new curly.URLLoaderEvent(URLLoader.ERROR, this, error, this.http.status, this.http);
                     _super.prototype.dispatchEvent.call(this, event_2);
                 }
             }
@@ -1093,6 +1099,41 @@ var curly;
         return URLLoader;
     }(curly.EventDispatcher));
     curly.URLLoader = URLLoader;
+})(curly || (curly = {}));
+var curly;
+(function (curly) {
+    var URLLoaderEvent = (function (_super) {
+        __extends(URLLoaderEvent, _super);
+        function URLLoaderEvent(type, targetObj, response, status, httpMetaData, data, sourceEvent) {
+            _super.call(this, type, targetObj, data, sourceEvent);
+            this._response = response;
+            this._status = status;
+            this._httpMetaData = httpMetaData;
+        }
+        Object.defineProperty(URLLoaderEvent.prototype, "response", {
+            get: function () {
+                return this._response;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(URLLoaderEvent.prototype, "status", {
+            get: function () {
+                return this._status;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(URLLoaderEvent.prototype, "httpMetaData", {
+            get: function () {
+                return this._httpMetaData;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return URLLoaderEvent;
+    }(curly.Event));
+    curly.URLLoaderEvent = URLLoaderEvent;
 })(curly || (curly = {}));
 var curly;
 (function (curly) {
@@ -1405,11 +1446,9 @@ var curly;
                         }
                     }
                     else {
-                        console.log("no view defined called: ", state);
                     }
                 }
                 else {
-                    console.log("view already loaded: ", state);
                 }
             };
             StateMachine.prototype.transitionComplete = function (e) {

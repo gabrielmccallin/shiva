@@ -93,11 +93,11 @@
                         }
                     }
                     else {
-                        console.log("no view defined called: ", state);
+                        // console.log("no view defined called: ", state);
                     }
                 }
                 else {
-                    console.log("view already loaded: ", state);
+                    // console.log("view already loaded: ", state);
                 }
             }
 

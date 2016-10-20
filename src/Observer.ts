@@ -6,7 +6,6 @@
             if (!this.observers[type]) {
                 this.observers[type] = [];
             }
-            console.log("ADDING OBSERVER: ", type);
             this.observers[type].push({ scope: scope, type: type, callback: callback });
         }
 
@@ -16,7 +15,6 @@
             for (var i = 0; i < this.observers[type].length; i++) {
                 if (this.observers[type].callback === callback) {
                     indexOfClosureToRemove = i;
-                    console.log("REMOVING OBSERVER: ", type);
                     break;
                 }
             }
