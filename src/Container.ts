@@ -142,9 +142,9 @@ module curly {
                 this.style(config.fromVars);
                 config.delay = 10;
             }
-
+ 
             setTimeout(() => {
-                this.style(config.fromVars);
+                this.style(config.fromVars); 
                 setTimeout(() => {
                     this.to({
                         duration: config.duration,

@@ -5,6 +5,7 @@ dist
 packages
 typings
 .tmp
+serve
 
 # System folders
 ###################

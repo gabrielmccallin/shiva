@@ -1,1 +1,1457 @@
-var __extends=this&&this.__extends||function(t,e){function n(){this.constructor=t}for(var i in e)e.hasOwnProperty(i)&&(t[i]=e[i]);t.prototype=null===e?Object.create(e):(n.prototype=e.prototype,new n)},curly;!function(t){var e=function(){function t(){}return t.style=function(t,e){var n;n=t.element?t.element:t;for(var i in e)if(e.hasOwnProperty(i)){var o=e[i];if("number"==typeof o&&o)switch(i){case"x":o=e[i].toString(),o+="px";break;case"y":o=e[i].toString(),o+="px";break;case"height":o=e[i].toString(),o+="px";break;case"width":o=e[i].toString(),o+="px";break;case"backgroundColor":o="rgb("+(e[i]>>16)+","+(e[i]>>8&255)+","+(255&e[i])+")";break;case"color":o="rgb("+(e[i]>>16)+","+(e[i]>>8&255)+","+(255&e[i])+")"}var r=i;switch(i){case"x":r="left";break;case"y":r="top";break;case"alpha":r="opacity"}n.style[r]=o}},t}();t.Properties=e}(curly||(curly={}));var curly;!function(t){var e=function(){function t(t,e,n,i){this._type=t,this._target=e,this._sourceEvent=i,this._data=n}return Object.defineProperty(t.prototype,"target",{get:function(){return this._target},enumerable:!0,configurable:!0}),Object.defineProperty(t.prototype,"type",{get:function(){return this._type},enumerable:!0,configurable:!0}),Object.defineProperty(t.prototype,"data",{get:function(){return this._data},set:function(t){this._data=t},enumerable:!0,configurable:!0}),Object.defineProperty(t.prototype,"sourceEvent",{get:function(){return this._sourceEvent},enumerable:!0,configurable:!0}),t}();t.Event=e;var n=function(){function t(){this._listeners=[]}return t.prototype.hasEventListener=function(t,e){for(var n=!1,i=0;i<this._listeners.length;i++)this._listeners[i].type===t&&this._listeners[i].listener===e&&(n=!0);return n},t.prototype.addEventListener=function(t,e,n,i,o,r){void 0===o&&(o=!1),void 0===r&&(r=void 0),this.hasEventListener(e,n)||this._listeners.push({scope:t,type:e,listener:n,useCapture:o,scopedEventListener:r,data:i})},t.prototype.removeEventListener=function(t,e){var n=this._listeners.filter(function(n){return n.type===t&&n.listener.toString()===e.toString()});return this._listeners=this._listeners.filter(function(n){return!(n.type===t&&n.listener.toString()===e.toString())}),n[0]},t.prototype.dispatchEvent=function(t){for(var e=0;e<this._listeners.length;e++)this._listeners[e].type===t.type&&(this._listeners[e].data&&(t.data=this._listeners[e].data),this._listeners[e].listener.call(this._listeners[e].scope,t))},t}();t.EventDispatcher=n}(curly||(curly={}));var curly;!function(t){var e=function(e){function n(t){e.call(this),t?(t.root?(this._element=document.createElement("div"),this._element.style.position="absolute",this._element.style.height="100%",this._element.style.width="100%",this._element.style.top="0px",this._element.style.left="0px",this._element.style.margin="0px",this._element.id="app",document.body.appendChild(this._element)):t.type?this._element=document.createElement(t.type):this._element=document.createElement("div"),t.id&&(this._element.id=t.id),t.text&&(this.innerHtml=t.text),this.style(t.style),this.style(t)):this._element=document.createElement("div")}return __extends(n,e),n.prototype.addToBody=function(){document.body.appendChild(this._element)},n.prototype.style=function(e){t.Properties.style(this._element,e)},n.prototype.className=function(){for(var t=this,e=[],n=0;n<arguments.length;n++)e[n-0]=arguments[n];e.map(function(e){t._element.className=e})},n.prototype.addChild=function(t){var e;t.element&&(e=t.element),this._element.appendChild(e)},n.prototype.removeChild=function(t){this._element===t.element.parentNode&&this._element.removeChild(t.element)},n.prototype.to=function(e){var n=this,i="";for(var o in e.toVars){""!==i&&(i+=", ");var r=this.camelToHyphen(o);i+=r+" "+e.duration+"s"}this.style({transition:i}),e.ease&&this.style({transitionTimingFunction:e.ease.toString()}),e.delay?e.delay=1e3*e.delay:e.delay=10,setTimeout(function(){n.style(e.toVars)},e.delay),setTimeout(function(){n.dispatchEvent(new t.Event("TRANSITION_COMPLETE",n))},1e3*e.duration+e.delay)},n.prototype.fromTo=function(t){var e=this;t.delay?t.delay=1e3*t.delay:t.delay=10,setTimeout(function(){e.style(t.fromVars),setTimeout(function(){e.to({duration:t.duration,ease:t.ease,toVars:t.toVars})},10)},t.delay)},n.prototype.camelToHyphen=function(t){return t.replace(/[a-z][A-Z]/g,function(t,e){var n=t.split("");n[2]=n[1],n[1]="-",n[2]=n[2].toLowerCase();var i="";return n.map(function(t){i+=t}),i})},n.prototype.addEventListener=function(n,i,o,r,s){void 0===s&&(s=!1);var a=this,l=function(e){o.apply(n,[new t.Event(i,a,r,e)])};e.prototype.addEventListener.call(this,n,i,o,r,s,l),this._element.addEventListener?this._element.addEventListener(i,l,s):this._element.attachEvent&&(this._element.attachEvent("on"+i,l),this._element.attachEvent("onpropertychange",function(t){t.eventType===i&&(t.cancelBubble=!0,t.returnValue=!1,t.data=t.customData,l(t))}))},n.prototype.removeEventListener=function(t,n){var i=e.prototype.removeEventListener.call(this,t,n);return this._element.removeEventListener?this._element.removeEventListener(t,i.scopedEventListener,i.useCapture):this._element.detachEvent&&this._element.detachEvent("on"+t,n),i},n.prototype.preventDefault=function(t){t.preventDefault?t.preventDefault():t.returnValue=!1},Object.defineProperty(n.prototype,"width",{get:function(){return this.shadow().width},set:function(e){t.Properties.style(this._element,{width:e})},enumerable:!0,configurable:!0}),Object.defineProperty(n.prototype,"height",{get:function(){return this.shadow().height},set:function(e){t.Properties.style(this._element,{height:e})},enumerable:!0,configurable:!0}),Object.defineProperty(n.prototype,"y",{get:function(){return this._element.offsetTop},set:function(e){t.Properties.style(this._element,{y:e})},enumerable:!0,configurable:!0}),Object.defineProperty(n.prototype,"x",{get:function(){return this._element.offsetLeft},set:function(e){t.Properties.style(this._element,{x:e})},enumerable:!0,configurable:!0}),Object.defineProperty(n.prototype,"alpha",{get:function(){return parseFloat(this._element.style.opacity)},set:function(e){t.Properties.style(this._element,{opacity:e.toString()})},enumerable:!0,configurable:!0}),n.prototype.hide=function(){t.Properties.style(this._element,{display:"none"})},n.prototype.show=function(){t.Properties.style(this._element,{display:"block"})},n.prototype.fillContainer=function(){t.Properties.style(this._element,{minWidth:"100%",minHeight:"100%",left:"50%",top:"50%",transform:"translate(-50%, -50%)",position:"relative"})},n.prototype.centreHorizontal=function(){t.Properties.style(this._element,{display:"block",marginLeft:"auto",marginRight:"auto",position:"relative"})},n.prototype.centreHorizontalText=function(){t.Properties.style(this._element,{textAlign:"center"})},n.prototype.shadow=function(){if(document.body.contains(this._element))return this.dimensionsPolyfill();var t=this._element.parentElement;document.body.appendChild(this._element);var e=this.dimensionsPolyfill();return document.body.removeChild(this._element),t?t.appendChild(this._element):document.body.removeChild(this._element),e},n.prototype.dimensionsPolyfill=function(){var e=this._element.getBoundingClientRect().height,n=this._element.getBoundingClientRect().width;n&&e||(n=this._element.scrollWidth,e=this._element.scrollHeight);var i=new t.Dimensions(n,e);return i},Object.defineProperty(n.prototype,"value",{get:function(){var t=this._element;return t.value},set:function(t){var e=this._element;e.value=t},enumerable:!0,configurable:!0}),Object.defineProperty(n.prototype,"id",{get:function(){return this._element.id},set:function(t){this._element.id=t},enumerable:!0,configurable:!0}),Object.defineProperty(n.prototype,"element",{get:function(){return this._element},enumerable:!0,configurable:!0}),Object.defineProperty(n.prototype,"innerHtml",{get:function(){return this._element.innerHTML},set:function(t){this._element.innerHTML=t},enumerable:!0,configurable:!0}),Object.defineProperty(n.prototype,"href",{get:function(){var t=this._element;return t.href},set:function(t){var e=this._element;e.href=t},enumerable:!0,configurable:!0}),n.TRANSITION_COMPLETE="TRANSITION_COMPLETE",n}(t.EventDispatcher);t.Container=e}(curly||(curly={}));var curly;!function(t){var e=function(t){function e(e){e.type="a",t.call(this,e);var n=this.element;n.href=e.href}return __extends(e,t),e}(t.Container);t.Anchor=e}(curly||(curly={}));var curly;!function(t){var e=function(e){function n(n){var i;i=n.href?"a":"button",n.type&&(i=n.type),e.call(this,{id:n.id,type:i,cursor:"pointer",display:"inline-block"}),this.href=n.href,this.enabled=!0,n.icon&&n.icon.code&&(this.icon=new t.Container({type:"span",text:n.icon.code})),this.update(n)}return __extends(n,e),n.prototype.update=function(e){this.config={};for(var n in t.Styles.button)this.config[n]=t.Styles.button[n];if(e&&e.style)for(var n in e.style)this.config[n]=e.style[n];for(var n in e)this.config[n]=e[n];if(e.style)for(var n in e.style.icon)this.config.icon[n]=e.style.icon[n];this.innerHtml=e.text,this.addEventListener(this,"mouseover",this.overWithEnable),this.addEventListener(this,"mouseout",this.outWithEnable),this.config.icon&&this.config.icon.code&&("left"===this.config.icon.align?this.icon.style({paddingRight:this.config.icon.padding}):this.icon.style({paddingLeft:this.config.icon.padding}),this.icon.style({fontFamily:this.config.icon.fontFamily,fontSize:this.config.icon.fontSize,"float":this.config.icon.align,pointerEvents:"none"}),this.addChild(this.icon)),this.style(this.config)},n.prototype.over=function(){this.to({duration:this.config.durationIn,toVars:{backgroundColor:this.config.backgroundColorHover,color:this.config.colorHover}})},n.prototype.out=function(){this.to({duration:this.config.durationOut,toVars:{backgroundColor:this.config.backgroundColor,color:this.config.color}})},n.prototype.click=function(e){if(this.enabled){var i=new t.Event(n.CLICK,this,e);this.dispatchEvent(i)}},n.prototype.disable=function(){this.enabled=!1,this.style({cursor:"default"})},n.prototype.select=function(){this.enabled=!1,this.style({cursor:"default"})},n.prototype.enable=function(){this.enabled=!0,this.style({cursor:"pointer"}),this.out()},Object.defineProperty(n.prototype,"data",{get:function(){return this.config.data},enumerable:!0,configurable:!0}),n.prototype.overWithEnable=function(t){this.enabled&&this.over()},n.prototype.outWithEnable=function(t){this.enabled&&this.out()},n.CLICK="click",n}(t.Container);t.Button=e}(curly||(curly={}));var curly;!function(t){var e=function(t){function e(e){t.call(this,{type:"input"});var n=this.element;n.type="checkbox",e&&(e.id&&(this.id=e.id),this.style(e.style),this.style(e),n.checked=e.checked)}return __extends(e,t),Object.defineProperty(e.prototype,"checked",{get:function(){var t=this.element;return t.checked},enumerable:!0,configurable:!0}),e.CLICK="click",e}(t.Container);t.CheckBox=e}(curly||(curly={}));var curly;!function(t){var e=function(){function t(t,e){this.width=t,this.height=e}return t}();t.Dimensions=e}(curly||(curly={}));var curly;!function(t){var e=function(){function t(){}return t.Linear="linear",t.Ease="ease",t.EaseIn="ease-in",t.EaseOut="ease-out",t.EaseInOut="ease-in-out",t}();t.Ease=e}(curly||(curly={}));var curly;!function(t){var e=function(t){function e(e){e.type="img",t.call(this,e),this.load(e.path)}return __extends(e,t),e.prototype.load=function(t){this.element.setAttribute("src",t)},e}(t.Container);t.Image=e}(curly||(curly={}));var curly;!function(t){var e=function(){function t(){}return t.addEventListener=function(t,e,n){this.observers[e]||(this.observers[e]=[]),this.observers[e].push({scope:t,type:e,callback:n})},t.removeEventListener=function(t,e){for(var n,i=0;i<this.observers[t].length;i++)if(this.observers[t].callback===e){n=i;break}this.observers[t].splice(n,1)},t.dispatchEvent=function(t){var e=t.type;if(this.observers[e])for(var n=0;n<this.observers[e].length;n++)this.observers[e][n].callback.call(this.observers[e][n].scope,t);else console.log("DISPATCH ERROR: NO OBSERVER REGISTERED")},t.observers={},t}();t.Observer=e}(curly||(curly={}));var curly;!function(t){var e=function(t){function e(e){t.call(this,{type:"input"});var n=this.element;n.type="radio",e&&(e.id&&(this.id=e.id),this.style(e.style),this.style(e),n.checked=e.checked)}return __extends(e,t),Object.defineProperty(e.prototype,"checked",{get:function(){var t=this.element;return t.checked},enumerable:!0,configurable:!0}),e.CLICK="click",e}(t.Container);t.RadioButton=e}(curly||(curly={}));var curly;!function(t){var e=function(){function t(){}return t.proportionalOutside=function(t,e,n,i){var o=t/e,r=n,s=n/o;return s<i&&(s=i,r=s*o),{height:s,width:r}},t.proportionalInside=function(t,e,n,i){var o=t/e,r=n,s=n*o;return s>i&&(s=i,r=s*o),{height:s,width:r}},t}();t.Resize=e}(curly||(curly={}));var curly;!function(t){var e=function(){function e(){}return e.layout=function(){t.Window.width>1600&&(document.body.style.fontSize="120%"),t.Window.width<=1600&&t.Window.width>1e3&&(document.body.style.fontSize="110%"),t.Window.width<=1e3&&t.Window.width>780&&(document.body.style.fontSize="100%"),t.Window.width<=780&&t.Window.width>400&&(document.body.style.fontSize="90%"),t.Window.width<=400&&(document.body.style.fontSize="80%")},e}();t.ResponsiveText=e}(curly||(curly={}));var curly;!function(t){var e=function(e){function n(n){var i=this;n.type="select",e.call(this,n);var o=this.element;n.name&&(o.name=n.name);var r=n.options;r.map(function(e){var n=new t.Container({text:e,type:"option"});i.addChild(n)})}return __extends(n,e),Object.defineProperty(n.prototype,"value",{get:function(){var t=this.element;return t.value},enumerable:!0,configurable:!0}),Object.defineProperty(n.prototype,"selectedIndex",{get:function(){var t=this.element;return t.selectedIndex},enumerable:!0,configurable:!0}),n.CHANGE="change",n}(t.Container);t.Select=e}(curly||(curly={}));var curly;!function(t){var e=function(){function t(){}return t.button={fontSize:"1.2em",fontFamily:"sans-serif",fontWeight:"300",fontColourOver:3355443,fontColourOut:16777215,letterSpacing:"0em",backgroundColor:"#f1f1f1",backgroundColorHover:"#dddddd",cornerRadius:"0.5em",durationOut:1,durationIn:0,padding:"0.5em",textAlign:"left",whiteSpace:"nowrap",msTouchAction:"manipulation",touchAction:"manipulation",cursor:"pointer",webkitUserSelect:"none",mozUserSelect:"none",msUserSelect:"none",userSelect:"none",backgroundImage:"none",border:"1px solid transparent",borderColor:"#dddddd",color:"#333333",colorHover:"#ffffff",text:"button"},t.caret={width:"0px",height:"0px",borderLeftWidth:"0.35rem",borderLeftStyle:"solid",borderLeftColor:"transparent",borderRightWidth:"0.35rem",borderRightStyle:"solid",borderRightColor:"transparent",borderTopWidth:"0.35rem",borderTopStyle:"solid",borderTopColor:"black",display:"inline-block",verticalAlign:"middle",marginLeft:"0.35rem"},t.drop={fontFamily:"sans-serif",fontSize:"1.2rem",backgroundColor:"#ffffff",backgroundColorHover:"#cccccc",colorHover:"#000000",color:"#000000",durationIn:0,durationOut:.5,listStyle:"none",zIndex:"1000",position:"absolute",marginTop:"0px",minWidth:"5rem",border:"1px solid rgba(0,0,0,.15)",webkitBoxShadow:"0 6px 12px rgba(0,0,0,.175)",boxShadow:"0px 6px 12px rgba(0,0,0,0.175)",fontWeight:"300",paddingLeft:"0px",durationExpand:"0.5",durationContract:"0.5"},t}();t.Styles=e}(curly||(curly={}));var curly;!function(t){var e=function(e){function n(){e.call(this)}return __extends(n,e),n.prototype.load=function(e,n,i,o,r){var s=this;this.http?this.http.abort():this.http=new XMLHttpRequest,n===t.URLLoader.GET&&(e+=this.concatParams(i)),this.http.open(n,e,!0),this.http.timeout=2e4,o&&o.map(function(t){s.http.setRequestHeader(t.value,t.variable)}),this.http.onreadystatechange=this.handleResponse.bind(this),this.http.send(i)},n.prototype.concatParams=function(t){var e="?";for(var n in t)t.hasOwnProperty(n)&&(e=e.concat(n,"=",encodeURI(t[n]),"&"));return e=e.slice(0,-1)},n.prototype.setRequestHeader=function(t){this.http.setRequestHeader(t.value,t.variable)},n.prototype.handleResponse=function(){if(4===this.http.readyState)if(200===this.http.status){var i=new t.Event(n.COMPLETE,this,this.http.responseText);e.prototype.dispatchEvent.call(this,i),this.http.onreadystatechange=void 0}else{var o=void 0;o=0===this.http.status?"Network Error 0x2ee2":this.http.status.toString();var r=new t.Event(n.ERROR,this,this.http.status);e.prototype.dispatchEvent.call(this,r)}},n.COMPLETE="COMPLETE",n.ERROR="ERROR",n.GET="GET",n.PUT="PUT",n.POST="POST",n.UPDATE="UPDATE",n}(t.EventDispatcher);t.URLLoader=e}(curly||(curly={}));var curly;!function(t){var e=function(){function t(){}return t.scrollY=function(){var t=document.body.scrollTop;return 0==t&&(t=window.pageYOffset?window.pageYOffset:document.body.parentElement?document.body.parentElement.scrollTop:0),t},t.scrollX=function(){var t=document.body.scrollLeft;return 0==t&&(t=window.pageXOffset?window.pageXOffset:document.body.parentElement?document.body.parentElement.scrollLeft:0),t},Object.defineProperty(t,"height",{get:function(){return window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight},enumerable:!0,configurable:!0}),Object.defineProperty(t,"width",{get:function(){return window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth},enumerable:!0,configurable:!0}),t}();t.Window=e}(curly||(curly={}));var curly;!function(t){var e=function(e){function n(n){var i=this,o="Button";n.text&&(o=n.text),n.text=void 0,n.position="relative",e.call(this,n),this.items=[],this.button=new t.Button({style:t.Styles.button,display:"inline-block",text:"button",type:"div",zIndex:"1001",position:"absolute"}),n.button&&(n.button.text=o,this.button.update(n.button)),this.addChild(this.button);var r=new t.Container({id:"drop-caret",style:t.Styles.caret,pointerEvents:"none"});n.caret&&r.style(n.caret),this.button.addChild(r),this.button.addEventListener(this,"mousedown",this.buttonClicked),this.unorderedList=new t.Container({type:"ul",id:this.id}),this.dropConfig={};for(var s in t.Styles.drop)this.dropConfig[s]=t.Styles.drop[s];for(var s in n.drop)this.dropConfig[s]=n.drop[s];this.unorderedList.style(this.dropConfig),this.addChild(this.unorderedList);var a=0;n.options.map(function(e){var n=new t.Container({id:a.toString(),type:"li"});i.unorderedList.addChild(n);var o=new t.Container({id:a.toString(),type:"a"});o.style({display:"list-item",position:"static",color:i.dropConfig.color,paddingLeft:"0.5em",paddingRight:"0px",paddingBottom:"0.5em",paddingTop:"0.5em",cursor:"pointer"}),i.items.push(n),o.innerHtml=e,o.addEventListener(i,"mouseover",i.itemOver),o.addEventListener(i,"mouseout",i.itemOut),o.addEventListener(i,"mousedown",i.itemClicked),n.addChild(o),a++}),this.unorderedList.style({display:"none"}),this.style(n)}return __extends(n,e),n.prototype.itemClicked=function(e){var i=e.target;this.dispatchEvent(new t.Event(n.CHANGE,this,i.id)),this.unorderedList.style({opacity:"1"}),this.unorderedList.addEventListener(this,t.Container.TRANSITION_COMPLETE,this.hideList),this.unorderedList.to({duration:this.dropConfig.durationContract,delay:.3,toVars:{opacity:"0"}})},n.prototype.itemOver=function(t){var e=t.target;e.to({duration:this.dropConfig.durationIn,toVars:{backgroundColor:this.dropConfig.backgroundColorHover,color:this.dropConfig.colorHover}})},n.prototype.itemOut=function(t){var e=t.target;e.to({duration:this.dropConfig.durationOut,toVars:{backgroundColor:this.dropConfig.backgroundColor,color:this.dropConfig.color}})},n.prototype.buttonClicked=function(t){var e=this;this.unorderedList.style({display:"block",opacity:"0",top:"0px"}),this.unorderedList.to({duration:this.dropConfig.durationExpand,toVars:{alpha:1,y:this.button.height}}),this.scopedEventHandler=function(t){e.closeDrop(t)},document.body.addEventListener("mousedown",this.scopedEventHandler,!0),this.button.removeEventListener("mousedown",this.buttonClicked)},n.prototype.closeDrop=function(e){var n=this;document.body.removeEventListener("mousedown",this.scopedEventHandler,!0),setTimeout(function(){n.button.addEventListener(n,"mousedown",n.buttonClicked)},10),this.unorderedList.addEventListener(this,t.Container.TRANSITION_COMPLETE,this.hideList),this.unorderedList.to({duration:this.dropConfig.durationContract,toVars:{opacity:"0"}})},n.prototype.hideList=function(){this.unorderedList.removeEventListener(t.Container.TRANSITION_COMPLETE,this.hideList),this.unorderedList.style({display:"none"})},n.prototype.disable=function(){this.button.disable(),this.button.removeEventListener(t.Button.CLICK,this.buttonClicked)},n.prototype.enable=function(){this.button.enable(),this.button.addEventListener(this,t.Button.CLICK,this.buttonClicked)},n.CHANGE="change",n}(t.Container);t.DropDown=e}(curly||(curly={}));var curly;!function(t){var e;!function(e){var n=function(e){function n(t){e.call(this,{id:t.id}),this.views={},this.currentState="",this.config=t,this.style(t.style),this.style(t)}return __extends(n,e),n.prototype.update=function(e){if(e!==this.currentState&&this.config.views[e]){this.currentState=e;var n={top:"0px",left:"0px",duration:0},i={top:"0px",left:"0px",duration:0};for(var o in this.config.to)n[o]=this.config.to[o];for(var o in this.config.from)i[o]=this.config.from[o];if(this.currentView&&(i.duration>0?(this.currentView.addEventListener(this,t.Container.TRANSITION_COMPLETE,this.removeView,this.currentView),this.currentView.to({duration:i.duration,toVars:{left:i.left,top:i.top,alpha:0}})):this.removeChild(this.currentView)),this.views[e]);else{var r=new this.config.views[e];this.views[e]=r}this.currentView=this.views[e],this.currentView.hydrate&&this.currentView.hydrate(),this.addChild(this.currentView),this.currentView.style({alpha:0}),n.duration>0?(this.currentView.addEventListener(this,t.Container.TRANSITION_COMPLETE,this.transitionComplete,this.currentView),this.currentView.to({duration:n.duration,toVars:{left:n.left,top:n.top,alpha:1}})):this.currentView.style({opacity:"1",display:"block",top:n.top,left:n.left})}},n.prototype.transitionComplete=function(e){var n=e.data;n.style({display:"block"}),n.removeEventListener(t.Container.TRANSITION_COMPLETE,this.transitionComplete)},n.prototype.removeView=function(e){var n=e.data;n.removeEventListener(t.Container.TRANSITION_COMPLETE,this.transitionComplete),this.removeChild(n)},n}(t.Container);e.StateMachine=n}(e=t.stateMachine||(t.stateMachine={}))}(curly||(curly={}));
+(function () {
+
+    var __extends = (this && this.__extends) || function (d, b) {
+        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+    var curly;
+    (function (curly) {
+        var Properties = (function () {
+            function Properties() {
+            }
+            Properties.style = function (object, vars) {
+                var element;
+                if (object.element) {
+                    element = object.element;
+                }
+                else {
+                    element = object;
+                }
+                for (var i in vars) {
+                    if (vars.hasOwnProperty(i)) {
+                        var value = vars[i];
+                        if (typeof (value) === "number") {
+                            if (value) {
+                                switch (i) {
+                                    case "x":
+                                        value = vars[i].toString();
+                                        value += "px";
+                                        break;
+                                    case "y":
+                                        value = vars[i].toString();
+                                        value += "px";
+                                        break;
+                                    case "height":
+                                        value = vars[i].toString();
+                                        value += "px";
+                                        break;
+                                    case "width":
+                                        value = vars[i].toString();
+                                        value += "px";
+                                        break;
+                                    case "backgroundColor":
+                                        // let red = vars[i] >> 16;
+                                        // let green = (vars[i] >> 8) & 255;
+                                        // let blue = vars[i] & 255;
+                                        value = "rgb(" + (vars[i] >> 16) + "," + ((vars[i] >> 8) & 255) + "," + (vars[i] & 255) + ")";
+                                        break;
+                                    case "color":
+                                        value = "rgb(" + (vars[i] >> 16) + "," + ((vars[i] >> 8) & 255) + "," + (vars[i] & 255) + ")";
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+                        var styleName = i;
+                        switch (i) {
+                            case "x":
+                                styleName = "left";
+                                break;
+                            case "y":
+                                styleName = "top";
+                                break;
+                            case "alpha":
+                                styleName = "opacity";
+                                break;
+                            default:
+                                break;
+                        }
+                        element.style[styleName] = value;
+                    }
+                }
+            };
+            return Properties;
+        } ());
+        curly.Properties = Properties;
+        /**
+         * EventDispatcher (TypeScript)
+         * - Simple extendable event dispatching class
+         *
+         * @version 0.1.5
+         * @author John Vrbanac
+         * @license MIT License
+         **/
+        var Event = (function () {
+            function Event(type, targetObj, data, sourceEvent) {
+                this._type = type;
+                this._target = targetObj;
+                this._sourceEvent = sourceEvent;
+                this._data = data;
+            }
+            Object.defineProperty(Event.prototype, "target", {
+                get: function () {
+                    return this._target;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Event.prototype, "type", {
+                // getTarget(): any {
+                //     return this._target;
+                // }
+                get: function () {
+                    return this._type;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Event.prototype, "data", {
+                get: function () {
+                    return this._data;
+                },
+                set: function (payload) {
+                    this._data = payload;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Event.prototype, "sourceEvent", {
+                get: function () {
+                    return this._sourceEvent;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            return Event;
+        } ());
+        curly.Event = Event;
+        var EventDispatcher = (function () {
+            function EventDispatcher() {
+                this._listeners = [];
+            }
+            EventDispatcher.prototype.hasEventListener = function (type, listener) {
+                var exists = false;
+                for (var i = 0; i < this._listeners.length; i++) {
+                    if (this._listeners[i].type === type && this._listeners[i].listener === listener) {
+                        exists = true;
+                    }
+                }
+                return exists;
+            };
+            EventDispatcher.prototype.addEventListener = function (scope, typeStr, listenerFunc, data, useCapture, scopedEventListener) {
+                if (useCapture === void 0) { useCapture = false; }
+                if (scopedEventListener === void 0) { scopedEventListener = undefined; }
+                if (this.hasEventListener(typeStr, listenerFunc)) {
+                    return;
+                }
+                this._listeners.push({
+                    scope: scope,
+                    type: typeStr,
+                    listener: listenerFunc,
+                    useCapture: useCapture,
+                    scopedEventListener: scopedEventListener,
+                    data: data
+                });
+            };
+            EventDispatcher.prototype.removeEventListener = function (typeStr, listenerFunc) {
+                var listener = this._listeners.filter(function (item) {
+                    return (item.type === typeStr && item.listener.toString() === listenerFunc.toString());
+                });
+                this._listeners = this._listeners.filter(function (item) {
+                    return (!(item.type === typeStr && item.listener.toString() === listenerFunc.toString()));
+                });
+                return listener[0];
+            };
+            EventDispatcher.prototype.dispatchEvent = function (evt) {
+                for (var i = 0; i < this._listeners.length; i++) {
+                    if (this._listeners[i].type === evt.type) {
+                        if (this._listeners[i].data) {
+                            evt.data = this._listeners[i].data;
+                        }
+                        this._listeners[i].listener.call(this._listeners[i].scope, evt);
+                    }
+                }
+            };
+            return EventDispatcher;
+        } ());
+        curly.EventDispatcher = EventDispatcher;
+        /// <reference path="properties.ts" />
+        /// <reference path="EventDispatcher.ts" />
+        /**
+         * curly.Container (TypeScript)
+         * - Container
+         *
+         * @version 0.1.5
+         * @author Gabriel McCallin
+         * @license MIT License
+         **/
+        var Container = (function (_super) {
+            __extends(Container, _super);
+            function Container(config) {
+                _super.call(this);
+                if (config) {
+                    if (config.root) {
+                        this._element = document.createElement("div");
+                        // recommended properties
+                        this._element.style.position = "absolute";
+                        this._element.style.height = "100%";
+                        this._element.style.width = "100%";
+                        this._element.style.top = "0px";
+                        this._element.style.left = "0px";
+                        this._element.style.margin = "0px";
+                        this._element.id = "app";
+                        document.body.appendChild(this._element);
+                    }
+                    else {
+                        if (config.type) {
+                            this._element = document.createElement(config.type);
+                        }
+                        else {
+                            this._element = document.createElement("div");
+                        }
+                    }
+                    if (config.id) {
+                        this._element.id = config.id;
+                    }
+                    if (config.text) {
+                        this.innerHtml = config.text;
+                    }
+                    this.style(config.style);
+                    this.style(config);
+                }
+                else {
+                    this._element = document.createElement("div");
+                }
+                // seen some issues with the default static
+                // this._element.style.position = "relative";
+            }
+            Container.prototype.addToBody = function () {
+                document.body.appendChild(this._element);
+            };
+            Container.prototype.style = function (vars) {
+                curly.Properties.style(this._element, vars);
+            };
+            Container.prototype.className = function () {
+                var _this = this;
+                var names = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    names[_i - 0] = arguments[_i];
+                }
+                names.map((function (name) {
+                    _this._element.className = name;
+                }));
+            };
+            Container.prototype.addChild = function (child) {
+                var childElement;
+                if (child.element) {
+                    childElement = child.element;
+                }
+                // else {
+                //     childElement = <HTMLElement>child;
+                // }
+                this._element.appendChild(childElement);
+            };
+            Container.prototype.removeChild = function (child) {
+                if (this._element === child.element.parentNode) {
+                    this._element.removeChild(child.element);
+                }
+            };
+            Container.prototype.to = function (config) {
+                var _this = this;
+                var transitionString = "";
+                for (var i in config.toVars) {
+                    if (transitionString !== "") {
+                        transitionString += ", ";
+                    }
+                    var hyphenCaseIndex = this.camelToHyphen(i);
+                    transitionString += hyphenCaseIndex + " " + config.duration + "s";
+                }
+                if (config.delay) {
+                    config.delay = config.delay * 1000;
+                }
+                else {
+                    config.delay = 10;
+                }
+                setTimeout(function () {
+                    _this.style({
+                        transition: transitionString
+                    });
+                    if (config.ease) {
+                        _this.style({
+                            transitionTimingFunction: config.ease.toString()
+                        });
+                    }
+                    _this.style(config.toVars);
+                }, config.delay);
+                setTimeout(function () {
+                    _this.dispatchEvent(new curly.Event("TRANSITION_COMPLETE", _this));
+                }, (config.duration * 1000) + config.delay);
+            };
+            Container.prototype.fromTo = function (config) {
+                var _this = this;
+                if (config.delay) {
+                    config.delay = config.delay * 1000;
+                }
+                else {
+                    this.style(config.fromVars);
+                    config.delay = 10;
+                }
+                setTimeout(function () {
+                    _this.style(config.fromVars);
+                    setTimeout(function () {
+                        _this.to({
+                            duration: config.duration,
+                            ease: config.ease,
+                            toVars: config.toVars
+                        });
+                    }, 10);
+                }, config.delay);
+            };
+            Container.prototype.camelToHyphen = function (camel) {
+                return camel.replace(/[a-z][A-Z]/g, function (match, index) {
+                    var matchArray = match.split("");
+                    matchArray[2] = matchArray[1];
+                    matchArray[1] = "-";
+                    matchArray[2] = matchArray[2].toLowerCase();
+                    var result = "";
+                    matchArray.map(function (char) {
+                        result += char;
+                    });
+                    return result;
+                });
+            };
+            // from(duration: number, vars: Object): TweenLite {
+            //     return TweenLite.from(this._element, duration, vars);
+            // } 
+            Container.prototype.addEventListener = function (scope, typeStr, listenerFunc, data, useCapture) {
+                if (useCapture === void 0) { useCapture = false; }
+                var that = this;
+                var scopedEventListener = function (e) {
+                    // console.log("captured at add", e); 
+                    listenerFunc.apply(scope, [new curly.Event(typeStr, that, data, e)]);
+                };
+                _super.prototype.addEventListener.call(this, scope, typeStr, listenerFunc, data, useCapture, scopedEventListener);
+                // add to element 
+                if (this._element.addEventListener) {
+                    // Firefox, Google Chrome and Safari (and Opera and Internet Explorer from
+                    // version 9). 
+                    this._element.addEventListener(typeStr, scopedEventListener, useCapture);
+                }
+                else if (this._element["attachEvent"]) {
+                    // Opera and Explorer (version < 9).
+                    this._element["attachEvent"]('on' + typeStr, scopedEventListener);
+                    this._element["attachEvent"]("onpropertychange", function (e) {
+                        if (e.eventType === typeStr) {
+                            e.cancelBubble = true;
+                            e.returnValue = false;
+                            e.data = e.customData;
+                            scopedEventListener(e);
+                        }
+                    });
+                }
+            };
+            Container.prototype.removeEventListener = function (typeStr, listenerFunc) {
+                var listener = _super.prototype.removeEventListener.call(this, typeStr, listenerFunc);
+                if (this._element.removeEventListener) {
+                    // Firefox, Google Chrome and Safari (and Opera and Internet Explorer from
+                    // version 9).
+                    this._element.removeEventListener(typeStr, listener.scopedEventListener, listener.useCapture);
+                }
+                else if (this._element["detachEvent"]) {
+                    // Opera and Explorer (version < 9).
+                    this._element["detachEvent"]('on' + typeStr, listenerFunc);
+                }
+                return listener;
+            };
+            Container.prototype.preventDefault = function (e) {
+                e.preventDefault ? e.preventDefault() : e.returnValue = false;
+            };
+            Object.defineProperty(Container.prototype, "width", {
+                get: function () {
+                    return this.shadow().width;
+                },
+                set: function (w) {
+                    curly.Properties.style(this._element, { width: w });
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Container.prototype, "height", {
+                get: function () {
+                    return this.shadow().height;
+                },
+                set: function (h) {
+                    curly.Properties.style(this._element, { height: h });
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Container.prototype, "y", {
+                get: function () {
+                    return this._element.offsetTop;
+                },
+                set: function (yPos) {
+                    curly.Properties.style(this._element, { y: yPos });
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Container.prototype, "x", {
+                get: function () {
+                    return this._element.offsetLeft;
+                },
+                set: function (xPos) {
+                    curly.Properties.style(this._element, { x: xPos });
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Container.prototype, "alpha", {
+                get: function () {
+                    return parseFloat(this._element.style.opacity);
+                },
+                set: function (value) {
+                    curly.Properties.style(this._element, { opacity: value.toString() });
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Container.prototype.hide = function () {
+                curly.Properties.style(this._element, { display: "none" });
+            };
+            Container.prototype.show = function () {
+                curly.Properties.style(this._element, { display: "block" });
+            };
+            Container.prototype.fillContainer = function () {
+                curly.Properties.style(this._element, {
+                    minWidth: "100%",
+                    minHeight: "100%",
+                    left: "50%",
+                    top: "50%",
+                    transform: "translate(-50%, -50%)",
+                    position: "relative"
+                });
+            };
+            Container.prototype.centreHorizontal = function () {
+                curly.Properties.style(this._element, {
+                    display: "block",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    position: "relative"
+                });
+            };
+            Container.prototype.centreHorizontalText = function () {
+                curly.Properties.style(this._element, {
+                    textAlign: "center"
+                });
+            };
+            Container.prototype.shadow = function () {
+                if (!document.body.contains(this._element)) {
+                    var parent_1 = this._element.parentElement;
+                    document.body.appendChild(this._element);
+                    var dimensions = this.dimensionsPolyfill();
+                    document.body.removeChild(this._element);
+                    if (parent_1) {
+                        parent_1.appendChild(this._element);
+                    }
+                    else {
+                        document.body.removeChild(this._element);
+                    }
+                    return dimensions;
+                }
+                else {
+                    return this.dimensionsPolyfill();
+                }
+            };
+            Container.prototype.dimensionsPolyfill = function () {
+                var height = this._element.getBoundingClientRect().height;
+                var width = this._element.getBoundingClientRect().width;
+                // width = this._element.scrollWidth;
+                // height = this._element.scrollHeight;
+                if (width && height) {
+                }
+                else {
+                    // fallback to scrollwidth and scrollheight
+                    width = this._element.scrollWidth;
+                    height = this._element.scrollHeight;
+                }
+                var dimensions = new curly.Dimensions(width, height);
+                return dimensions;
+            };
+            Object.defineProperty(Container.prototype, "value", {
+                get: function () {
+                    var inputElement = this._element;
+                    return inputElement.value;
+                },
+                set: function (_value) {
+                    var inputElement = this._element;
+                    inputElement.value = _value;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Container.prototype, "id", {
+                get: function () {
+                    return this._element.id;
+                },
+                set: function (identifier) {
+                    this._element.id = identifier;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Container.prototype, "element", {
+                get: function () {
+                    return this._element;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Container.prototype, "innerHtml", {
+                get: function () {
+                    return this._element.innerHTML;
+                },
+                set: function (html) {
+                    this._element.innerHTML = html;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Container.prototype, "href", {
+                get: function () {
+                    var element = this._element;
+                    return element.href;
+                },
+                set: function (link) {
+                    var element = this._element;
+                    element.href = link;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Container.TRANSITION_COMPLETE = "TRANSITION_COMPLETE";
+            return Container;
+        } (curly.EventDispatcher));
+        curly.Container = Container;
+        var Anchor = (function (_super) {
+            __extends(Anchor, _super);
+            function Anchor(config) {
+                config.type = "a";
+                _super.call(this, config);
+                var element = this.element;
+                element.href = config.href;
+            }
+            return Anchor;
+        } (curly.Container));
+        curly.Anchor = Anchor;
+        var Button = (function (_super) {
+            __extends(Button, _super);
+            function Button(config) {
+                var type;
+                if (config.href) {
+                    type = "a";
+                }
+                else {
+                    type = "button";
+                }
+                if (config.type) {
+                    type = config.type;
+                }
+                _super.call(this, {
+                    id: config.id,
+                    type: type,
+                    cursor: "pointer",
+                    display: "inline-block"
+                });
+                this.href = config.href;
+                this.enabled = true;
+                if (config.icon && config.icon.code) {
+                    this.icon = new curly.Container({
+                        type: "span",
+                        text: config.icon.code
+                    });
+                }
+                this.update(config);
+            }
+            Button.prototype.update = function (config) {
+                this.config = {};
+                for (var i in curly.Styles.button) {
+                    this.config[i] = curly.Styles.button[i];
+                }
+                if (config && config.style) {
+                    for (var i in config.style) {
+                        this.config[i] = config.style[i];
+                    }
+                }
+                for (var i in config) {
+                    this.config[i] = config[i];
+                }
+                if (config.style) {
+                    for (var i in config.style.icon) {
+                        this.config.icon[i] = config.style.icon[i];
+                    }
+                }
+                this.innerHtml = config.text;
+                this.addEventListener(this, "mouseover", this.overWithEnable);
+                this.addEventListener(this, "mouseout", this.outWithEnable);
+                if (this.config.icon && this.config.icon.code) {
+                    if (this.config.icon.align === "left") {
+                        this.icon.style({
+                            paddingRight: this.config.icon.padding,
+                        });
+                    }
+                    else {
+                        this.icon.style({
+                            paddingLeft: this.config.icon.padding
+                        });
+                    }
+                    this.icon.style({
+                        fontFamily: this.config.icon.fontFamily,
+                        fontSize: this.config.icon.fontSize,
+                        float: this.config.icon.align,
+                        pointerEvents: "none"
+                    });
+                    this.addChild(this.icon);
+                }
+                //anything else in the config
+                this.style(this.config);
+            };
+            Button.prototype.over = function () {
+                this.to({
+                    duration: this.config.durationIn,
+                    toVars: {
+                        backgroundColor: this.config.backgroundColorHover,
+                        color: this.config.colorHover
+                    }
+                });
+            };
+            Button.prototype.out = function () {
+                this.to({
+                    duration: this.config.durationOut,
+                    toVars: {
+                        backgroundColor: this.config.backgroundColor,
+                        color: this.config.color
+                    }
+                });
+            };
+            Button.prototype.click = function (e) {
+                if (this.enabled) {
+                    //this.out();
+                    var event = new curly.Event(Button.CLICK, this, e);
+                    this.dispatchEvent(event);
+                }
+            };
+            Button.prototype.disable = function () {
+                this.enabled = false;
+                this.style({ cursor: "default" });
+            };
+            Button.prototype.select = function () {
+                this.enabled = false;
+                this.style({ cursor: "default" });
+            };
+            Button.prototype.enable = function () {
+                this.enabled = true;
+                this.style({ cursor: "pointer" });
+                this.out();
+            };
+            Object.defineProperty(Button.prototype, "data", {
+                get: function () {
+                    return this.config.data;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Button.prototype.overWithEnable = function (e) {
+                if (this.enabled) {
+                    this.over();
+                }
+            };
+            Button.prototype.outWithEnable = function (e) {
+                if (this.enabled) {
+                    this.out();
+                }
+            };
+            Button.CLICK = "click";
+            return Button;
+        } (curly.Container));
+        curly.Button = Button;
+        var CheckBox = (function (_super) {
+            __extends(CheckBox, _super);
+            function CheckBox(config) {
+                _super.call(this, {
+                    type: "input"
+                });
+                var element = this.element;
+                element.type = "checkbox";
+                if (config) {
+                    if (config.id) {
+                        this.id = config.id;
+                    }
+                    this.style(config.style);
+                    //anything else in the config
+                    this.style(config);
+                    element.checked = config.checked;
+                }
+            }
+            Object.defineProperty(CheckBox.prototype, "checked", {
+                get: function () {
+                    var element = this.element;
+                    return element.checked;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            CheckBox.CLICK = "click";
+            return CheckBox;
+        } (curly.Container));
+        curly.CheckBox = CheckBox;
+        var Dimensions = (function () {
+            function Dimensions(width, height) {
+                this.width = width;
+                this.height = height;
+            }
+            return Dimensions;
+        } ());
+        curly.Dimensions = Dimensions;
+        var Ease = (function () {
+            function Ease() {
+            }
+            Ease.Linear = "linear";
+            Ease.Ease = "ease";
+            Ease.EaseIn = "ease-in";
+            Ease.EaseOut = "ease-out";
+            Ease.EaseInOut = "ease-in-out";
+            return Ease;
+        } ());
+        curly.Ease = Ease;
+        var Image = (function (_super) {
+            __extends(Image, _super);
+            function Image(config) {
+                var containerConfig;
+                if (config.style) {
+                    containerConfig = config.style;
+                }
+                else {
+                    containerConfig = {};
+                }
+                containerConfig.type = "img";
+                _super.call(this, containerConfig);
+                this.load(config.path);
+                // this.addEventListener(this, Image.COMPLETE, this.loaded);
+                // this.addEventListener(this, Image.ERROR, this.error);
+            }
+            Image.prototype.load = function (path) {
+                this.element.setAttribute("src", path);
+            };
+            Image.COMPLETE = "load";
+            Image.ERROR = "error";
+            return Image;
+        } (curly.Container));
+        curly.Image = Image;
+        var Observer = (function () {
+            function Observer() {
+            }
+            Observer.addEventListener = function (scope, type, callback) {
+                if (!this.observers[type]) {
+                    this.observers[type] = [];
+                }
+                this.observers[type].push({ scope: scope, type: type, callback: callback });
+            };
+            Observer.removeEventListener = function (type, callback) {
+                var indexOfClosureToRemove;
+                for (var i = 0; i < this.observers[type].length; i++) {
+                    if (this.observers[type].callback === callback) {
+                        indexOfClosureToRemove = i;
+                        break;
+                    }
+                }
+                this.observers[type].splice(indexOfClosureToRemove, 1);
+            };
+            Observer.dispatchEvent = function (evt) {
+                var type = evt.type;
+                if (this.observers[type]) {
+                    for (var i = 0; i < this.observers[type].length; i++) {
+                        this.observers[type][i].callback.call(this.observers[type][i].scope, evt);
+                    }
+                }
+                else {
+                    console.log("DISPATCH ERROR: NO OBSERVER REGISTERED");
+                }
+            };
+            Observer.observers = {};
+            return Observer;
+        } ());
+        curly.Observer = Observer;
+        var RadioButton = (function (_super) {
+            __extends(RadioButton, _super);
+            function RadioButton(config) {
+                _super.call(this, {
+                    type: "input"
+                });
+                var element = this.element;
+                element.type = "radio";
+                if (config) {
+                    if (config.id) {
+                        this.id = config.id;
+                    }
+                    this.style(config.style);
+                    //anything else in the config
+                    this.style(config);
+                    element.checked = config.checked;
+                }
+            }
+            Object.defineProperty(RadioButton.prototype, "checked", {
+                get: function () {
+                    var element = this.element;
+                    return element.checked;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            RadioButton.CLICK = "click";
+            return RadioButton;
+        } (curly.Container));
+        curly.RadioButton = RadioButton;
+        var Resize = (function () {
+            function Resize() {
+            }
+            Resize.proportionalOutside = function (objectWidth, objectHeight, areaWidth, areaHeight) {
+                var ratio = objectWidth / objectHeight;
+                var targetWidth = areaWidth;
+                var targetHeight = areaWidth / ratio;
+                //
+                if (targetHeight < areaHeight) {
+                    targetHeight = areaHeight;
+                    targetWidth = targetHeight * ratio;
+                }
+                return { height: targetHeight, width: targetWidth };
+            };
+            Resize.proportionalInside = function (objectWidth, objectHeight, areaWidth, areaHeight) {
+                var ratio = objectWidth / objectHeight;
+                var targetWidth = areaWidth;
+                var targetHeight = areaWidth * ratio;
+                if (targetHeight > areaHeight) {
+                    targetHeight = areaHeight;
+                    targetWidth = targetHeight * ratio;
+                }
+                return { height: targetHeight, width: targetWidth };
+            };
+            return Resize;
+        } ());
+        curly.Resize = Resize;
+        var ResponsiveText = (function () {
+            function ResponsiveText() {
+            }
+            ResponsiveText.layout = function () {
+                if (curly.Window.width > 1600) {
+                    document.body.style.fontSize = "120%";
+                }
+                if (curly.Window.width <= 1600 && curly.Window.width > 1000) {
+                    document.body.style.fontSize = "110%";
+                }
+                if (curly.Window.width <= 1000 && curly.Window.width > 780) {
+                    document.body.style.fontSize = "100%";
+                }
+                if (curly.Window.width <= 780 && curly.Window.width > 400) {
+                    document.body.style.fontSize = "90%";
+                }
+                if (curly.Window.width <= 400) {
+                    document.body.style.fontSize = "80%";
+                }
+            };
+            return ResponsiveText;
+        } ());
+        curly.ResponsiveText = ResponsiveText;
+        var Select = (function (_super) {
+            __extends(Select, _super);
+            function Select(config) {
+                var _this = this;
+                config.type = "select";
+                _super.call(this, config);
+                var element = this.element;
+                if (config.name) {
+                    element.name = config.name;
+                }
+                var options = config.options;
+                options.map(function (option) {
+                    var item = new curly.Container({
+                        text: option,
+                        type: "option"
+                    });
+                    _this.addChild(item);
+                });
+            }
+            Object.defineProperty(Select.prototype, "value", {
+                get: function () {
+                    var element = this.element;
+                    return element.value;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Select.prototype, "selectedIndex", {
+                get: function () {
+                    var element = this.element;
+                    return element.selectedIndex;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Select.CHANGE = "change";
+            return Select;
+        } (curly.Container));
+        curly.Select = Select;
+        var Styles = (function () {
+            function Styles() {
+            }
+            Styles.button = {
+                fontSize: "1.2em",
+                fontFamily: "sans-serif",
+                fontWeight: "300",
+                fontColourOver: 0x333333,
+                fontColourOut: 0xffffff,
+                letterSpacing: "0em",
+                backgroundColor: "#f1f1f1",
+                backgroundColorHover: "#dddddd",
+                cornerRadius: "0.5em",
+                durationOut: 1,
+                durationIn: 0,
+                padding: "0.5em",
+                textAlign: "left",
+                whiteSpace: "nowrap",
+                msTouchAction: "manipulation",
+                touchAction: "manipulation",
+                cursor: "pointer",
+                webkitUserSelect: "none",
+                mozUserSelect: "none",
+                msUserSelect: "none",
+                userSelect: "none",
+                backgroundImage: "none",
+                border: "1px solid transparent",
+                borderColor: "#dddddd",
+                color: "#333333",
+                colorHover: "#ffffff",
+                text: "button"
+            };
+            Styles.caret = {
+                width: "0px",
+                height: "0px",
+                borderLeftWidth: "0.35rem",
+                borderLeftStyle: "solid",
+                borderLeftColor: "transparent",
+                borderRightWidth: "0.35rem",
+                borderRightStyle: "solid",
+                borderRightColor: "transparent",
+                borderTopWidth: "0.35rem",
+                borderTopStyle: "solid",
+                borderTopColor: "black",
+                display: "inline-block",
+                verticalAlign: "middle",
+                marginLeft: "0.35rem"
+            };
+            Styles.drop = {
+                fontFamily: "sans-serif",
+                fontSize: "1.2rem",
+                backgroundColor: "#ffffff",
+                backgroundColorHover: "#cccccc",
+                colorHover: "#000000",
+                color: "#000000",
+                durationIn: 0,
+                durationOut: 0.5,
+                listStyle: "none",
+                zIndex: "1000",
+                position: "absolute",
+                // float: "left",
+                //!important to remove default margin on a ul
+                marginTop: "0px",
+                minWidth: "5rem",
+                border: "1px solid rgba(0,0,0,.15)",
+                webkitBoxShadow: "0 6px 12px rgba(0,0,0,.175)",
+                boxShadow: "0px 6px 12px rgba(0,0,0,0.175)",
+                fontWeight: "300",
+                paddingLeft: "0px",
+                durationExpand: "0.5",
+                durationContract: "0.5"
+            };
+            return Styles;
+        } ());
+        curly.Styles = Styles;
+        var URLLoader = (function (_super) {
+            __extends(URLLoader, _super);
+            function URLLoader() {
+                _super.call(this);
+            }
+            URLLoader.prototype.load = function (url, method, params, headers, cache) {
+                var _this = this;
+                if (this.http) {
+                    this.http.abort();
+                }
+                else {
+                    this.http = new XMLHttpRequest();
+                }
+                if (method === curly.URLLoader.GET) {
+                    url = url + this.concatParams(params);
+                }
+                this.http.open(method, url, true);
+                this.http.timeout = 20000;
+                //this.http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');  
+                if (headers) {
+                    headers.map(function (header) {
+                        _this.http.setRequestHeader(header.value, header.variable);
+                    });
+                }
+                //if (!cache) {
+                //    this.http.setRequestHeader("If-Modified-Since", "Sat, 01 Jan 2005 00:00:00 GMT");
+                //}
+                this.http.onreadystatechange = this.handleResponse.bind(this);
+                this.http.send(params);
+            };
+            URLLoader.prototype.concatParams = function (params) {
+                var queryString = "?";
+                for (var i in params) {
+                    if (params.hasOwnProperty(i)) {
+                        queryString = queryString.concat(i, "=", encodeURI(params[i]), "&");
+                    }
+                }
+                queryString = queryString.slice(0, -1);
+                return queryString;
+            };
+            URLLoader.prototype.setRequestHeader = function (header) {
+                this.http.setRequestHeader(header.value, header.variable);
+            };
+            URLLoader.prototype.handleResponse = function () {
+                if (this.http.readyState === 4) {
+                    if (this.http.status === 200) {
+                        var event_1 = new curly.URLLoaderEvent(URLLoader.COMPLETE, this, this.http.responseText, this.http.status, this.http);
+                        _super.prototype.dispatchEvent.call(this, event_1);
+                        this.http.onreadystatechange = undefined;
+                    }
+                    else {
+                        var error = void 0;
+                        if (this.http.status === 0) {
+                            error = "Network Error 0x2ee7";
+                        }
+                        else {
+                            error = this.http.statusText;
+                        }
+                        var event_2 = new curly.URLLoaderEvent(URLLoader.ERROR, this, error, this.http.status, this.http);
+                        _super.prototype.dispatchEvent.call(this, event_2);
+                    }
+                }
+            };
+            URLLoader.COMPLETE = "COMPLETE";
+            URLLoader.ERROR = "ERROR";
+            URLLoader.GET = "GET";
+            URLLoader.PUT = "PUT";
+            URLLoader.POST = "POST";
+            URLLoader.UPDATE = "UPDATE";
+            return URLLoader;
+        } (curly.EventDispatcher));
+        curly.URLLoader = URLLoader;
+        var URLLoaderEvent = (function (_super) {
+            __extends(URLLoaderEvent, _super);
+            function URLLoaderEvent(type, targetObj, response, status, httpMetaData, data, sourceEvent) {
+                _super.call(this, type, targetObj, data, sourceEvent);
+                this._response = response;
+                this._status = status;
+                this._httpMetaData = httpMetaData;
+            }
+            Object.defineProperty(URLLoaderEvent.prototype, "response", {
+                get: function () {
+                    return this._response;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(URLLoaderEvent.prototype, "status", {
+                get: function () {
+                    return this._status;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(URLLoaderEvent.prototype, "httpMetaData", {
+                get: function () {
+                    return this._httpMetaData;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            return URLLoaderEvent;
+        } (curly.Event));
+        curly.URLLoaderEvent = URLLoaderEvent;
+        var Window = (function () {
+            function Window() {
+            }
+            Window.scrollY = function () {
+                var scrollTop = document.body.scrollTop;
+                if (scrollTop == 0) {
+                    if (window.pageYOffset) {
+                        scrollTop = window.pageYOffset;
+                    }
+                    else {
+                        scrollTop = (document.body.parentElement) ? document.body.parentElement.scrollTop : 0;
+                    }
+                }
+                return scrollTop;
+            };
+            Window.scrollX = function () {
+                var scrollLeft = document.body.scrollLeft;
+                if (scrollLeft == 0) {
+                    if (window.pageXOffset) {
+                        scrollLeft = window.pageXOffset;
+                    }
+                    else {
+                        scrollLeft = (document.body.parentElement) ? document.body.parentElement.scrollLeft : 0;
+                    }
+                }
+                return scrollLeft;
+            };
+            Object.defineProperty(Window, "height", {
+                get: function () {
+                    return window.innerHeight
+                        || document.documentElement.clientHeight
+                        || document.body.clientHeight;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Window, "width", {
+                get: function () {
+                    return window.innerWidth
+                        || document.documentElement.clientWidth
+                        || document.body.clientWidth;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            return Window;
+        } ());
+        curly.Window = Window;
+        var DropDown = (function (_super) {
+            __extends(DropDown, _super);
+            function DropDown(config) {
+                var _this = this;
+                var buttonText = "Button";
+                if (config.text) {
+                    buttonText = config.text;
+                }
+                config.text = undefined;
+                config.position = "relative";
+                _super.call(this, config);
+                this.items = [];
+                this.button = new curly.Button({
+                    style: curly.Styles.button,
+                    display: "inline-block",
+                    text: "button",
+                    type: "div",
+                    zIndex: "1001",
+                    position: "absolute"
+                });
+                if (config.button) {
+                    config.button.text = buttonText;
+                    this.button.update(config.button);
+                }
+                this.addChild(this.button);
+                var caret = new curly.Container({
+                    id: "drop-caret",
+                    style: curly.Styles.caret,
+                    pointerEvents: "none"
+                });
+                if (config.caret) {
+                    caret.style(config.caret);
+                }
+                this.button.addChild(caret);
+                this.button.addEventListener(this, "mousedown", this.buttonClicked);
+                this.unorderedList = new curly.Container({
+                    type: "ul",
+                    id: this.id
+                });
+                this.dropConfig = {};
+                for (var i in curly.Styles.drop) {
+                    this.dropConfig[i] = curly.Styles.drop[i];
+                }
+                for (var i in config.drop) {
+                    this.dropConfig[i] = config.drop[i];
+                }
+                this.unorderedList.style(this.dropConfig);
+                this.addChild(this.unorderedList);
+                var count = 0;
+                config.options.map(function (option) {
+                    var item = new curly.Container({
+                        id: count.toString(),
+                        type: "li"
+                    });
+                    _this.unorderedList.addChild(item);
+                    var anchor = new curly.Container({
+                        id: count.toString(),
+                        type: "a"
+                    });
+                    anchor.style({
+                        display: "list-item",
+                        position: "static",
+                        color: _this.dropConfig.color,
+                        paddingLeft: "0.5em",
+                        paddingRight: "0px",
+                        paddingBottom: "0.5em",
+                        paddingTop: "0.5em",
+                        cursor: "pointer"
+                    });
+                    _this.items.push(item);
+                    anchor.innerHtml = option;
+                    anchor.addEventListener(_this, "mouseover", _this.itemOver);
+                    anchor.addEventListener(_this, "mouseout", _this.itemOut);
+                    anchor.addEventListener(_this, "mousedown", _this.itemClicked);
+                    item.addChild(anchor);
+                    count++;
+                });
+                this.unorderedList.style({
+                    display: "none"
+                });
+                this.style(config);
+            }
+            DropDown.prototype.itemClicked = function (e) {
+                var element = e.target;
+                this.dispatchEvent(new curly.Event(DropDown.CHANGE, this, element.id));
+                this.unorderedList.style({
+                    opacity: "1"
+                });
+                this.unorderedList.addEventListener(this, curly.Container.TRANSITION_COMPLETE, this.hideList);
+                this.unorderedList.to({
+                    duration: this.dropConfig.durationContract,
+                    delay: 0.3,
+                    toVars: {
+                        opacity: "0"
+                    }
+                });
+            };
+            DropDown.prototype.itemOver = function (e) {
+                var element = e.target;
+                element.to({
+                    duration: this.dropConfig.durationIn,
+                    toVars: {
+                        backgroundColor: this.dropConfig.backgroundColorHover,
+                        color: this.dropConfig.colorHover
+                    }
+                });
+            };
+            DropDown.prototype.itemOut = function (e) {
+                var element = e.target;
+                element.to({
+                    duration: this.dropConfig.durationOut,
+                    toVars: {
+                        backgroundColor: this.dropConfig.backgroundColor,
+                        color: this.dropConfig.color
+                    }
+                });
+            };
+            DropDown.prototype.buttonClicked = function (e) {
+                var _this = this;
+                this.unorderedList.style({
+                    display: "block",
+                    opacity: "0",
+                    top: "0px"
+                });
+                this.unorderedList.to({
+                    duration: this.dropConfig.durationExpand,
+                    toVars: {
+                        alpha: 1,
+                        y: this.button.height
+                    }
+                });
+                this.scopedEventHandler = function (g) { _this.closeDrop(g); };
+                // ! Don't think this will work in IE8, need attachEvent or polyfill
+                document.body.addEventListener("mousedown", this.scopedEventHandler, true);
+                this.button.removeEventListener("mousedown", this.buttonClicked);
+            };
+            DropDown.prototype.closeDrop = function (e) {
+                var _this = this;
+                // ! Don't think this will work in IE8, need attachEvent or polyfill
+                document.body.removeEventListener("mousedown", this.scopedEventHandler, true);
+                setTimeout(function () {
+                    _this.button.addEventListener(_this, "mousedown", _this.buttonClicked);
+                }, 10);
+                this.unorderedList.addEventListener(this, curly.Container.TRANSITION_COMPLETE, this.hideList);
+                this.unorderedList.to({
+                    duration: this.dropConfig.durationContract,
+                    toVars: {
+                        opacity: "0",
+                    }
+                });
+            };
+            DropDown.prototype.hideList = function () {
+                this.unorderedList.removeEventListener(curly.Container.TRANSITION_COMPLETE, this.hideList);
+                this.unorderedList.style({
+                    display: "none"
+                });
+            };
+            DropDown.prototype.disable = function () {
+                this.button.disable();
+                this.button.removeEventListener(curly.Button.CLICK, this.buttonClicked);
+            };
+            DropDown.prototype.enable = function () {
+                this.button.enable();
+                this.button.addEventListener(this, curly.Button.CLICK, this.buttonClicked);
+            };
+            DropDown.CHANGE = "change";
+            return DropDown;
+        } (curly.Container));
+        curly.DropDown = DropDown;
+        var stateMachine;
+        (function (stateMachine) {
+            var StateMachine = (function (_super) {
+                __extends(StateMachine, _super);
+                function StateMachine(config) {
+                    _super.call(this, {
+                        id: config.id
+                    });
+                    this.views = {};
+                    this.currentState = "";
+                    this.config = config;
+                    this.style(config.style);
+                    this.style(config);
+                }
+                StateMachine.prototype.update = function (state) {
+                    if (state !== this.currentState) {
+                        if (this.config.views[state]) {
+                            this.currentState = state;
+                            var to = {
+                                top: "0px",
+                                left: "0px",
+                                duration: 0
+                            };
+                            var from = {
+                                top: "0px",
+                                left: "0px",
+                                duration: 0
+                            };
+                            for (var i in this.config.to) {
+                                to[i] = this.config.to[i];
+                            }
+                            for (var i in this.config.from) {
+                                from[i] = this.config.from[i];
+                            }
+                            if (this.currentView) {
+                                if (from.duration > 0) {
+                                    this.currentView.addEventListener(this, curly.Container.TRANSITION_COMPLETE, this.removeView, this.currentView);
+                                    this.currentView.to({
+                                        duration: from.duration,
+                                        toVars: {
+                                            left: from.left,
+                                            top: from.top,
+                                            alpha: 0
+                                        }
+                                    });
+                                }
+                                else {
+                                    this.removeChild(this.currentView);
+                                }
+                            }
+                            if (this.views[state]) {
+                            }
+                            else {
+                                var view = new this.config.views[state]();
+                                this.views[state] = view;
+                            }
+                            this.currentView = this.views[state];
+                            if (this.currentView.hydrate) {
+                                this.currentView.hydrate();
+                            }
+                            this.addChild(this.currentView);
+                            this.currentView.style({
+                                alpha: 0
+                            });
+                            if (to.duration > 0) {
+                                this.currentView.addEventListener(this, curly.Container.TRANSITION_COMPLETE, this.transitionComplete, this.currentView);
+                                this.currentView.to({
+                                    duration: to.duration,
+                                    toVars: {
+                                        left: to.left,
+                                        top: to.top,
+                                        alpha: 1
+                                    }
+                                });
+                            }
+                            else {
+                                this.currentView.style({
+                                    opacity: "1",
+                                    display: "block",
+                                    top: to.top,
+                                    left: to.left
+                                });
+                            }
+                        }
+                        else {
+                        }
+                    }
+                    else {
+                    }
+                };
+                StateMachine.prototype.transitionComplete = function (e) {
+                    var view = e.data;
+                    view.style({ display: "block" });
+                    view.removeEventListener(curly.Container.TRANSITION_COMPLETE, this.transitionComplete);
+                };
+                StateMachine.prototype.removeView = function (e) {
+                    var view = e.data;
+                    view.removeEventListener(curly.Container.TRANSITION_COMPLETE, this.transitionComplete);
+                    this.removeChild(view);
+                };
+                return StateMachine;
+            } (curly.Container));
+            stateMachine.StateMachine = StateMachine;
+        })(stateMachine = curly.stateMachine || (curly.stateMachine = {}));
+    })(curly || (curly = {}));
+
+
+    /** Detect free variable `global` from Node.js. */
+    var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+    /** Detect free variable `self`. */
+    var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+    /** Used as a reference to the global object. */
+    var root = freeGlobal || freeSelf || Function('return this')();
+
+    /** Detect free variable `exports`. */
+    var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
+
+    /** Detect free variable `module`. */
+    var freeModule = freeExports && typeof module == 'object' && module && !module.nodeType && module;
+
+    /** Detect the popular CommonJS extension `module.exports`. */
+    var moduleExports = freeModule && freeModule.exports === freeExports;
+
+    /** Detect free variable `process` from Node.js. */
+    var freeProcess = moduleExports && freeGlobal.process;
+
+    // Some AMD build optimizers, like r.js, check for condition patterns like:
+    if (typeof define == 'function' && typeof define.amd == 'object' && define.amd) {
+        // Expose Lodash on the global object to prevent errors when Lodash is
+        // loaded by a script tag in the presence of an AMD loader.
+        // See http://requirejs.org/docs/errors.html#mismatch for more details.
+        // Use `_.noConflict` to remove Lodash from the global object.
+        root.curly = curly;
+
+        // Define as an anonymous module so, through path mapping, it can be
+        // referenced as the "underscore" module.
+        define(function () {
+            return curly;
+        });
+    }
+    // Check for `exports` after `define` in case a build optimizer adds it.
+    else if (freeModule) {
+        // Export for Node.js.
+        (freeModule.exports = curly).curly = curly;
+        // Export for CommonJS support.
+        freeExports.curly = curly;
+    }
+    else {
+        // Export to the global object.
+        root.curly = curly;
+    }
+}.call(this));
+
+//# sourceMappingURL=curly.0.3.0.js.map
