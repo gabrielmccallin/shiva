@@ -1,5 +1,4 @@
 ﻿/// <reference path="Container.ts" />
-
 module curly {
     export class Anchor extends Container {
 

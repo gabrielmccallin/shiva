@@ -5,7 +5,6 @@
         "declaration": false,
         "noImplicitAny": false,
         "removeComments": false,
-        "noLib": false,
         "sourceMap": true,
         "out": "app.js"
     },

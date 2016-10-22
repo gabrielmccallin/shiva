@@ -1,9 +1,9 @@
-﻿module curly {
+﻿module curly { 
     export class Image extends Container {
 
         static COMPLETE: string = "load";
         static ERROR: string = "error";
-
+ 
         constructor(config: ImageConfig) {
             let containerConfig;
             if (config.style) {
@@ -26,7 +26,7 @@
             this.element.setAttribute("src", path);
         }
 
-        // private loaded(e: Event) {
+        // private loaded(e: Event) { 
         //     super.dispatchEvent(new Event(Image.COMPLETE, this, e.data, e));
         //     console.log("picture loaded: ", e);
         // }
