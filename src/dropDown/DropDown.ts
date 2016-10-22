@@ -143,9 +143,9 @@ module curly {
                     backgroundColor: this.dropConfig.backgroundColorHover,
                     color: this.dropConfig.colorHover
                 }
-            });
+            }); 
         }
-
+ 
         itemOut(e: curly.Event) {
             let element = e.target;
             element.to({

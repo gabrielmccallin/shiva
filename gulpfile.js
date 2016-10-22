@@ -30,7 +30,7 @@ gulp.task("watch", function () {
 gulp.task("transpile", function () {
   var tsResult = gulp
     .src(["src/**/*.ts"])
-    .pipe(sourcemaps.init())
+    .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(ts({
       "target": "ES5",
       "declaration": true,
@@ -44,6 +44,7 @@ gulp.task("transpile", function () {
     tsResult
       .js
       .pipe(uglify())
+      // .pipe(sourcemaps.write())
       .pipe(sourcemaps.write("/", {
         sourceRoot: "../src/"
       }))
@@ -56,7 +57,13 @@ gulp.task("transpile", function () {
 
 gulp.task("publish", ["transpile"], function () {
   return gulp.src(["begin-iife.js", "serve/curly.js", "umd.js"])
+    .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(concat("curly.js"))
+    .pipe(uglify())
+    // .pipe(sourcemaps.write())
+    .pipe(sourcemaps.write("/", {
+      sourceRoot: "../src/"
+    }))
     .pipe(gulp.dest("serve"));
 });
 

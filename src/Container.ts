@@ -130,6 +130,9 @@ module curly {
             }, config.delay);
 
             setTimeout(() => {
+                this.style({
+                    transition: ""
+                });
                 this.dispatchEvent(new Event("TRANSITION_COMPLETE", this));
             }, (config.duration * 1000) + config.delay);
         }
