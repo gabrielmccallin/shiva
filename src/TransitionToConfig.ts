@@ -4,5 +4,6 @@
         toVars: StyleDeclaration;
         ease?: Ease;
         delay?: number;
+        transition?: Transition;
     }
 }

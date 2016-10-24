@@ -96,7 +96,7 @@ module curly {
             }
         }
 
-        to(config: TransitionToConfig) {
+        to(config: TransitionToConfig): Transition {
             let transitionString = "";
 
             for (let i in config.toVars) {
@@ -129,15 +129,26 @@ module curly {
                 this.style(config.toVars);
             }, config.delay);
 
+            let transition: Transition;
+            if (config.transition) {
+                transition = config.transition;
+            }
+            else {
+                transition = new Transition();
+            }
+
             setTimeout(() => {
                 this.style({
                     transition: ""
                 });
+                transition.execute();
                 this.dispatchEvent(new Event("TRANSITION_COMPLETE", this));
             }, (config.duration * 1000) + config.delay);
+
+            return transition;
         }
 
-        fromTo(config: TransitionFromToConfig) {
+        fromTo(config: TransitionFromToConfig): Transition {
             if (config.delay) {
                 config.delay = config.delay * 1000;
             }
@@ -145,18 +156,20 @@ module curly {
                 this.style(config.fromVars);
                 config.delay = 10;
             }
- 
+
+            let transition = new Transition();
             setTimeout(() => {
-                this.style(config.fromVars); 
+                this.style(config.fromVars);
                 setTimeout(() => {
                     this.to({
                         duration: config.duration,
                         ease: config.ease,
-                        toVars: config.toVars
+                        toVars: config.toVars,
+                        transition: transition
                     });
                 }, 10);
             }, config.delay);
-
+            return transition;
         }
 
         private camelToHyphen(camel): string {
