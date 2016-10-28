@@ -99,32 +99,36 @@ module curly {
         }
 
         to(config: TransitionToConfig): Promise<Container> {
-            for (let i in config.toVars) {
-                let vo = {};
-
-                if (config.duration) {
-                    vo["duration"] = config.duration;
-                }
-
-                if (config.delay) {
-                    vo["delay"] = config.delay;
-                }
-                this.transitions[i] = vo;
-
-            }
-
-            let transitionString = this.convertTransitionObjectToString(this.transitions);
-
+            let delay = 10;
             if (config.delay) {
-                config.delay = config.delay * 1000;
-            }
-            else {
-                config.delay = 10;
+                delay = config.delay * 1000;
             }
 
             setTimeout(() => {
+                for (let i in config.toVars) {
+                    let vo = {};
+
+                    if (config.duration) {
+                        vo["duration"] = config.duration;
+                    }
+
+                    if (config.delay) {
+                        // vo["delay"] = config.delay;
+                    }
+
+                    if (this.transitions[i]) {
+                        vo["count"] = this.transitions[i].count + 1;
+                    }
+                    else {
+                        vo["count"] = 0;
+                    }
+
+                    this.transitions[i] = vo;
+
+                }
+
                 this.style({
-                    transition: transitionString
+                    transition: this.convertTransitionObjectToString(this.transitions)
                 });
 
                 if (config.ease) {
@@ -134,7 +138,7 @@ module curly {
                 }
 
                 this.style(config.toVars);
-            }, config.delay);
+            }, delay);
 
             if (config.resolve) {
                 setTimeout(() => {
@@ -143,7 +147,8 @@ module curly {
                     });
                     this.dispatchEvent(new Event("TRANSITION_COMPLETE", this));
                     config.resolve();
-                }, (config.duration * 1000) + config.delay);
+                }, (config.duration * 1000) + delay);
+
                 // !!
                 return null;
             }
@@ -155,7 +160,7 @@ module curly {
                         });
                         resolve();
                         this.dispatchEvent(new Event("TRANSITION_COMPLETE", this));
-                    }, (config.duration * 1000) + config.delay);
+                    }, (config.duration * 1000) + delay);
                 });
             }
         }
@@ -220,7 +225,12 @@ module curly {
         private removeCompletedTransitionsAndReapply(toVars: {}): string {
             for (let i in toVars) {
                 if (this.transitions[i]) {
-                    delete this.transitions[i];
+                    if(this.transitions[i].count > 0) {
+                        this.transitions[i].count--;
+                    }
+                    else {
+                        delete this.transitions[i];
+                    }
                 }
             }
 
