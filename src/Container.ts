@@ -1,5 +1,6 @@
 ﻿/// <reference path="properties.ts" />
 /// <reference path="EventDispatcher.ts" />
+/// <reference path="../typings/promise.d.ts" />
 
 
 /**
@@ -16,6 +17,7 @@ module curly {
     export class Container extends EventDispatcher {
         static TRANSITION_COMPLETE = "TRANSITION_COMPLETE";
         private _element: HTMLElement;
+        private transitions: {} = {};
 
         constructor(config?: ContainerConfig) {
             super();
@@ -96,16 +98,22 @@ module curly {
             }
         }
 
-        to(config: TransitionToConfig): Transition {
-            let transitionString = "";
-
+        to(config: TransitionToConfig): Promise<Container> {
             for (let i in config.toVars) {
-                if (transitionString !== "") {
-                    transitionString += ", ";
+                let vo = {};
+
+                if (config.duration) {
+                    vo["duration"] = config.duration;
                 }
-                let hyphenCaseIndex = this.camelToHyphen(i);
-                transitionString += hyphenCaseIndex + " " + config.duration + "s";
+
+                if (config.delay) {
+                    vo["delay"] = config.delay;
+                }
+                this.transitions[i] = vo;
+
             }
+
+            let transitionString = this.convertTransitionObjectToString(this.transitions);
 
             if (config.delay) {
                 config.delay = config.delay * 1000;
@@ -115,7 +123,6 @@ module curly {
             }
 
             setTimeout(() => {
-
                 this.style({
                     transition: transitionString
                 });
@@ -129,26 +136,98 @@ module curly {
                 this.style(config.toVars);
             }, config.delay);
 
-            let transition: Transition;
-            if (config.transition) {
-                transition = config.transition;
+            if (config.resolve) {
+                setTimeout(() => {
+                    this.style({
+                        transition: this.removeCompletedTransitionsAndReapply(config.toVars)
+                    });
+                    this.dispatchEvent(new Event("TRANSITION_COMPLETE", this));
+                    config.resolve();
+                }, (config.duration * 1000) + config.delay);
+                // !!
+                return null;
             }
             else {
-                transition = new Transition();
-            }
-
-            setTimeout(() => {
-                this.style({
-                    transition: ""
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        this.style({
+                            transition: this.removeCompletedTransitionsAndReapply(config.toVars)
+                        });
+                        resolve();
+                        this.dispatchEvent(new Event("TRANSITION_COMPLETE", this));
+                    }, (config.duration * 1000) + config.delay);
                 });
-                transition.execute();
-                this.dispatchEvent(new Event("TRANSITION_COMPLETE", this));
-            }, (config.duration * 1000) + config.delay);
-
-            return transition;
+            }
         }
 
-        fromTo(config: TransitionFromToConfig): Transition {
+        private convertTransitionStyleToObject(style: CSSStyleDeclaration): {} {
+            if (style.transitionProperty) {
+
+                let transitionProps = style.transitionProperty.split(",");
+                let transitionDuration = style.transitionDuration.split(",");
+                let transitionDelay = style.transitionDelay.split(",");
+
+                let transitionObject = {};
+
+                let count = 0;
+                transitionProps.map((prop) => {
+                    let propNoSpace = prop.replace(/^\s/g, "");
+                    propNoSpace = this.hyphenToCamel(propNoSpace);
+
+                    let vo = {};
+                    let duration = transitionDuration[count].replace(/^\s/g, "");
+
+                    if (transitionDuration[count]) {
+                        vo["duration"] = transitionDuration[count].replace(/^\s/g, "").replace("s", "");
+                    }
+
+                    if (transitionDelay[count]) {
+                        let trimTransitionDelayValue = transitionDelay[count].replace(/^\s/g, "").replace("s", "");
+                        if (trimTransitionDelayValue !== ("initial" || "inherit")) {
+                            vo["delay"] = trimTransitionDelayValue;
+                        }
+                    }
+                    transitionObject[propNoSpace] = vo;
+
+                    count++;
+                });
+                return transitionObject;
+
+            }
+            else {
+                return {};
+            }
+        }
+
+        private convertTransitionObjectToString(transition: {}): string {
+            let transitionString = "";
+            for (let i in transition) {
+
+                if (transitionString !== "") {
+                    transitionString += ", ";
+                }
+                let hyphenCaseIndex = this.camelToHyphen(i);
+                transitionString += hyphenCaseIndex + " " + transition[i]["duration"] + "s";
+
+                if (transition[i]["delay"]) {
+                    transitionString += " " + transition[i]["delay"] + "s";
+                }
+            }
+
+            return transitionString;
+        }
+
+        private removeCompletedTransitionsAndReapply(toVars: {}): string {
+            for (let i in toVars) {
+                if (this.transitions[i]) {
+                    delete this.transitions[i];
+                }
+            }
+
+            return this.convertTransitionObjectToString(this.transitions);
+        }
+
+        fromTo(config: TransitionFromToConfig): Promise<Container> {
             if (config.delay) {
                 config.delay = config.delay * 1000;
             }
@@ -157,19 +236,20 @@ module curly {
                 config.delay = 10;
             }
 
-            let transition = new Transition();
-            setTimeout(() => {
-                this.style(config.fromVars);
+            let promise = new Promise((resolve, reject) => {
                 setTimeout(() => {
-                    this.to({
-                        duration: config.duration,
-                        ease: config.ease,
-                        toVars: config.toVars,
-                        transition: transition
-                    });
-                }, 10);
-            }, config.delay);
-            return transition;
+                    this.style(config.fromVars);
+                    setTimeout(() => {
+                        this.to({
+                            duration: config.duration,
+                            ease: config.ease,
+                            toVars: config.toVars,
+                            resolve: resolve
+                        });
+                    }, 10);
+                }, config.delay);
+            });
+            return promise;
         }
 
         private camelToHyphen(camel): string {
@@ -186,6 +266,18 @@ module curly {
                 return result;
             });
 
+        }
+
+        private hyphenToCamel(hyphen): string {
+            return hyphen.replace(/-([a-z])/g, (match, index) => {
+                return match[1].toUpperCase();
+
+                // let result = "";
+                // matchArray.map((char) => {
+                //     result += char;
+                // });
+                // return result;
+            });
         }
 
         // from(duration: number, vars: Object): TweenLite {

@@ -43,7 +43,7 @@ gulp.task("transpile", function () {
     tsResult.dts.pipe(gulp.dest("typings")),
     tsResult
       .js
-      .pipe(uglify())
+      // .pipe(uglify())
       // .pipe(sourcemaps.write())
       .pipe(sourcemaps.write("/", {
         sourceRoot: "../src/"
@@ -56,10 +56,10 @@ gulp.task("transpile", function () {
 
 
 gulp.task("publish", ["transpile"], function () {
-  return gulp.src(["begin-iife.js", "serve/curly.js", "umd.js"])
+  return gulp.src(["libs/promise-7.0.4.js", "begin-iife.js", "serve/curly.js", "umd.js"])
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(concat("curly.js"))
-    .pipe(uglify())
+    // .pipe(uglify())
     // .pipe(sourcemaps.write())
     .pipe(sourcemaps.write("/", {
       sourceRoot: "../src/"
