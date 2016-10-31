@@ -1,0 +1,7 @@
+dist/*.js.map
+assets
+libs
+src
+typings
+gulpfile.js
+tsconfig.json
