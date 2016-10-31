@@ -47,7 +47,9 @@ gulp.task("transpile", function () {
     }));
 
   return merge([
-    tsResult.dts.pipe(gulp.dest(TARGET)),
+    tsResult
+      .dts
+      .pipe(gulp.dest(TARGET)),
     tsResult
       .js
       // .pipe(uglify())
@@ -60,23 +62,29 @@ gulp.task("transpile", function () {
 
 });
 
-gulp.task("publish", ["transpile"], function () {
-  return gulp.src(["libs/promise-7.0.4.js", "libs/begin-iife.js", TARGET+ "/"+ SHIVA + ".js", "libs/umd.js"])
+gulp.task("add-promise-defs", ["transpile"], function () {
+  gulp.src(["typings/promise.d.ts", "dist/shiva.d.ts"])
+    .pipe(concat(SHIVA + ".d.ts"))
+    .pipe(gulp.dest(TARGET));
+})
+
+gulp.task("publish", ["transpile", "add-promise-defs"], function () {
+  return gulp.src(["libs/promise-7.0.4.js", "libs/begin-iife.js", TARGET + "/" + SHIVA + ".js", "libs/umd.js"])
     .pipe(concat(SHIVA + ".js"))
     .pipe(gulp.dest(TARGET))
     .pipe(uglify())
     .on('error', gutil.log)
-    .pipe(rename(SHIVA + '.min.js' ))
+    .pipe(rename(SHIVA + '.min.js'))
     .pipe(gulp.dest(TARGET))
 });
 
 
-gulp.task("dev", ["transpile"], function () {
-  return gulp.src(["libs/promise-7.0.4.js", "libs/begin-iife.js", TARGET+ "/"+ SHIVA + ".js", "libs/umd.js"])
+gulp.task("dev", ["transpile", "add-promise-defs"], function () {
+  return gulp.src(["libs/promise-7.0.4.js", "libs/begin-iife.js", TARGET + "/" + SHIVA + ".js", "libs/umd.js"])
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(concat(SHIVA + ".js"))
     .pipe(sourcemaps.write("/", {
-        sourceRoot: "../" + SOURCE + "/"
+      sourceRoot: "../" + SOURCE + "/"
     }))
     .pipe(gulp.dest(TARGET))
 });
