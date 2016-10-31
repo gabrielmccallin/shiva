@@ -1,4 +1,4 @@
-module curly {
+module shiva {
 	export interface HoverStyleDeclaration extends StyleDeclaration {
 		backgroundColorHover?: string;
 		colorHover?: string;

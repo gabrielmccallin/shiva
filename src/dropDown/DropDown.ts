@@ -1,5 +1,5 @@
 ﻿/// <reference path="../container.ts" />
-module curly {
+module shiva {
     export class DropDown extends Container {
         static CHANGE = "change";
         private button: Button;
@@ -38,7 +38,7 @@ module curly {
             this.addChild(this.button);
 
 
-            let caret = new curly.Container({
+            let caret = new shiva.Container({
                 id: "drop-caret",
                 style: Styles.caret,
                 pointerEvents: "none"
@@ -115,16 +115,16 @@ module curly {
             this.style(config);
         }
 
-        private itemClicked(e: curly.Event) {
+        private itemClicked(e: shiva.Event) {
             let element = e.target;
 
-            this.dispatchEvent(new curly.Event(DropDown.CHANGE, this, element.id));
+            this.dispatchEvent(new shiva.Event(DropDown.CHANGE, this, element.id));
 
             this.unorderedList.style({
                 opacity: "1"
             });
 
-            this.unorderedList.addEventListener(this, curly.Container.TRANSITION_COMPLETE, this.hideList);
+            this.unorderedList.addEventListener(this, shiva.Container.TRANSITION_COMPLETE, this.hideList);
             this.unorderedList.to({
                 duration: this.dropConfig.durationContract,
                 delay: 0.3,
@@ -135,7 +135,7 @@ module curly {
 
         }
 
-        itemOver(e: curly.Event) {
+        itemOver(e: shiva.Event) {
             let element = e.target;
             element.to({
                 duration: this.dropConfig.durationIn,
@@ -146,7 +146,7 @@ module curly {
             }); 
         }
  
-        itemOut(e: curly.Event) {
+        itemOut(e: shiva.Event) {
             let element = e.target;
             element.to({
                 duration: this.dropConfig.durationOut,
@@ -186,7 +186,7 @@ module curly {
             setTimeout(() => {
                 this.button.addEventListener(this, "mousedown", this.buttonClicked);
             }, 10);
-            this.unorderedList.addEventListener(this, curly.Container.TRANSITION_COMPLETE, this.hideList);
+            this.unorderedList.addEventListener(this, shiva.Container.TRANSITION_COMPLETE, this.hideList);
             this.unorderedList.to({
                 duration: this.dropConfig.durationContract,
                 toVars:
@@ -197,7 +197,7 @@ module curly {
         }
 
         private hideList() {
-            this.unorderedList.removeEventListener(curly.Container.TRANSITION_COMPLETE, this.hideList);
+            this.unorderedList.removeEventListener(shiva.Container.TRANSITION_COMPLETE, this.hideList);
             this.unorderedList.style({
                 display: "none"
             });

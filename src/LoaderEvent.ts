@@ -1,5 +1,5 @@
-module curly {
-    export class URLLoaderEvent extends Event {
+module shiva {
+    export class LoaderEvent extends Event {
 
         private _response: any;
         private _status: any;

@@ -1,4 +1,4 @@
-﻿module curly {
+﻿module shiva {
     export class Transition {
         private callback: Function = ()=>{console.log("not set")};
         private data: any;

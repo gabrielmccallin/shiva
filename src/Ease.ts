@@ -1,4 +1,4 @@
-﻿module curly {
+﻿module shiva {
     export class Ease {
         static Linear = "linear";
         static Ease = "ease";

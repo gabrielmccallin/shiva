@@ -1,27 +1,5 @@
-# Build and package folders
-###################
-build
-dist
-packages
-typings
-.tmp
-serve
+# VS Code config
+*.vscode
 
-# System folders
-###################
-.DS_Store
-
-# Node & Bower & JSPM
-###################
+# Libs
 node_modules
-bower_components
-jspm_packages
-
-# Test reporters
-###################
-**/test/coverage
-report
-
-# VS Code
-###################
-.vscode

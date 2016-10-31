@@ -25,23 +25,23 @@
         // loaded by a script tag in the presence of an AMD loader.
         // See http://requirejs.org/docs/errors.html#mismatch for more details.
         // Use `_.noConflict` to remove Lodash from the global object.
-        root.curly = curly;
+        root.shiva = shiva;
 
         // Define as an anonymous module so, through path mapping, it can be
         // referenced as the "underscore" module.
         define(function () {
-            return curly;
+            return shiva;
         });
     }
     // Check for `exports` after `define` in case a build optimizer adds it.
     else if (freeModule) {
         // Export for Node.js.
-        (freeModule.exports = curly).curly = curly;
+        (freeModule.exports = shiva).shiva = shiva;
         // Export for CommonJS support.
-        freeExports.curly = curly;
+        freeExports.shiva = shiva;
     }
     else {
         // Export to the global object.
-        root.curly = curly;
+        root.shiva = shiva;
     }
 }.call(this));

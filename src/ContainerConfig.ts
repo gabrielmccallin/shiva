@@ -1,4 +1,4 @@
-﻿module curly {
+﻿module shiva {
     export interface ContainerConfig extends StyleDeclaration {
         root?: boolean;
         id?: string;

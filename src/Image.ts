@@ -1,4 +1,4 @@
-﻿module curly { 
+﻿module shiva { 
     export class Image extends Container {
 
         static COMPLETE: string = "load";

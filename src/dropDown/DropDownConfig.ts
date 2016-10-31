@@ -1,4 +1,4 @@
-﻿module curly {
+﻿module shiva {
     export interface DropDownConfig extends ContainerConfig {
         options: string[];
         button?: ButtonConfig;

@@ -1,5 +1,5 @@
 ﻿/// <reference path="container.ts" />
-module curly {
+module shiva {
     export class Button extends Container {
         static CLICK: string = "click";
         private enabled: boolean;
@@ -121,7 +121,7 @@ module curly {
         click(e: MouseEvent) {
             if (this.enabled) {
                 //this.out();
-                var event = new curly.Event(Button.CLICK, this, e);
+                var event = new shiva.Event(Button.CLICK, this, e);
                 this.dispatchEvent(event);
             }
         }

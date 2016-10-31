@@ -1,4 +1,4 @@
-﻿module curly {
+﻿module shiva {
     export interface TransitionToConfig {
         duration: number;
         toVars: StyleDeclaration;

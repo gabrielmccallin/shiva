@@ -1,5 +1,5 @@
 ﻿/// <reference path="container.ts" />
-module curly {
+module shiva {
     export class RadioButton extends Container {
         static CLICK: string = "click";
         private enabled: boolean;

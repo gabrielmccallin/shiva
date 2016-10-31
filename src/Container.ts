@@ -13,7 +13,7 @@
  **/
 
 
-module curly {
+module shiva {
     export class Container extends EventDispatcher {
         static TRANSITION_COMPLETE = "TRANSITION_COMPLETE";
         private _element: HTMLElement;
@@ -246,7 +246,7 @@ module curly {
                 config.delay = 10;
             }
 
-            let promise = new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 setTimeout(() => {
                     this.style(config.fromVars);
                     setTimeout(() => {
@@ -259,7 +259,6 @@ module curly {
                     }, 10);
                 }, config.delay);
             });
-            return promise;
         }
 
         private camelToHyphen(camel): string {
@@ -298,7 +297,7 @@ module curly {
             let that = this;
             let scopedEventListener: EventListener = function (e) {
                 // console.log("captured at add", e); 
-                listenerFunc.apply(scope, [new curly.Event(typeStr, that, data, e)]);
+                listenerFunc.apply(scope, [new shiva.Event(typeStr, that, data, e)]);
             };
 
             super.addEventListener(scope, typeStr, listenerFunc, data, useCapture, scopedEventListener);
@@ -442,7 +441,7 @@ module curly {
 
         }
 
-        private dimensionsPolyfill(): curly.Dimensions {
+        private dimensionsPolyfill(): shiva.Dimensions {
 
             let height = this._element.getBoundingClientRect().height;
             let width = this._element.getBoundingClientRect().width;

@@ -1,6 +1,6 @@
 ﻿/// <reference path="Container.ts" />
 
-module curly {
+module shiva {
     export class Select extends Container {
         static CHANGE = "change";
 
@@ -16,7 +16,7 @@ module curly {
 
             let options = config.options;
             options.map((option) => {
-                let item = new curly.Container({
+                let item = new shiva.Container({
                     text: option,
                     type: "option"
                 });

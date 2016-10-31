@@ -1,4 +1,4 @@
-﻿module curly {
+﻿module shiva {
     export class Properties {
         static style(object: any, vars: StyleDeclaration) {
             let element: HTMLElement;

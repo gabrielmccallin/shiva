@@ -1,4 +1,4 @@
-﻿module curly {
+﻿module shiva {
     export class Observer {
         private static observers = {};
 
@@ -22,7 +22,7 @@
             this.observers[type].splice(indexOfClosureToRemove, 1);
         }
 
-        static dispatchEvent(evt: curly.Event) {
+        static dispatchEvent(evt: shiva.Event) {
             var type = evt.type;
             if (this.observers[type]) {
                 for (var i = 0; i < this.observers[type].length; i++) {

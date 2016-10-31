@@ -1,4 +1,4 @@
-﻿module curly {
+﻿module shiva {
     export class Window {
         static scrollY() {
             var scrollTop = document.body.scrollTop;

@@ -1,29 +1,31 @@
 {
-  "name": "curly",
-  "version": "0.2.0",
-  "description": "**{ curly }**, a JavaScript library for programming the web.",
-  "main": "curly.min.js",
+  "name": "shiva",
+  "version": "0.5.0",
+  "description": "**shiva**, a JavaScript library for programming the web.",
+  "main": "./dist/shiva.js",
+  "types": "./dist/shiva.d.ts",
   "scripts": {
-    "start": "http-server -p 1337"
+    "start": "echo And in all, the creator, preserver, destroyer, revealer and concealer of all that is."
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://bitbucket.org/gmccallin/curly.git"
+    "url": "git+https://bitbucket.org/gmccallin/shiva.git"
   },
-  "author": "",
-  "license": "ISC",
-  "homepage": "https://bitbucket.org/gmccallin/curly#readme",
+  "author": "Gabriel McCallin",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/gmccallin/shiva#readme",
   "devDependencies": {
-    "http-server": "0.9.0",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-connect": "^2.2.0",
+    "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-typescript": "^2.8.2",
     "gulp-uglify": "^1.4.1",
+    "gulp-util": "^3.0.7",
     "gulp-watch": "^4.3.5",
+    "http-server": "0.9.0",
     "merge2": "^0.3.6"
   }
 }

@@ -1,4 +1,4 @@
-﻿module curly {
+﻿module shiva {
     export module stateMachine {
         export interface StateMachineConfig extends StyleDeclaration {
             id?: string,

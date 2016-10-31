@@ -1,5 +1,5 @@
 ﻿/// <reference path="Container.ts" />
-module curly {
+module shiva {
     export class Anchor extends Container {
 
         constructor(config:AnchorConfig) {

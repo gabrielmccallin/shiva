@@ -1,4 +1,4 @@
-﻿module curly {
+﻿module shiva {
     export class Resize {
 
         static proportionalOutside(

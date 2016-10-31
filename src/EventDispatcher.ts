@@ -7,7 +7,7 @@
  * @license MIT License
  **/
 
-module curly {
+module shiva {
     export class Event {
         private _type: string;
         private _target: any;

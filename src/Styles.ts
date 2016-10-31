@@ -1,4 +1,4 @@
-﻿module curly {
+﻿module shiva {
     export class Styles {
         static button = {
             fontSize: "1.2em",

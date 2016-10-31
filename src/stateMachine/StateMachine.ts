@@ -1,4 +1,4 @@
-﻿module curly {
+﻿module shiva {
     export module stateMachine {
         export class StateMachine extends Container {
             private currentView: State;
@@ -40,7 +40,7 @@
 
                         if (this.currentView) {
                             if (from.duration > 0) {
-                                this.currentView.addEventListener(this, curly.Container.TRANSITION_COMPLETE, this.removeView, this.currentView);
+                                this.currentView.addEventListener(this, shiva.Container.TRANSITION_COMPLETE, this.removeView, this.currentView);
                                 this.currentView.to({
                                     duration: from.duration,
                                     toVars: {
@@ -72,7 +72,7 @@
                         });
 
                         if (to.duration > 0) {
-                            this.currentView.addEventListener(this, curly.Container.TRANSITION_COMPLETE, this.transitionComplete, this.currentView);
+                            this.currentView.addEventListener(this, shiva.Container.TRANSITION_COMPLETE, this.transitionComplete, this.currentView);
                             this.currentView.to({
                                 duration: to.duration,
                                 toVars:
@@ -101,15 +101,15 @@
                 }
             }
 
-            private transitionComplete(e: curly.Event) {
-                let view = <curly.Container>e.data;
+            private transitionComplete(e: shiva.Event) {
+                let view = <shiva.Container>e.data;
                 view.style({ display: "block" });
-                view.removeEventListener(curly.Container.TRANSITION_COMPLETE, this.transitionComplete);
+                view.removeEventListener(shiva.Container.TRANSITION_COMPLETE, this.transitionComplete);
             }
 
-            private removeView(e: curly.Event) {
-                let view = <curly.Container>e.data;
-                view.removeEventListener(curly.Container.TRANSITION_COMPLETE, this.transitionComplete);
+            private removeView(e: shiva.Event) {
+                let view = <shiva.Container>e.data;
+                view.removeEventListener(shiva.Container.TRANSITION_COMPLETE, this.transitionComplete);
                 this.removeChild(view);
             }
         }

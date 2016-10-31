@@ -1,4 +1,4 @@
-﻿module curly {
+﻿module shiva {
     export interface ButtonConfig extends HoverStyleDeclaration {
         id?: string;
         href?: string;

@@ -1,4 +1,4 @@
-module curly {
+module shiva {
 	export interface StyleDeclaration {
 		alignContent?: string;
 		alignItems?: string;

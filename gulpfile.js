@@ -1,3 +1,8 @@
+var SHIVA = "shiva";
+var SOURCE = "src";
+var TARGET = "dist";
+var PORT = "1338";
+
 var gulp = require("gulp"),
   watch = require("gulp-watch"),
   sourcemaps = require("gulp-sourcemaps"),
@@ -6,65 +11,75 @@ var ts = require("gulp-typescript");
 var merge = require("merge2");
 var concat = require("gulp-concat");
 var uglify = require("gulp-uglify");
-var version = "0.3.0";
+var rename = require('gulp-rename');
+var gutil = require('gulp-util');
+var version = "0.5.0";
 
 gulp.task("webserver", function () {
   connect.server({
     // livereload: true,
-    port: 34567
+    port: PORT
   });
 });
 
 gulp.task("reload", function () {
-  gulp.src(["dist/**/*.js"])
-    .pipe(watch(["dist/**/*.js"]))
+  gulp.src([DIST + "/**/*.js"])
+    .pipe(watch([DIST + "/**/*.js"]))
     .pipe(connect.reload());
 });
 
 
-gulp.task("watch", function () {
-  gulp.watch("src/**/*.ts", ["transpile", "publish"]);
+gulp.task("watch-dev", function () {
+  gulp.watch(SOURCE + "/**/*.ts", ["dev"]);
 });
 
 
 gulp.task("transpile", function () {
   var tsResult = gulp
-    .src(["src/**/*.ts"])
+    .src([SOURCE + "/**/*.ts"])
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(ts({
       "target": "ES5",
       "declaration": true,
       "noImplicitAny": false,
       "removeComments": true,
-      "out": "curly.js",
+      "out": SHIVA + ".js",
     }));
 
   return merge([
-    tsResult.dts.pipe(gulp.dest("typings")),
+    tsResult.dts.pipe(gulp.dest(TARGET)),
     tsResult
       .js
       // .pipe(uglify())
       // .pipe(sourcemaps.write())
       .pipe(sourcemaps.write("/", {
-        sourceRoot: "../src/"
+        sourceRoot: "../" + SOURCE + "/"
       }))
-      .pipe(gulp.dest("serve"))
+      .pipe(gulp.dest(TARGET))
   ]);
 
 });
 
-
-
 gulp.task("publish", ["transpile"], function () {
-  return gulp.src(["libs/promise-7.0.4.js", "begin-iife.js", "serve/curly.js", "umd.js"])
-    .pipe(sourcemaps.init({ loadMaps: true }))
-    .pipe(concat("curly.js"))
-    // .pipe(uglify())
-    // .pipe(sourcemaps.write())
-    .pipe(sourcemaps.write("/", {
-      sourceRoot: "../src/"
-    }))
-    .pipe(gulp.dest("serve"));
+  return gulp.src(["libs/promise-7.0.4.js", "libs/begin-iife.js", TARGET+ "/"+ SHIVA + ".js", "libs/umd.js"])
+    .pipe(concat(SHIVA + ".js"))
+    .pipe(gulp.dest(TARGET))
+    .pipe(uglify())
+    .on('error', gutil.log)
+    .pipe(rename(SHIVA + '.min.js' ))
+    .pipe(gulp.dest(TARGET))
 });
 
-gulp.task("default", ["webserver", "watch"]);
+
+gulp.task("dev", ["transpile"], function () {
+  return gulp.src(["libs/promise-7.0.4.js", "libs/begin-iife.js", TARGET+ "/"+ SHIVA + ".js", "libs/umd.js"])
+    .pipe(sourcemaps.init({ loadMaps: true }))
+    .pipe(concat(SHIVA + ".js"))
+    .pipe(sourcemaps.write("/", {
+        sourceRoot: "../" + SOURCE + "/"
+    }))
+    .pipe(gulp.dest(TARGET))
+});
+
+gulp.task("watch", ["webserver", "watch-dev"]);
+gulp.task("default", ["publish"]);

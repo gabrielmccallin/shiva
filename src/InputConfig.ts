@@ -1,4 +1,4 @@
-﻿module curly {
+﻿module shiva {
     export interface InputConfig {
         id?: string;
         style?: InputConfig;
