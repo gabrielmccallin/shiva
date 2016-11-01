@@ -1,17 +1,15 @@
-# shiva
+# shiva :zap:
+---
+
 A JavaScript library for programming the web.  
 
-No markup, no templates, no CSS. 
+No markup, no templates, no CSS. Just { code() }; :space_invader:
 
-Just { code() };
-
-
-#
+---
 ## Example usage
-#
+---
 
-
-**Create container.**
+### Create container.
 
 ```
 import { Container } from "shiva";
@@ -24,7 +22,8 @@ let view = new Container({
 });
 this.addChild(view);
 ```
-**Update.**
+
+### Update.
 
 ```
 view.innerHtml = "I'm still a view";
@@ -39,7 +38,8 @@ view.style({
     top: "10rem"
 });
 ```
-**Extend classes to give them the same abilities.**
+
+### Extend classes to give them the same abilities.
 ```
 import { Container } from "shiva";
 
@@ -51,18 +51,20 @@ class Home extends Container {
     }
 }
 ```
-**Add this class to the DOM.**
+
+### Add this class to the DOM.
 ```
 let home = new Home();
 this.addChild(home);
 ```
-**Maybe some event listeners.**
+
+### Maybe some event listeners.
 ```
 home.addEventListener(this, "CUSTOM_EVENT", this.homeEventHandler);
 ```
 
 
-**`Loader` wraps `XMLHttpRequest`, returns a `Promise`.**
+### `Loader` wraps `XMLHttpRequest`, returns a `Promise`.
 
 ```
 import { Loader } from "shiva";
@@ -82,7 +84,7 @@ loader.load("//api.com/endpointABC", Loader.GET)
 });
 ```
 
-**Use the `.to` and `.fromTo` methods of `Container` for smooth CSS transitions.**
+### Use the `.to` and `.fromTo` methods of `Container` for smooth CSS transitions.
 ```
 let title = new Container({
     text: "Fade me out"
@@ -97,7 +99,7 @@ title.to({
 });
 ```
 
-**Chain transitions with `Promise`**.
+### Chain transitions with `Promise`.
 ```
 title.to({
     duration: 2,
@@ -110,9 +112,10 @@ title.to({
 ```
 
 
-#
+---
 ## Getting started
-#
+---
+
 ### **npm**
 
 ```
@@ -128,7 +131,7 @@ And use something like `browserify` to bundle `shiva` with your app code.
 ```
 And use the `shiva` global in your code. e.g. `shiva.Container`, `shiva.Button`, `shiva.Loader` etc.
 
-#
+
 ### **Now { code } !**
 
 Extend your entry class with Container and tell it to be the root of the app.  
@@ -153,10 +156,10 @@ window.onload = () => {
 
 
 
-
-#
+---
 ## Components 
-#
+---
+
 #### Build applications quickly with these components, they all extend `Container`.
 
 - **Anchor**  
@@ -175,9 +178,11 @@ window.onload = () => {
 
 - **Select**  
 
-#
+
+
+---
 ## Utilities
-#
+---
 
 - **EventDispatcher**  
 Custom event dispatching, add / remove.
@@ -195,9 +200,10 @@ XHR wrapper with event dispatcher and Promise chaining.
 Some Window polyfill methods.
 
 
-#
+
+---
 ## Container
-#
+---
 
 ### Methods
 
@@ -206,30 +212,42 @@ Add container directly to document.body.
 
 - **style( vars: StyleDeclaration )**: void;  
 Pass a curly.StyleDeclaration class or literal to set inline CSS styles.
-- **className( ...names: string[] )**: void;
+- **className( ...names: string[] )**: void;  
+
 - **addChild( child: curly.Container )**:void  
 Append a container to a parent.  
+
 - **removeChild( child: curly.Container )**:void  
-Remove a container from a parent.
+Remove a container from a parent.  
+
 - **to( transitionToConfig : { duration: number, delay: number, ease: Ease, toVars: StyleDeclaration })**: Promise<Container>;  
 Wraps CSS transitions for smooth animations with chaining.  
-- **fromTo( transitionFromToConfig : { duration: number, delay: number, ease: Ease, toVars: StyleDeclaration, fromVars: StyleDeclaration)**: Promise<Container>;  
+
+- **fromTo( transitionFromToConfig : { duration: number, delay: number, ease: Ease, toVars: StyleDeclaration, fromVars: StyleDeclaration)**: Promise<Container>;    
 Wraps CSS transitions for smooth animations with chaining.  
+
 - **addEventListener( scope: any, typeStr: string, listenerFunc: Function, data?: any, useCapture?: boolean )**: void;  
-Listen for DOM and custom events.
+Listen for DOM and custom events.  
+
 - **removeEventListener( typeStr: string, listenerFunc: Function )**: {};  
-Remove DOM and custom events  
+Remove DOM and custom events.  
+
 - **preventDefault( e: any )**: void;  
 Polyfill to prevent default event behavior.  
-- **hide()**: void;
-- **show()**: void;
-- **fillContainer()**: void;
-- **centreHorizontal()**: void;
+
+- **hide()**: void;  
+
+- **show()**: void;  
+
+- **fillContainer()**: void;  
+
+- **centreHorizontal()**: void;  
+
 - **centreHorizontalText()**: void;
 
 
 
-### Getters / setters:  ###
+### Getters / setters
 
 - **width**: number;
 - **height**: number;
@@ -243,8 +261,7 @@ Polyfill to prevent default event behavior.
 - **href**: string;
 
 
-#
+---
 ## Links
-#
-Starter template [https://bitbucket.org/gmccallin/curly-culture](https://bitbucket.org/gmccallin/curly-culture)  
-More complex example application [https://bitbucket.org/gmccallin/curly-demo-app](https://bitbucket.org/gmccallin/curly-demo-app)
+---
+Starter template [https://bitbucket.org/gabrielmccallin/shiva-template](https://bitbucket.org/gabrielmccallin/curly-culture)  
