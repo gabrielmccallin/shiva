@@ -10,11 +10,11 @@
   "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://bitbucket.org/gmccallin/shiva.git"
+    "url": "git+https://bitbucket.org/gabrielmccallin/shiva.git"
   },
   "author": "Gabriel McCallin",
   "license": "MIT",
-  "homepage": "https://bitbucket.org/gmccallin/shiva#readme",
+  "homepage": "https://bitbucket.org/gabrielmccallin/shiva#readme",
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
