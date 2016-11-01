@@ -3,7 +3,7 @@
 
 A JavaScript library for programming the web.  
 
-No markup, no templates, no CSS. Just { code() }; :space_invader:
+No markup, no templates, no CSS. Just code();
 
 
 ## Example usage
