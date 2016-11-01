@@ -1,4 +1,4 @@
-# shiva :zap:
+# shiva :trident:
 ---
 
 A JavaScript library for programming the web.  
