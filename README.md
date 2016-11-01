@@ -5,7 +5,7 @@ A JavaScript library for programming the web.
 
 No markup, no templates, no CSS. Just { code() }; :space_invader:
 
----
+
 ## Example usage
 ---
 
@@ -64,7 +64,7 @@ home.addEventListener(this, "CUSTOM_EVENT", this.homeEventHandler);
 ```
 
 
-### `Loader` wraps `XMLHttpRequest`, returns a `Promise`.
+### Loader wraps XMLHttpRequest, returns a Promise.
 
 ```
 import { Loader } from "shiva";
@@ -84,7 +84,7 @@ loader.load("//api.com/endpointABC", Loader.GET)
 });
 ```
 
-### Use the `.to` and `.fromTo` methods of `Container` for smooth CSS transitions.
+### Use the .to and .fromTo methods of Container for smooth CSS transitions.
 ```
 let title = new Container({
     text: "Fade me out"
@@ -99,7 +99,7 @@ title.to({
 });
 ```
 
-### Chain transitions with `Promise`.
+### Chain transitions with Promise.
 ```
 title.to({
     duration: 2,
@@ -112,7 +112,6 @@ title.to({
 ```
 
 
----
 ## Getting started
 ---
 
@@ -156,7 +155,6 @@ window.onload = () => {
 
 
 
----
 ## Components 
 ---
 
@@ -180,7 +178,6 @@ window.onload = () => {
 
 
 
----
 ## Utilities
 ---
 
@@ -201,7 +198,6 @@ Some Window polyfill methods.
 
 
 
----
 ## Container
 ---
 
@@ -261,7 +257,6 @@ Polyfill to prevent default event behavior.
 - **href**: string;
 
 
----
 ## Links
 ---
 Starter template [https://bitbucket.org/gabrielmccallin/shiva-template](https://bitbucket.org/gabrielmccallin/curly-culture)  
