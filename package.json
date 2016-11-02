@@ -1,8 +1,8 @@
 {
   "name": "shiva",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "A JavaScript library for programming the web.",
-  "main": "./dist/shiva.js",
+  "main": "./dist/shiva.min.js",
   "types": "./dist/shiva.d.ts",
   "scripts": {
     "start": "echo And in all, the creator, preserver, destroyer, revealer and concealer of all that is."

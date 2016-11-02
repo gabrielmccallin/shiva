@@ -80,7 +80,7 @@ gulp.task("publish", ["transpile", "add-defs"], function () {
 
 
 gulp.task("dev", ["transpile", "add-defs"], function () {
-  return gulp.src(["libs/promise-7.0.4.js", "libs/begin-iife.js", TARGET + "/" + SHIVA + ".js", "libs/umd.js"])
+  return gulp.src(["libs/promise-polyfill.js", "libs/begin-iife.js", TARGET + "/" + SHIVA + ".js", "libs/umd.js"])
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(concat(SHIVA + ".js"))
     .pipe(sourcemaps.write("/", {
