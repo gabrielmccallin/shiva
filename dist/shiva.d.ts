@@ -870,3 +870,7 @@ declare module shiva {
         }
     }
 }
+
+declare module "shiva" {
+    export = shiva;
+}

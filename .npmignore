@@ -5,3 +5,6 @@ src
 typings
 gulpfile.js
 tsconfig.json
+.npmignore
+.gitattributes
+.vscode
