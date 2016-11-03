@@ -126,7 +126,7 @@ And use something like `browserify` to bundle `shiva` with your app code.
 
 ### **Global**
 ```
-<script src="https://jsdelivr.com/shiva/0/5/0/shiva.min.js"></script>
+<script src="https://cdn.jsdelivr.net/shiva/0.5.5/shiva.min.js"></script>
 ```
 And use the `shiva` global in your code. e.g. `shiva.Container`, `shiva.Button`, `shiva.Loader` etc.
 
