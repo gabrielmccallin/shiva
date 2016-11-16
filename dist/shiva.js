@@ -479,8 +479,6 @@ var shiva;
                     if (config.duration) {
                         vo["duration"] = config.duration;
                     }
-                    if (config.delay) {
-                    }
                     if (_this.transitions[i]) {
                         vo["count"] = _this.transitions[i].count + 1;
                     }
@@ -490,7 +488,7 @@ var shiva;
                     _this.transitions[i] = vo;
                 }
                 _this.style({
-                    transition: _this.convertTransitionObjectToString(_this.transitions)
+                    transition: _this.convertTransitionObjectToString(_this.transitions),
                 });
                 if (config.ease) {
                     _this.style({
@@ -583,6 +581,9 @@ var shiva;
             var _this = this;
             if (config.delay) {
                 config.delay = config.delay * 1000;
+                if (config.immediateRender) {
+                    this.style(config.fromVars);
+                }
             }
             else {
                 this.style(config.fromVars);
@@ -1202,6 +1203,69 @@ var shiva;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
+    var Pages = (function (_super) {
+        __extends(Pages, _super);
+        function Pages(config) {
+            _super.call(this, {
+                id: config.id,
+                position: "relative"
+            });
+            this.pages = {};
+            this.zIndex = 100;
+            this.config = config;
+            this.style(config.style);
+        }
+        Pages.prototype.update = function (pageName) {
+            var _this = this;
+            if (pageName !== this.currentPageName) {
+                if (this.config.pages[pageName]) {
+                    clearTimeout(this.delayTimeout);
+                    this.currentPageName = pageName;
+                    if (this.currentPage) {
+                        if (this.currentPage.sleep) {
+                            this.currentPage.sleep();
+                        }
+                        if (this.config.delayTransition) {
+                            var viewToRemove_1 = this.currentPage;
+                            this.delayTimeout = setTimeout(function () {
+                                _this.removeChild(viewToRemove_1);
+                            }, this.config.delayTransition * 1000);
+                        }
+                        else {
+                            this.removeChild(this.currentPage);
+                        }
+                    }
+                    if (this.pages[pageName]) {
+                    }
+                    else {
+                        var page = new this.config.pages[pageName](pageName);
+                        this.pages[pageName] = page;
+                    }
+                    this.currentPage = this.pages[pageName];
+                    if (this.currentPage.wake) {
+                        this.currentPage.wake();
+                    }
+                    this.currentPage.style({
+                        position: "absolute",
+                        width: "100%",
+                        top: "0px",
+                        left: "0px"
+                    });
+                    this.addChild(this.currentPage);
+                }
+                else {
+                }
+            }
+            else {
+                console.log("view already loaded: ");
+            }
+        };
+        return Pages;
+    }(shiva.Container));
+    shiva.Pages = Pages;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
     var RadioButton = (function (_super) {
         __extends(RadioButton, _super);
         function RadioButton(config) {
@@ -1623,115 +1687,8 @@ var shiva;
     }(shiva.Container));
     shiva.DropDown = DropDown;
 })(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var stateMachine;
-    (function (stateMachine) {
-        var StateMachine = (function (_super) {
-            __extends(StateMachine, _super);
-            function StateMachine(config) {
-                _super.call(this, {
-                    id: config.id
-                });
-                this.views = {};
-                this.currentState = "";
-                this.config = config;
-                this.style(config.style);
-                this.style(config);
-            }
-            StateMachine.prototype.update = function (state) {
-                if (state !== this.currentState) {
-                    if (this.config.views[state]) {
-                        this.currentState = state;
-                        var to = {
-                            top: "0px",
-                            left: "0px",
-                            duration: 0
-                        };
-                        var from = {
-                            top: "0px",
-                            left: "0px",
-                            duration: 0
-                        };
-                        for (var i in this.config.to) {
-                            to[i] = this.config.to[i];
-                        }
-                        for (var i in this.config.from) {
-                            from[i] = this.config.from[i];
-                        }
-                        if (this.currentView) {
-                            if (from.duration > 0) {
-                                this.currentView.addEventListener(this, shiva.Container.TRANSITION_COMPLETE, this.removeView, this.currentView);
-                                this.currentView.to({
-                                    duration: from.duration,
-                                    toVars: {
-                                        left: from.left,
-                                        top: from.top,
-                                        alpha: 0
-                                    }
-                                });
-                            }
-                            else {
-                                this.removeChild(this.currentView);
-                            }
-                        }
-                        if (this.views[state]) {
-                        }
-                        else {
-                            var view = new this.config.views[state]();
-                            this.views[state] = view;
-                        }
-                        this.currentView = this.views[state];
-                        if (this.currentView.hydrate) {
-                            this.currentView.hydrate();
-                        }
-                        this.addChild(this.currentView);
-                        this.currentView.style({
-                            alpha: 0
-                        });
-                        if (to.duration > 0) {
-                            this.currentView.addEventListener(this, shiva.Container.TRANSITION_COMPLETE, this.transitionComplete, this.currentView);
-                            this.currentView.to({
-                                duration: to.duration,
-                                toVars: {
-                                    left: to.left,
-                                    top: to.top,
-                                    alpha: 1
-                                }
-                            });
-                        }
-                        else {
-                            this.currentView.style({
-                                opacity: "1",
-                                display: "block",
-                                top: to.top,
-                                left: to.left
-                            });
-                        }
-                    }
-                    else {
-                    }
-                }
-                else {
-                }
-            };
-            StateMachine.prototype.transitionComplete = function (e) {
-                var view = e.data;
-                view.style({ display: "block" });
-                view.removeEventListener(shiva.Container.TRANSITION_COMPLETE, this.transitionComplete);
-            };
-            StateMachine.prototype.removeView = function (e) {
-                var view = e.data;
-                view.removeEventListener(shiva.Container.TRANSITION_COMPLETE, this.transitionComplete);
-                this.removeChild(view);
-            };
-            return StateMachine;
-        }(shiva.Container));
-        stateMachine.StateMachine = StateMachine;
-    })(stateMachine = shiva.stateMachine || (shiva.stateMachine = {}));
-})(shiva || (shiva = {}));
 
-//# sourceMappingURL=shiva.js.map
+
 
  /** Detect free variable `global` from Node.js. */
     var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
@@ -1780,3 +1737,5 @@ var shiva;
         root.shiva = shiva;
     }
 }.call(this));
+
+//# sourceMappingURL=shiva.js.map

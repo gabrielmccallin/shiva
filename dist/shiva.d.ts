@@ -310,6 +310,32 @@ declare module shiva {
     }
 }
 declare module shiva {
+    interface Page extends Container {
+        wake(): any;
+        sleep(): any;
+    }
+}
+declare module shiva {
+    class Pages extends Container {
+        private currentPage;
+        private config;
+        private pages;
+        private currentPageName;
+        private zIndex;
+        private delayTimeout;
+        constructor(config: PagesConfig);
+        update(pageName: string): void;
+    }
+}
+declare module shiva {
+    interface PagesConfig {
+        id?: string;
+        style?: StyleDeclaration;
+        delayTransition?: number;
+        pages: {};
+    }
+}
+declare module shiva {
     class RadioButton extends Container {
         static CLICK: string;
         private enabled;
@@ -786,6 +812,7 @@ declare module shiva {
         toVars: StyleDeclaration;
         ease?: Ease;
         delay?: number;
+        immediateRender?: boolean;
         resolve?: Function;
     }
 }
@@ -828,46 +855,6 @@ declare module shiva {
         button?: ButtonConfig;
         drop?: DropConfig;
         caret?: StyleDeclaration;
-    }
-}
-declare module shiva {
-    module stateMachine {
-        interface State extends Container {
-            hydrate(): any;
-        }
-    }
-}
-declare module shiva {
-    module stateMachine {
-        class StateMachine extends Container {
-            private currentView;
-            private config;
-            private views;
-            private currentState;
-            constructor(config: StateMachineConfig);
-            update(state: string): void;
-            private transitionComplete(e);
-            private removeView(e);
-        }
-    }
-}
-declare module shiva {
-    module stateMachine {
-        interface StateMachineConfig extends StyleDeclaration {
-            id?: string;
-            style?: StyleDeclaration;
-            to?: {
-                duration?: number;
-                top?: string;
-                left?: string;
-            };
-            from?: {
-                duration?: number;
-                top?: string;
-                left?: string;
-            };
-            views: {};
-        }
     }
 }
 

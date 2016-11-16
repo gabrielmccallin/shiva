@@ -58,10 +58,7 @@ module shiva {
             }
             else {
                 this._element = document.createElement("div");
-
             }
-            // seen some issues with the default static
-            // this._element.style.position = "relative";
         }
 
 
@@ -112,10 +109,6 @@ module shiva {
                         vo["duration"] = config.duration;
                     }
 
-                    if (config.delay) {
-                        // vo["delay"] = config.delay;
-                    }
-
                     if (this.transitions[i]) {
                         vo["count"] = this.transitions[i].count + 1;
                     }
@@ -128,7 +121,7 @@ module shiva {
                 }
 
                 this.style({
-                    transition: this.convertTransitionObjectToString(this.transitions)
+                    transition: this.convertTransitionObjectToString(this.transitions),
                 });
 
                 if (config.ease) {
@@ -225,7 +218,7 @@ module shiva {
         private removeCompletedTransitionsAndReapply(toVars: {}): string {
             for (let i in toVars) {
                 if (this.transitions[i]) {
-                    if(this.transitions[i].count > 0) {
+                    if (this.transitions[i].count > 0) {
                         this.transitions[i].count--;
                     }
                     else {
@@ -240,6 +233,9 @@ module shiva {
         fromTo(config: TransitionFromToConfig): Promise<Container> {
             if (config.delay) {
                 config.delay = config.delay * 1000;
+                if (config.immediateRender) {
+                    this.style(config.fromVars);
+                }
             }
             else {
                 this.style(config.fromVars);

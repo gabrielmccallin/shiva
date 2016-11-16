@@ -4,6 +4,7 @@
         toVars: StyleDeclaration;
         ease?: Ease;
         delay?: number;
+        immediateRender?: boolean;
         resolve?: Function;
     }
 }

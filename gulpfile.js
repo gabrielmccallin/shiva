@@ -89,5 +89,5 @@ gulp.task("dev", ["transpile", "add-defs"], function () {
     .pipe(gulp.dest(TARGET))
 });
 
-gulp.task("watch", ["webserver", "watch-dev"]);
-gulp.task("default", ["publish"]);
+gulp.task("default", ["webserver", "watch-dev"]);
+gulp.task("publish", ["publish"]);
