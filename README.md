@@ -259,4 +259,4 @@ Polyfill to prevent default event behavior.
 
 ## Links
 ---
-Starter template [https://bitbucket.org/gabrielmccallin/shiva-template](https://bitbucket.org/gabrielmccallin/curly-culture)  
+Start coding with shiva here: [https://bitbucket.org/gabrielmccallin/shiva-seed](https://bitbucket.org/gabrielmccallin/shiva-seed)  
