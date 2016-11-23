@@ -2,11 +2,11 @@
     "version": "1.5.0",
     "compilerOptions": {
         "target": "ES5",
-        "declaration": false,
+        "declaration": true,
         "noImplicitAny": false,
-        "removeComments": false,
+        "removeComments": true,
         "sourceMap": true,
-        "out": "app.js"
+        "out": "shiva.js"
     },
     
     "exclude":[

@@ -90,4 +90,3 @@ gulp.task("dev", ["transpile", "add-defs"], function () {
 });
 
 gulp.task("default", ["webserver", "watch-dev"]);
-gulp.task("publish", ["publish"]);

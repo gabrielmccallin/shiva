@@ -1688,7 +1688,7 @@ var shiva;
     shiva.DropDown = DropDown;
 })(shiva || (shiva = {}));
 
-
+//# sourceMappingURL=shiva.js.map
 
  /** Detect free variable `global` from Node.js. */
     var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
@@ -1737,5 +1737,3 @@ var shiva;
         root.shiva = shiva;
     }
 }.call(this));
-
-//# sourceMappingURL=shiva.js.map
