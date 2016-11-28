@@ -9,7 +9,7 @@ No markup, no templates, no CSS. Just code();
 ## Example usage
 ---
 
-### Create container.
+### Create container
 
 ```
 import { Container } from "shiva";
@@ -23,7 +23,7 @@ let view = new Container({
 this.addChild(view);
 ```
 
-### Update.
+### Update
 
 ```
 view.innerHtml = "I'm still a view";
@@ -39,7 +39,7 @@ view.style({
 });
 ```
 
-### Extend classes to give them the same abilities.
+### Extend classes to give them the same abilities
 ```
 import { Container } from "shiva";
 
@@ -52,19 +52,19 @@ class Home extends Container {
 }
 ```
 
-### Add this class to the DOM.
+### Add this class to the DOM
 ```
 let home = new Home();
 this.addChild(home);
 ```
 
-### Maybe some event listeners.
+### Maybe some event listeners
 ```
 home.addEventListener(this, "CUSTOM_EVENT", this.homeEventHandler);
 ```
 
 
-### Loader wraps XMLHttpRequest, returns a Promise.
+### Loader wraps XMLHttpRequest, returns a Promise
 
 ```
 import { Loader } from "shiva";
@@ -84,7 +84,7 @@ loader.load("//api.com/endpointABC", Loader.GET)
 });
 ```
 
-### Use the .to and .fromTo methods of Container for smooth CSS transitions.
+### Use the .to and .fromTo methods of Container for smooth CSS transitions
 ```
 let title = new Container({
     text: "Fade me out"
@@ -99,7 +99,7 @@ title.to({
 });
 ```
 
-### Chain transitions with Promise.
+### Chain transitions with Promise
 ```
 title.to({
     duration: 2,
@@ -126,7 +126,7 @@ And use something like `browserify` to bundle `shiva` with your app code.
 
 ### **Global**
 ```
-<script src="https://cdn.jsdelivr.net/shiva/0.5.5/shiva.min.js"></script>
+<script src="https://cdn.jsdelivr.net/shiva/0.5.7/shiva.min.js"></script>
 ```
 And use the `shiva` global in your code. e.g. `shiva.Container`, `shiva.Button`, `shiva.Loader` etc.
 
@@ -158,7 +158,7 @@ window.onload = () => {
 ## Components 
 ---
 
-#### Build applications quickly with these components, they all extend `Container`.
+#### Build applications quickly with these components, they all extend `Container`
 
 - **Anchor**  
 
