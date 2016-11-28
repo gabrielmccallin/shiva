@@ -259,4 +259,6 @@ Polyfill to prevent default event behavior.
 
 ## Links
 ---
-Start coding with shiva here: [https://bitbucket.org/gabrielmccallin/shiva-seed](https://bitbucket.org/gabrielmccallin/shiva-seed)  
+- Start coding with shiva here: [https://bitbucket.org/gabrielmccallin/shiva-seed](https://bitbucket.org/gabrielmccallin/shiva-seed)
+- Example with simple routing:
+[https://bitbucket.org/gabrielmccallin/shiva-pages](https://bitbucket.org/gabrielmccallin/shiva-pages)
