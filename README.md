@@ -259,10 +259,10 @@ Polyfill to prevent default event behavior.
 
 ## Links
 ---
-- Extremely simple example with shiva :trident: as a global library:  
+- Extremely simple example with shiva:trident: as a global library:  
 [https://bitbucket.org/gabrielmccallin/shiva-global](https://bitbucket.org/gabrielmccallin/shiva-global)
 
-- Start coding with shiva :trident: and Typescript:  
+- Start coding with shiva:trident: and Typescript:  
 [https://bitbucket.org/gabrielmccallin/shiva-seed](https://bitbucket.org/gabrielmccallin/shiva-seed)
 
 - Example with simple routing:  
