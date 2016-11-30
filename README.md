@@ -6,7 +6,7 @@ No markup, no templates, no CSS. Just code();
 
 ---
 ## Getting started
-> ### npm
+### npm
 
 ```
 npm install shiva --save
@@ -18,17 +18,16 @@ And use something like `browserify` to bundle `shiva` with your app code.
 If your IDE supports it, `shiva.d.ts` is in the `/dist` folder.
 
 
-> ### Global
+### Global
 ```
-<script src="https://cdn.jsdelivr.net/shiva/0.5.9/shiva.min.js"></script>
-```
+<script src="https://cdn.jsdelivr.net/shiva/0.5.9/shiva.min.js"/script```
 And use the `shiva` global in your code. e.g. `shiva.Container`, `shiva.Button`, `shiva.Loader` etc.
 
 - **Declaration file**  
 If your IDE supports it, download `https://cdn.jsdelivr.net/shiva/0.5.9/shiva-global.d.ts"` and place in your project. This should provide code completion for the library.
 
 ---
-## Now { code } ! :nerd_face:
+## Now { code } ! :zap:
 
 Extend your entry class with Container and tell it to be the root of the app.  
 
@@ -45,12 +44,12 @@ class App extends Container {
     }
 }
 
-window.onload = () => {
+window.onload = () ={
     new App();
 }; 
 ```
 
-> ### Create container
+### Create container
 
 ```
 import { Container } from "shiva";
@@ -64,7 +63,7 @@ const view = new Container({
 this.addChild(view);
 ```
 
-> ### Update
+### Update
 
 ```
 view.innerHtml = "I'm still a view";
@@ -80,7 +79,7 @@ view.style({
 });
 ```
 
-> ### Extend classes to give them the same abilities
+### Extend classes to give them the same abilities
 ```
 import { Container } from "shiva";
 
@@ -93,39 +92,39 @@ class Home extends Container {
 }
 ```
 
-> ### Add this class to the DOM
+### Add this class to the DOM
 ```
 const home = new Home();
 this.addChild(home);
 ```
 
-> ### Maybe some event listeners
+### Maybe some event listeners
 ```
 home.addEventListener(this, "CUSTOM_EVENT", this.homeEventHandler);
 ```
 
 
-> ### Loader wraps XMLHttpRequest, returns a Promise
+### Loader wraps XMLHttpRequest, returns a Promise
 
 ```
 import { Loader } from "shiva";
 
 const loader = new Loader();
 loader.load("//api.com/endpointABC", Loader.GET)
-.then((reponse)=> {
+.then((reponse)={
     // something with the response
     let parsed = JSON.parse(response);
-    return parsed.map((item) => {
+    return parsed.map((item) ={
         return item.title;
     }
 })
-.then((titles) => {
+.then((titles) ={
     // do something else !
     this.listView.update(titles);
 });
 ```
 
-> ### Use the .to and .fromTo methods of Container for smooth CSS transitions
+### Use the .to and .fromTo methods of Container for smooth CSS transitions
 ```
 const title = new Container({
     text: "Fade me out"
@@ -140,7 +139,7 @@ title.to({
 });
 ```
 
-> ### Chain transitions with Promise
+### Chain transitions with Promise
 ```
 title.to({
     duration: 2,
@@ -214,10 +213,10 @@ Append a container to a parent.
 - **removeChild( child: curly.Container )**:void  
 Remove a container from a parent.  
 
-- **to( transitionToConfig : { duration: number, delay: number, ease: Ease, toVars: StyleDeclaration })**: Promise<Container>;  
+- **to( transitionToConfig : { duration: number, delay: number, ease: Ease, toVars: StyleDeclaration })**: Promise<Container  
 Wraps CSS transitions for smooth animations with chaining.  
 
-- **fromTo( transitionFromToConfig : { duration: number, delay: number, ease: Ease, toVars: StyleDeclaration, fromVars: StyleDeclaration)**: Promise<Container>;    
+- **fromTo( transitionFromToConfig : { duration: number, delay: number, ease: Ease, toVars: StyleDeclaration, fromVars: StyleDeclaration)**: Promise<Container    
 Wraps CSS transitions for smooth animations with chaining.  
 
 - **addEventListener( scope: any, typeStr: string, listenerFunc: Function, data?: any, useCapture?: boolean )**: void;  
