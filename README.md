@@ -14,8 +14,8 @@ npm install shiva --save
 
 And use something like `browserify` to bundle `shiva` with your app code.    
 
-- **Declaration file**  
-If your IDE supports it, `shiva.d.ts` is in the `/dist` folder.
+**Declaration file**  
+If your IDE supports it, `shiva.d.ts` is in the `/dist` folder. This should provide code completion for the library.
 
 
 ### Global
@@ -24,7 +24,7 @@ If your IDE supports it, `shiva.d.ts` is in the `/dist` folder.
 ```
 And use the `shiva` global in your code. e.g. `shiva.Container`, `shiva.Button`, `shiva.Loader` etc.
 
-- **Declaration file**  
+**Declaration file**  
 If your IDE supports it, download `https://cdn.jsdelivr.net/shiva/0.5.9/shiva-global.d.ts"` and place in your project. This should provide code completion for the library.
 
 ---
