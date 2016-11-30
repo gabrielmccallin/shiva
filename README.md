@@ -20,7 +20,8 @@ If your IDE supports it, `shiva.d.ts` is in the `/dist` folder.
 
 ### Global
 ```
-<script src="https://cdn.jsdelivr.net/shiva/0.5.9/shiva.min.js"/script```
+<script src="https://cdn.jsdelivr.net/shiva/0.5.9/shiva.min.js"></script>
+```
 And use the `shiva` global in your code. e.g. `shiva.Container`, `shiva.Button`, `shiva.Loader` etc.
 
 - **Declaration file**  
