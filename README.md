@@ -1,137 +1,34 @@
 # shiva :trident:
----
 
 A JavaScript library for programming the web.  
 
 No markup, no templates, no CSS. Just code();
 
-
-## Example usage
 ---
-
-### Create container
-
-```
-import { Container } from "shiva";
-
-let view = new Container({
-    text: "I'm a view",
-    display: "block",
-    backgroundColor: "#333333",
-    style: styles.StylishView
-});
-this.addChild(view);
-```
-
-### Update
-
-```
-view.innerHtml = "I'm still a view";
-
-// keep your styles in a class
-view.style(styles.DifferentStyle);
-
-// or use a literal
-view.style({
-    backgroundColor: "#dddddd",
-    position: "absolute",
-    top: "10rem"
-});
-```
-
-### Extend classes to give them the same abilities
-```
-import { Container } from "shiva";
-
-class Home extends Container {
-    constructor() {
-        super({
-            id: "Home"
-        });
-    }
-}
-```
-
-### Add this class to the DOM
-```
-let home = new Home();
-this.addChild(home);
-```
-
-### Maybe some event listeners
-```
-home.addEventListener(this, "CUSTOM_EVENT", this.homeEventHandler);
-```
-
-
-### Loader wraps XMLHttpRequest, returns a Promise
-
-```
-import { Loader } from "shiva";
-
-let loader = new Loader();
-loader.load("//api.com/endpointABC", Loader.GET)
-.then((reponse)=> {
-    // something with the response
-    let parsed = JSON.parse(response);
-    return parsed.map((item) => {
-        return item.title;
-    }
-})
-.then((titles) => {
-    // do something else !
-    this.listView.update(titles);
-});
-```
-
-### Use the .to and .fromTo methods of Container for smooth CSS transitions
-```
-let title = new Container({
-    text: "Fade me out"
-});
-
-title.to({
-    duration: 2,
-    delay: 1,
-    toVars: {
-        opacity: "0"
-    }
-});
-```
-
-### Chain transitions with Promise
-```
-title.to({
-    duration: 2,
-    delay: 1,
-    toVars: {
-        opacity: "0"
-    }
-})
-.then(this.doSomethingElse);   
-```
-
-
 ## Getting started
----
-
-### **npm**
+> ### npm
 
 ```
 npm install shiva --save
 ```
 
-And use something like `browserify` to bundle `shiva` with your app code.
+And use something like `browserify` to bundle `shiva` with your app code.    
+
+- **Declaration file**  
+If your IDE supports it, `shiva.d.ts` is in the `/dist` folder.
 
 
-### **Global**
+> ### Global
 ```
-<script src="https://cdn.jsdelivr.net/shiva/0.5.7/shiva.min.js"></script>
+<script src="https://cdn.jsdelivr.net/shiva/0.5.9/shiva.min.js"></script>
 ```
 And use the `shiva` global in your code. e.g. `shiva.Container`, `shiva.Button`, `shiva.Loader` etc.
 
+- **Declaration file**  
+If your IDE supports it, download `https://cdn.jsdelivr.net/shiva/0.5.9/shiva-global.d.ts"` and place in your project. This should provide code completion for the library.
 
-### **Now { code } !**
+---
+## Now { code } ! :nerd_face:
 
 Extend your entry class with Container and tell it to be the root of the app.  
 
@@ -149,14 +46,117 @@ class App extends Container {
 }
 
 window.onload = () => {
-    let app = new App();
+    new App();
 }; 
+```
+
+> ### Create container
+
+```
+import { Container } from "shiva";
+
+const view = new Container({
+    text: "I'm a view",
+    display: "block",
+    backgroundColor: "#333333",
+    style: styles.StylishView
+});
+this.addChild(view);
+```
+
+> ### Update
+
+```
+view.innerHtml = "I'm still a view";
+
+// keep your styles in a class
+view.style(styles.DifferentStyle);
+
+// or use a literal
+view.style({
+    backgroundColor: "#dddddd",
+    position: "absolute",
+    top: "10rem"
+});
+```
+
+> ### Extend classes to give them the same abilities
+```
+import { Container } from "shiva";
+
+class Home extends Container {
+    constructor() {
+        super({
+            id: "Home"
+        });
+    }
+}
+```
+
+> ### Add this class to the DOM
+```
+const home = new Home();
+this.addChild(home);
+```
+
+> ### Maybe some event listeners
+```
+home.addEventListener(this, "CUSTOM_EVENT", this.homeEventHandler);
+```
+
+
+> ### Loader wraps XMLHttpRequest, returns a Promise
+
+```
+import { Loader } from "shiva";
+
+const loader = new Loader();
+loader.load("//api.com/endpointABC", Loader.GET)
+.then((reponse)=> {
+    // something with the response
+    let parsed = JSON.parse(response);
+    return parsed.map((item) => {
+        return item.title;
+    }
+})
+.then((titles) => {
+    // do something else !
+    this.listView.update(titles);
+});
+```
+
+> ### Use the .to and .fromTo methods of Container for smooth CSS transitions
+```
+const title = new Container({
+    text: "Fade me out"
+});
+
+title.to({
+    duration: 2,
+    delay: 1,
+    toVars: {
+        opacity: "0"
+    }
+});
+```
+
+> ### Chain transitions with Promise
+```
+title.to({
+    duration: 2,
+    delay: 1,
+    toVars: {
+        opacity: "0"
+    }
+})
+.then(this.doSomethingElse);   
 ```
 
 
 
-## Components 
+
 ---
+## Components 
 
 #### Build applications quickly with these components, they all extend `Container`
 
@@ -177,9 +177,8 @@ window.onload = () => {
 - **Select**  
 
 
-
-## Utilities
 ---
+## Utilities
 
 - **EventDispatcher**  
 Custom event dispatching, add / remove.
@@ -197,9 +196,8 @@ XHR wrapper with event dispatcher and Promise chaining.
 Some Window polyfill methods.
 
 
-
-## Container
 ---
+## Container API
 
 ### Methods
 
@@ -257,8 +255,8 @@ Polyfill to prevent default event behavior.
 - **href**: string;
 
 
-## Links
 ---
+## Links
 - Extremely simple example with shiva:trident: as a global library:  
 [https://bitbucket.org/gabrielmccallin/shiva-global](https://bitbucket.org/gabrielmccallin/shiva-global)
 
