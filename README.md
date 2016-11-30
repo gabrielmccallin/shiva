@@ -20,15 +20,15 @@ If your IDE supports it, `shiva.d.ts` is in the `/dist` folder. This should prov
 
 ### Global
 ```
-<script src="https://cdn.jsdelivr.net/shiva/0.5.9/shiva.min.js"></script>
+<script src="https://cdn.jsdelivr.net/shiva/0.5.10/shiva.min.js"></script>
 ```
 And use the `shiva` global in your code. e.g. `shiva.Container`, `shiva.Button`, `shiva.Loader` etc.
 
 **Declaration file**  
-If your IDE supports it, download `https://cdn.jsdelivr.net/shiva/0.5.9/shiva-global.d.ts"` and place in your project. This should provide code completion for the library.
+If your IDE supports it, download [https://cdn.jsdelivr.net/shiva/0.5.10/shiva-global.d.ts](https://cdn.jsdelivr.net/shiva/0.5.10/shiva-global.d.ts) and place in your project. This should provide code completion for the library.
 
 ---
-## Now { code } ! :zap:
+## Now { code } !
 
 Extend your entry class with Container and tell it to be the root of the app.  
 
