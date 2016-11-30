@@ -97,12 +97,12 @@ interface Iterable<T> {
     // [Symbol.iterator](): Iterator<T>;
 }
 /// <reference path="typings/promise.d.ts" />
-declare module "shiva" {
+declare module shiva {
     class Properties {
         static style(object: any, vars: StyleDeclaration): void;
     }
 }
-declare module "shiva" {
+declare module shiva {
     class Event {
         private _type;
         private _target;
@@ -122,7 +122,7 @@ declare module "shiva" {
         dispatchEvent(evt: Event): void;
     }
 }
-declare module "shiva" {
+declare module shiva {
     class Container extends EventDispatcher {
         static TRANSITION_COMPLETE: string;
         private _element;
@@ -162,17 +162,17 @@ declare module "shiva" {
         href: string;
     }
 }
-declare module "shiva" {
+declare module shiva {
     class Anchor extends Container {
         constructor(config: AnchorConfig);
     }
 }
-declare module "shiva" {
+declare module shiva {
     interface AnchorConfig extends ContainerConfig {
         href?: any;
     }
 }
-declare module "shiva" {
+declare module shiva {
     class Button extends Container {
         static CLICK: string;
         private enabled;
@@ -191,7 +191,7 @@ declare module "shiva" {
         private outWithEnable(e);
     }
 }
-declare module "shiva" {
+declare module shiva {
     interface ButtonConfig extends HoverStyleDeclaration {
         id?: string;
         href?: string;
@@ -203,13 +203,13 @@ declare module "shiva" {
         type?: string;
     }
 }
-declare module "shiva" {
+declare module shiva {
     interface ButtonIconConfig extends ButtonConfig {
         code?: string;
         align?: string;
     }
 }
-declare module "shiva" {
+declare module shiva {
     class CheckBox extends Container {
         static CLICK: string;
         private enabled;
@@ -217,7 +217,7 @@ declare module "shiva" {
         checked: boolean;
     }
 }
-declare module "shiva" {
+declare module shiva {
     interface ContainerConfig extends StyleDeclaration {
         root?: boolean;
         id?: string;
@@ -227,14 +227,14 @@ declare module "shiva" {
         data?: any;
     }
 }
-declare module "shiva" {
+declare module shiva {
     class Dimensions {
         width: number;
         height: number;
         constructor(width: number, height: number);
     }
 }
-declare module "shiva" {
+declare module shiva {
     class Ease {
         static Linear: string;
         static Ease: string;
@@ -243,7 +243,7 @@ declare module "shiva" {
         static EaseInOut: string;
     }
 }
-declare module "shiva" {
+declare module shiva {
     interface HoverStyleDeclaration extends StyleDeclaration {
         backgroundColorHover?: string;
         colorHover?: string;
@@ -251,7 +251,7 @@ declare module "shiva" {
         durationOut?: number;
     }
 }
-declare module "shiva" {
+declare module shiva {
     class Image extends Container {
         static COMPLETE: string;
         static ERROR: string;
@@ -259,20 +259,20 @@ declare module "shiva" {
         load(path: string): void;
     }
 }
-declare module "shiva" {
+declare module shiva {
     interface ImageConfig {
         path?: any;
         style?: StyleDeclaration;
     }
 }
-declare module "shiva" {
+declare module shiva {
     interface InputConfig {
         id?: string;
         style?: InputConfig;
         checked?: boolean;
     }
 }
-declare module "shiva" {
+declare module shiva {
     class Loader extends EventDispatcher {
         static COMPLETE: string;
         static ERROR: string;
@@ -290,7 +290,7 @@ declare module "shiva" {
         private handleResponse();
     }
 }
-declare module "shiva" {
+declare module shiva {
     class LoaderEvent extends Event {
         private _response;
         private _status;
@@ -301,21 +301,21 @@ declare module "shiva" {
         httpMetaData: any;
     }
 }
-declare module "shiva" {
+declare module shiva {
     class Observer {
         private static observers;
         static addEventListener(scope: any, type: string, callback: Function): void;
         static removeEventListener(type: string, callback: Function): void;
-        static dispatchEvent(evt: Event): void;
+        static dispatchEvent(evt: shiva.Event): void;
     }
 }
-declare module "shiva" {
+declare module shiva {
     interface Page extends Container {
         wake(): any;
         sleep(): any;
     }
 }
-declare module "shiva" {
+declare module shiva {
     class Pages extends Container {
         private currentPage;
         private config;
@@ -327,7 +327,7 @@ declare module "shiva" {
         update(pageName: string): void;
     }
 }
-declare module "shiva" {
+declare module shiva {
     interface PagesConfig {
         id?: string;
         style?: StyleDeclaration;
@@ -335,7 +335,7 @@ declare module "shiva" {
         pages: {};
     }
 }
-declare module "shiva" {
+declare module shiva {
     class RadioButton extends Container {
         static CLICK: string;
         private enabled;
@@ -343,7 +343,7 @@ declare module "shiva" {
         checked: boolean;
     }
 }
-declare module "shiva" {
+declare module shiva {
     class Resize {
         static proportionalOutside(objectWidth: number, objectHeight: number, areaWidth: number, areaHeight: number): {
             height: number;
@@ -352,7 +352,7 @@ declare module "shiva" {
         static proportionalInside(objectWidth: number, objectHeight: number, areaWidth: number, areaHeight: number): Object;
     }
 }
-declare module "shiva" {
+declare module shiva {
     class Select extends Container {
         static CHANGE: string;
         constructor(config: SelectConfig);
@@ -360,13 +360,13 @@ declare module "shiva" {
         selectedIndex: number;
     }
 }
-declare module "shiva" {
+declare module shiva {
     interface SelectConfig extends ContainerConfig {
         name?: string;
         options: string[];
     }
 }
-declare module "shiva" {
+declare module shiva {
     interface StyleDeclaration {
         alignContent?: string;
         alignItems?: string;
@@ -720,7 +720,7 @@ declare module "shiva" {
         float?: string;
     }
 }
-declare module "shiva" {
+declare module shiva {
     class Styles {
         static button: {
             fontSize: string;
@@ -791,7 +791,7 @@ declare module "shiva" {
         };
     }
 }
-declare module "shiva" {
+declare module shiva {
     class Transition {
         private callback;
         private data;
@@ -801,12 +801,12 @@ declare module "shiva" {
         printCallback(): Transition;
     }
 }
-declare module "shiva" {
+declare module shiva {
     interface TransitionFromToConfig extends TransitionToConfig {
         fromVars: StyleDeclaration;
     }
 }
-declare module "shiva" {
+declare module shiva {
     interface TransitionToConfig {
         duration: number;
         toVars: StyleDeclaration;
@@ -816,7 +816,7 @@ declare module "shiva" {
         resolve?: Function;
     }
 }
-declare module "shiva" {
+declare module shiva {
     class Window {
         static scrollY(): number;
         static scrollX(): number;
@@ -824,13 +824,13 @@ declare module "shiva" {
         static width: number;
     }
 }
-declare module "shiva" {
+declare module shiva {
     interface DropConfig extends HoverStyleDeclaration {
         durationExpand?: number;
         durationContract?: number;
     }
 }
-declare module "shiva" {
+declare module shiva {
     class DropDown extends Container {
         static CHANGE: string;
         private button;
@@ -840,8 +840,8 @@ declare module "shiva" {
         private dropConfig;
         constructor(config: DropDownConfig);
         private itemClicked(e);
-        itemOver(e: Event): void;
-        itemOut(e: Event): void;
+        itemOver(e: shiva.Event): void;
+        itemOut(e: shiva.Event): void;
         private buttonClicked(e);
         private closeDrop(e);
         private hideList();
@@ -849,7 +849,7 @@ declare module "shiva" {
         enable(): void;
     }
 }
-declare module "shiva" {
+declare module shiva {
     interface DropDownConfig extends ContainerConfig {
         options: string[];
         button?: ButtonConfig;
