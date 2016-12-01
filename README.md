@@ -5,8 +5,8 @@ A JavaScript library for programming the web.
 No markup, no templates, no CSS. Just code();
 
 ---
-## Getting started
-### npm
+### **Getting started**
+#### npm
 
 ```
 npm install shiva --save
@@ -14,21 +14,19 @@ npm install shiva --save
 
 And use something like `browserify` to bundle `shiva` with your app code.    
 
-**Declaration file**  
-If your IDE supports it, `shiva.d.ts` is in the `/dist` folder. This should provide code completion for the library.
+If your IDE supports declaration files, `shiva.d.ts` is in the `/dist` folder. This should provide code completion for the library.
 
 
-### Global
+#### Global
 ```
-<script src="https://cdn.jsdelivr.net/shiva/0.5.10/shiva.min.js"></script>
+<script src="https://cdn.jsdelivr.net/shiva/0.5.11/shiva.min.js"></script>
 ```
 And use the `shiva` global in your code. e.g. `shiva.Container`, `shiva.Button`, `shiva.Loader` etc.
 
-**Declaration file**  
-If your IDE supports it, download [https://cdn.jsdelivr.net/shiva/0.5.10/shiva-global.d.ts](https://cdn.jsdelivr.net/shiva/0.5.10/shiva-global.d.ts) and place in your project. This should provide code completion for the library.
+If your IDE supports declaration files, download [https://cdn.jsdelivr.net/shiva/0.5.11/shiva-global.d.ts](https://cdn.jsdelivr.net/shiva/0.5.11/shiva-global.d.ts) and place in your project. This should provide code completion for the library.
 
 ---
-## Now { code } !
+### **Now { code } !**
 
 Extend your entry class with Container and tell it to be the root of the app.  
 
@@ -50,7 +48,7 @@ window.onload = () ={
 }; 
 ```
 
-### Create container
+#### Create container
 
 ```
 import { Container } from "shiva";
@@ -64,7 +62,7 @@ const view = new Container({
 this.addChild(view);
 ```
 
-### Update
+#### Update
 
 ```
 view.innerHtml = "I'm still a view";
@@ -80,7 +78,7 @@ view.style({
 });
 ```
 
-### Extend classes to give them the same abilities
+#### Extend classes to give them the same abilities
 ```
 import { Container } from "shiva";
 
@@ -93,19 +91,19 @@ class Home extends Container {
 }
 ```
 
-### Add this class to the DOM
+#### Add this class to the DOM
 ```
 const home = new Home();
 this.addChild(home);
 ```
 
-### Maybe some event listeners
+#### Maybe some event listeners
 ```
 home.addEventListener(this, "CUSTOM_EVENT", this.homeEventHandler);
 ```
 
 
-### Loader wraps XMLHttpRequest, returns a Promise
+#### Loader wraps XMLHttpRequest, returns a Promise
 
 ```
 import { Loader } from "shiva";
@@ -125,7 +123,7 @@ loader.load("//api.com/endpointABC", Loader.GET)
 });
 ```
 
-### Use the .to and .fromTo methods of Container for smooth CSS transitions
+#### Use the .to and .fromTo methods of Container for smooth CSS transitions
 ```
 const title = new Container({
     text: "Fade me out"
@@ -140,7 +138,7 @@ title.to({
 });
 ```
 
-### Chain transitions with Promise
+#### Chain transitions with Promise
 ```
 title.to({
     duration: 2,
@@ -156,9 +154,9 @@ title.to({
 
 
 ---
-## Components 
+### **Components** 
 
-#### Build applications quickly with these components, they all extend `Container`
+Build applications quickly with these components, they all extend `Container`
 
 - **Anchor**  
 
@@ -178,7 +176,7 @@ title.to({
 
 
 ---
-## Utilities
+### **Utilities**
 
 - **EventDispatcher**  
 Custom event dispatching, add / remove.
@@ -197,9 +195,9 @@ Some Window polyfill methods.
 
 
 ---
-## Container API
+### **Container API**
 
-### Methods
+Methods
 
 - **addToBody()**: void;  
 Add container directly to document.body.
@@ -241,7 +239,7 @@ Polyfill to prevent default event behavior.
 
 
 
-### Getters / setters
+Getters / setters
 
 - **width**: number;
 - **height**: number;
@@ -256,7 +254,7 @@ Polyfill to prevent default event behavior.
 
 
 ---
-## Links
+### **Links**
 - Extremely simple example with shiva:trident: as a global library:  
 [https://bitbucket.org/gabrielmccallin/shiva-global](https://bitbucket.org/gabrielmccallin/shiva-global)
 
