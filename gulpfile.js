@@ -1,20 +1,21 @@
-var SHIVA = "shiva";
-var SOURCE = "src";
-var TARGET = "dist";
-var PORT = "1338";
+var SHIVA = "shiva",
+  SOURCE = "src",
+  TARGET = "dist",
+  PORT = "1338",
 
-var gulp = require("gulp"),
+  gulp = require("gulp"),
   watch = require("gulp-watch"),
   sourcemaps = require("gulp-sourcemaps"),
   connect = require("gulp-connect"),
-  replace = require("gulp-replace");
-var ts = require("gulp-typescript");
-var merge = require("merge2");
-var concat = require("gulp-concat");
-var uglify = require("gulp-uglify");
-var rename = require('gulp-rename');
-var gutil = require('gulp-util');
-var version = "0.5.0";
+  replace = require("gulp-replace"),
+  ts = require("gulp-typescript"),
+  merge = require("merge2"),
+  concat = require("gulp-concat"),
+  uglify = require("gulp-uglify"),
+  rename = require('gulp-rename'),
+  gutil = require('gulp-util'),
+
+  version = "0.5.0";
 
 gulp.task("webserver", function () {
   connect.server({
@@ -50,8 +51,11 @@ gulp.task("transpile", function () {
   return merge([
     tsResult
       .dts
+      .pipe(rename(SHIVA + "-global.d.ts"))
+      .pipe(gulp.dest(TARGET))
       .pipe(replace('module shiva', 'module "shiva"'))
       .pipe(replace('shiva.Event', 'Event'))
+      .pipe(rename(SHIVA + ".d.ts"))
       .pipe(gulp.dest(TARGET)),
     tsResult
       .js
@@ -66,14 +70,19 @@ gulp.task("transpile", function () {
 });
 
 gulp.task("add-defs", ["transpile"], function () {
-  gulp.src(["typings/promise.d.ts", "dist/shiva.d.ts"])
+  gulp.src(["typings/promise.d.ts", TARGET + "/" + SHIVA + ".d.ts"])
     .pipe(concat(SHIVA + ".d.ts"))
     .pipe(gulp.dest(TARGET));
 });
 
+gulp.task("add-defs-global", ["add-defs"], function () {
+  gulp.src(["typings/promise.d.ts", TARGET + "/" + SHIVA + "-global.d.ts"])
+    .pipe(concat(SHIVA + "-global.d.ts"))
+    .pipe(gulp.dest(TARGET));
+});
 
 
-gulp.task("publish", ["transpile", "add-defs"], function () {
+gulp.task("publish", ["transpile", "add-defs", "add-defs-global"], function () {
   return gulp.src(["libs/promise-polyfill.js", "libs/begin-iife.js", TARGET + "/" + SHIVA + ".js", "libs/umd.js"])
     .pipe(concat(SHIVA + ".js"))
     .pipe(gulp.dest(TARGET))
