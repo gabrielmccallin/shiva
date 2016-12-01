@@ -6,7 +6,8 @@ var PORT = "1338";
 var gulp = require("gulp"),
   watch = require("gulp-watch"),
   sourcemaps = require("gulp-sourcemaps"),
-  connect = require("gulp-connect");
+  connect = require("gulp-connect"),
+  replace = require("gulp-replace");
 var ts = require("gulp-typescript");
 var merge = require("merge2");
 var concat = require("gulp-concat");
@@ -49,6 +50,8 @@ gulp.task("transpile", function () {
   return merge([
     tsResult
       .dts
+      .pipe(replace('module shiva', 'module "shiva"'))
+      .pipe(replace('shiva.Event', 'Event'))
       .pipe(gulp.dest(TARGET)),
     tsResult
       .js
@@ -63,10 +66,12 @@ gulp.task("transpile", function () {
 });
 
 gulp.task("add-defs", ["transpile"], function () {
-  gulp.src(["typings/promise.d.ts", "dist/shiva.d.ts", "libs/node_modules-definition.d.ts"])
+  gulp.src(["typings/promise.d.ts", "dist/shiva.d.ts"])
     .pipe(concat(SHIVA + ".d.ts"))
     .pipe(gulp.dest(TARGET));
-})
+});
+
+
 
 gulp.task("publish", ["transpile", "add-defs"], function () {
   return gulp.src(["libs/promise-polyfill.js", "libs/begin-iife.js", TARGET + "/" + SHIVA + ".js", "libs/umd.js"])

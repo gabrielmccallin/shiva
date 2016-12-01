@@ -96,11 +96,6 @@ module shiva {
         }
 
         to(config: TransitionToConfig): Promise<Container> {
-            // force 3D
-            this.style({
-                transform: "translateZ(1px)"
-            });
-            
             let delay = 10;
             if (config.delay) {
                 delay = config.delay * 1000;
@@ -236,11 +231,6 @@ module shiva {
         }
 
         fromTo(config: TransitionFromToConfig): Promise<Container> {
-            // force 3D
-            this.style({
-                transform: "translateZ(1px)"
-            });
-
             if (config.delay) {
                 config.delay = config.delay * 1000;
                 if (config.immediateRender) {

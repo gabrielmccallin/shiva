@@ -1,11 +1,11 @@
 {
   "name": "shiva",
-  "version": "0.5.10",
+  "version": "0.5.11",
   "description": "A JavaScript library for programming the web.",
   "main": "./dist/shiva.min.js",
   "types": "./dist/shiva.d.ts",
   "scripts": {
-    "start": "echo And in all, the creator, preserver, destroyer, revealer and concealer of all that is."
+    "start": "echo And in all, the creator, preserver, destroyer, revealer and concealer of all that is. && gulp"
   },
   "dependencies": {},
   "repository": {
@@ -20,6 +20,7 @@
     "gulp-concat": "^2.6.0",
     "gulp-connect": "^2.2.0",
     "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-typescript": "^2.8.2",
     "gulp-uglify": "^1.4.1",

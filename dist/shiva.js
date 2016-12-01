@@ -469,9 +469,6 @@ var shiva;
         };
         Container.prototype.to = function (config) {
             var _this = this;
-            this.style({
-                transform: "translateZ(1px)"
-            });
             var delay = 10;
             if (config.delay) {
                 delay = config.delay * 1000;
@@ -582,9 +579,6 @@ var shiva;
         };
         Container.prototype.fromTo = function (config) {
             var _this = this;
-            this.style({
-                transform: "translateZ(1px)"
-            });
             if (config.delay) {
                 config.delay = config.delay * 1000;
                 if (config.immediateRender) {
