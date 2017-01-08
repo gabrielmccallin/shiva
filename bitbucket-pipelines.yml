@@ -1,0 +1,23 @@
+# This is a sample build configuration for Javascript.
+# Check our guides at https://confluence.atlassian.com/x/VYk8Lw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: node:6
+
+pipelines:
+  default:
+    - step:
+        script:
+          - echo "And in all, the creator, preserver, destroyer, revealer and concealer of all that is."
+  branches:
+    master:
+      - step:
+          script:
+            - echo BITBUCKET_COMMIT "This script runs only on commit to the master branch."
+            # - git config --global user.email "pipeline@bitbucket.org"
+            # - git config --global user.name "Pipeline Auto Deploy"
+            # - git clone --no-checkout https://gabrielmccallin:itnujra010@github.com/gabrielmccallin/shiva.git
+            # - git add .
+            # - git commit -m BITBUCKET_COMMIT "deployed from pipeline"
+            # - git push

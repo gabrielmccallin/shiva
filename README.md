@@ -4,12 +4,14 @@ A JavaScript library for programming the web.
 
 No markup, no templates, no CSS. Just code();
 
+[https://gabrielmccallin.bitbucket.io/shiva/](https://gabrielmccallin.bitbucket.io/shiva/)
+
 ---
 ### **Getting started**
 #### npm
 
 ```
-npm install shiva --save
+npm install shiva --save-dev
 ```
 
 And use something like `browserify` to bundle `shiva` with your app code.    
