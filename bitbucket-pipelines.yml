@@ -14,7 +14,7 @@ pipelines:
     master:
       - step:
           script:
-            - echo "$BITBUCKET_COMMIT This script runs only on commit to the master branch."
+            - echo "$BITBUCKET_COMMIT_MESSAGE This script runs only on commit to the master branch."
             # - git config --global user.email "pipeline@bitbucket.org"
             # - git config --global user.name "Pipeline Auto Deploy"
             # - git clone --no-checkout https://gabrielmccallin:itnujra010@github.com/gabrielmccallin/shiva.git
