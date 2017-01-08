@@ -14,11 +14,12 @@ pipelines:
     master:
       - step:
           script:
-            - echo "$BITBUCKET_MESSAGE This script runs only on commit to the master branch."
-            - git log -1 --pretty=format:"%s"
-            # - git config --global user.email "pipeline@bitbucket.org"
-            # - git config --global user.name "Pipeline Auto Deploy"
+            - echo "This script runs only on commit to the master branch."
+            - $message = git log -1 --pretty=format:"%s"
+            - echo $message
+            # - git config --global user.email "gabrielmccallin@outlook.com"
+            # - git config --global user.name "Gabriel McCallin"
             # - git clone --no-checkout https://gabrielmccallin:itnujra010@github.com/gabrielmccallin/shiva.git
             # - git add .
-            # - git commit -m BITBUCKET_COMMIT "deployed from pipeline"
+            # - git commit -m $message
             # - git push
