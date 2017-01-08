@@ -15,7 +15,7 @@ pipelines:
       - step:
           script:
             - echo "This script runs only on commit to the master branch."
-            - $message = git log -1 --pretty=format:"%s"
+            - message = git log -1 --pretty=format:"%s"
             - echo $message
             # - git config --global user.email "gabrielmccallin@outlook.com"
             # - git config --global user.name "Gabriel McCallin"
