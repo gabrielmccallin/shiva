@@ -1,6 +1,6 @@
 {
   "name": "shiva",
-  "version": "0.5.13",
+  "version": "0.5.14",
   "description": "A JavaScript library for programming the web.",
   "main": "./dist/shiva.min.js",
   "types": "./dist/shiva.d.ts",
@@ -14,7 +14,7 @@
   },
   "author": "Gabriel McCallin",
   "license": "MIT",
-  "homepage": "https://bitbucket.org/gabrielmccallin/shiva#readme",
+  "homepage": "https://gabrielmccallin.bitbucket.io/shiva",
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
