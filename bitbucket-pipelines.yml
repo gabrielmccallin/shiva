@@ -20,5 +20,5 @@ pipelines:
             - git config --global user.name "Gabriel McCallin"
             - git clone --no-checkout https://gabrielmccallin:itnujra010@github.com/gabrielmccallin/shiva.git
             - git add .
-            - git commit -m $message
+            - git commit -m "$message"
             - git push
