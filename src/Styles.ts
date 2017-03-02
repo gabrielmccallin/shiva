@@ -27,7 +27,7 @@
             borderColor: "#dddddd",
             color: "#333333",
             colorHover: "#ffffff",
-            text: "button"
+            text: "Button"
         };
         static caret = {
             width: "0px",
@@ -43,9 +43,10 @@
             borderTopColor: "black",
             display: "inline-block",
             verticalAlign: "middle",
-            marginLeft: "0.35rem"
+            marginLeft: "0.35rem",
+            pointerEvents: "none"
         };
-        static drop = {            
+        static drop = {
             fontFamily: "sans-serif",
             fontSize: "1.2rem",
             backgroundColor: "#ffffff",
@@ -54,22 +55,21 @@
             color: "#000000",
             durationIn: 0,
             durationOut: 0.5,
-            listStyle: "none",
-            zIndex: "1000",
-            position: "absolute",
-            // float: "left",
-            //!important to remove default margin on a ul
-            marginTop: "0px",
             minWidth: "5rem",
-            border: "1px solid rgba(0,0,0,.15)",
-            webkitBoxShadow: "0 6px 12px rgba(0,0,0,.175)",
-            boxShadow: "0px 6px 12px rgba(0,0,0,0.175)",
             fontWeight: "300",
-            paddingLeft: "0px",
-            durationExpand: "0.5",
-            durationContract: "0.5"
+            padding: "0rem",
+            durationExpand: 0.5,
+            durationContract: 0.5,
+            marginTop: "0rem",
+            listStyle: "none",
+            zIndex: "1336",
+            position: "absolute"
 
         };
+        static listItem = {
+            padding: "0.5rem",
+            display: "list-item",
+            cursor: "pointer"
+        }
     }
 }
- 

@@ -841,37 +841,33 @@ var shiva;
         __extends(Button, _super);
         function Button(config) {
             var type;
-            if (config.href) {
-                type = "a";
-            }
-            else {
-                type = "button";
-            }
-            if (config.type) {
-                type = config.type;
+            var id;
+            var href;
+            if (config) {
+                if (config.href) {
+                    type = "a";
+                    href = config.href;
+                }
+                else {
+                    type = "button";
+                }
+                if (config.type) {
+                    type = config.type;
+                }
+                id = config.id;
             }
             _super.call(this, {
-                id: config.id,
+                id: id,
                 type: type,
-                cursor: "pointer",
-                display: "inline-block"
+                cursor: "pointer"
             });
-            this.href = config.href;
+            this.href = href;
             this.enabled = true;
-            if (config.icon && config.icon.code) {
-                this.icon = new shiva.Container({
-                    type: "span",
-                    text: config.icon.code
-                });
-            }
-            this.update(config);
-        }
-        Button.prototype.update = function (config) {
             this.config = {};
             for (var i in shiva.Styles.button) {
                 this.config[i] = shiva.Styles.button[i];
             }
-            if (config && config.style) {
+            if (config) {
                 for (var i in config.style) {
                     this.config[i] = config.style[i];
                 }
@@ -879,35 +875,39 @@ var shiva;
             for (var i in config) {
                 this.config[i] = config[i];
             }
-            if (config.style) {
-                for (var i in config.style.icon) {
-                    this.config.icon[i] = config.style.icon[i];
-                }
-            }
-            this.innerHtml = config.text;
-            this.addEventListener(this, "mouseover", this.overWithEnable);
-            this.addEventListener(this, "mouseout", this.outWithEnable);
+            var label = document.createTextNode(this.config.text);
+            this.element.appendChild(label);
             if (this.config.icon && this.config.icon.code) {
-                if (this.config.icon.align === "left") {
-                    this.icon.style({
-                        paddingRight: this.config.icon.padding,
-                    });
-                }
-                else {
-                    this.icon.style({
-                        paddingLeft: this.config.icon.padding
-                    });
-                }
-                this.icon.style({
-                    fontFamily: this.config.icon.fontFamily,
-                    fontSize: this.config.icon.fontSize,
-                    float: this.config.icon.align,
+                var icon = new shiva.Container({
+                    type: "span",
+                    display: "inline-block",
+                    text: this.config.icon.code
+                });
+                icon.style({
+                    fontFamily: shiva.Styles.button.fontFamily,
+                    fontSize: shiva.Styles.button.fontSize,
                     pointerEvents: "none"
                 });
-                this.addChild(this.icon);
+                if (this.config.icon.align === "left") {
+                    icon.style({
+                        paddingRight: shiva.Styles.button.padding,
+                    });
+                    this.element.removeChild(label);
+                    this.addChild(icon);
+                    this.element.appendChild(label);
+                }
+                else {
+                    icon.style({
+                        paddingLeft: shiva.Styles.button.padding
+                    });
+                    this.addChild(icon);
+                }
+                icon.style(this.config.icon.style);
             }
+            this.addEventListener(this, "mouseover", this.overWithEnable);
+            this.addEventListener(this, "mouseout", this.outWithEnable);
             this.style(this.config);
-        };
+        }
         Button.prototype.over = function () {
             this.to({
                 duration: this.config.durationIn,
@@ -1399,7 +1399,7 @@ var shiva;
             borderColor: "#dddddd",
             color: "#333333",
             colorHover: "#ffffff",
-            text: "button"
+            text: "Button"
         };
         Styles.caret = {
             width: "0px",
@@ -1415,7 +1415,8 @@ var shiva;
             borderTopColor: "black",
             display: "inline-block",
             verticalAlign: "middle",
-            marginLeft: "0.35rem"
+            marginLeft: "0.35rem",
+            pointerEvents: "none"
         };
         Styles.drop = {
             fontFamily: "sans-serif",
@@ -1426,18 +1427,20 @@ var shiva;
             color: "#000000",
             durationIn: 0,
             durationOut: 0.5,
-            listStyle: "none",
-            zIndex: "1000",
-            position: "absolute",
-            marginTop: "0px",
             minWidth: "5rem",
-            border: "1px solid rgba(0,0,0,.15)",
-            webkitBoxShadow: "0 6px 12px rgba(0,0,0,.175)",
-            boxShadow: "0px 6px 12px rgba(0,0,0,0.175)",
             fontWeight: "300",
-            paddingLeft: "0px",
-            durationExpand: "0.5",
-            durationContract: "0.5"
+            padding: "0rem",
+            durationExpand: 0.5,
+            durationContract: 0.5,
+            marginTop: "0rem",
+            listStyle: "none",
+            zIndex: "1336",
+            position: "absolute"
+        };
+        Styles.listItem = {
+            padding: "0.5rem",
+            display: "list-item",
+            cursor: "pointer"
         };
         return Styles;
     }());
@@ -1523,41 +1526,24 @@ var shiva;
         __extends(DropDown, _super);
         function DropDown(config) {
             var _this = this;
-            var buttonText = "Button";
-            if (config.text) {
-                buttonText = config.text;
-            }
-            config.text = undefined;
             config.position = "relative";
+            config.id = config.id || "drop-down";
             _super.call(this, config);
             this.items = [];
             this.button = new shiva.Button({
-                style: shiva.Styles.button,
-                display: "inline-block",
-                text: "button",
-                type: "div",
-                zIndex: "1001",
-                position: "absolute"
+                style: config.button,
+                zIndex: "1337"
             });
-            if (config.button) {
-                config.button.text = buttonText;
-                this.button.update(config.button);
-            }
             this.addChild(this.button);
             var caret = new shiva.Container({
                 id: "drop-caret",
-                style: shiva.Styles.caret,
-                pointerEvents: "none"
+                style: shiva.Styles.caret
             });
             if (config.caret) {
                 caret.style(config.caret);
             }
             this.button.addChild(caret);
             this.button.addEventListener(this, "mousedown", this.buttonClicked);
-            this.unorderedList = new shiva.Container({
-                type: "ul",
-                id: this.id
-            });
             this.dropConfig = {};
             for (var i in shiva.Styles.drop) {
                 this.dropConfig[i] = shiva.Styles.drop[i];
@@ -1565,29 +1551,29 @@ var shiva;
             for (var i in config.drop) {
                 this.dropConfig[i] = config.drop[i];
             }
-            this.unorderedList.style(this.dropConfig);
+            this.unorderedList = new shiva.Container({
+                type: "ul",
+                style: shiva.Styles.drop
+            });
+            if (config.drop) {
+                this.unorderedList.style(config.drop);
+            }
             this.addChild(this.unorderedList);
             var count = 0;
             config.options.map(function (option) {
                 var item = new shiva.Container({
                     id: count.toString(),
-                    type: "li"
+                    type: "li",
                 });
                 _this.unorderedList.addChild(item);
                 var anchor = new shiva.Container({
                     id: count.toString(),
-                    type: "a"
+                    type: "a",
+                    style: shiva.Styles.listItem
                 });
-                anchor.style({
-                    display: "list-item",
-                    position: "static",
-                    color: _this.dropConfig.color,
-                    paddingLeft: "0.5em",
-                    paddingRight: "0px",
-                    paddingBottom: "0.5em",
-                    paddingTop: "0.5em",
-                    cursor: "pointer"
-                });
+                if (config.item) {
+                    anchor.style(config.item);
+                }
                 _this.items.push(item);
                 anchor.innerHtml = option;
                 anchor.addEventListener(_this, "mouseover", _this.itemOver);
@@ -1599,7 +1585,6 @@ var shiva;
             this.unorderedList.style({
                 display: "none"
             });
-            this.style(config);
         }
         DropDown.prototype.itemClicked = function (e) {
             var element = e.target;
@@ -1647,16 +1632,16 @@ var shiva;
                 duration: this.dropConfig.durationExpand,
                 toVars: {
                     alpha: 1,
-                    y: this.button.height
+                    y: this.button.height - 2
                 }
             });
             this.scopedEventHandler = function (g) { _this.closeDrop(g); };
-            document.body.addEventListener("mousedown", this.scopedEventHandler, true);
+            document.addEventListener("mousedown", this.scopedEventHandler, true);
             this.button.removeEventListener("mousedown", this.buttonClicked);
         };
         DropDown.prototype.closeDrop = function (e) {
             var _this = this;
-            document.body.removeEventListener("mousedown", this.scopedEventHandler, true);
+            document.removeEventListener("mousedown", this.scopedEventHandler, true);
             setTimeout(function () {
                 _this.button.addEventListener(_this, "mousedown", _this.buttonClicked);
             }, 10);

@@ -3,6 +3,7 @@
         options: string[];
         button?: ButtonConfig;
         drop?: DropConfig;
+        item?: StyleDeclaration;
         caret?: StyleDeclaration;
     }
 }

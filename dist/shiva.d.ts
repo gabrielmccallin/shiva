@@ -179,7 +179,6 @@ declare module "shiva" {
         private config;
         private icon;
         constructor(config: ButtonConfig);
-        update(config: ButtonConfig): void;
         over(): void;
         out(): void;
         click(e: MouseEvent): void;
@@ -196,7 +195,7 @@ declare module "shiva" {
         id?: string;
         href?: string;
         target?: string;
-        style?: ButtonIconConfig;
+        style?: ButtonConfig;
         text?: string;
         data?: any;
         icon?: ButtonIconConfig;
@@ -204,9 +203,10 @@ declare module "shiva" {
     }
 }
 declare module "shiva" {
-    interface ButtonIconConfig extends ButtonConfig {
-        code?: string;
+    interface ButtonIconConfig {
+        code: string;
         align?: string;
+        style?: StyleDeclaration;
     }
 }
 declare module "shiva" {
@@ -766,6 +766,7 @@ declare module "shiva" {
             display: string;
             verticalAlign: string;
             marginLeft: string;
+            pointerEvents: string;
         };
         static drop: {
             fontFamily: string;
@@ -776,18 +777,20 @@ declare module "shiva" {
             color: string;
             durationIn: number;
             durationOut: number;
+            minWidth: string;
+            fontWeight: string;
+            padding: string;
+            durationExpand: number;
+            durationContract: number;
+            marginTop: string;
             listStyle: string;
             zIndex: string;
             position: string;
-            marginTop: string;
-            minWidth: string;
-            border: string;
-            webkitBoxShadow: string;
-            boxShadow: string;
-            fontWeight: string;
-            paddingLeft: string;
-            durationExpand: string;
-            durationContract: string;
+        };
+        static listItem: {
+            padding: string;
+            display: string;
+            cursor: string;
         };
     }
 }
@@ -838,6 +841,7 @@ declare module "shiva" {
         private scopedEventHandler;
         private items;
         private dropConfig;
+        private padding;
         constructor(config: DropDownConfig);
         private itemClicked(e);
         itemOver(e: Event): void;
@@ -854,6 +858,7 @@ declare module "shiva" {
         options: string[];
         button?: ButtonConfig;
         drop?: DropConfig;
+        item?: StyleDeclaration;
         caret?: StyleDeclaration;
     }
 }

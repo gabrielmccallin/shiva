@@ -1,6 +1,7 @@
 ﻿module shiva {
-    export interface ButtonIconConfig extends ButtonConfig {
-        code?: string;
+    export interface ButtonIconConfig {
+        code: string;
         align?: string;
+        style?: StyleDeclaration;
     }
 }

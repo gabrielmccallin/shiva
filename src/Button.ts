@@ -9,42 +9,38 @@ module shiva {
 
         constructor(config: ButtonConfig) {
             let type: string;
-            if (config.href) {
-                type = "a";
-            }
-            else {
-                type = "button";
-            }
-            if (config.type) {
-                type = config.type;
+            let id: string;
+            let href: string;
+            if (config) {
+                if (config.href) {
+                    type = "a";
+                    href = config.href;
+                }
+                else {
+                    type = "button";
+                }
+                if (config.type) {
+                    type = config.type;
+                }
+                id = config.id;
             }
             super({
-                id: config.id,
+                id: id,
                 type: type,
-                cursor: "pointer",
-                display: "inline-block"
+                cursor: "pointer"
             });
 
-            this.href = config.href;
+            this.href = href;
             this.enabled = true;
 
-            if (config.icon && config.icon.code) {
-                this.icon = new Container({
-                    type: "span",
-                    text: config.icon.code
-                });
-            }
-
-            this.update(config);
-        }
-
-        update(config: ButtonConfig) {
+            // copy default styles, copy config.style values, copy config values to the config object and then style the button with that object
+            // this.config will also have values that are required later
             this.config = {};
             for (let i in Styles.button) {
                 this.config[i] = Styles.button[i];
             }
 
-            if (config && config.style) {
+            if (config) {
                 for (let i in config.style) {
                     this.config[i] = config.style[i];
                 }
@@ -54,48 +50,50 @@ module shiva {
                 this.config[i] = config[i];
             }
 
-            if (config.style) {
-                for (let i in config.style.icon) {
-                    this.config.icon[i] = config.style.icon[i];
+            let label = document.createTextNode(this.config.text);
+            this.element.appendChild(label);
+
+            if (this.config.icon && this.config.icon.code) {
+                let icon = new Container({
+                    type: "span",
+                    display: "inline-block",
+                    text: this.config.icon.code
+                });
+
+                icon.style({
+                    fontFamily: Styles.button.fontFamily,
+                    fontSize: Styles.button.fontSize,
+                    pointerEvents: "none"
+                });
+
+                if (this.config.icon.align === "left") {
+                    icon.style({
+                        paddingRight: Styles.button.padding,
+                    });
+                    this.element.removeChild(label);
+                    this.addChild(icon);
+                    this.element.appendChild(label);
                 }
+                else {
+                    icon.style({
+                        paddingLeft: Styles.button.padding
+                    });
+                    this.addChild(icon);
+
+                }
+
+                icon.style(this.config.icon.style);
+
+
             }
 
-            this.innerHtml = config.text;
 
             this.addEventListener(this, "mouseover", this.overWithEnable);
             this.addEventListener(this, "mouseout", this.outWithEnable);
 
-
-            if (this.config.icon && this.config.icon.code) {
-                if (this.config.icon.align === "left") {
-                    this.icon.style({
-                        paddingRight: this.config.icon.padding,
-                    });
-                }
-                else {
-                    this.icon.style({
-                        paddingLeft: this.config.icon.padding
-                    });
-                }
-                this.icon.style({
-                    fontFamily: this.config.icon.fontFamily,
-                    fontSize: this.config.icon.fontSize,
-                    float: this.config.icon.align,
-                    pointerEvents: "none"
-                });
-
-                this.addChild(this.icon);
-
-                // this.icon.style({
-                // paddingLeft: "0.5em",
-                // paddingRight: "0.5em",
-                // });
-            }
-            //anything else in the config
             this.style(this.config);
 
         }
-
 
         over() {
             this.to({

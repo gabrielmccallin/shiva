@@ -7,41 +7,26 @@ module shiva {
         private scopedEventHandler: EventListener;
         private items: Container[];
         private dropConfig: DropConfig;
+        private padding: string;
 
 
         constructor(config: DropDownConfig) {
-            let buttonText = "Button";
-            if (config.text) {
-                buttonText = config.text;
-            }
-            config.text = undefined;
             config.position = "relative";
+            config.id = config.id || "drop-down";
 
             super(config);
 
             this.items = [];
 
             this.button = new Button({
-                style: Styles.button,
-                display: "inline-block",
-                text: "button",
-                type: "div",
-                zIndex: "1001",
-                position: "absolute"
+                style: config.button,
+                zIndex: "1337"                
             });
-
-            if (config.button) {
-                config.button.text = buttonText;
-                this.button.update(config.button);
-            }
-
             this.addChild(this.button);
-
 
             let caret = new shiva.Container({
                 id: "drop-caret",
-                style: Styles.caret,
-                pointerEvents: "none"
+                style: Styles.caret
             });
 
             if (config.caret) {
@@ -49,13 +34,7 @@ module shiva {
             }
 
             this.button.addChild(caret);
-
             this.button.addEventListener(this, "mousedown", this.buttonClicked);
-
-            this.unorderedList = new Container({
-                type: "ul",
-                id: this.id
-            });
 
             this.dropConfig = {};
 
@@ -67,7 +46,16 @@ module shiva {
                 this.dropConfig[i] = config.drop[i];
             }
 
-            this.unorderedList.style(this.dropConfig);
+            this.unorderedList = new Container({
+                type: "ul",
+                style: Styles.drop
+            });
+
+            if (config.drop) {
+                this.unorderedList.style(config.drop);
+            }
+
+
 
             this.addChild(this.unorderedList);
 
@@ -76,24 +64,18 @@ module shiva {
             config.options.map((option) => {
                 let item = new Container({
                     id: count.toString(),
-                    type: "li"
+                    type: "li",
                 });
                 this.unorderedList.addChild(item);
 
                 let anchor = new Container({
                     id: count.toString(),
-                    type: "a"
+                    type: "a",
+                    style: Styles.listItem
                 });
-                anchor.style({
-                    display: "list-item",
-                    position: "static",
-                    color: this.dropConfig.color,
-                    paddingLeft: "0.5em",
-                    paddingRight: "0px",
-                    paddingBottom: "0.5em",
-                    paddingTop: "0.5em",
-                    cursor: "pointer"
-                });
+                if (config.item) {
+                    anchor.style(config.item);
+                }
 
                 this.items.push(item);
 
@@ -112,7 +94,7 @@ module shiva {
                 display: "none"
             });
 
-            this.style(config);
+            // this.style(config);
         }
 
         private itemClicked(e: shiva.Event) {
@@ -137,15 +119,16 @@ module shiva {
 
         itemOver(e: shiva.Event) {
             let element = e.target;
+
             element.to({
                 duration: this.dropConfig.durationIn,
                 toVars: {
                     backgroundColor: this.dropConfig.backgroundColorHover,
                     color: this.dropConfig.colorHover
                 }
-            }); 
+            });
         }
- 
+
         itemOut(e: shiva.Event) {
             let element = e.target;
             element.to({
@@ -168,20 +151,20 @@ module shiva {
                 duration: this.dropConfig.durationExpand,
                 toVars: {
                     alpha: 1,
-                    y: this.button.height
+                    y: this.button.height - 2
                 }
             });
             this.scopedEventHandler = (g: MouseEvent) => { this.closeDrop(g) };
 
             // ! Don't think this will work in IE8, need attachEvent or polyfill
-            document.body.addEventListener("mousedown", this.scopedEventHandler, true);
+            document.addEventListener("mousedown", this.scopedEventHandler, true);
 
             this.button.removeEventListener("mousedown", this.buttonClicked);
         }
 
         private closeDrop(e: MouseEvent) {
             // ! Don't think this will work in IE8, need attachEvent or polyfill
-            document.body.removeEventListener("mousedown", this.scopedEventHandler, true);
+            document.removeEventListener("mousedown", this.scopedEventHandler, true);
 
             setTimeout(() => {
                 this.button.addEventListener(this, "mousedown", this.buttonClicked);

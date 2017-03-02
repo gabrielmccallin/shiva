@@ -3,7 +3,7 @@
         id?: string;
         href?: string;
         target?: string;
-        style?: ButtonIconConfig;
+        style?: ButtonConfig;
         text?: string;
         data?: any;
         icon?: ButtonIconConfig;
