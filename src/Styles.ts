@@ -4,12 +4,8 @@
             fontSize: "1.2em",
             fontFamily: "sans-serif",
             fontWeight: "300",
-            fontColourOver: 0x333333,
-            fontColourOut: 0xffffff,
-            letterSpacing: "0em",
-            backgroundColor: "#f1f1f1",
+            backgroundColor: "#fefefe",
             backgroundColorHover: "#dddddd",
-            cornerRadius: "0.5em",
             durationOut: 1,
             durationIn: 0,
             padding: "0.5em",
@@ -22,11 +18,10 @@
             mozUserSelect: "none",
             msUserSelect: "none",
             userSelect: "none",
-            backgroundImage: "none",
-            border: "1px solid transparent",
-            borderColor: "#dddddd",
-            color: "#333333",
-            colorHover: "#ffffff",
+            border: "2px solid transparent",
+            borderColor: "#eeeeee",
+            color: "#000000",
+            colorHover: "#000000",
             text: "Button"
         };
         static caret = {
@@ -50,7 +45,7 @@
             fontFamily: "sans-serif",
             fontSize: "1.2rem",
             backgroundColor: "#ffffff",
-            backgroundColorHover: "#cccccc",
+            backgroundColorHover: "#dddddd",
             colorHover: "#000000",
             color: "#000000",
             durationIn: 0,
@@ -60,10 +55,14 @@
             padding: "0rem",
             durationExpand: 0.5,
             durationContract: 0.5,
-            marginTop: "0rem",
+            marginTop: "0.3rem",
             listStyle: "none",
             zIndex: "1336",
-            position: "absolute"
+            position: "absolute",
+            overflow: "hidden",
+            border: "2px solid transparent",
+            borderColor: "#eeeeee"
+            // boxShadow: "0px 12px 20px rgba(0,0,0,0.1)"
 
         };
         static listItem = {

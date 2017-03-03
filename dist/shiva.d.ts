@@ -726,12 +726,8 @@ declare module "shiva" {
             fontSize: string;
             fontFamily: string;
             fontWeight: string;
-            fontColourOver: number;
-            fontColourOut: number;
-            letterSpacing: string;
             backgroundColor: string;
             backgroundColorHover: string;
-            cornerRadius: string;
             durationOut: number;
             durationIn: number;
             padding: string;
@@ -744,7 +740,6 @@ declare module "shiva" {
             mozUserSelect: string;
             msUserSelect: string;
             userSelect: string;
-            backgroundImage: string;
             border: string;
             borderColor: string;
             color: string;
@@ -786,6 +781,9 @@ declare module "shiva" {
             listStyle: string;
             zIndex: string;
             position: string;
+            overflow: string;
+            border: string;
+            borderColor: string;
         };
         static listItem: {
             padding: string;
@@ -841,7 +839,7 @@ declare module "shiva" {
         private scopedEventHandler;
         private items;
         private dropConfig;
-        private padding;
+        private marginPostAnimation;
         constructor(config: DropDownConfig);
         private itemClicked(e);
         itemOver(e: Event): void;

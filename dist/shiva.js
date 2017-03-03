@@ -1376,12 +1376,8 @@ var shiva;
             fontSize: "1.2em",
             fontFamily: "sans-serif",
             fontWeight: "300",
-            fontColourOver: 0x333333,
-            fontColourOut: 0xffffff,
-            letterSpacing: "0em",
-            backgroundColor: "#f1f1f1",
+            backgroundColor: "#fefefe",
             backgroundColorHover: "#dddddd",
-            cornerRadius: "0.5em",
             durationOut: 1,
             durationIn: 0,
             padding: "0.5em",
@@ -1394,11 +1390,10 @@ var shiva;
             mozUserSelect: "none",
             msUserSelect: "none",
             userSelect: "none",
-            backgroundImage: "none",
-            border: "1px solid transparent",
-            borderColor: "#dddddd",
-            color: "#333333",
-            colorHover: "#ffffff",
+            border: "2px solid transparent",
+            borderColor: "#eeeeee",
+            color: "#000000",
+            colorHover: "#000000",
             text: "Button"
         };
         Styles.caret = {
@@ -1422,7 +1417,7 @@ var shiva;
             fontFamily: "sans-serif",
             fontSize: "1.2rem",
             backgroundColor: "#ffffff",
-            backgroundColorHover: "#cccccc",
+            backgroundColorHover: "#dddddd",
             colorHover: "#000000",
             color: "#000000",
             durationIn: 0,
@@ -1432,10 +1427,13 @@ var shiva;
             padding: "0rem",
             durationExpand: 0.5,
             durationContract: 0.5,
-            marginTop: "0rem",
+            marginTop: "0.3rem",
             listStyle: "none",
             zIndex: "1336",
-            position: "absolute"
+            position: "absolute",
+            overflow: "hidden",
+            border: "2px solid transparent",
+            borderColor: "#eeeeee"
         };
         Styles.listItem = {
             padding: "0.5rem",
@@ -1607,7 +1605,7 @@ var shiva;
                 duration: this.dropConfig.durationIn,
                 toVars: {
                     backgroundColor: this.dropConfig.backgroundColorHover,
-                    color: this.dropConfig.colorHover
+                    color: this.dropConfig.colorHover,
                 }
             });
         };
@@ -1625,14 +1623,17 @@ var shiva;
             var _this = this;
             this.unorderedList.style({
                 display: "block",
-                opacity: "0",
-                top: "0px"
             });
-            this.unorderedList.to({
+            this.unorderedList.fromTo({
                 duration: this.dropConfig.durationExpand,
+                immediateRender: true,
+                fromVars: {
+                    opacity: "0",
+                    transform: "translateY(-10px)"
+                },
                 toVars: {
-                    alpha: 1,
-                    y: this.button.height - 2
+                    opacity: "1",
+                    transform: "translateY(0px)"
                 }
             });
             this.scopedEventHandler = function (g) { _this.closeDrop(g); };
@@ -1673,7 +1674,7 @@ var shiva;
     shiva.DropDown = DropDown;
 })(shiva || (shiva = {}));
 
-//# sourceMappingURL=shiva.js.map
+
 
  /** Detect free variable `global` from Node.js. */
     var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
@@ -1722,3 +1723,5 @@ var shiva;
         root.shiva = shiva;
     }
 }.call(this));
+
+//# sourceMappingURL=shiva.js.map

@@ -7,7 +7,7 @@ module shiva {
         private scopedEventHandler: EventListener;
         private items: Container[];
         private dropConfig: DropConfig;
-        private padding: string;
+        private marginPostAnimation: string;
 
 
         constructor(config: DropDownConfig) {
@@ -20,7 +20,7 @@ module shiva {
 
             this.button = new Button({
                 style: config.button,
-                zIndex: "1337"                
+                zIndex: "1337"
             });
             this.addChild(this.button);
 
@@ -124,7 +124,7 @@ module shiva {
                 duration: this.dropConfig.durationIn,
                 toVars: {
                     backgroundColor: this.dropConfig.backgroundColorHover,
-                    color: this.dropConfig.colorHover
+                    color: this.dropConfig.colorHover,
                 }
             });
         }
@@ -143,15 +143,19 @@ module shiva {
         private buttonClicked(e: Event) {
             this.unorderedList.style({
                 display: "block",
-                opacity: "0",
-                top: "0px"
+                // opacity: "0",
             });
 
-            this.unorderedList.to({
+            this.unorderedList.fromTo({
                 duration: this.dropConfig.durationExpand,
+                immediateRender: true,
+                fromVars: {
+                    opacity: "0",
+                    transform: "translateY(-10px)"
+                },
                 toVars: {
-                    alpha: 1,
-                    y: this.button.height - 2
+                    opacity: "1",
+                    transform: "translateY(0px)"
                 }
             });
             this.scopedEventHandler = (g: MouseEvent) => { this.closeDrop(g) };
