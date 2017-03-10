@@ -1,5 +1,4 @@
-﻿/// <reference path="../container.ts" />
-module shiva {
+﻿module shiva {
     export class DropDown extends Container {
         static CHANGE = "change";
         private button: Button;
@@ -188,13 +187,17 @@ module shiva {
                 opacity: "1"
             });
 
-            this.unorderedList.addEventListener(this, Container.TRANSITION_COMPLETE, this.hideList);
             this.unorderedList.to({
                 duration: this.dropConfig.durationContract,
                 delay: 0.3,
                 toVars: {
                     opacity: "0"
                 }
+            })
+            .then(() => {
+                this.unorderedList.style({
+                    display: "none"
+                });
             });
 
         }
@@ -255,20 +258,17 @@ module shiva {
             setTimeout(() => {
                 this.button.addEventListener(this, "mousedown", this.buttonClicked);
             }, 10);
-            this.unorderedList.addEventListener(this, Container.TRANSITION_COMPLETE, this.hideList);
             this.unorderedList.to({
                 duration: this.dropConfig.durationContract,
                 toVars:
                 {
                     opacity: "0",
                 }
-            });
-        }
-
-        private hideList() {
-            this.unorderedList.removeEventListener(Container.TRANSITION_COMPLETE, this.hideList);
-            this.unorderedList.style({
-                display: "none"
+            })
+            .then(() => {
+                this.unorderedList.style({
+                    display: "none"
+                });
             });
         }
 

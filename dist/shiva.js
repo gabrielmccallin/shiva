@@ -705,6 +705,16 @@ var shiva;
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(Container.prototype, "data", {
+            get: function () {
+                return this._data;
+            },
+            set: function (_data) {
+                this._data = _data;
+            },
+            enumerable: true,
+            configurable: true
+        });
         Container.prototype.hide = function () {
             shiva.Properties.style(this._element, { display: "none" });
         };
@@ -1662,18 +1672,23 @@ var shiva;
             });
         };
         DropDown.prototype.itemClicked = function (e) {
+            var _this = this;
             var element = e.target;
             this.dispatchEvent(new shiva.Event(DropDown.CHANGE, this, element.id));
             this.unorderedList.style({
                 opacity: "1"
             });
-            this.unorderedList.addEventListener(this, shiva.Container.TRANSITION_COMPLETE, this.hideList);
             this.unorderedList.to({
                 duration: this.dropConfig.durationContract,
                 delay: 0.3,
                 toVars: {
                     opacity: "0"
                 }
+            })
+                .then(function () {
+                _this.unorderedList.style({
+                    display: "none"
+                });
             });
         };
         DropDown.prototype.itemOver = function (e) {
@@ -1723,18 +1738,16 @@ var shiva;
             setTimeout(function () {
                 _this.button.addEventListener(_this, "mousedown", _this.buttonClicked);
             }, 10);
-            this.unorderedList.addEventListener(this, shiva.Container.TRANSITION_COMPLETE, this.hideList);
             this.unorderedList.to({
                 duration: this.dropConfig.durationContract,
                 toVars: {
                     opacity: "0",
                 }
-            });
-        };
-        DropDown.prototype.hideList = function () {
-            this.unorderedList.removeEventListener(shiva.Container.TRANSITION_COMPLETE, this.hideList);
-            this.unorderedList.style({
-                display: "none"
+            })
+                .then(function () {
+                _this.unorderedList.style({
+                    display: "none"
+                });
             });
         };
         DropDown.prototype.disable = function () {

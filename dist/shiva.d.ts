@@ -126,6 +126,7 @@ declare module "shiva" {
     class Container extends EventDispatcher {
         static TRANSITION_COMPLETE: string;
         private _element;
+        private _data;
         private transitions;
         constructor(config?: ContainerConfig);
         addToBody(): void;
@@ -148,6 +149,7 @@ declare module "shiva" {
         y: number;
         x: number;
         alpha: number;
+        data: any;
         hide(): void;
         show(): void;
         fillContainer(): void;
@@ -843,7 +845,6 @@ declare module "shiva" {
         itemOut(e: Event): void;
         private buttonClicked(e);
         private closeDrop(e);
-        private hideList();
         disable(): void;
         enable(): void;
     }

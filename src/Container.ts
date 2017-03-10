@@ -17,6 +17,7 @@ module shiva {
     export class Container extends EventDispatcher {
         static TRANSITION_COMPLETE = "TRANSITION_COMPLETE";
         private _element: HTMLElement;
+        private _data: any;
         private transitions: {} = {};
 
         constructor(config?: ContainerConfig) {
@@ -375,6 +376,14 @@ module shiva {
 
         set alpha(value: number) {
             Properties.style(this._element, { opacity: value.toString() });
+        }
+
+        set data(_data:any) {
+            this._data = _data;
+        }
+
+        get data() {
+            return this._data;
         }
 
         hide() {
