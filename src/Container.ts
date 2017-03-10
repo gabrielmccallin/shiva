@@ -54,7 +54,7 @@ module shiva {
                 }
 
                 this.style(config.style);
-                this.style(config);
+                // this.style(config);
             }
             else {
                 this._element = document.createElement("div");

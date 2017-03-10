@@ -433,7 +433,6 @@ var shiva;
                     this.innerHtml = config.text;
                 }
                 this.style(config.style);
-                this.style(config);
             }
             else {
                 this._element = document.createElement("div");
@@ -859,7 +858,9 @@ var shiva;
             _super.call(this, {
                 id: id,
                 type: type,
-                cursor: "pointer"
+                style: {
+                    cursor: "pointer"
+                }
             });
             this.href = href;
             this.enabled = true;
@@ -875,12 +876,18 @@ var shiva;
             for (var i in config) {
                 this.config[i] = config[i];
             }
-            var label = document.createTextNode(this.config.text);
+            var buttonLabel = Button.label;
+            if (config.label) {
+                buttonLabel = config.label;
+            }
+            var label = document.createTextNode(buttonLabel);
             this.element.appendChild(label);
             if (this.config.icon && this.config.icon.code) {
                 var icon = new shiva.Container({
                     type: "span",
-                    display: "inline-block",
+                    style: {
+                        display: "inline-block",
+                    },
                     text: this.config.icon.code
                 });
                 icon.style({
@@ -963,6 +970,7 @@ var shiva;
             }
         };
         Button.CLICK = "click";
+        Button.label = "Button";
         return Button;
     }(shiva.Container));
     shiva.Button = Button;
@@ -1208,7 +1216,9 @@ var shiva;
         function Pages(config) {
             _super.call(this, {
                 id: config.id,
-                position: "relative"
+                style: {
+                    position: "relative"
+                }
             });
             this.pages = {};
             this.zIndex = 100;
@@ -1380,7 +1390,7 @@ var shiva;
             backgroundColorHover: "#dddddd",
             durationOut: 1,
             durationIn: 0,
-            padding: "0.5em",
+            padding: "1rem",
             textAlign: "left",
             whiteSpace: "nowrap",
             msTouchAction: "manipulation",
@@ -1396,23 +1406,6 @@ var shiva;
             colorHover: "#000000",
             text: "Button"
         };
-        Styles.caret = {
-            width: "0px",
-            height: "0px",
-            borderLeftWidth: "0.35rem",
-            borderLeftStyle: "solid",
-            borderLeftColor: "transparent",
-            borderRightWidth: "0.35rem",
-            borderRightStyle: "solid",
-            borderRightColor: "transparent",
-            borderTopWidth: "0.35rem",
-            borderTopStyle: "solid",
-            borderTopColor: "black",
-            display: "inline-block",
-            verticalAlign: "middle",
-            marginLeft: "0.35rem",
-            pointerEvents: "none"
-        };
         Styles.drop = {
             fontFamily: "sans-serif",
             fontSize: "1.2rem",
@@ -1422,7 +1415,6 @@ var shiva;
             color: "#000000",
             durationIn: 0,
             durationOut: 0.5,
-            minWidth: "5rem",
             fontWeight: "300",
             padding: "0rem",
             durationExpand: 0.5,
@@ -1433,12 +1425,29 @@ var shiva;
             position: "absolute",
             overflow: "hidden",
             border: "2px solid transparent",
-            borderColor: "#eeeeee"
-        };
-        Styles.listItem = {
-            padding: "0.5rem",
-            display: "list-item",
-            cursor: "pointer"
+            borderColor: "#eeeeee",
+            caret: {
+                width: "0px",
+                height: "0px",
+                borderLeftWidth: "0.35rem",
+                borderLeftStyle: "solid",
+                borderLeftColor: "transparent",
+                borderRightWidth: "0.35rem",
+                borderRightStyle: "solid",
+                borderRightColor: "transparent",
+                borderTopWidth: "0.35rem",
+                borderTopStyle: "solid",
+                borderTopColor: "black",
+                display: "inline-block",
+                verticalAlign: "middle",
+                marginLeft: "0.35rem",
+                pointerEvents: "none"
+            },
+            listItem: {
+                padding: "1rem",
+                display: "list-item",
+                cursor: "pointer"
+            }
         };
         return Styles;
     }());
@@ -1524,38 +1533,76 @@ var shiva;
         __extends(DropDown, _super);
         function DropDown(config) {
             var _this = this;
-            config.position = "relative";
             config.id = config.id || "drop-down";
+            var style = {};
+            for (var i in config.style) {
+                style[i] = config.style[i];
+            }
+            delete config.style;
             _super.call(this, config);
             this.items = [];
+            var buttonLabel = shiva.Button.label;
+            if (style && style.button) {
+                buttonLabel = style.button.label;
+            }
+            if (config.label) {
+                buttonLabel = config.label;
+            }
+            var buttonStyle = {};
+            for (var i in shiva.Styles.button) {
+                buttonStyle[i] = shiva.Styles.button[i];
+            }
+            for (var i in style) {
+                buttonStyle[i] = style[i];
+            }
+            if (style) {
+                for (var i in style.button) {
+                    buttonStyle[i] = style.button[i];
+                }
+            }
             this.button = new shiva.Button({
-                style: config.button,
-                zIndex: "1337"
+                style: buttonStyle,
+                zIndex: "1337",
+                label: buttonLabel
             });
             this.addChild(this.button);
-            var caret = new shiva.Container({
-                id: "drop-caret",
-                style: shiva.Styles.caret
-            });
-            if (config.caret) {
-                caret.style(config.caret);
+            var caretStyle = {};
+            for (var i in shiva.Styles.drop.caret) {
+                caretStyle[i] = shiva.Styles.drop.caret[i];
             }
-            this.button.addChild(caret);
+            if (style) {
+                caretStyle['borderTopColor'] = style['color'];
+                for (var i in style.caret) {
+                    caretStyle[i] = style.caret[i];
+                }
+            }
+            this.caret = new shiva.Container({
+                id: "drop-caret",
+                style: caretStyle
+            });
+            this.button.addChild(this.caret);
             this.button.addEventListener(this, "mousedown", this.buttonClicked);
+            this.button.addEventListener(this, "mouseover", this.buttonOver);
+            this.button.addEventListener(this, "mouseout", this.buttonOut);
             this.dropConfig = {};
             for (var i in shiva.Styles.drop) {
                 this.dropConfig[i] = shiva.Styles.drop[i];
             }
-            for (var i in config.drop) {
-                this.dropConfig[i] = config.drop[i];
+            for (var i in style) {
+                this.dropConfig[i] = style[i];
+            }
+            if (style) {
+                for (var i in style.drop) {
+                    this.dropConfig[i] = style.drop[i];
+                }
             }
             this.unorderedList = new shiva.Container({
                 type: "ul",
-                style: shiva.Styles.drop
+                style: this.dropConfig
             });
-            if (config.drop) {
-                this.unorderedList.style(config.drop);
-            }
+            this.unorderedList.style({
+                padding: "0rem"
+            });
             this.addChild(this.unorderedList);
             var count = 0;
             config.options.map(function (option) {
@@ -1564,14 +1611,25 @@ var shiva;
                     type: "li",
                 });
                 _this.unorderedList.addChild(item);
+                var anchorStyle = {};
+                for (var i in shiva.Styles.drop.listItem) {
+                    anchorStyle[i] = shiva.Styles.drop.listItem[i];
+                }
+                if (style) {
+                    anchorStyle['padding'] = style['padding'];
+                    anchorStyle['paddingLeft'] = style['paddingLeft'];
+                    anchorStyle['paddingRight'] = style['paddingRight'];
+                    anchorStyle['paddingTop'] = style['paddingTop'];
+                    anchorStyle['paddingBottom'] = style['paddingBottom'];
+                    for (var i in style.item) {
+                        anchorStyle[i] = style.item[i];
+                    }
+                }
                 var anchor = new shiva.Container({
                     id: count.toString(),
                     type: "a",
-                    style: shiva.Styles.listItem
+                    style: anchorStyle
                 });
-                if (config.item) {
-                    anchor.style(config.item);
-                }
                 _this.items.push(item);
                 anchor.innerHtml = option;
                 anchor.addEventListener(_this, "mouseover", _this.itemOver);
@@ -1583,7 +1641,26 @@ var shiva;
             this.unorderedList.style({
                 display: "none"
             });
+            this.style({
+                position: "relative"
+            });
         }
+        DropDown.prototype.buttonOver = function (e) {
+            this.caret.to({
+                duration: this.dropConfig.durationIn,
+                toVars: {
+                    borderTopColor: this.dropConfig.colorHover,
+                }
+            });
+        };
+        DropDown.prototype.buttonOut = function (e) {
+            this.caret.to({
+                duration: this.dropConfig.durationOut,
+                toVars: {
+                    borderTopColor: this.dropConfig.color,
+                }
+            });
+        };
         DropDown.prototype.itemClicked = function (e) {
             var element = e.target;
             this.dispatchEvent(new shiva.Event(DropDown.CHANGE, this, element.id));
@@ -1674,7 +1751,7 @@ var shiva;
     shiva.DropDown = DropDown;
 })(shiva || (shiva = {}));
 
-//# sourceMappingURL=shiva.js.map
+
 
  /** Detect free variable `global` from Node.js. */
     var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
@@ -1723,3 +1800,5 @@ var shiva;
         root.shiva = shiva;
     }
 }.call(this));
+
+//# sourceMappingURL=shiva.js.map

@@ -10,7 +10,9 @@
         constructor(config: PagesConfig) {
             super({
                 id: config.id,
-                position: "relative"
+                style: {
+                    position: "relative"
+                }
             });
             this.config = config;
             this.style(config.style);
