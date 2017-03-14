@@ -432,6 +432,7 @@ var shiva;
                 if (config.text) {
                     this.innerHtml = config.text;
                 }
+                this._data = config.data;
                 this.style(config.style);
             }
             else {
@@ -1074,7 +1075,7 @@ var shiva;
         function Loader() {
             _super.call(this);
         }
-        Loader.prototype.load = function (url, method, params, headers, cache) {
+        Loader.prototype.load = function (config) {
             var _this = this;
             if (this.http) {
                 this.http.abort();
@@ -1082,13 +1083,32 @@ var shiva;
             else {
                 this.http = new XMLHttpRequest();
             }
-            if (method === shiva.Loader.GET) {
-                url = url + this.concatParams(params);
+            if (config.method === Loader.httpMethods.GET) {
+                config.url = config.url + this.concatParams(config.params);
             }
-            this.http.open(method, url, true);
+            var methodString;
+            switch (config.method) {
+                case Loader.httpMethods.GET:
+                    methodString = "GET";
+                    break;
+                case Loader.httpMethods.POST:
+                    methodString = "POST";
+                    break;
+                case Loader.httpMethods.PUT:
+                    methodString = "PUT";
+                    break;
+                case Loader.httpMethods.UPDATE:
+                    methodString = "UPDATE";
+                    break;
+                default:
+                    methodString = "GET";
+                    break;
+            }
+            this._data = config.data;
+            this.http.open(methodString, config.url, true);
             this.http.timeout = 20000;
-            if (headers) {
-                headers.map(function (header) {
+            if (config.headers) {
+                config.headers.map(function (header) {
                     _this.http.setRequestHeader(header.value, header.variable);
                 });
             }
@@ -1096,7 +1116,7 @@ var shiva;
             return new Promise(function (resolve, reject) {
                 _this.resolve = resolve;
                 _this.reject = reject;
-                _this.http.send(params);
+                _this.http.send(config.params);
             });
         };
         Loader.prototype.concatParams = function (params) {
@@ -1115,9 +1135,9 @@ var shiva;
         Loader.prototype.handleResponse = function () {
             if (this.http.readyState === 4) {
                 if (this.http.status === 200) {
-                    var event_1 = new shiva.LoaderEvent(Loader.COMPLETE, this, this.http.responseText, this.http.status, this.http);
+                    var event_1 = new shiva.LoaderEvent(Loader.COMPLETE, this, this.http.responseText, this.http.status, this.http, this._data);
                     _super.prototype.dispatchEvent.call(this, event_1);
-                    this.resolve(this.http.responseText);
+                    this.resolve(event_1);
                     this.http.onreadystatechange = undefined;
                 }
                 else {
@@ -1137,12 +1157,15 @@ var shiva;
                 }
             }
         };
+        Loader.httpMethods = {
+            GET: "GET",
+            PUT: "PUT",
+            POST: "POST",
+            DELETE: "DELETE",
+            UPDATE: "UPDATE"
+        };
         Loader.COMPLETE = "COMPLETE";
         Loader.ERROR = "ERROR";
-        Loader.GET = "GET";
-        Loader.PUT = "PUT";
-        Loader.POST = "POST";
-        Loader.UPDATE = "UPDATE";
         return Loader;
     }(shiva.EventDispatcher));
     shiva.Loader = Loader;
@@ -1764,7 +1787,7 @@ var shiva;
     shiva.DropDown = DropDown;
 })(shiva || (shiva = {}));
 
-
+//# sourceMappingURL=shiva.js.map
 
  /** Detect free variable `global` from Node.js. */
     var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
@@ -1813,5 +1836,3 @@ var shiva;
         root.shiva = shiva;
     }
 }.call(this));
-
-//# sourceMappingURL=shiva.js.map

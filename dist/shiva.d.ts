@@ -276,21 +276,38 @@ declare module "shiva" {
     }
 }
 declare module "shiva" {
+    type LoaderHTTPMethods = "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+}
+declare module "shiva" {
     class Loader extends EventDispatcher {
+        static httpMethods: {
+            GET: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            PUT: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            POST: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            DELETE: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            UPDATE: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+        };
         static COMPLETE: string;
         static ERROR: string;
-        static GET: string;
-        static PUT: string;
-        static POST: string;
-        static UPDATE: string;
+        private _data;
         private http;
         private resolve;
         private reject;
         constructor();
-        load(url: string, method: string, params?: any, headers?: Array<any>, cache?: boolean): Promise<any>;
+        load(config: LoaderConfig): Promise<any>;
         private concatParams(params);
         private setRequestHeader(header);
         private handleResponse();
+    }
+}
+declare module "shiva" {
+    interface LoaderConfig {
+        url: string;
+        method: LoaderHTTPMethods;
+        params?: any;
+        headers?: Array<any>;
+        cache?: boolean;
+        data?: any;
     }
 }
 declare module "shiva" {

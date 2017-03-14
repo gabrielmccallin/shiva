@@ -54,6 +54,7 @@ module shiva {
                     this.innerHtml = config.text;
                 }
 
+                this._data = config.data;
                 this.style(config.style);
                 // this.style(config);
             }
