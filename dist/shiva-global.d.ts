@@ -225,7 +225,7 @@ declare module shiva {
         root?: boolean;
         id?: string;
         type?: string;
-        style?: StyleDeclaration;
+        style?: StyleDeclaration | StyleDeclaration[];
         text?: string;
         data?: any;
     }

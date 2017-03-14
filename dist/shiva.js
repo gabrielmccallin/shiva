@@ -404,6 +404,7 @@ var shiva;
     var Container = (function (_super) {
         __extends(Container, _super);
         function Container(config) {
+            var _this = this;
             _super.call(this);
             this.transitions = {};
             if (config) {
@@ -433,7 +434,16 @@ var shiva;
                     this.innerHtml = config.text;
                 }
                 this._data = config.data;
-                this.style(config.style);
+                if (Array.isArray(config.style)) {
+                    var styles = config.style;
+                    styles.map(function (style) {
+                        _this.style(style);
+                    });
+                }
+                else {
+                    var style = config.style;
+                    this.style(style);
+                }
             }
             else {
                 this._element = document.createElement("div");
