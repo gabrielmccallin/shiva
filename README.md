@@ -57,9 +57,13 @@ import { Container } from "shiva";
 
 const view = new Container({
     text: "I'm a view",
-    display: "block",
-    backgroundColor: "#333333",
-    style: styles.StylishView
+    style: [
+        {
+            display: "block",
+            backgroundColor: "#333333",
+        },
+        styles.StylishView
+    ]
 });
 this.addChild(view);
 ```
