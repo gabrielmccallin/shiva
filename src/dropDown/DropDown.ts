@@ -1,40 +1,84 @@
-﻿/// <reference path="../container.ts" />
-module shiva {
+﻿module shiva {
     export class DropDown extends Container {
         static CHANGE = "change";
         private button: Button;
+        private caret: Container;
         private unorderedList: Container;
         private scopedEventHandler: EventListener;
         private items: Container[];
-        private dropConfig: DropConfig;
+        private dropConfig: DropStyleDeclaration;
         private marginPostAnimation: string;
 
 
         constructor(config: DropDownConfig) {
-            config.position = "relative";
             config.id = config.id || "drop-down";
+
+            // copy styles from the config object because we are about to delete it :O
+            let style: DropStyleDeclaration = {};
+            for (let i in config.style) {
+                style[i] = config.style[i];
+            }
+
+            delete config.style;
 
             super(config);
 
             this.items = [];
 
-            this.button = new Button({
-                style: config.button,
-                zIndex: "1337"
-            });
-            this.addChild(this.button);
+            let buttonLabel = Button.label;
 
-            let caret = new shiva.Container({
-                id: "drop-caret",
-                style: Styles.caret
-            });
-
-            if (config.caret) {
-                caret.style(config.caret);
+            if (style && style.button) {
+                buttonLabel = style.button.label;
+            }
+            if (config.label) {
+                buttonLabel = config.label;
             }
 
-            this.button.addChild(caret);
+
+
+            let buttonStyle = {};
+            for (let i in Styles.button) {
+                buttonStyle[i] = Styles.button[i];
+            }
+            for (let i in style) {
+                buttonStyle[i] = style[i];
+            }
+            if (style) {
+                for (let i in style.button) {
+                    buttonStyle[i] = style.button[i];
+                }
+            }
+
+
+            this.button = new Button({
+                style: buttonStyle,
+                zIndex: "1337",
+                label: buttonLabel
+            });
+
+            this.addChild(this.button);
+
+            let caretStyle = {};
+            for (let i in Styles.drop.caret) {
+                caretStyle[i] = Styles.drop.caret[i];
+            }
+            if (style) {
+                caretStyle['borderTopColor'] = style['color'];
+                for (let i in style.caret) {
+                    caretStyle[i] = style.caret[i];
+                }
+            }
+
+            this.caret = new Container({
+                id: "drop-caret",
+                style: caretStyle
+            });
+
+
+            this.button.addChild(this.caret);
             this.button.addEventListener(this, "mousedown", this.buttonClicked);
+            this.button.addEventListener(this, "mouseover", this.buttonOver);
+            this.button.addEventListener(this, "mouseout", this.buttonOut);
 
             this.dropConfig = {};
 
@@ -42,19 +86,23 @@ module shiva {
                 this.dropConfig[i] = Styles.drop[i];
             }
 
-            for (let i in config.drop) {
-                this.dropConfig[i] = config.drop[i];
+            for (let i in style) {
+                this.dropConfig[i] = style[i];
+            }
+
+            if (style) {
+                for (let i in style.drop) {
+                    this.dropConfig[i] = style.drop[i];
+                }
             }
 
             this.unorderedList = new Container({
                 type: "ul",
-                style: Styles.drop
+                style: this.dropConfig
             });
-
-            if (config.drop) {
-                this.unorderedList.style(config.drop);
-            }
-
+            this.unorderedList.style({
+                padding: "0rem"
+            });
 
 
             this.addChild(this.unorderedList);
@@ -68,14 +116,26 @@ module shiva {
                 });
                 this.unorderedList.addChild(item);
 
+                let anchorStyle = {};
+                for (let i in Styles.drop.listItem) {
+                    anchorStyle[i] = Styles.drop.listItem[i];
+                }
+                if (style) {
+                    anchorStyle['padding'] = style['padding'];
+                    anchorStyle['paddingLeft'] = style['paddingLeft'];
+                    anchorStyle['paddingRight'] = style['paddingRight'];
+                    anchorStyle['paddingTop'] = style['paddingTop'];
+                    anchorStyle['paddingBottom'] = style['paddingBottom'];
+                    for (let i in style.item) {
+                        anchorStyle[i] = style.item[i];
+                    }
+                }
+
                 let anchor = new Container({
                     id: count.toString(),
                     type: "a",
-                    style: Styles.listItem
+                    style: anchorStyle
                 });
-                if (config.item) {
-                    anchor.style(config.item);
-                }
 
                 this.items.push(item);
 
@@ -94,30 +154,55 @@ module shiva {
                 display: "none"
             });
 
-            // this.style(config);
+            this.style({
+                position: "relative"
+            });
         }
 
-        private itemClicked(e: shiva.Event) {
+
+        private buttonOver(e: Event) {
+            this.caret.to({
+                duration: this.dropConfig.durationIn,
+                toVars: {
+                    borderTopColor: this.dropConfig.colorHover,
+                }
+            });
+        }
+
+        private buttonOut(e: Event) {
+            this.caret.to({
+                duration: this.dropConfig.durationOut,
+                toVars: {
+                    borderTopColor: this.dropConfig.color,
+                }
+            });
+        }
+
+        private itemClicked(e: Event) {
             let element = e.target;
 
-            this.dispatchEvent(new shiva.Event(DropDown.CHANGE, this, element.id));
+            this.dispatchEvent(new Event(DropDown.CHANGE, this, element.id));
 
             this.unorderedList.style({
                 opacity: "1"
             });
 
-            this.unorderedList.addEventListener(this, shiva.Container.TRANSITION_COMPLETE, this.hideList);
             this.unorderedList.to({
                 duration: this.dropConfig.durationContract,
                 delay: 0.3,
                 toVars: {
                     opacity: "0"
                 }
+            })
+            .then(() => {
+                this.unorderedList.style({
+                    display: "none"
+                });
             });
 
         }
 
-        itemOver(e: shiva.Event) {
+        itemOver(e: Event) {
             let element = e.target;
 
             element.to({
@@ -129,7 +214,7 @@ module shiva {
             });
         }
 
-        itemOut(e: shiva.Event) {
+        itemOut(e: Event) {
             let element = e.target;
             element.to({
                 duration: this.dropConfig.durationOut,
@@ -173,20 +258,17 @@ module shiva {
             setTimeout(() => {
                 this.button.addEventListener(this, "mousedown", this.buttonClicked);
             }, 10);
-            this.unorderedList.addEventListener(this, shiva.Container.TRANSITION_COMPLETE, this.hideList);
             this.unorderedList.to({
                 duration: this.dropConfig.durationContract,
                 toVars:
                 {
                     opacity: "0",
                 }
-            });
-        }
-
-        private hideList() {
-            this.unorderedList.removeEventListener(shiva.Container.TRANSITION_COMPLETE, this.hideList);
-            this.unorderedList.style({
-                display: "none"
+            })
+            .then(() => {
+                this.unorderedList.style({
+                    display: "none"
+                });
             });
         }
 

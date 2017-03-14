@@ -2,6 +2,7 @@
 module shiva {
     export class Button extends Container {
         static CLICK: string = "click";
+        static label: string = "Button";
         private enabled: boolean;
         private config: ButtonConfig;
         private icon: Container;
@@ -11,6 +12,7 @@ module shiva {
             let type: string;
             let id: string;
             let href: string;
+
             if (config) {
                 if (config.href) {
                     type = "a";
@@ -24,10 +26,13 @@ module shiva {
                 }
                 id = config.id;
             }
+
             super({
                 id: id,
                 type: type,
-                cursor: "pointer"
+                style: {
+                    cursor: "pointer"
+                }
             });
 
             this.href = href;
@@ -50,13 +55,20 @@ module shiva {
                 this.config[i] = config[i];
             }
 
-            let label = document.createTextNode(this.config.text);
+            let buttonLabel = Button.label;
+            if (config.label) {
+                buttonLabel = config.label;
+
+            }
+            let label = document.createTextNode(buttonLabel);
             this.element.appendChild(label);
 
             if (this.config.icon && this.config.icon.code) {
                 let icon = new Container({
                     type: "span",
-                    display: "inline-block",
+                    style: {
+                        display: "inline-block",
+                    },
                     text: this.config.icon.code
                 });
 

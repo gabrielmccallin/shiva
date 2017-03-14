@@ -126,6 +126,7 @@ declare module "shiva" {
     class Container extends EventDispatcher {
         static TRANSITION_COMPLETE: string;
         private _element;
+        private _data;
         private transitions;
         constructor(config?: ContainerConfig);
         addToBody(): void;
@@ -148,6 +149,7 @@ declare module "shiva" {
         y: number;
         x: number;
         alpha: number;
+        data: any;
         hide(): void;
         show(): void;
         fillContainer(): void;
@@ -175,6 +177,7 @@ declare module "shiva" {
 declare module "shiva" {
     class Button extends Container {
         static CLICK: string;
+        static label: string;
         private enabled;
         private config;
         private icon;
@@ -196,7 +199,7 @@ declare module "shiva" {
         href?: string;
         target?: string;
         style?: ButtonConfig;
-        text?: string;
+        label?: string;
         data?: any;
         icon?: ButtonIconConfig;
         type?: string;
@@ -218,11 +221,11 @@ declare module "shiva" {
     }
 }
 declare module "shiva" {
-    interface ContainerConfig extends StyleDeclaration {
+    interface ContainerConfig {
         root?: boolean;
         id?: string;
         type?: string;
-        style?: StyleDeclaration;
+        style?: StyleDeclaration | StyleDeclaration[];
         text?: string;
         data?: any;
     }
@@ -273,21 +276,38 @@ declare module "shiva" {
     }
 }
 declare module "shiva" {
+    type LoaderHTTPMethods = "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+}
+declare module "shiva" {
     class Loader extends EventDispatcher {
+        static httpMethods: {
+            GET: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            PUT: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            POST: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            DELETE: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            UPDATE: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+        };
         static COMPLETE: string;
         static ERROR: string;
-        static GET: string;
-        static PUT: string;
-        static POST: string;
-        static UPDATE: string;
+        private _data;
         private http;
         private resolve;
         private reject;
         constructor();
-        load(url: string, method: string, params?: any, headers?: Array<any>, cache?: boolean): Promise<any>;
+        load(config: LoaderConfig): Promise<any>;
         private concatParams(params);
         private setRequestHeader(header);
         private handleResponse();
+    }
+}
+declare module "shiva" {
+    interface LoaderConfig {
+        url: string;
+        method: LoaderHTTPMethods;
+        params?: any;
+        headers?: Array<any>;
+        cache?: boolean;
+        data?: any;
     }
 }
 declare module "shiva" {
@@ -746,23 +766,6 @@ declare module "shiva" {
             colorHover: string;
             text: string;
         };
-        static caret: {
-            width: string;
-            height: string;
-            borderLeftWidth: string;
-            borderLeftStyle: string;
-            borderLeftColor: string;
-            borderRightWidth: string;
-            borderRightStyle: string;
-            borderRightColor: string;
-            borderTopWidth: string;
-            borderTopStyle: string;
-            borderTopColor: string;
-            display: string;
-            verticalAlign: string;
-            marginLeft: string;
-            pointerEvents: string;
-        };
         static drop: {
             fontFamily: string;
             fontSize: string;
@@ -772,7 +775,6 @@ declare module "shiva" {
             color: string;
             durationIn: number;
             durationOut: number;
-            minWidth: string;
             fontWeight: string;
             padding: string;
             durationExpand: number;
@@ -784,11 +786,28 @@ declare module "shiva" {
             overflow: string;
             border: string;
             borderColor: string;
-        };
-        static listItem: {
-            padding: string;
-            display: string;
-            cursor: string;
+            caret: {
+                width: string;
+                height: string;
+                borderLeftWidth: string;
+                borderLeftStyle: string;
+                borderLeftColor: string;
+                borderRightWidth: string;
+                borderRightStyle: string;
+                borderRightColor: string;
+                borderTopWidth: string;
+                borderTopStyle: string;
+                borderTopColor: string;
+                display: string;
+                verticalAlign: string;
+                marginLeft: string;
+                pointerEvents: string;
+            };
+            listItem: {
+                padding: string;
+                display: string;
+                cursor: string;
+            };
         };
     }
 }
@@ -826,27 +845,23 @@ declare module "shiva" {
     }
 }
 declare module "shiva" {
-    interface DropConfig extends HoverStyleDeclaration {
-        durationExpand?: number;
-        durationContract?: number;
-    }
-}
-declare module "shiva" {
     class DropDown extends Container {
         static CHANGE: string;
         private button;
+        private caret;
         private unorderedList;
         private scopedEventHandler;
         private items;
         private dropConfig;
         private marginPostAnimation;
         constructor(config: DropDownConfig);
+        private buttonOver(e);
+        private buttonOut(e);
         private itemClicked(e);
         itemOver(e: Event): void;
         itemOut(e: Event): void;
         private buttonClicked(e);
         private closeDrop(e);
-        private hideList();
         disable(): void;
         enable(): void;
     }
@@ -854,9 +869,17 @@ declare module "shiva" {
 declare module "shiva" {
     interface DropDownConfig extends ContainerConfig {
         options: string[];
+        label?: string;
+        style?: DropStyleDeclaration;
+    }
+}
+declare module "shiva" {
+    interface DropStyleDeclaration extends HoverStyleDeclaration {
+        durationExpand?: number;
+        durationContract?: number;
         button?: ButtonConfig;
-        drop?: DropConfig;
-        item?: StyleDeclaration;
+        drop?: DropStyleDeclaration;
+        item?: HoverStyleDeclaration;
         caret?: StyleDeclaration;
     }
 }

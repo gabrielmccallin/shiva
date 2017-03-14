@@ -1,9 +1,9 @@
 ﻿module shiva {
-    export interface ContainerConfig extends StyleDeclaration {
+    export interface ContainerConfig {
         root?: boolean;
         id?: string;
         type?: string;
-        style?: StyleDeclaration;
+        style?: StyleDeclaration | StyleDeclaration[];
         text?: string;
         data?: any;
     }

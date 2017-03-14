@@ -4,7 +4,7 @@
         href?: string;
         target?: string;
         style?: ButtonConfig;
-        text?: string;
+        label?: string;
         data?: any;
         icon?: ButtonIconConfig;
         type?: string;

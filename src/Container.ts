@@ -17,6 +17,7 @@ module shiva {
     export class Container extends EventDispatcher {
         static TRANSITION_COMPLETE = "TRANSITION_COMPLETE";
         private _element: HTMLElement;
+        private _data: any;
         private transitions: {} = {};
 
         constructor(config?: ContainerConfig) {
@@ -53,8 +54,19 @@ module shiva {
                     this.innerHtml = config.text;
                 }
 
-                this.style(config.style);
-                this.style(config);
+                this._data = config.data;
+
+                if (Array.isArray(config.style)) {
+                    let styles = <StyleDeclaration[]>config.style;
+                    styles.map((style) => {
+                        this.style(style);
+                    });
+                }
+                else {
+                    let style = <StyleDeclaration>config.style; 
+                    this.style(style);
+                }
+                // this.style(config);
             }
             else {
                 this._element = document.createElement("div");
@@ -375,6 +387,14 @@ module shiva {
 
         set alpha(value: number) {
             Properties.style(this._element, { opacity: value.toString() });
+        }
+
+        set data(_data: any) {
+            this._data = _data;
+        }
+
+        get data() {
+            return this._data;
         }
 
         hide() {

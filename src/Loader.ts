@@ -1,22 +1,34 @@
 ﻿/// <reference path="eventdispatcher.ts" />
+/// <reference path="LoaderHTTPMethods.ts" />
+
 module shiva {
+    // export type httpMethods = "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
     export class Loader extends EventDispatcher {
+        static httpMethods = {
+            GET: "GET" as LoaderHTTPMethods,
+            PUT: "PUT" as LoaderHTTPMethods,
+            POST: "POST" as LoaderHTTPMethods,
+            DELETE: "DELETE" as LoaderHTTPMethods,
+            UPDATE: "UPDATE" as LoaderHTTPMethods
+        };
         static COMPLETE: string = "COMPLETE";
         static ERROR: string = "ERROR";
-        static GET: string = "GET";
-        static PUT: string = "PUT";
-        static POST: string = "POST";
-        static UPDATE: string = "UPDATE";
+        // static GET: string = "GET";
+        // static PUT: string = "PUT";
+        // static POST: string = "POST";
+        // static UPDATE: string = "UPDATE";
+        private _data: any;
         private http: XMLHttpRequest;
         private resolve: any | PromiseLike<any>;
         private reject: any;
+
 
         constructor() {
             super();
         }
 
 
-        load(url: string, method: string, params?: any, headers?: Array<any>, cache?: boolean): Promise<any> {
+        load(config: LoaderConfig): Promise<any> {
             if (this.http) {
                 this.http.abort();
             }
@@ -24,15 +36,36 @@ module shiva {
                 this.http = new XMLHttpRequest();
             }
 
-            if (method === shiva.Loader.GET) {
-                url = url + this.concatParams(params);
+            if (config.method === Loader.httpMethods.GET) {
+                config.url = config.url + this.concatParams(config.params);
             }
 
-            this.http.open(method, url, true);
+            let methodString;
+            switch (config.method) {
+                case Loader.httpMethods.GET:
+                    methodString = "GET";
+                    break;
+                case Loader.httpMethods.POST:
+                    methodString = "POST";
+                    break;
+                case Loader.httpMethods.PUT:
+                    methodString = "PUT";
+                    break;
+                case Loader.httpMethods.UPDATE:
+                    methodString = "UPDATE";
+                    break;
+                default:
+                    methodString = "GET";
+                    break;
+            }
+
+            this._data = config.data;
+
+            this.http.open(methodString, config.url, true);
             this.http.timeout = 20000;
             //this.http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');  
-            if (headers) {
-                headers.map(header => {
+            if (config.headers) {
+                config.headers.map(header => {
                     this.http.setRequestHeader(header.value, header.variable);
                 });
             }
@@ -44,7 +77,7 @@ module shiva {
             return new Promise((resolve, reject) => {
                 this.resolve = resolve;
                 this.reject = reject;
-                this.http.send(params);
+                this.http.send(config.params);
             });
 
 
@@ -69,10 +102,11 @@ module shiva {
         private handleResponse() {
             if (this.http.readyState === 4) {
                 if (this.http.status === 200) {
-                    let event: LoaderEvent = new LoaderEvent(Loader.COMPLETE, this, this.http.responseText, this.http.status, this.http);
+                    let event: LoaderEvent = new LoaderEvent(Loader.COMPLETE, this, this.http.responseText, this.http.status, this.http, this._data);
                     super.dispatchEvent(event);
 
-                    this.resolve(this.http.responseText);
+                    // this.resolve(this.http.responseText);
+                    this.resolve(event);
 
                     this.http.onreadystatechange = undefined;
                 }
