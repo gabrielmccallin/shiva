@@ -55,7 +55,17 @@ module shiva {
                 }
 
                 this._data = config.data;
-                this.style(config.style);
+
+                if (Array.isArray(config.style)) {
+                    let styles = <StyleDeclaration[]>config.style;
+                    styles.map((style) => {
+                        this.style(style);
+                    });
+                }
+                else {
+                    let style = <StyleDeclaration>config.style; 
+                    this.style(style);
+                }
                 // this.style(config);
             }
             else {
@@ -379,7 +389,7 @@ module shiva {
             Properties.style(this._element, { opacity: value.toString() });
         }
 
-        set data(_data:any) {
+        set data(_data: any) {
             this._data = _data;
         }
 
