@@ -1,11 +1,12 @@
-﻿/// <reference path="container.ts" />
+﻿/// <reference path="../container/container.ts" />
 module shiva {
     export class Button extends Container {
         static CLICK: string = "click";
-        static label: string = "Button";
+        static text: string = "Button";
         private enabled: boolean;
-        private config: ButtonConfig;
         private icon: Container;
+        private styles: ButtonStyleDeclaration;
+        private stateOver: boolean;
 
 
         constructor(config: ButtonConfig) {
@@ -30,6 +31,7 @@ module shiva {
             super({
                 id: id,
                 type: type,
+                data: config.data,
                 style: {
                     cursor: "pointer"
                 }
@@ -40,45 +42,43 @@ module shiva {
 
             // copy default styles, copy config.style values, copy config values to the config object and then style the button with that object
             // this.config will also have values that are required later
-            this.config = {};
+            this.styles = {};
             for (let i in Styles.button) {
-                this.config[i] = Styles.button[i];
+                this.styles[i] = Styles.button[i];
             }
 
             if (config) {
-                for (let i in config.style) {
-                    this.config[i] = config.style[i];
+                if (config.styles) {
+                    config.styles.map((style) => {
+                        this.styles = ObjectUtils.merge(this.styles, style);
+                    });
                 }
-            }
 
-            for (let i in config) {
-                this.config[i] = config[i];
+                this.styles = ObjectUtils.merge(this.styles, config.style);
             }
+            // console.log("this.styles: ", this.styles);
 
-            let buttonLabel = Button.label;
-            if (config.label) {
-                buttonLabel = config.label;
+            let buttonLabel = Button.text;
+            if (config.text) {
+                buttonLabel = config.text;
 
             }
             let label = document.createTextNode(buttonLabel);
             this.element.appendChild(label);
 
-            if (this.config.icon && this.config.icon.code) {
+            if (this.styles.icon && this.styles.icon.code) {
                 let icon = new Container({
                     type: "span",
                     style: {
                         display: "inline-block",
+                        fontFamily: Styles.button.fontFamily,
+                        fontSize: Styles.button.fontSize,
+                        pointerEvents: "none"
                     },
-                    text: this.config.icon.code
+                    text: this.styles.icon.code
                 });
 
-                icon.style({
-                    fontFamily: Styles.button.fontFamily,
-                    fontSize: Styles.button.fontSize,
-                    pointerEvents: "none"
-                });
-
-                if (this.config.icon.align === "left") {
+                if (this.styles.icon.align === "left") {
                     icon.style({
                         paddingRight: Styles.button.padding,
                     });
@@ -94,7 +94,7 @@ module shiva {
 
                 }
 
-                icon.style(this.config.icon.style);
+                icon.style(this.styles.icon.style);
 
 
             }
@@ -102,27 +102,36 @@ module shiva {
 
             this.addEventListener(this, "mouseover", this.overWithEnable);
             this.addEventListener(this, "mouseout", this.outWithEnable);
+            this.addEventListener(this, "click", this.showOverState);
 
-            this.style(this.config);
+            this.style(this.styles);
 
         }
 
+        showOverState() {
+            if(!this.stateOver && this.enabled) {
+                this.out();
+            }
+        }
+
         over() {
+            this.stateOver = true;
             this.to({
-                duration: this.config.durationIn,
+                duration: this.styles.hover.durationIn,
                 toVars: {
-                    backgroundColor: this.config.backgroundColorHover,
-                    color: this.config.colorHover
+                    backgroundColor: this.styles.hover.backgroundColor,
+                    color: this.styles.hover.color
                 }
             });
         }
 
         out() {
+            this.stateOver = false;
             this.to({
-                duration: this.config.durationOut,
+                duration: this.styles.hover.durationOut,
                 toVars: {
-                    backgroundColor: this.config.backgroundColor,
-                    color: this.config.color
+                    backgroundColor: this.styles.backgroundColor,
+                    color: this.styles.color
                 }
             });
         }
@@ -153,11 +162,6 @@ module shiva {
         }
 
 
-        public get data(): string {
-            return this.config.data;
-        }
-
-
         private overWithEnable(e) {
             if (this.enabled) {
                 this.over();
@@ -169,8 +173,6 @@ module shiva {
                 this.out();
             }
         }
-
     }
-
 
 }

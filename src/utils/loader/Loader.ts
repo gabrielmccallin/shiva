@@ -1,4 +1,4 @@
-﻿/// <reference path="eventdispatcher.ts" />
+﻿/// <reference path="../../components/container/eventdispatcher.ts" />
 /// <reference path="LoaderHTTPMethods.ts" />
 
 module shiva {

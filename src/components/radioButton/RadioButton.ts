@@ -1,6 +1,6 @@
-﻿/// <reference path="container.ts" />
+﻿/// <reference path="../container/container.ts" />
 module shiva {
-    export class CheckBox extends Container {
+    export class RadioButton extends Container {
         static CLICK: string = "click";
         private enabled: boolean;
 
@@ -11,7 +11,7 @@ module shiva {
             });
 
             let element = <HTMLInputElement>this.element;
-            element.type = "checkbox";
+            element.type = "radio";
 
             if (config) {
                 if (config.id) {

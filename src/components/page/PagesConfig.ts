@@ -1,8 +1,9 @@
 ﻿module shiva {
     export interface PagesConfig {
+        pages: {},
         id?: string,
         style?: StyleDeclaration,
         delayTransition?: number,
-        pages: {}
+        routes?: boolean
     }
 }

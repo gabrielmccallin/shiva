@@ -3,12 +3,15 @@
         static button = {
             fontSize: "1.2em",
             fontFamily: "sans-serif",
-            fontWeight: "300",
+            // fontWeight: "300",
             backgroundColor: "#fefefe",
-            backgroundColorHover: "#dddddd",
-            durationOut: 1,
-            durationIn: 0,
-            padding: "1rem",
+            hover: {
+                backgroundColor: "#dddddd",
+                durationOut: 1,
+                durationIn: 0,
+                color: "#000000"
+            },
+            padding: "0.75rem",
             textAlign: "left",
             whiteSpace: "nowrap",
             msTouchAction: "manipulation",
@@ -21,31 +24,29 @@
             border: "2px solid transparent",
             borderColor: "#eeeeee",
             color: "#000000",
-            colorHover: "#000000",
             text: "Button"
         };
         static drop = {
             fontFamily: "sans-serif",
             fontSize: "1.2rem",
             backgroundColor: "#ffffff",
-            backgroundColorHover: "#dddddd",
-            colorHover: "#000000",
             color: "#000000",
-            durationIn: 0,
-            durationOut: 0.5,
             // minWidth: "5rem",
-            fontWeight: "300",
-            padding: "0rem",
+            // fontWeight: "300",
+            padding: "1rem",
             durationExpand: 0.5,
             durationContract: 0.5,
-            marginTop: "0.3rem",
-            listStyle: "none",
-            zIndex: "1336",
-            position: "absolute",
-            overflow: "hidden",
+            // marginTop: "0.3rem",
             border: "2px solid transparent",
             borderColor: "#eeeeee",
+            dropGap: "0.1rem",
             // boxShadow: "0px 12px 20px rgba(0,0,0,0.1)"
+            hover: {
+                backgroundColor: "#dddddd",
+                color: "#000000",
+                durationIn: 0,
+                durationOut: 0.5,
+            },
             caret: {
                 width: "0px",
                 height: "0px",
@@ -61,12 +62,8 @@
                 display: "inline-block",
                 verticalAlign: "middle",
                 marginLeft: "0.35rem",
-                pointerEvents: "none"
-            },
-            listItem: {
-                padding: "1rem",
-                display: "list-item",
-                cursor: "pointer"
+                pointerEvents: "none",
+                transform: "translateY(-0.1rem)"
             }
         };
     }

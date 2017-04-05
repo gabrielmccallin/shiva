@@ -338,18 +338,21 @@ module shiva {
 		webkitWritingMode?: string;
 		whiteSpace?: string;
 		widows?: string;
-		width?: any;
-		// width?: string;
+		width?: string | Number;
 		wordBreak?: string;
 		wordSpacing?: string;
 		wordWrap?: string;
 		writingMode?: string;
 		zIndex?: string;
 		zoom?: string;
-		y?:number,
-		x?:number,
-		alpha?:number,
-		webkitBoxShadow?:string,
-		float?: string
+		y?:number;
+		x?:number;
+		alpha?:number;
+		webkitBoxShadow?:string;
+		float?: Float; 
 	}
+
+	export type Float = "left" | "right" | "none" | "inherit" | "initial" | "unset";
+	export type Display = "block" | "inline" | "inline-block" | "table" | "flex" | "grid" | "list-item" | "table-row-group" | "table-header-group" | "table-footer-group" | "table-row" | "table-cell" | "table-column-group" | "table-column" | "table-caption" | "none" | "inline-list-item" | "inline-table" | "inline-flex" | "inline-grid" | "none" | "inherit" | "initial" | "unset";
+
 }

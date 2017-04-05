@@ -15,7 +15,7 @@ module shiva {
 
         }
 
-        get response(): Container {
+        get response(): string {
             return this._response;
         }
 

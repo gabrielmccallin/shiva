@@ -1,4 +1,5 @@
-﻿module shiva { 
+﻿/// <reference path="../container/container.ts" />
+module shiva { 
     export class Image extends Container {
 
         static COMPLETE: string = "load";

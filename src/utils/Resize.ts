@@ -11,8 +11,6 @@
             var targetWidth: number = areaWidth;
             var targetHeight: number = areaWidth / ratio;
 
-//
-
             if (targetHeight < areaHeight) {
                 targetHeight = areaHeight;
                 targetWidth = targetHeight * ratio;
@@ -29,8 +27,6 @@
             var ratio: number = objectWidth / objectHeight;
             var targetWidth: number = areaWidth;
             var targetHeight: number = areaWidth * ratio;
-
-
 
             if (targetHeight > areaHeight) {
                 targetHeight = areaHeight;

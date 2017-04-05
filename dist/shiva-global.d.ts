@@ -1,102 +1,133 @@
-/**
- * Represents the completion of an asynchronous operation
- */
-interface Promise<T> {
-    /**
-    * Attaches callbacks for the resolution and/or rejection of the Promise.
-    * @param onfulfilled The callback to execute when the Promise is resolved.
-    * @param onrejected The callback to execute when the Promise is rejected.
-    * @returns A Promise for the completion of which ever callback is executed.
-    */
-    then<TResult>(onfulfilled?: (value: T) => TResult | PromiseLike<TResult>, onrejected?: (reason: any) => TResult | PromiseLike<TResult>): Promise<TResult>;
-    then<TResult>(onfulfilled?: (value: T) => TResult | PromiseLike<TResult>, onrejected?: (reason: any) => void): Promise<TResult>;
-
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch(onrejected?: (reason: any) => T | PromiseLike<T>): Promise<T>;
-    catch(onrejected?: (reason: any) => void): Promise<T>;
-
-    // [Symbol.toStringTag]: "Promise";
-}
-
-interface PromiseConstructor {
-    /** 
-      * A reference to the prototype. 
-      */
-    prototype: Promise<any>;
-
-    /**
-     * Creates a new Promise.
-     * @param executor A callback used to initialize the promise. This callback is passed two arguments: 
-     * a resolve callback used resolve the promise with a value or the result of another promise, 
-     * and a reject callback used to reject the promise with a provided reason or error.
-     */
-    new <T>(executor: (resolve: (value?: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
-
-    /**
-     * Creates a Promise that is resolved with an array of results when all of the provided Promises 
-     * resolve, or rejected when any Promise is rejected.
-     * @param values An array of Promises.
-     * @returns A new Promise.
-     */
-    all<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(values: [T1 | PromiseLike<T1>, T2 | PromiseLike<T2>, T3 | PromiseLike<T3>, T4 | PromiseLike <T4>, T5 | PromiseLike<T5>, T6 | PromiseLike<T6>, T7 | PromiseLike<T7>, T8 | PromiseLike<T8>, T9 | PromiseLike<T9>, T10 | PromiseLike<T10>]): Promise<[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10]>;
-    all<T1, T2, T3, T4, T5, T6, T7, T8, T9>(values: [T1 | PromiseLike<T1>, T2 | PromiseLike<T2>, T3 | PromiseLike<T3>, T4 | PromiseLike <T4>, T5 | PromiseLike<T5>, T6 | PromiseLike<T6>, T7 | PromiseLike<T7>, T8 | PromiseLike<T8>, T9 | PromiseLike<T9>]): Promise<[T1, T2, T3, T4, T5, T6, T7, T8, T9]>;
-    all<T1, T2, T3, T4, T5, T6, T7, T8>(values: [T1 | PromiseLike<T1>, T2 | PromiseLike<T2>, T3 | PromiseLike<T3>, T4 | PromiseLike <T4>, T5 | PromiseLike<T5>, T6 | PromiseLike<T6>, T7 | PromiseLike<T7>, T8 | PromiseLike<T8>]): Promise<[T1, T2, T3, T4, T5, T6, T7, T8]>;
-    all<T1, T2, T3, T4, T5, T6, T7>(values: [T1 | PromiseLike<T1>, T2 | PromiseLike<T2>, T3 | PromiseLike<T3>, T4 | PromiseLike <T4>, T5 | PromiseLike<T5>, T6 | PromiseLike<T6>, T7 | PromiseLike<T7>]): Promise<[T1, T2, T3, T4, T5, T6, T7]>;
-    all<T1, T2, T3, T4, T5, T6>(values: [T1 | PromiseLike<T1>, T2 | PromiseLike<T2>, T3 | PromiseLike<T3>, T4 | PromiseLike <T4>, T5 | PromiseLike<T5>, T6 | PromiseLike<T6>]): Promise<[T1, T2, T3, T4, T5, T6]>;
-    all<T1, T2, T3, T4, T5>(values: [T1 | PromiseLike<T1>, T2 | PromiseLike<T2>, T3 | PromiseLike<T3>, T4 | PromiseLike <T4>, T5 | PromiseLike<T5>]): Promise<[T1, T2, T3, T4, T5]>;
-    all<T1, T2, T3, T4>(values: [T1 | PromiseLike<T1>, T2 | PromiseLike<T2>, T3 | PromiseLike<T3>, T4 | PromiseLike <T4>]): Promise<[T1, T2, T3, T4]>;
-    all<T1, T2, T3>(values: [T1 | PromiseLike<T1>, T2 | PromiseLike<T2>, T3 | PromiseLike<T3>]): Promise<[T1, T2, T3]>;
-    all<T1, T2>(values: [T1 | PromiseLike<T1>, T2 | PromiseLike<T2>]): Promise<[T1, T2]>;
-    all<TAll>(values: Iterable<TAll | PromiseLike<TAll>>): Promise<TAll[]>;
-
-    /**
-     * Creates a Promise that is resolved or rejected when any of the provided Promises are resolved 
-     * or rejected.
-     * @param values An array of Promises.
-     * @returns A new Promise.
-     */
-    race<T>(values: Iterable<T | PromiseLike<T>>): Promise<T>;
-
-    /**
-     * Creates a new rejected promise for the provided reason.
-     * @param reason The reason the promise was rejected.
-     * @returns A new rejected Promise.
-     */
-    reject(reason: any): Promise<void>;
-
-    /**
-     * Creates a new rejected promise for the provided reason.
-     * @param reason The reason the promise was rejected.
-     * @returns A new rejected Promise.
-     */
-    reject<T>(reason: any): Promise<T>;
-
-    /**
-      * Creates a new resolved promise for the provided value.
-      * @param value A promise.
-      * @returns A promise whose internal state matches the provided promise.
-      */
-    resolve<T>(value: T | PromiseLike<T>): Promise<T>;
-
-    /**
-     * Creates a new resolved promise .
-     * @returns A resolved promise.
-     */
-    resolve(): Promise<void>;
-
-    // [Symbol.species]: Function;
-}
-
-declare var Promise: PromiseConstructor;
-
-interface Iterable<T> {
-    // [Symbol.iterator](): Iterator<T>;
-}
 /// <reference path="typings/promise.d.ts" />
+declare module shiva {
+    class Styles {
+        static button: {
+            fontSize: string;
+            fontFamily: string;
+            backgroundColor: string;
+            hover: {
+                backgroundColor: string;
+                durationOut: number;
+                durationIn: number;
+                color: string;
+            };
+            padding: string;
+            textAlign: string;
+            whiteSpace: string;
+            msTouchAction: string;
+            touchAction: string;
+            cursor: string;
+            webkitUserSelect: string;
+            mozUserSelect: string;
+            msUserSelect: string;
+            userSelect: string;
+            border: string;
+            borderColor: string;
+            color: string;
+            text: string;
+        };
+        static drop: {
+            fontFamily: string;
+            fontSize: string;
+            backgroundColor: string;
+            color: string;
+            padding: string;
+            durationExpand: number;
+            durationContract: number;
+            border: string;
+            borderColor: string;
+            dropGap: string;
+            hover: {
+                backgroundColor: string;
+                color: string;
+                durationIn: number;
+                durationOut: number;
+            };
+            caret: {
+                width: string;
+                height: string;
+                borderLeftWidth: string;
+                borderLeftStyle: string;
+                borderLeftColor: string;
+                borderRightWidth: string;
+                borderRightStyle: string;
+                borderRightColor: string;
+                borderTopWidth: string;
+                borderTopStyle: string;
+                borderTopColor: string;
+                display: string;
+                verticalAlign: string;
+                marginLeft: string;
+                pointerEvents: string;
+                transform: string;
+            };
+        };
+    }
+}
+declare module shiva {
+    class ObjectUtils {
+        static merge(target: any, source: any): any;
+    }
+}
+declare module shiva {
+    class Observer {
+        private static observers;
+        static addEventListener(scope: any, type: string, callback: Function): void;
+        static removeEventListener(type: string, callback: Function): void;
+        static dispatchEvent(evt: shiva.Event): void;
+    }
+}
+declare module shiva {
+    class Resize {
+        static proportionalOutside(objectWidth: number, objectHeight: number, areaWidth: number, areaHeight: number): {
+            height: number;
+            width: number;
+        };
+        static proportionalInside(objectWidth: number, objectHeight: number, areaWidth: number, areaHeight: number): Object;
+    }
+}
+declare module shiva {
+    class Window {
+        static scrollY(): number;
+        static scrollX(): number;
+        static height: number;
+        static width: number;
+    }
+}
+declare module shiva {
+    class Ease {
+        static Linear: string;
+        static Ease: string;
+        static EaseIn: string;
+        static EaseOut: string;
+        static EaseInOut: string;
+    }
+}
+declare module shiva {
+    class Transition {
+        private callback;
+        private data;
+        constructor();
+        then(callback: Function, data?: any): Transition;
+        execute(): void;
+        printCallback(): Transition;
+    }
+}
+declare module shiva {
+    interface TransitionFromToConfig extends TransitionToConfig {
+        fromVars: StyleDeclaration;
+    }
+}
+declare module shiva {
+    interface TransitionToConfig {
+        duration: number;
+        toVars: StyleDeclaration;
+        ease?: Ease;
+        delay?: number;
+        immediateRender?: boolean;
+        resolve?: Function;
+    }
+}
 declare module shiva {
     class Properties {
         static style(object: any, vars: StyleDeclaration): void;
@@ -177,39 +208,44 @@ declare module shiva {
 declare module shiva {
     class Button extends Container {
         static CLICK: string;
-        static label: string;
+        static text: string;
         private enabled;
-        private config;
         private icon;
+        private styles;
+        private stateOver;
         constructor(config: ButtonConfig);
+        showOverState(): void;
         over(): void;
         out(): void;
         click(e: MouseEvent): void;
         disable(): void;
         select(): void;
         enable(): void;
-        data: string;
         private overWithEnable(e);
         private outWithEnable(e);
     }
 }
 declare module shiva {
-    interface ButtonConfig extends HoverStyleDeclaration {
-        id?: string;
+    interface ButtonConfig extends ContainerConfig {
         href?: string;
         target?: string;
-        style?: ButtonConfig;
-        label?: string;
-        data?: any;
-        icon?: ButtonIconConfig;
-        type?: string;
+        style?: ButtonStyleDeclaration;
+        styles?: ButtonStyleDeclaration[];
     }
 }
 declare module shiva {
-    interface ButtonIconConfig {
-        code: string;
-        align?: string;
-        style?: StyleDeclaration;
+    interface ButtonStyleDeclaration extends StyleDeclaration {
+        hover?: {
+            backgroundColor?: string;
+            color?: string;
+            durationIn?: number;
+            durationOut?: number;
+        };
+        icon?: {
+            code: string;
+            align?: string;
+            style?: StyleDeclaration;
+        };
     }
 }
 declare module shiva {
@@ -225,7 +261,8 @@ declare module shiva {
         root?: boolean;
         id?: string;
         type?: string;
-        style?: StyleDeclaration | StyleDeclaration[];
+        style?: StyleDeclaration;
+        styles?: StyleDeclaration[];
         text?: string;
         data?: any;
     }
@@ -238,152 +275,16 @@ declare module shiva {
     }
 }
 declare module shiva {
-    class Ease {
-        static Linear: string;
-        static Ease: string;
-        static EaseIn: string;
-        static EaseOut: string;
-        static EaseInOut: string;
-    }
-}
-declare module shiva {
-    interface HoverStyleDeclaration extends StyleDeclaration {
-        backgroundColorHover?: string;
-        colorHover?: string;
+    interface HoverStyle {
+        backgroundColor?: string;
+        color?: string;
         durationIn?: number;
         durationOut?: number;
     }
 }
 declare module shiva {
-    class Image extends Container {
-        static COMPLETE: string;
-        static ERROR: string;
-        constructor(config: ImageConfig);
-        load(path: string): void;
-    }
-}
-declare module shiva {
-    interface ImageConfig {
-        path?: any;
-        style?: StyleDeclaration;
-    }
-}
-declare module shiva {
-    interface InputConfig {
-        id?: string;
-        style?: InputConfig;
-        checked?: boolean;
-    }
-}
-declare module shiva {
-    type LoaderHTTPMethods = "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
-}
-declare module shiva {
-    class Loader extends EventDispatcher {
-        static httpMethods: {
-            GET: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
-            PUT: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
-            POST: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
-            DELETE: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
-            UPDATE: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
-        };
-        static COMPLETE: string;
-        static ERROR: string;
-        private _data;
-        private http;
-        private resolve;
-        private reject;
-        constructor();
-        load(config: LoaderConfig): Promise<any>;
-        private concatParams(params);
-        private setRequestHeader(header);
-        private handleResponse();
-    }
-}
-declare module shiva {
-    interface LoaderConfig {
-        url: string;
-        method: LoaderHTTPMethods;
-        params?: any;
-        headers?: Array<any>;
-        cache?: boolean;
-        data?: any;
-    }
-}
-declare module shiva {
-    class LoaderEvent extends Event {
-        private _response;
-        private _status;
-        private _httpMetaData;
-        constructor(type: string, targetObj: any, response: any, status: any, httpMetaData: any, data?: any, sourceEvent?: any);
-        response: Container;
-        status: string;
-        httpMetaData: any;
-    }
-}
-declare module shiva {
-    class Observer {
-        private static observers;
-        static addEventListener(scope: any, type: string, callback: Function): void;
-        static removeEventListener(type: string, callback: Function): void;
-        static dispatchEvent(evt: shiva.Event): void;
-    }
-}
-declare module shiva {
-    interface Page extends Container {
-        wake(): any;
-        sleep(): any;
-    }
-}
-declare module shiva {
-    class Pages extends Container {
-        private currentPage;
-        private config;
-        private pages;
-        private currentPageName;
-        private zIndex;
-        private delayTimeout;
-        constructor(config: PagesConfig);
-        update(pageName: string): void;
-    }
-}
-declare module shiva {
-    interface PagesConfig {
-        id?: string;
-        style?: StyleDeclaration;
-        delayTransition?: number;
-        pages: {};
-    }
-}
-declare module shiva {
-    class RadioButton extends Container {
-        static CLICK: string;
-        private enabled;
-        constructor(config?: InputConfig);
-        checked: boolean;
-    }
-}
-declare module shiva {
-    class Resize {
-        static proportionalOutside(objectWidth: number, objectHeight: number, areaWidth: number, areaHeight: number): {
-            height: number;
-            width: number;
-        };
-        static proportionalInside(objectWidth: number, objectHeight: number, areaWidth: number, areaHeight: number): Object;
-    }
-}
-declare module shiva {
-    class Select extends Container {
-        static CHANGE: string;
-        constructor(config: SelectConfig);
-        value: string;
-        selectedIndex: number;
-    }
-}
-declare module shiva {
-    interface SelectConfig extends ContainerConfig {
-        name?: string;
-        options: string[];
+    interface HoverStyleDeclaration extends StyleDeclaration {
+        hover?: HoverStyle;
     }
 }
 declare module shiva {
@@ -726,7 +627,7 @@ declare module shiva {
         webkitWritingMode?: string;
         whiteSpace?: string;
         widows?: string;
-        width?: any;
+        width?: string | Number;
         wordBreak?: string;
         wordSpacing?: string;
         wordWrap?: string;
@@ -737,112 +638,10 @@ declare module shiva {
         x?: number;
         alpha?: number;
         webkitBoxShadow?: string;
-        float?: string;
+        float?: Float;
     }
-}
-declare module shiva {
-    class Styles {
-        static button: {
-            fontSize: string;
-            fontFamily: string;
-            fontWeight: string;
-            backgroundColor: string;
-            backgroundColorHover: string;
-            durationOut: number;
-            durationIn: number;
-            padding: string;
-            textAlign: string;
-            whiteSpace: string;
-            msTouchAction: string;
-            touchAction: string;
-            cursor: string;
-            webkitUserSelect: string;
-            mozUserSelect: string;
-            msUserSelect: string;
-            userSelect: string;
-            border: string;
-            borderColor: string;
-            color: string;
-            colorHover: string;
-            text: string;
-        };
-        static drop: {
-            fontFamily: string;
-            fontSize: string;
-            backgroundColor: string;
-            backgroundColorHover: string;
-            colorHover: string;
-            color: string;
-            durationIn: number;
-            durationOut: number;
-            fontWeight: string;
-            padding: string;
-            durationExpand: number;
-            durationContract: number;
-            marginTop: string;
-            listStyle: string;
-            zIndex: string;
-            position: string;
-            overflow: string;
-            border: string;
-            borderColor: string;
-            caret: {
-                width: string;
-                height: string;
-                borderLeftWidth: string;
-                borderLeftStyle: string;
-                borderLeftColor: string;
-                borderRightWidth: string;
-                borderRightStyle: string;
-                borderRightColor: string;
-                borderTopWidth: string;
-                borderTopStyle: string;
-                borderTopColor: string;
-                display: string;
-                verticalAlign: string;
-                marginLeft: string;
-                pointerEvents: string;
-            };
-            listItem: {
-                padding: string;
-                display: string;
-                cursor: string;
-            };
-        };
-    }
-}
-declare module shiva {
-    class Transition {
-        private callback;
-        private data;
-        constructor();
-        then(callback: Function, data?: any): Transition;
-        execute(): void;
-        printCallback(): Transition;
-    }
-}
-declare module shiva {
-    interface TransitionFromToConfig extends TransitionToConfig {
-        fromVars: StyleDeclaration;
-    }
-}
-declare module shiva {
-    interface TransitionToConfig {
-        duration: number;
-        toVars: StyleDeclaration;
-        ease?: Ease;
-        delay?: number;
-        immediateRender?: boolean;
-        resolve?: Function;
-    }
-}
-declare module shiva {
-    class Window {
-        static scrollY(): number;
-        static scrollX(): number;
-        static height: number;
-        static width: number;
-    }
+    type Float = "left" | "right" | "none" | "inherit" | "initial" | "unset";
+    type Display = "block" | "inline" | "inline-block" | "table" | "flex" | "grid" | "list-item" | "table-row-group" | "table-header-group" | "table-footer-group" | "table-row" | "table-cell" | "table-column-group" | "table-column" | "table-caption" | "none" | "inline-list-item" | "inline-table" | "inline-flex" | "inline-grid" | "none" | "inherit" | "initial" | "unset";
 }
 declare module shiva {
     class DropDown extends Container {
@@ -852,8 +651,11 @@ declare module shiva {
         private unorderedList;
         private scopedEventHandler;
         private items;
-        private dropConfig;
-        private marginPostAnimation;
+        private buttonStyle;
+        private dropStyle;
+        private itemStyle;
+        private durationExpand;
+        private durationContract;
         constructor(config: DropDownConfig);
         private buttonOver(e);
         private buttonOut(e);
@@ -869,17 +671,135 @@ declare module shiva {
 declare module shiva {
     interface DropDownConfig extends ContainerConfig {
         options: string[];
-        label?: string;
         style?: DropStyleDeclaration;
+        styles?: DropStyleDeclaration[];
     }
 }
 declare module shiva {
     interface DropStyleDeclaration extends HoverStyleDeclaration {
         durationExpand?: number;
         durationContract?: number;
-        button?: ButtonConfig;
-        drop?: DropStyleDeclaration;
+        button?: HoverStyleDeclaration;
         item?: HoverStyleDeclaration;
         caret?: StyleDeclaration;
+        dropGap: string;
+    }
+}
+declare module shiva {
+    class Image extends Container {
+        static COMPLETE: string;
+        static ERROR: string;
+        constructor(config: ImageConfig);
+        load(path: string): void;
+    }
+}
+declare module shiva {
+    interface ImageConfig {
+        path?: any;
+        style?: StyleDeclaration;
+    }
+}
+declare module shiva {
+    interface Page extends Container {
+        wake(): any;
+        sleep(): any;
+    }
+}
+declare module shiva {
+    class Pages extends Container {
+        private currentPage;
+        private config;
+        private pages;
+        private currentPageName;
+        private zIndex;
+        private delayTimeout;
+        private routes;
+        constructor(config: PagesConfig);
+        update(page: string): void;
+        changePage(page: string): void;
+    }
+}
+declare module shiva {
+    interface PagesConfig {
+        pages: {};
+        id?: string;
+        style?: StyleDeclaration;
+        delayTransition?: number;
+        routes?: boolean;
+    }
+}
+declare module shiva {
+    interface InputConfig {
+        id?: string;
+        style?: InputConfig;
+        checked?: boolean;
+    }
+}
+declare module shiva {
+    class RadioButton extends Container {
+        static CLICK: string;
+        private enabled;
+        constructor(config?: InputConfig);
+        checked: boolean;
+    }
+}
+declare module shiva {
+    class Select extends Container {
+        static CHANGE: string;
+        constructor(config: SelectConfig);
+        value: string;
+        selectedIndex: number;
+    }
+}
+declare module shiva {
+    interface SelectConfig extends ContainerConfig {
+        name?: string;
+        options: string[];
+    }
+}
+declare module shiva {
+    type LoaderHTTPMethods = "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+}
+declare module shiva {
+    class Loader extends EventDispatcher {
+        static httpMethods: {
+            GET: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            PUT: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            POST: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            DELETE: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            UPDATE: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+        };
+        static COMPLETE: string;
+        static ERROR: string;
+        private _data;
+        private http;
+        private resolve;
+        private reject;
+        constructor();
+        load(config: LoaderConfig): Promise<any>;
+        private concatParams(params);
+        private setRequestHeader(header);
+        private handleResponse();
+    }
+}
+declare module shiva {
+    interface LoaderConfig {
+        url: string;
+        method: LoaderHTTPMethods;
+        params?: any;
+        headers?: Array<any>;
+        cache?: boolean;
+        data?: any;
+    }
+}
+declare module shiva {
+    class LoaderEvent extends Event {
+        private _response;
+        private _status;
+        private _httpMetaData;
+        constructor(type: string, targetObj: any, response: any, status: any, httpMetaData: any, data?: any, sourceEvent?: any);
+        response: string;
+        status: string;
+        httpMetaData: any;
     }
 }

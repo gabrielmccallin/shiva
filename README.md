@@ -57,13 +57,10 @@ import { Container } from "shiva";
 
 const view = new Container({
     text: "I'm a view",
-    style: [
-        {
-            display: "block",
-            backgroundColor: "#333333",
-        },
-        styles.StylishView
-    ]
+    style: {
+        display: "block",
+        backgroundColor: "#333333",
+    }
 });
 this.addChild(view);
 ```
@@ -76,7 +73,7 @@ view.innerHtml = "I'm still a view";
 // keep your styles in a class
 view.style(styles.DifferentStyle);
 
-// or use a literal
+// or use an object literal
 view.style({
     backgroundColor: "#dddddd",
     position: "absolute",
@@ -209,13 +206,17 @@ Methods
 Add container directly to document.body.
 
 - **style( vars: StyleDeclaration )**: void;  
-Pass a curly.StyleDeclaration class or literal to set inline CSS styles.
+Pass a StyleDeclaration class or object literal to set inline CSS styles.
+
+- **styles( vars: StyleDeclaration[] )**: void;  
+Pass an arrya of StyleDeclaration classes or object literals to set inline CSS styles.
+
 - **className( ...names: string[] )**: void;  
 
-- **addChild( child: curly.Container )**:void  
+- **addChild( child: Container )**:void  
 Append a container to a parent.  
 
-- **removeChild( child: curly.Container )**:void  
+- **removeChild( child: Container )**:void  
 Remove a container from a parent.  
 
 - **to( transitionToConfig : { duration: number, delay: number, ease: Ease, toVars: StyleDeclaration })**: Promise<Container  

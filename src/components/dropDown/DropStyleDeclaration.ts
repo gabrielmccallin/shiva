@@ -2,10 +2,11 @@
     export interface DropStyleDeclaration extends HoverStyleDeclaration {
         durationExpand?: number;
         durationContract?: number; 
-        button?: ButtonConfig;
-        drop?: DropStyleDeclaration;
+        button?: HoverStyleDeclaration;
+        // drop?: DropStyleDeclaration;
         item?: HoverStyleDeclaration;
         caret?: StyleDeclaration;
+        dropGap: string;
 
     }
 }

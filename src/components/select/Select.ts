@@ -1,4 +1,4 @@
-﻿/// <reference path="Container.ts" />
+﻿/// <reference path="../container/container.ts" />
 
 module shiva {
     export class Select extends Container {

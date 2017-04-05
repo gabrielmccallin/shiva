@@ -1,10 +1,10 @@
 ﻿/// <reference path="properties.ts" />
 /// <reference path="EventDispatcher.ts" />
-/// <reference path="../typings/promise.d.ts" />
+/// <reference path="../../../typings/promise.d.ts" />
 
 
 /**
- * curly.Container (TypeScript)
+ * shiva.Container (TypeScript)
  * - Container
  *
  * @version 0.1.5
@@ -56,16 +56,14 @@ module shiva {
 
                 this._data = config.data;
 
-                if (Array.isArray(config.style)) {
-                    let styles = <StyleDeclaration[]>config.style;
+                if (config.styles) {
+                    let styles = <StyleDeclaration[]>config.styles;
                     styles.map((style) => {
                         this.style(style);
                     });
                 }
-                else {
-                    let style = <StyleDeclaration>config.style; 
-                    this.style(style);
-                }
+                
+                this.style(config.style);
                 // this.style(config);
             }
             else {
@@ -457,7 +455,7 @@ module shiva {
 
         }
 
-        private dimensionsPolyfill(): shiva.Dimensions {
+        private dimensionsPolyfill(): Dimensions {
 
             let height = this._element.getBoundingClientRect().height;
             let width = this._element.getBoundingClientRect().width;
