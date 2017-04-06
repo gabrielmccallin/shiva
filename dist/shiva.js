@@ -1130,19 +1130,39 @@ var shiva;
                     cursor: "pointer"
                 }
             });
+            this.stateOver = false;
             this.href = href;
             this.enabled = true;
-            this.styles = {};
-            for (var i in shiva.Styles.button) {
-                this.styles[i] = shiva.Styles.button[i];
-            }
+            this.styles = shiva.ObjectUtils.merge({}, shiva.Styles.button);
             if (config) {
                 if (config.styles) {
                     config.styles.map(function (style) {
+                        if (!style.hover) {
+                            if (!style.hover.backgroundColor) {
+                                style.hover.backgroundColor = style.backgroundColor;
+                            }
+                        }
+                        if (!style.hover) {
+                            if (!style.hover.color) {
+                                style.hover.color = style.color;
+                            }
+                        }
                         _this.styles = shiva.ObjectUtils.merge(_this.styles, style);
                     });
                 }
-                this.styles = shiva.ObjectUtils.merge(this.styles, config.style);
+                if (config.style) {
+                    if (!config.style.hover) {
+                        if (!config.style.hover.backgroundColor) {
+                            config.style.hover.backgroundColor = config.style.backgroundColor;
+                        }
+                    }
+                    if (!config.style.hover) {
+                        if (!config.style.hover.color) {
+                            config.style.hover.color = config.style.color;
+                        }
+                    }
+                    this.styles = shiva.ObjectUtils.merge(this.styles, config.style);
+                }
             }
             var buttonLabel = Button.text;
             if (config.text) {
@@ -1179,12 +1199,33 @@ var shiva;
             }
             this.addEventListener(this, "mouseover", this.overWithEnable);
             this.addEventListener(this, "mouseout", this.outWithEnable);
-            this.addEventListener(this, "click", this.showOverState);
+            this.addEventListener(this, "click", this.showOutTransition);
+            this.addEventListener(this, "pointerdown", this.showOutTransition);
+            this.addEventListener(this, "touchdown", this.showOutTransition);
+            console.log("this.styles: ", this.styles);
             this.style(this.styles);
         }
-        Button.prototype.showOverState = function () {
-            if (!this.stateOver && this.enabled) {
-                this.out();
+        Button.prototype.showOutTransition = function (e) {
+            var _this = this;
+            console.log("this.stateOver", this.stateOver);
+            console.log("event", e);
+            if (this.stateOver && this.enabled) {
+                var event_1 = e.sourceEvent;
+                console.log("play out animation", event_1.type);
+                event_1.preventDefault();
+                event_1.stopImmediatePropagation();
+                event_1.stopPropagation();
+                this.to({
+                    duration: this.styles.hover.durationOut,
+                    toVars: {
+                        backgroundColor: this.styles.backgroundColor,
+                        color: this.styles.color
+                    }
+                }).then(function () {
+                    if (_this.stateOver) {
+                        _this.over();
+                    }
+                });
             }
         };
         Button.prototype.over = function () {
@@ -1680,6 +1721,38 @@ var shiva;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
+    var RadioButton = (function (_super) {
+        __extends(RadioButton, _super);
+        function RadioButton(config) {
+            _super.call(this, {
+                type: "input"
+            });
+            var element = this.element;
+            element.type = "radio";
+            if (config) {
+                if (config.id) {
+                    this.id = config.id;
+                }
+                this.style(config.style);
+                this.style(config);
+                element.checked = config.checked;
+            }
+        }
+        Object.defineProperty(RadioButton.prototype, "checked", {
+            get: function () {
+                var element = this.element;
+                return element.checked;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        RadioButton.CLICK = "click";
+        return RadioButton;
+    }(shiva.Container));
+    shiva.RadioButton = RadioButton;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
     var Select = (function (_super) {
         __extends(Select, _super);
         function Select(config) {
@@ -1719,38 +1792,6 @@ var shiva;
         return Select;
     }(shiva.Container));
     shiva.Select = Select;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var RadioButton = (function (_super) {
-        __extends(RadioButton, _super);
-        function RadioButton(config) {
-            _super.call(this, {
-                type: "input"
-            });
-            var element = this.element;
-            element.type = "radio";
-            if (config) {
-                if (config.id) {
-                    this.id = config.id;
-                }
-                this.style(config.style);
-                this.style(config);
-                element.checked = config.checked;
-            }
-        }
-        Object.defineProperty(RadioButton.prototype, "checked", {
-            get: function () {
-                var element = this.element;
-                return element.checked;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        RadioButton.CLICK = "click";
-        return RadioButton;
-    }(shiva.Container));
-    shiva.RadioButton = RadioButton;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
@@ -1819,9 +1860,9 @@ var shiva;
         Loader.prototype.handleResponse = function () {
             if (this.http.readyState === 4) {
                 if (this.http.status === 200) {
-                    var event_1 = new shiva.LoaderEvent(Loader.COMPLETE, this, this.http.responseText, this.http.status, this.http, this._data);
-                    _super.prototype.dispatchEvent.call(this, event_1);
-                    this.resolve(event_1);
+                    var event_2 = new shiva.LoaderEvent(Loader.COMPLETE, this, this.http.responseText, this.http.status, this.http, this._data);
+                    _super.prototype.dispatchEvent.call(this, event_2);
+                    this.resolve(event_2);
                     this.http.onreadystatechange = undefined;
                 }
                 else {
@@ -1832,8 +1873,8 @@ var shiva;
                     else {
                         error = this.http.statusText;
                     }
-                    var event_2 = new shiva.LoaderEvent(Loader.ERROR, this, error, this.http.status, this.http);
-                    _super.prototype.dispatchEvent.call(this, event_2);
+                    var event_3 = new shiva.LoaderEvent(Loader.ERROR, this, error, this.http.status, this.http);
+                    _super.prototype.dispatchEvent.call(this, event_3);
                     this.reject({
                         error: error,
                         status: this.http.status
@@ -1890,7 +1931,7 @@ var shiva;
     shiva.LoaderEvent = LoaderEvent;
 })(shiva || (shiva = {}));
 
-
+//# sourceMappingURL=shiva.js.map
 
  /** Detect free variable `global` from Node.js. */
     var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
@@ -1939,5 +1980,3 @@ var shiva;
         root.shiva = shiva;
     }
 }.call(this));
-
-//# sourceMappingURL=shiva.js.map

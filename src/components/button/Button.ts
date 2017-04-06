@@ -37,26 +37,49 @@ module shiva {
                 }
             });
 
+            this.stateOver = false;
             this.href = href;
             this.enabled = true;
 
             // copy default styles, copy config.style values, copy config values to the config object and then style the button with that object
             // this.config will also have values that are required later
-            this.styles = {};
-            for (let i in Styles.button) {
-                this.styles[i] = Styles.button[i];
-            }
+            this.styles = ObjectUtils.merge({}, Styles.button);
+            // for (let i in Styles.button) {
+            //     this.styles[i] = Styles.button[i];
+            // }
 
             if (config) {
                 if (config.styles) {
                     config.styles.map((style) => {
+                        if (!style.hover) {
+                            if (!style.hover.backgroundColor) {
+                                style.hover.backgroundColor = style.backgroundColor;
+                            }
+                        }
+                        if (!style.hover) {
+                            if (!style.hover.color) {
+                                style.hover.color = style.color;
+                            }
+                        }
                         this.styles = ObjectUtils.merge(this.styles, style);
                     });
                 }
-
-                this.styles = ObjectUtils.merge(this.styles, config.style);
+                if (config.style) {
+                    if (!config.style.hover) {
+                        if (!config.style.hover.backgroundColor) {
+                            config.style.hover.backgroundColor = config.style.backgroundColor;
+                        }
+                    }
+                    if (!config.style.hover) {
+                        if (!config.style.hover.color) {
+                            config.style.hover.color = config.style.color;
+                        }
+                    }
+                    this.styles = ObjectUtils.merge(this.styles, config.style);
+                }
             }
-            // console.log("this.styles: ", this.styles);
+
+
 
             let buttonLabel = Button.text;
             if (config.text) {
@@ -102,15 +125,36 @@ module shiva {
 
             this.addEventListener(this, "mouseover", this.overWithEnable);
             this.addEventListener(this, "mouseout", this.outWithEnable);
-            this.addEventListener(this, "click", this.showOverState);
+            this.addEventListener(this, "click", this.showOutTransition);
+            this.addEventListener(this, "pointerdown", this.showOutTransition);
+            this.addEventListener(this, "touchdown", this.showOutTransition);
 
+            console.log("this.styles: ", this.styles);
             this.style(this.styles);
 
         }
 
-        showOverState() {
-            if(!this.stateOver && this.enabled) {
-                this.out();
+        showOutTransition(e: Event) {
+            console.log("this.stateOver", this.stateOver);
+            console.log("event", e);
+            if (this.stateOver && this.enabled) {
+                let event = <MouseEvent>e.sourceEvent;
+                console.log("play out animation", event.type);
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                event.stopPropagation();
+
+                this.to({
+                    duration: this.styles.hover.durationOut,
+                    toVars: {
+                        backgroundColor: this.styles.backgroundColor,
+                        color: this.styles.color
+                    }
+                }).then(() => {
+                    if (this.stateOver) {
+                        this.over();
+                    }
+                });
             }
         }
 

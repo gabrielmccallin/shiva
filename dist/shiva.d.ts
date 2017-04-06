@@ -312,7 +312,7 @@ declare module "shiva" {
         private styles;
         private stateOver;
         constructor(config: ButtonConfig);
-        showOverState(): void;
+        showOutTransition(e: Event): void;
         over(): void;
         out(): void;
         click(e: MouseEvent): void;
@@ -822,20 +822,6 @@ declare module "shiva" {
     }
 }
 declare module "shiva" {
-    class Select extends Container {
-        static CHANGE: string;
-        constructor(config: SelectConfig);
-        value: string;
-        selectedIndex: number;
-    }
-}
-declare module "shiva" {
-    interface SelectConfig extends ContainerConfig {
-        name?: string;
-        options: string[];
-    }
-}
-declare module "shiva" {
     interface InputConfig {
         id?: string;
         style?: InputConfig;
@@ -848,6 +834,20 @@ declare module "shiva" {
         private enabled;
         constructor(config?: InputConfig);
         checked: boolean;
+    }
+}
+declare module "shiva" {
+    class Select extends Container {
+        static CHANGE: string;
+        constructor(config: SelectConfig);
+        value: string;
+        selectedIndex: number;
+    }
+}
+declare module "shiva" {
+    interface SelectConfig extends ContainerConfig {
+        name?: string;
+        options: string[];
     }
 }
 declare module "shiva" {
