@@ -1,11 +1,9 @@
-﻿module shiva {
+﻿/// <reference path="../container/HoverStyle.ts" />
+/// <reference path="../container/StyleDeclaration.ts" />
+
+module shiva {
     export interface ButtonStyleDeclaration extends StyleDeclaration {
-        hover?: {
-			backgroundColor?: string;
-			color?: string;
-			durationIn?: number;
-			durationOut?: number;
-		},
+        hover?: HoverStyle,
         icon?: {
             code: string;
             align?: string;

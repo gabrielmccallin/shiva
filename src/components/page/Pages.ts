@@ -28,12 +28,9 @@ module shiva {
                     let page: string;
                     if (event.state === null) {
                         page = window.location.pathname;
-                        console.log("popped, get page from window: ", page);
-                        console.log("window.location: ", window.location);
                     }
                     else {
                         page = event.state;
-                        console.log("popped, show event: ", page);
                     }
                     this.changePage(page);
                 });
@@ -49,7 +46,7 @@ module shiva {
                 this.changePage(page);
             }
             else {
-                console.log("view already loaded: ");
+                // console.log("view already loaded: ");
             }
         }
 

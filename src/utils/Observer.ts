@@ -1,4 +1,6 @@
-﻿module shiva {
+﻿/// <reference path="../components/container/EventDispatcher.ts" />
+
+module shiva {
     export class Observer {
         private static observers = {};
 
@@ -22,7 +24,7 @@
             this.observers[type].splice(indexOfClosureToRemove, 1);
         }
 
-        static dispatchEvent(evt: shiva.Event) {
+        static dispatchEvent(evt: Event) {
             var type = evt.type;
             if (this.observers[type]) {
                 for (var i = 0; i < this.observers[type].length; i++) {
@@ -30,7 +32,7 @@
                 }
             }
             else {
-                console.log("DISPATCH ERROR: NO OBSERVER REGISTERED");
+                console.error("No Observer registered for: ", evt);
             }
         }
     }

@@ -309,6 +309,42 @@ var shiva;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
+    var Ease = (function () {
+        function Ease() {
+        }
+        Ease.Linear = "linear";
+        Ease.Ease = "ease";
+        Ease.EaseIn = "ease-in";
+        Ease.EaseOut = "ease-out";
+        Ease.EaseInOut = "ease-in-out";
+        return Ease;
+    }());
+    shiva.Ease = Ease;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Transition = (function () {
+        function Transition() {
+            this.callback = function () { console.error("transition not set"); };
+        }
+        Transition.prototype.then = function (callback, data) {
+            this.callback = callback;
+            return new Transition();
+        };
+        Transition.prototype.execute = function () {
+            if (this.callback) {
+                this.callback(this.data);
+            }
+        };
+        Transition.prototype.printCallback = function () {
+            return this;
+        };
+        return Transition;
+    }());
+    shiva.Transition = Transition;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
     var ObjectUtils = (function () {
         function ObjectUtils() {
         }
@@ -331,228 +367,6 @@ var shiva;
         return ObjectUtils;
     }());
     shiva.ObjectUtils = ObjectUtils;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var Observer = (function () {
-        function Observer() {
-        }
-        Observer.addEventListener = function (scope, type, callback) {
-            if (!this.observers[type]) {
-                this.observers[type] = [];
-            }
-            this.observers[type].push({ scope: scope, type: type, callback: callback });
-        };
-        Observer.removeEventListener = function (type, callback) {
-            var indexOfClosureToRemove;
-            for (var i = 0; i < this.observers[type].length; i++) {
-                if (this.observers[type].callback === callback) {
-                    indexOfClosureToRemove = i;
-                    break;
-                }
-            }
-            this.observers[type].splice(indexOfClosureToRemove, 1);
-        };
-        Observer.dispatchEvent = function (evt) {
-            var type = evt.type;
-            if (this.observers[type]) {
-                for (var i = 0; i < this.observers[type].length; i++) {
-                    this.observers[type][i].callback.call(this.observers[type][i].scope, evt);
-                }
-            }
-            else {
-                console.log("DISPATCH ERROR: NO OBSERVER REGISTERED");
-            }
-        };
-        Observer.observers = {};
-        return Observer;
-    }());
-    shiva.Observer = Observer;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var Resize = (function () {
-        function Resize() {
-        }
-        Resize.proportionalOutside = function (objectWidth, objectHeight, areaWidth, areaHeight) {
-            var ratio = objectWidth / objectHeight;
-            var targetWidth = areaWidth;
-            var targetHeight = areaWidth / ratio;
-            if (targetHeight < areaHeight) {
-                targetHeight = areaHeight;
-                targetWidth = targetHeight * ratio;
-            }
-            return { height: targetHeight, width: targetWidth };
-        };
-        Resize.proportionalInside = function (objectWidth, objectHeight, areaWidth, areaHeight) {
-            var ratio = objectWidth / objectHeight;
-            var targetWidth = areaWidth;
-            var targetHeight = areaWidth * ratio;
-            if (targetHeight > areaHeight) {
-                targetHeight = areaHeight;
-                targetWidth = targetHeight * ratio;
-            }
-            return { height: targetHeight, width: targetWidth };
-        };
-        return Resize;
-    }());
-    shiva.Resize = Resize;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var Window = (function () {
-        function Window() {
-        }
-        Window.scrollY = function () {
-            var scrollTop = document.body.scrollTop;
-            if (scrollTop == 0) {
-                if (window.pageYOffset) {
-                    scrollTop = window.pageYOffset;
-                }
-                else {
-                    scrollTop = (document.body.parentElement) ? document.body.parentElement.scrollTop : 0;
-                }
-            }
-            return scrollTop;
-        };
-        Window.scrollX = function () {
-            var scrollLeft = document.body.scrollLeft;
-            if (scrollLeft == 0) {
-                if (window.pageXOffset) {
-                    scrollLeft = window.pageXOffset;
-                }
-                else {
-                    scrollLeft = (document.body.parentElement) ? document.body.parentElement.scrollLeft : 0;
-                }
-            }
-            return scrollLeft;
-        };
-        Object.defineProperty(Window, "height", {
-            get: function () {
-                return window.innerHeight
-                    || document.documentElement.clientHeight
-                    || document.body.clientHeight;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Window, "width", {
-            get: function () {
-                return window.innerWidth
-                    || document.documentElement.clientWidth
-                    || document.body.clientWidth;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        return Window;
-    }());
-    shiva.Window = Window;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var Ease = (function () {
-        function Ease() {
-        }
-        Ease.Linear = "linear";
-        Ease.Ease = "ease";
-        Ease.EaseIn = "ease-in";
-        Ease.EaseOut = "ease-out";
-        Ease.EaseInOut = "ease-in-out";
-        return Ease;
-    }());
-    shiva.Ease = Ease;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var Transition = (function () {
-        function Transition() {
-            this.callback = function () { console.log("not set"); };
-        }
-        Transition.prototype.then = function (callback, data) {
-            this.callback = callback;
-            console.log("callback: ", this.callback);
-            return new Transition();
-        };
-        Transition.prototype.execute = function () {
-            if (this.callback) {
-                this.callback(this.data);
-            }
-        };
-        Transition.prototype.printCallback = function () {
-            return this;
-        };
-        return Transition;
-    }());
-    shiva.Transition = Transition;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var Properties = (function () {
-        function Properties() {
-        }
-        Properties.style = function (object, vars) {
-            var element;
-            if (object.element) {
-                element = object.element;
-            }
-            else {
-                element = object;
-            }
-            for (var i in vars) {
-                if (vars.hasOwnProperty(i)) {
-                    var value = vars[i];
-                    if (typeof (value) === "number") {
-                        if (value) {
-                            switch (i) {
-                                case "x":
-                                    value = vars[i].toString();
-                                    value += "px";
-                                    break;
-                                case "y":
-                                    value = vars[i].toString();
-                                    value += "px";
-                                    break;
-                                case "height":
-                                    value = vars[i].toString();
-                                    value += "px";
-                                    break;
-                                case "width":
-                                    value = vars[i].toString();
-                                    value += "px";
-                                    break;
-                                case "backgroundColor":
-                                    value = "rgb(" + (vars[i] >> 16) + "," + ((vars[i] >> 8) & 255) + "," + (vars[i] & 255) + ")";
-                                    break;
-                                case "color":
-                                    value = "rgb(" + (vars[i] >> 16) + "," + ((vars[i] >> 8) & 255) + "," + (vars[i] & 255) + ")";
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    }
-                    var styleName = i;
-                    switch (i) {
-                        case "x":
-                            styleName = "left";
-                            break;
-                        case "y":
-                            styleName = "top";
-                            break;
-                        case "alpha":
-                            styleName = "opacity";
-                            break;
-                        default:
-                            break;
-                    }
-                    element.style[styleName] = value;
-                }
-            }
-        };
-        return Properties;
-    }());
-    shiva.Properties = Properties;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
@@ -647,6 +461,191 @@ var shiva;
         return EventDispatcher;
     }());
     shiva.EventDispatcher = EventDispatcher;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Observer = (function () {
+        function Observer() {
+        }
+        Observer.addEventListener = function (scope, type, callback) {
+            if (!this.observers[type]) {
+                this.observers[type] = [];
+            }
+            this.observers[type].push({ scope: scope, type: type, callback: callback });
+        };
+        Observer.removeEventListener = function (type, callback) {
+            var indexOfClosureToRemove;
+            for (var i = 0; i < this.observers[type].length; i++) {
+                if (this.observers[type].callback === callback) {
+                    indexOfClosureToRemove = i;
+                    break;
+                }
+            }
+            this.observers[type].splice(indexOfClosureToRemove, 1);
+        };
+        Observer.dispatchEvent = function (evt) {
+            var type = evt.type;
+            if (this.observers[type]) {
+                for (var i = 0; i < this.observers[type].length; i++) {
+                    this.observers[type][i].callback.call(this.observers[type][i].scope, evt);
+                }
+            }
+            else {
+                console.error("No Observer registered for: ", evt);
+            }
+        };
+        Observer.observers = {};
+        return Observer;
+    }());
+    shiva.Observer = Observer;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Resize = (function () {
+        function Resize() {
+        }
+        Resize.proportionalOutside = function (objectWidth, objectHeight, areaWidth, areaHeight) {
+            var ratio = objectWidth / objectHeight;
+            var targetWidth = areaWidth;
+            var targetHeight = areaWidth / ratio;
+            if (targetHeight < areaHeight) {
+                targetHeight = areaHeight;
+                targetWidth = targetHeight * ratio;
+            }
+            return { height: targetHeight, width: targetWidth };
+        };
+        Resize.proportionalInside = function (objectWidth, objectHeight, areaWidth, areaHeight) {
+            var ratio = objectWidth / objectHeight;
+            var targetWidth = areaWidth;
+            var targetHeight = areaWidth * ratio;
+            if (targetHeight > areaHeight) {
+                targetHeight = areaHeight;
+                targetWidth = targetHeight * ratio;
+            }
+            return { height: targetHeight, width: targetWidth };
+        };
+        return Resize;
+    }());
+    shiva.Resize = Resize;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Window = (function () {
+        function Window() {
+        }
+        Window.scrollY = function () {
+            var scrollTop = document.body.scrollTop;
+            if (scrollTop == 0) {
+                if (window.pageYOffset) {
+                    scrollTop = window.pageYOffset;
+                }
+                else {
+                    scrollTop = (document.body.parentElement) ? document.body.parentElement.scrollTop : 0;
+                }
+            }
+            return scrollTop;
+        };
+        Window.scrollX = function () {
+            var scrollLeft = document.body.scrollLeft;
+            if (scrollLeft == 0) {
+                if (window.pageXOffset) {
+                    scrollLeft = window.pageXOffset;
+                }
+                else {
+                    scrollLeft = (document.body.parentElement) ? document.body.parentElement.scrollLeft : 0;
+                }
+            }
+            return scrollLeft;
+        };
+        Object.defineProperty(Window, "height", {
+            get: function () {
+                return window.innerHeight
+                    || document.documentElement.clientHeight
+                    || document.body.clientHeight;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Window, "width", {
+            get: function () {
+                return window.innerWidth
+                    || document.documentElement.clientWidth
+                    || document.body.clientWidth;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return Window;
+    }());
+    shiva.Window = Window;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Properties = (function () {
+        function Properties() {
+        }
+        Properties.style = function (object, vars) {
+            var element;
+            if (object.element) {
+                element = object.element;
+            }
+            else {
+                element = object;
+            }
+            for (var i in vars) {
+                if (vars.hasOwnProperty(i)) {
+                    var value = vars[i];
+                    if (typeof (value) === "number") {
+                        if (value) {
+                            switch (i) {
+                                case "x":
+                                    value = vars[i].toString();
+                                    value += "px";
+                                    break;
+                                case "y":
+                                    value = vars[i].toString();
+                                    value += "px";
+                                    break;
+                                case "height":
+                                    value = vars[i].toString();
+                                    value += "px";
+                                    break;
+                                case "width":
+                                    value = vars[i].toString();
+                                    value += "px";
+                                    break;
+                                case "backgroundColor":
+                                    value = "rgb(" + (vars[i] >> 16) + "," + ((vars[i] >> 8) & 255) + "," + (vars[i] & 255) + ")";
+                                    break;
+                                case "color":
+                                    value = "rgb(" + (vars[i] >> 16) + "," + ((vars[i] >> 8) & 255) + "," + (vars[i] & 255) + ")";
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                    var styleName = i;
+                    switch (i) {
+                        case "x":
+                            styleName = "left";
+                            break;
+                        case "y":
+                            styleName = "top";
+                            break;
+                        case "alpha":
+                            styleName = "opacity";
+                            break;
+                        default:
+                            break;
+                    }
+                    element.style[styleName] = value;
+                }
+            }
+        };
+        return Properties;
+    }());
+    shiva.Properties = Properties;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
@@ -1616,12 +1615,9 @@ var shiva;
                     var page;
                     if (event.state === null) {
                         page = window.location.pathname;
-                        console.log("popped, get page from window: ", page);
-                        console.log("window.location: ", window.location);
                     }
                     else {
                         page = event.state;
-                        console.log("popped, show event: ", page);
                     }
                     _this.changePage(page);
                 });
@@ -1636,7 +1632,6 @@ var shiva;
                 this.changePage(page);
             }
             else {
-                console.log("view already loaded: ");
             }
         };
         Pages.prototype.changePage = function (page) {
@@ -1685,38 +1680,6 @@ var shiva;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
-    var RadioButton = (function (_super) {
-        __extends(RadioButton, _super);
-        function RadioButton(config) {
-            _super.call(this, {
-                type: "input"
-            });
-            var element = this.element;
-            element.type = "radio";
-            if (config) {
-                if (config.id) {
-                    this.id = config.id;
-                }
-                this.style(config.style);
-                this.style(config);
-                element.checked = config.checked;
-            }
-        }
-        Object.defineProperty(RadioButton.prototype, "checked", {
-            get: function () {
-                var element = this.element;
-                return element.checked;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        RadioButton.CLICK = "click";
-        return RadioButton;
-    }(shiva.Container));
-    shiva.RadioButton = RadioButton;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
     var Select = (function (_super) {
         __extends(Select, _super);
         function Select(config) {
@@ -1756,6 +1719,38 @@ var shiva;
         return Select;
     }(shiva.Container));
     shiva.Select = Select;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var RadioButton = (function (_super) {
+        __extends(RadioButton, _super);
+        function RadioButton(config) {
+            _super.call(this, {
+                type: "input"
+            });
+            var element = this.element;
+            element.type = "radio";
+            if (config) {
+                if (config.id) {
+                    this.id = config.id;
+                }
+                this.style(config.style);
+                this.style(config);
+                element.checked = config.checked;
+            }
+        }
+        Object.defineProperty(RadioButton.prototype, "checked", {
+            get: function () {
+                var element = this.element;
+                return element.checked;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        RadioButton.CLICK = "click";
+        return RadioButton;
+    }(shiva.Container));
+    shiva.RadioButton = RadioButton;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
