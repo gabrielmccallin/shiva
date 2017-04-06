@@ -15,6 +15,7 @@ pipelines:
       - step:
           script:
             - echo "This script runs only on commit to the master branch."
-            - git config --global user.email "gabrielmccallin@outlook.com"
-            - git config --global user.name "Gabriel McCallin"
-            - git push https://gabrielmccallin:itnujra010@github.com/gabrielmccallin/shiva.git
+            # - git config --global user.email "gabrielmccallin@outlook.com"
+            # - git config --global user.name "Gabriel McCallin"
+            # - git push https://gabrielmccallin:itnujra010@github.com/gabrielmccallin/shiva.git
+            # - npm publish activates jsdelivr I think
