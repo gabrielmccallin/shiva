@@ -1137,30 +1137,12 @@ var shiva;
             if (config) {
                 if (config.styles) {
                     config.styles.map(function (style) {
-                        if (!style.hover) {
-                            if (!style.hover.backgroundColor) {
-                                style.hover.backgroundColor = style.backgroundColor;
-                            }
-                        }
-                        if (!style.hover) {
-                            if (!style.hover.color) {
-                                style.hover.color = style.color;
-                            }
-                        }
+                        style = _this.populateEmptyHoverStyles(style);
                         _this.styles = shiva.ObjectUtils.merge(_this.styles, style);
                     });
                 }
                 if (config.style) {
-                    if (!config.style.hover) {
-                        if (!config.style.hover.backgroundColor) {
-                            config.style.hover.backgroundColor = config.style.backgroundColor;
-                        }
-                    }
-                    if (!config.style.hover) {
-                        if (!config.style.hover.color) {
-                            config.style.hover.color = config.style.color;
-                        }
-                    }
+                    config.style = this.populateEmptyHoverStyles(config.style);
                     this.styles = shiva.ObjectUtils.merge(this.styles, config.style);
                 }
             }
@@ -1199,9 +1181,6 @@ var shiva;
             }
             this.addEventListener(this, "mouseover", this.overWithEnable);
             this.addEventListener(this, "mouseout", this.outWithEnable);
-            this.addEventListener(this, "click", this.showOutTransition);
-            this.addEventListener(this, "pointerdown", this.showOutTransition);
-            this.addEventListener(this, "touchdown", this.showOutTransition);
             console.log("this.styles: ", this.styles);
             this.style(this.styles);
         }
@@ -1277,6 +1256,23 @@ var shiva;
                 this.out();
             }
         };
+        Button.prototype.populateEmptyHoverStyles = function (style) {
+            if (!this.styles.hover) {
+                style.hover = {
+                    backgroundColor: style.backgroundColor,
+                    color: style.color
+                };
+            }
+            else {
+                if (!this.styles.hover.color) {
+                    style.hover.color = style.color;
+                }
+                if (!this.styles.hover.backgroundColor) {
+                    style.hover.backgroundColor = style.backgroundColor;
+                }
+            }
+            return style;
+        };
         Button.CLICK = "click";
         Button.text = "Button";
         return Button;
@@ -1314,17 +1310,6 @@ var shiva;
         return CheckBox;
     }(shiva.Container));
     shiva.CheckBox = CheckBox;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var Dimensions = (function () {
-        function Dimensions(width, height) {
-            this.width = width;
-            this.height = height;
-        }
-        return Dimensions;
-    }());
-    shiva.Dimensions = Dimensions;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
@@ -1381,7 +1366,7 @@ var shiva;
                 style: caretStyle
             });
             this.button.addChild(this.caret);
-            this.button.addEventListener(this, "mousedown", this.buttonClicked);
+            this.button.addEventListener(this, "mouseup", this.buttonClicked);
             this.button.addEventListener(this, "mouseover", this.buttonOver);
             this.button.addEventListener(this, "mouseout", this.buttonOut);
             this.dropStyle = shiva.ObjectUtils.merge({}, shiva.Styles.drop);
@@ -1457,7 +1442,7 @@ var shiva;
                 anchor.innerHtml = option;
                 anchor.addEventListener(_this, "mouseover", _this.itemOver);
                 anchor.addEventListener(_this, "mouseout", _this.itemOut);
-                anchor.addEventListener(_this, "mousedown", _this.itemClicked);
+                anchor.addEventListener(_this, "mouseup", _this.itemClicked);
                 item.addChild(anchor);
                 count++;
             });
@@ -1572,14 +1557,14 @@ var shiva;
                 }
             });
             this.scopedEventHandler = function (g) { _this.closeDrop(g); };
-            document.addEventListener("mousedown", this.scopedEventHandler, true);
-            this.button.removeEventListener("mousedown", this.buttonClicked);
+            document.addEventListener("mouseup", this.scopedEventHandler, true);
+            this.button.removeEventListener("mouseup", this.buttonClicked);
         };
         DropDown.prototype.closeDrop = function (e) {
             var _this = this;
-            document.removeEventListener("mousedown", this.scopedEventHandler, true);
+            document.removeEventListener("mouseup", this.scopedEventHandler, true);
             setTimeout(function () {
-                _this.button.addEventListener(_this, "mousedown", _this.buttonClicked);
+                _this.button.addEventListener(_this, "mouseup", _this.buttonClicked);
             }, 10);
             this.unorderedList.to({
                 duration: this.durationContract,
@@ -1605,6 +1590,17 @@ var shiva;
         return DropDown;
     }(shiva.Container));
     shiva.DropDown = DropDown;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Dimensions = (function () {
+        function Dimensions(width, height) {
+            this.width = width;
+            this.height = height;
+        }
+        return Dimensions;
+    }());
+    shiva.Dimensions = Dimensions;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
@@ -1931,7 +1927,7 @@ var shiva;
     shiva.LoaderEvent = LoaderEvent;
 })(shiva || (shiva = {}));
 
-//# sourceMappingURL=shiva.js.map
+
 
  /** Detect free variable `global` from Node.js. */
     var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
@@ -1980,3 +1976,5 @@ var shiva;
         root.shiva = shiva;
     }
 }.call(this));
+
+//# sourceMappingURL=shiva.js.map

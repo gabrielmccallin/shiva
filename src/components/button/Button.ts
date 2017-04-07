@@ -51,30 +51,12 @@ module shiva {
             if (config) {
                 if (config.styles) {
                     config.styles.map((style) => {
-                        if (!style.hover) {
-                            if (!style.hover.backgroundColor) {
-                                style.hover.backgroundColor = style.backgroundColor;
-                            }
-                        }
-                        if (!style.hover) {
-                            if (!style.hover.color) {
-                                style.hover.color = style.color;
-                            }
-                        }
+                        style = this.populateEmptyHoverStyles(style);
                         this.styles = ObjectUtils.merge(this.styles, style);
                     });
                 }
                 if (config.style) {
-                    if (!config.style.hover) {
-                        if (!config.style.hover.backgroundColor) {
-                            config.style.hover.backgroundColor = config.style.backgroundColor;
-                        }
-                    }
-                    if (!config.style.hover) {
-                        if (!config.style.hover.color) {
-                            config.style.hover.color = config.style.color;
-                        }
-                    }
+                    config.style = this.populateEmptyHoverStyles(config.style);
                     this.styles = ObjectUtils.merge(this.styles, config.style);
                 }
             }
@@ -125,9 +107,9 @@ module shiva {
 
             this.addEventListener(this, "mouseover", this.overWithEnable);
             this.addEventListener(this, "mouseout", this.outWithEnable);
-            this.addEventListener(this, "click", this.showOutTransition);
-            this.addEventListener(this, "pointerdown", this.showOutTransition);
-            this.addEventListener(this, "touchdown", this.showOutTransition);
+            // this.addEventListener(this, "click", this.showOutTransition);
+            // this.addEventListener(this, "pointerdown", this.showOutTransition);
+            // this.addEventListener(this, "touchdown", this.showOutTransition);
 
             console.log("this.styles: ", this.styles);
             this.style(this.styles);
@@ -216,6 +198,24 @@ module shiva {
             if (this.enabled) {
                 this.out();
             }
+        }
+
+        private populateEmptyHoverStyles(style: HoverStyleDeclaration): HoverStyleDeclaration {
+            if (!this.styles.hover) {
+                style.hover = {
+                    backgroundColor: style.backgroundColor,
+                    color: style.color
+                }
+            }
+            else {
+                if (!this.styles.hover.color) {
+                    style.hover.color = style.color;
+                }
+                if (!this.styles.hover.backgroundColor) {
+                    style.hover.backgroundColor = style.backgroundColor;
+                }
+            }
+            return style;
         }
     }
 

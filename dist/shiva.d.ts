@@ -321,6 +321,7 @@ declare module "shiva" {
         enable(): void;
         private overWithEnable(e);
         private outWithEnable(e);
+        private populateEmptyHoverStyles(style);
     }
 }
 declare module "shiva" {
@@ -714,29 +715,6 @@ declare module "shiva" {
     }
 }
 declare module "shiva" {
-    interface ContainerConfig {
-        root?: boolean;
-        id?: string;
-        type?: string;
-        style?: StyleDeclaration;
-        styles?: StyleDeclaration[];
-        text?: string;
-        data?: any;
-    }
-}
-declare module "shiva" {
-    class Dimensions {
-        width: number;
-        height: number;
-        constructor(width: number, height: number);
-    }
-}
-declare module "shiva" {
-    interface HoverStyleDeclaration extends StyleDeclaration {
-        hover?: HoverStyle;
-    }
-}
-declare module "shiva" {
     class DropDown extends Container {
         static CHANGE: string;
         private button;
@@ -776,6 +754,29 @@ declare module "shiva" {
         item?: HoverStyleDeclaration;
         caret?: StyleDeclaration;
         dropGap: string;
+    }
+}
+declare module "shiva" {
+    interface ContainerConfig {
+        root?: boolean;
+        id?: string;
+        type?: string;
+        style?: StyleDeclaration;
+        styles?: StyleDeclaration[];
+        text?: string;
+        data?: any;
+    }
+}
+declare module "shiva" {
+    class Dimensions {
+        width: number;
+        height: number;
+        constructor(width: number, height: number);
+    }
+}
+declare module "shiva" {
+    interface HoverStyleDeclaration extends StyleDeclaration {
+        hover?: HoverStyle;
     }
 }
 declare module "shiva" {

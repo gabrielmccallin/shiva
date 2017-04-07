@@ -74,7 +74,7 @@ module shiva {
 
 
             this.button.addChild(this.caret);
-            this.button.addEventListener(this, "mousedown", this.buttonClicked);
+            this.button.addEventListener(this, "mouseup", this.buttonClicked);
             this.button.addEventListener(this, "mouseover", this.buttonOver);
             this.button.addEventListener(this, "mouseout", this.buttonOut);
 
@@ -173,7 +173,7 @@ module shiva {
 
                 anchor.addEventListener(this, "mouseover", this.itemOver);
                 anchor.addEventListener(this, "mouseout", this.itemOut);
-                anchor.addEventListener(this, "mousedown", this.itemClicked);
+                anchor.addEventListener(this, "mouseup", this.itemClicked);
 
                 item.addChild(anchor);
                 count++;
@@ -313,17 +313,17 @@ module shiva {
             this.scopedEventHandler = (g: MouseEvent) => { this.closeDrop(g) };
 
             // ! Don't think this will work in IE8, need attachEvent or polyfill
-            document.addEventListener("mousedown", this.scopedEventHandler, true);
+            document.addEventListener("mouseup", this.scopedEventHandler, true);
 
-            this.button.removeEventListener("mousedown", this.buttonClicked);
+            this.button.removeEventListener("mouseup", this.buttonClicked);
         }
 
         private closeDrop(e: MouseEvent) {
             // ! Don't think this will work in IE8, need attachEvent or polyfill
-            document.removeEventListener("mousedown", this.scopedEventHandler, true);
+            document.removeEventListener("mouseup", this.scopedEventHandler, true);
 
             setTimeout(() => {
-                this.button.addEventListener(this, "mousedown", this.buttonClicked);
+                this.button.addEventListener(this, "mouseup", this.buttonClicked);
             }, 10);
             this.unorderedList.to({
                 duration: this.durationContract,
