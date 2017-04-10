@@ -617,6 +617,29 @@ declare module shiva {
     }
 }
 declare module shiva {
+    interface ContainerConfig {
+        root?: boolean;
+        id?: string;
+        type?: string;
+        style?: StyleDeclaration;
+        styles?: StyleDeclaration[];
+        text?: string;
+        data?: any;
+    }
+}
+declare module shiva {
+    class Dimensions {
+        width: number;
+        height: number;
+        constructor(width: number, height: number);
+    }
+}
+declare module shiva {
+    interface HoverStyleDeclaration extends StyleDeclaration {
+        hover?: HoverStyle;
+    }
+}
+declare module shiva {
     class DropDown extends Container {
         static CHANGE: string;
         private button;
@@ -656,29 +679,6 @@ declare module shiva {
         item?: HoverStyleDeclaration;
         caret?: StyleDeclaration;
         dropGap: string;
-    }
-}
-declare module shiva {
-    interface ContainerConfig {
-        root?: boolean;
-        id?: string;
-        type?: string;
-        style?: StyleDeclaration;
-        styles?: StyleDeclaration[];
-        text?: string;
-        data?: any;
-    }
-}
-declare module shiva {
-    class Dimensions {
-        width: number;
-        height: number;
-        constructor(width: number, height: number);
-    }
-}
-declare module shiva {
-    interface HoverStyleDeclaration extends StyleDeclaration {
-        hover?: HoverStyle;
     }
 }
 declare module shiva {
@@ -769,13 +769,11 @@ declare module shiva {
         static ERROR: string;
         private _data;
         private http;
-        private resolve;
-        private reject;
         constructor();
         load(config: LoaderConfig): Promise<any>;
         private concatParams(params);
         private setRequestHeader(header);
-        private handleResponse();
+        private handleResponse(resolve, reject);
     }
 }
 declare module shiva {

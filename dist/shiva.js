@@ -1313,6 +1313,17 @@ var shiva;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
+    var Dimensions = (function () {
+        function Dimensions(width, height) {
+            this.width = width;
+            this.height = height;
+        }
+        return Dimensions;
+    }());
+    shiva.Dimensions = Dimensions;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
     var DropDown = (function (_super) {
         __extends(DropDown, _super);
         function DropDown(config) {
@@ -1593,17 +1604,6 @@ var shiva;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
-    var Dimensions = (function () {
-        function Dimensions(width, height) {
-            this.width = width;
-            this.height = height;
-        }
-        return Dimensions;
-    }());
-    shiva.Dimensions = Dimensions;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
     var Image = (function (_super) {
         __extends(Image, _super);
         function Image(config) {
@@ -1833,10 +1833,8 @@ var shiva;
                     _this.http.setRequestHeader(header.value, header.variable);
                 });
             }
-            this.http.onreadystatechange = this.handleResponse.bind(this);
             return new Promise(function (resolve, reject) {
-                _this.resolve = resolve;
-                _this.reject = reject;
+                _this.http.onreadystatechange = function () { return _this.handleResponse(resolve, reject); };
                 _this.http.send(config.params);
             });
         };
@@ -1853,13 +1851,13 @@ var shiva;
         Loader.prototype.setRequestHeader = function (header) {
             this.http.setRequestHeader(header.value, header.variable);
         };
-        Loader.prototype.handleResponse = function () {
+        Loader.prototype.handleResponse = function (resolve, reject) {
             if (this.http.readyState === 4) {
                 if (this.http.status === 200) {
                     var event_2 = new shiva.LoaderEvent(Loader.COMPLETE, this, this.http.responseText, this.http.status, this.http, this._data);
                     _super.prototype.dispatchEvent.call(this, event_2);
-                    this.resolve(event_2);
                     this.http.onreadystatechange = undefined;
+                    return resolve(event_2);
                 }
                 else {
                     var error = void 0;
@@ -1871,10 +1869,7 @@ var shiva;
                     }
                     var event_3 = new shiva.LoaderEvent(Loader.ERROR, this, error, this.http.status, this.http);
                     _super.prototype.dispatchEvent.call(this, event_3);
-                    this.reject({
-                        error: error,
-                        status: this.http.status
-                    });
+                    return reject(Error(error));
                 }
             }
         };
