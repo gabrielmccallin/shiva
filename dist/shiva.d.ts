@@ -294,16 +294,6 @@ declare module "shiva" {
     }
 }
 declare module "shiva" {
-    class Anchor extends Container {
-        constructor(config: AnchorConfig);
-    }
-}
-declare module "shiva" {
-    interface AnchorConfig extends ContainerConfig {
-        href?: any;
-    }
-}
-declare module "shiva" {
     class Button extends Container {
         static CLICK: string;
         static text: string;
@@ -707,11 +697,13 @@ declare module "shiva" {
     }
 }
 declare module "shiva" {
-    class CheckBox extends Container {
-        static CLICK: string;
-        private enabled;
-        constructor(config?: InputConfig);
-        checked: boolean;
+    class Anchor extends Container {
+        constructor(config: AnchorConfig);
+    }
+}
+declare module "shiva" {
+    interface AnchorConfig extends ContainerConfig {
+        href?: any;
     }
 }
 declare module "shiva" {
@@ -735,6 +727,14 @@ declare module "shiva" {
 declare module "shiva" {
     interface HoverStyleDeclaration extends StyleDeclaration {
         hover?: HoverStyle;
+    }
+}
+declare module "shiva" {
+    class CheckBox extends Container {
+        static CLICK: string;
+        private enabled;
+        constructor(config?: InputConfig);
+        checked: boolean;
     }
 }
 declare module "shiva" {

@@ -1088,20 +1088,6 @@ var shiva;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
-    var Anchor = (function (_super) {
-        __extends(Anchor, _super);
-        function Anchor(config) {
-            config.type = "a";
-            _super.call(this, config);
-            var element = this.element;
-            element.href = config.href;
-        }
-        return Anchor;
-    }(shiva.Container));
-    shiva.Anchor = Anchor;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
     var Button = (function (_super) {
         __extends(Button, _super);
         function Button(config) {
@@ -1281,6 +1267,31 @@ var shiva;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
+    var Anchor = (function (_super) {
+        __extends(Anchor, _super);
+        function Anchor(config) {
+            config.type = "a";
+            _super.call(this, config);
+            var element = this.element;
+            element.href = config.href;
+        }
+        return Anchor;
+    }(shiva.Container));
+    shiva.Anchor = Anchor;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Dimensions = (function () {
+        function Dimensions(width, height) {
+            this.width = width;
+            this.height = height;
+        }
+        return Dimensions;
+    }());
+    shiva.Dimensions = Dimensions;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
     var CheckBox = (function (_super) {
         __extends(CheckBox, _super);
         function CheckBox(config) {
@@ -1310,17 +1321,6 @@ var shiva;
         return CheckBox;
     }(shiva.Container));
     shiva.CheckBox = CheckBox;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var Dimensions = (function () {
-        function Dimensions(width, height) {
-            this.width = width;
-            this.height = height;
-        }
-        return Dimensions;
-    }());
-    shiva.Dimensions = Dimensions;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
