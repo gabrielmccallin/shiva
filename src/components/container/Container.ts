@@ -1,6 +1,6 @@
 ﻿/// <reference path="properties.ts" />
 /// <reference path="EventDispatcher.ts" />
-/// <reference path="../../../typings/promise.d.ts" />
+//// <reference path="../../../typings/promise.d.ts" />
 
 
 /**
