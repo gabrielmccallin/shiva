@@ -1,5 +1,3 @@
-/// <reference path="LoaderHTTPMethods.ts" />
-
 module shiva {
     export interface LoaderConfig {
         url: string; 
