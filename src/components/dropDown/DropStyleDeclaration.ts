@@ -6,7 +6,7 @@
         // drop?: DropStyleDeclaration;
         item?: HoverStyleDeclaration;
         caret?: StyleDeclaration;
-        dropGap: string;
+        dropGap?: string;
 
     }
 }

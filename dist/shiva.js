@@ -1088,6 +1088,20 @@ var shiva;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
+    var Anchor = (function (_super) {
+        __extends(Anchor, _super);
+        function Anchor(config) {
+            config.type = "a";
+            _super.call(this, config);
+            var element = this.element;
+            element.href = config.href;
+        }
+        return Anchor;
+    }(shiva.Container));
+    shiva.Anchor = Anchor;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
     var Button = (function (_super) {
         __extends(Button, _super);
         function Button(config) {
@@ -1267,31 +1281,6 @@ var shiva;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
-    var Anchor = (function (_super) {
-        __extends(Anchor, _super);
-        function Anchor(config) {
-            config.type = "a";
-            _super.call(this, config);
-            var element = this.element;
-            element.href = config.href;
-        }
-        return Anchor;
-    }(shiva.Container));
-    shiva.Anchor = Anchor;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var Dimensions = (function () {
-        function Dimensions(width, height) {
-            this.width = width;
-            this.height = height;
-        }
-        return Dimensions;
-    }());
-    shiva.Dimensions = Dimensions;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
     var CheckBox = (function (_super) {
         __extends(CheckBox, _super);
         function CheckBox(config) {
@@ -1321,6 +1310,17 @@ var shiva;
         return CheckBox;
     }(shiva.Container));
     shiva.CheckBox = CheckBox;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Dimensions = (function () {
+        function Dimensions(width, height) {
+            this.width = width;
+            this.height = height;
+        }
+        return Dimensions;
+    }());
+    shiva.Dimensions = Dimensions;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
@@ -1794,51 +1794,30 @@ var shiva;
     var Loader = (function (_super) {
         __extends(Loader, _super);
         function Loader() {
-            _super.call(this);
+            _super.apply(this, arguments);
         }
-        Loader.prototype.load = function (config) {
+        Loader.get = function (config) {
+            return this.load(config, this.httpMethods.GET);
+        };
+        Loader.load = function (config, method) {
             var _this = this;
-            if (this.http) {
-                this.http.abort();
-            }
-            else {
-                this.http = new XMLHttpRequest();
-            }
-            if (config.method === Loader.httpMethods.GET) {
+            var http = new XMLHttpRequest();
+            if (method === Loader.httpMethods.GET) {
                 config.url = config.url + this.concatParams(config.params);
             }
-            var methodString;
-            switch (config.method) {
-                case Loader.httpMethods.GET:
-                    methodString = "GET";
-                    break;
-                case Loader.httpMethods.POST:
-                    methodString = "POST";
-                    break;
-                case Loader.httpMethods.PUT:
-                    methodString = "PUT";
-                    break;
-                case Loader.httpMethods.UPDATE:
-                    methodString = "UPDATE";
-                    break;
-                default:
-                    methodString = "GET";
-                    break;
-            }
-            this._data = config.data;
-            this.http.open(methodString, config.url, true);
-            this.http.timeout = 20000;
+            http.open(method, config.url, true);
+            http.timeout = 20000;
             if (config.headers) {
                 config.headers.map(function (header) {
-                    _this.http.setRequestHeader(header.value, header.variable);
+                    http.setRequestHeader(header.value, header.variable);
                 });
             }
             return new Promise(function (resolve, reject) {
-                _this.http.onreadystatechange = function () { return _this.handleResponse(resolve, reject); };
-                _this.http.send(config.params);
+                http.onreadystatechange = function () { return _this.handleResponse(http, resolve, reject, config.data); };
+                http.send(config.params);
             });
         };
-        Loader.prototype.concatParams = function (params) {
+        Loader.concatParams = function (params) {
             var queryString = "?";
             for (var i in params) {
                 if (params.hasOwnProperty(i)) {
@@ -1848,27 +1827,22 @@ var shiva;
             queryString = queryString.slice(0, -1);
             return queryString;
         };
-        Loader.prototype.setRequestHeader = function (header) {
-            this.http.setRequestHeader(header.value, header.variable);
-        };
-        Loader.prototype.handleResponse = function (resolve, reject) {
-            if (this.http.readyState === 4) {
-                if (this.http.status === 200) {
-                    var event_2 = new shiva.LoaderEvent(Loader.COMPLETE, this, this.http.responseText, this.http.status, this.http, this._data);
-                    _super.prototype.dispatchEvent.call(this, event_2);
-                    this.http.onreadystatechange = undefined;
+        Loader.handleResponse = function (http, resolve, reject, data) {
+            if (http.readyState === 4) {
+                http.onreadystatechange = undefined;
+                if (http.status === 200) {
+                    var event_2 = new shiva.LoaderEvent(Loader.COMPLETE, this, http.responseText, http.status, http, data);
                     return resolve(event_2);
                 }
                 else {
                     var error = void 0;
-                    if (this.http.status === 0) {
+                    if (http.status === 0) {
                         error = "Network Error 0x2ee7";
                     }
                     else {
-                        error = this.http.statusText;
+                        error = http.statusText;
                     }
-                    var event_3 = new shiva.LoaderEvent(Loader.ERROR, this, error, this.http.status, this.http);
-                    _super.prototype.dispatchEvent.call(this, event_3);
+                    var event_3 = new shiva.LoaderEvent(Loader.ERROR, this, error, http.status, http);
                     return reject(Error(error));
                 }
             }

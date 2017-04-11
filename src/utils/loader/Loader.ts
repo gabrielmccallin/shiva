@@ -13,67 +13,47 @@ module shiva {
         };
         static COMPLETE: string = "COMPLETE";
         static ERROR: string = "ERROR";
-        private _data: any;
-        private http: XMLHttpRequest;
+        // private _data: any;
+        // private http: XMLHttpRequest;
 
 
-        constructor() {
-            super();
+        // constructor() {
+        //     super();
+        // }
+
+        static get(config: LoaderConfig): Promise<any> {
+            return this.load(config, this.httpMethods.GET);
         }
 
 
-        load(config: LoaderConfig): Promise<any> {
-            if (this.http) {
-                this.http.abort();
-            }
-            else {
-                this.http = new XMLHttpRequest();
-            }
+        private static load(config: LoaderConfig, method: LoaderHTTPMethods): Promise<any> {
+            const http = new XMLHttpRequest();
 
-            if (config.method === Loader.httpMethods.GET) {
+            if (method === Loader.httpMethods.GET) {
                 config.url = config.url + this.concatParams(config.params);
             }
 
-            let methodString;
-            switch (config.method) {
-                case Loader.httpMethods.GET:
-                    methodString = "GET";
-                    break;
-                case Loader.httpMethods.POST:
-                    methodString = "POST";
-                    break;
-                case Loader.httpMethods.PUT:
-                    methodString = "PUT";
-                    break;
-                case Loader.httpMethods.UPDATE:
-                    methodString = "UPDATE";
-                    break;
-                default:
-                    methodString = "GET";
-                    break;
-            }
+            // this._data = config.data;
 
-            this._data = config.data;
-
-            this.http.open(methodString, config.url, true);
-            this.http.timeout = 20000;
-            //this.http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');  
+            http.open(method, config.url, true);
+            http.timeout = 20000;
+            //http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');  
             if (config.headers) {
                 config.headers.map(header => {
-                    this.http.setRequestHeader(header.value, header.variable);
+                    http.setRequestHeader(header.value, header.variable);
                 });
             }
             //if (!cache) {
-            //    this.http.setRequestHeader("If-Modified-Since", "Sat, 01 Jan 2005 00:00:00 GMT");
+            //    http.setRequestHeader("If-Modified-Since", "Sat, 01 Jan 2005 00:00:00 GMT");
             //}
 
             return new Promise((resolve, reject) => {
-                this.http.onreadystatechange = () => this.handleResponse(resolve, reject);
-                this.http.send(config.params);
+                http.onreadystatechange = () => this.handleResponse(http, resolve, reject, config.data);
+                http.send(config.params);
             });
         }
 
-        private concatParams(params: {}): string {
+        private static concatParams(params: {}): string {
             let queryString: string = "?";
             for (var i in params) {
                 if (params.hasOwnProperty(i)) {
@@ -84,32 +64,32 @@ module shiva {
             return queryString;
         }
 
-        private setRequestHeader(header: any) {
-            this.http.setRequestHeader(header.value, header.variable);
-        }
+        // private setRequestHeader(header: any) {
+        //     this.http.setRequestHeader(header.value, header.variable);
+        // }
 
 
-        private handleResponse(resolve, reject) {
-            if (this.http.readyState === 4) {
-                if (this.http.status === 200) {
-                    let event: LoaderEvent = new LoaderEvent(Loader.COMPLETE, this, this.http.responseText, this.http.status, this.http, this._data);
-                    super.dispatchEvent(event);
+        private static handleResponse(http: XMLHttpRequest, resolve: Function, reject: Function, data?: any) {
+            if (http.readyState === 4) {
+                http.onreadystatechange = undefined;
+                if (http.status === 200) {
+                    let event: LoaderEvent = new LoaderEvent(Loader.COMPLETE, this, http.responseText, http.status, http, data);
+                    // super.dispatchEvent(event);
 
-                    // this.resolve(this.http.responseText);
+                    // this.resolve(http.responseText);
 
-                    this.http.onreadystatechange = undefined;
                     return resolve(event);
                 }
                 else {
                     let error: string;
-                    if (this.http.status === 0) {
+                    if (http.status === 0) {
                         error = "Network Error 0x2ee7";
                     }
                     else {
-                        error = this.http.statusText;
+                        error = http.statusText;
                     }
-                    let event: LoaderEvent = new LoaderEvent(Loader.ERROR, this, error, this.http.status, this.http);
-                    super.dispatchEvent(event);
+                    let event: LoaderEvent = new LoaderEvent(Loader.ERROR, this, error, http.status, http);
+                    // super.dispatchEvent(event);
 
                     return reject(Error(error));
                 }

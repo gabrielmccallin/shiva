@@ -1,4 +1,3 @@
-/// <reference path="typings/promise.d.ts" />
 declare module shiva {
     class Styles {
         static button: {
@@ -193,6 +192,16 @@ declare module shiva {
         element: HTMLElement;
         innerHtml: string;
         href: string;
+    }
+}
+declare module shiva {
+    class Anchor extends Container {
+        constructor(config: AnchorConfig);
+    }
+}
+declare module shiva {
+    interface AnchorConfig extends ContainerConfig {
+        href?: any;
     }
 }
 declare module shiva {
@@ -599,13 +608,11 @@ declare module shiva {
     }
 }
 declare module shiva {
-    class Anchor extends Container {
-        constructor(config: AnchorConfig);
-    }
-}
-declare module shiva {
-    interface AnchorConfig extends ContainerConfig {
-        href?: any;
+    class CheckBox extends Container {
+        static CLICK: string;
+        private enabled;
+        constructor(config?: InputConfig);
+        checked: boolean;
     }
 }
 declare module shiva {
@@ -629,14 +636,6 @@ declare module shiva {
 declare module shiva {
     interface HoverStyleDeclaration extends StyleDeclaration {
         hover?: HoverStyle;
-    }
-}
-declare module shiva {
-    class CheckBox extends Container {
-        static CLICK: string;
-        private enabled;
-        constructor(config?: InputConfig);
-        checked: boolean;
     }
 }
 declare module shiva {
@@ -678,7 +677,7 @@ declare module shiva {
         button?: HoverStyleDeclaration;
         item?: HoverStyleDeclaration;
         caret?: StyleDeclaration;
-        dropGap: string;
+        dropGap?: string;
     }
 }
 declare module shiva {
@@ -767,19 +766,15 @@ declare module shiva {
         };
         static COMPLETE: string;
         static ERROR: string;
-        private _data;
-        private http;
-        constructor();
-        load(config: LoaderConfig): Promise<any>;
-        private concatParams(params);
-        private setRequestHeader(header);
-        private handleResponse(resolve, reject);
+        static get(config: LoaderConfig): Promise<any>;
+        private static load(config, method);
+        private static concatParams(params);
+        private static handleResponse(http, resolve, reject, data?);
     }
 }
 declare module shiva {
     interface LoaderConfig {
         url: string;
-        method: LoaderHTTPMethods;
         params?: any;
         headers?: Array<any>;
         cache?: boolean;
