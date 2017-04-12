@@ -31,15 +31,15 @@
                                     value = vars[i].toString();
                                     value += "px";
                                     break;
-                                case "backgroundColor":
-                                    // let red = vars[i] >> 16;
-                                    // let green = (vars[i] >> 8) & 255;
-                                    // let blue = vars[i] & 255;
-                                    value = "rgb(" + (vars[i] >> 16) + "," + ((vars[i] >> 8) & 255) + "," + (vars[i] & 255) + ")";
-                                    break;
-                                case "color":
-                                    value = "rgb(" + (vars[i] >> 16) + "," + ((vars[i] >> 8) & 255) + "," + (vars[i] & 255) + ")";
-                                    break;
+                                // case "backgroundColor":
+                                //     // let red = vars[i] >> 16;
+                                //     // let green = (vars[i] >> 8) & 255;
+                                //     // let blue = vars[i] & 255;
+                                //     value = "rgb(" + (vars[i] >> 16) + "," + ((vars[i] >> 8) & 255) + "," + (vars[i] & 255) + ")";
+                                //     break;
+                                // case "color":
+                                //     value = "rgb(" + (vars[i] >> 16) + "," + ((vars[i] >> 8) & 255) + "," + (vars[i] & 255) + ")";
+                                //     break;
                                 default:
                                     break;
                             }
