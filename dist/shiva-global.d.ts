@@ -695,6 +695,21 @@ declare module shiva {
     }
 }
 declare module shiva {
+    interface InputConfig {
+        id?: string;
+        style?: InputConfig;
+        checked?: boolean;
+    }
+}
+declare module shiva {
+    class RadioButton extends Container {
+        static CLICK: string;
+        private enabled;
+        constructor(config?: InputConfig);
+        checked: boolean;
+    }
+}
+declare module shiva {
     interface Page extends Container {
         wake(): any;
         sleep(): any;
@@ -721,21 +736,6 @@ declare module shiva {
         style?: StyleDeclaration;
         delayTransition?: number;
         routes?: boolean;
-    }
-}
-declare module shiva {
-    interface InputConfig {
-        id?: string;
-        style?: InputConfig;
-        checked?: boolean;
-    }
-}
-declare module shiva {
-    class RadioButton extends Container {
-        static CLICK: string;
-        private enabled;
-        constructor(config?: InputConfig);
-        checked: boolean;
     }
 }
 declare module shiva {
