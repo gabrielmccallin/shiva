@@ -212,7 +212,7 @@ declare module shiva {
         private icon;
         private styles;
         private stateOver;
-        constructor(config: ButtonConfig);
+        constructor(config?: ButtonConfig);
         showOutTransition(e: Event): void;
         over(): void;
         out(): void;
@@ -624,6 +624,7 @@ declare module shiva {
         styles?: StyleDeclaration[];
         text?: string;
         data?: any;
+        className?: string | string[];
     }
 }
 declare module shiva {
@@ -695,21 +696,6 @@ declare module shiva {
     }
 }
 declare module shiva {
-    interface InputConfig {
-        id?: string;
-        style?: InputConfig;
-        checked?: boolean;
-    }
-}
-declare module shiva {
-    class RadioButton extends Container {
-        static CLICK: string;
-        private enabled;
-        constructor(config?: InputConfig);
-        checked: boolean;
-    }
-}
-declare module shiva {
     interface Page extends Container {
         wake(): any;
         sleep(): any;
@@ -736,6 +722,21 @@ declare module shiva {
         style?: StyleDeclaration;
         delayTransition?: number;
         routes?: boolean;
+    }
+}
+declare module shiva {
+    interface InputConfig {
+        id?: string;
+        style?: InputConfig;
+        checked?: boolean;
+    }
+}
+declare module shiva {
+    class RadioButton extends Container {
+        static CLICK: string;
+        private enabled;
+        constructor(config?: InputConfig);
+        checked: boolean;
     }
 }
 declare module shiva {

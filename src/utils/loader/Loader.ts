@@ -72,26 +72,20 @@ module shiva {
 
 
         private static handleResponse(http: XMLHttpRequest, resolve: Function, reject: Function, data?: any) {
-            // if (http.readyState === 4) {
-                // http.onreadystatechange = undefined;
-                if (http.status === 200) {
-                    // let event: LoaderEvent = new LoaderEvent(Loader.COMPLETE, this, http.responseText, http.status, http, data);
-
-                    return resolve(http.responseText);
+            if (http.status === 200) {
+                return resolve(http.responseText);
+            }
+            else {
+                let error: string;
+                if (http.status === 0) {
+                    error = "Network Error 0x2ee7";
                 }
                 else {
-                    let error: string;
-                    if (http.status === 0) {
-                        error = "Network Error 0x2ee7";
-                    }
-                    else {
-                        error = http.statusText;
-                    }
-                    // let event: LoaderEvent = new LoaderEvent(Loader.ERROR, this, error, http.status, http);
-
-                    return reject(new Error(error));
+                    error = http.statusText;
                 }
-            // }
+
+                return reject(new Error(error));
+            }
         }
     }
 

@@ -689,6 +689,14 @@ var shiva;
                     });
                 }
                 this.style(config.style);
+                if (config.className) {
+                    if (typeof config.className === 'string') {
+                        this.className(config.className);
+                    }
+                    else {
+                        this.className.apply(this, config.className);
+                    }
+                }
             }
             else {
                 this._element = document.createElement("div");
@@ -701,14 +709,19 @@ var shiva;
             shiva.Properties.style(this._element, vars);
         };
         Container.prototype.className = function () {
-            var _this = this;
             var names = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 names[_i - 0] = arguments[_i];
             }
-            names.map((function (name) {
-                _this._element.className = name;
-            }));
+            var className = names.reduce(function (acc, val) {
+                return acc + " " + val;
+            });
+            if (!this._element.className) {
+                this._element.className = className;
+            }
+            else {
+                this._element.className = this._element.className + " " + className;
+            }
         };
         Container.prototype.addChild = function (child) {
             var childElement;
@@ -1106,45 +1119,32 @@ var shiva;
         __extends(Button, _super);
         function Button(config) {
             var _this = this;
-            var type;
-            var id;
-            var href;
-            if (config) {
-                if (config.href) {
-                    type = "a";
-                    href = config.href;
-                }
-                else {
-                    type = "button";
-                }
-                if (config.type) {
-                    type = config.type;
-                }
-                id = config.id;
+            config = config || {};
+            if (config.href) {
+                config.type = "a";
             }
-            _super.call(this, {
-                id: id,
-                type: type,
-                data: config.data,
-                style: {
-                    cursor: "pointer"
-                }
-            });
+            else {
+                config.type = "button";
+            }
+            config.style = {
+                cursor: "pointer"
+            };
+            _super.call(this, config);
             this.stateOver = false;
-            this.href = href;
+            if (config.href) {
+                this.href = config.href;
+            }
             this.enabled = true;
             this.styles = shiva.ObjectUtils.merge({}, shiva.Styles.button);
-            if (config) {
-                if (config.styles) {
-                    config.styles.map(function (style) {
-                        style = _this.populateEmptyHoverStyles(style);
-                        _this.styles = shiva.ObjectUtils.merge(_this.styles, style);
-                    });
-                }
-                if (config.style) {
-                    config.style = this.populateEmptyHoverStyles(config.style);
-                    this.styles = shiva.ObjectUtils.merge(this.styles, config.style);
-                }
+            if (config.styles) {
+                config.styles.map(function (style) {
+                    style = _this.populateEmptyHoverStyles(style);
+                    _this.styles = shiva.ObjectUtils.merge(_this.styles, style);
+                });
+            }
+            if (config.style) {
+                config.style = this.populateEmptyHoverStyles(config.style);
+                this.styles = shiva.ObjectUtils.merge(this.styles, config.style);
             }
             var buttonLabel = Button.text;
             if (config.text) {
@@ -1629,38 +1629,6 @@ var shiva;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
-    var RadioButton = (function (_super) {
-        __extends(RadioButton, _super);
-        function RadioButton(config) {
-            _super.call(this, {
-                type: "input"
-            });
-            var element = this.element;
-            element.type = "radio";
-            if (config) {
-                if (config.id) {
-                    this.id = config.id;
-                }
-                this.style(config.style);
-                this.style(config);
-                element.checked = config.checked;
-            }
-        }
-        Object.defineProperty(RadioButton.prototype, "checked", {
-            get: function () {
-                var element = this.element;
-                return element.checked;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        RadioButton.CLICK = "click";
-        return RadioButton;
-    }(shiva.Container));
-    shiva.RadioButton = RadioButton;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
     var Pages = (function (_super) {
         __extends(Pages, _super);
         function Pages(config) {
@@ -1746,6 +1714,38 @@ var shiva;
         return Pages;
     }(shiva.Container));
     shiva.Pages = Pages;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var RadioButton = (function (_super) {
+        __extends(RadioButton, _super);
+        function RadioButton(config) {
+            _super.call(this, {
+                type: "input"
+            });
+            var element = this.element;
+            element.type = "radio";
+            if (config) {
+                if (config.id) {
+                    this.id = config.id;
+                }
+                this.style(config.style);
+                this.style(config);
+                element.checked = config.checked;
+            }
+        }
+        Object.defineProperty(RadioButton.prototype, "checked", {
+            get: function () {
+                var element = this.element;
+                return element.checked;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        RadioButton.CLICK = "click";
+        return RadioButton;
+    }(shiva.Container));
+    shiva.RadioButton = RadioButton;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {

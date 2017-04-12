@@ -1,5 +1,3 @@
-# VS Code config
 *.vscode
-
-# Libs
 node_modules
+npm-debug.log

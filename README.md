@@ -21,11 +21,11 @@ If your IDE supports declaration files, `shiva.d.ts` is in the `/dist` folder. T
 
 #### Global
 ```
-<script src="https://cdn.jsdelivr.net/shiva/2.0.0/shiva.min.js"></script>
+<script src="https://cdn.jsdelivr.net/shiva/latest/shiva.min.js"></script>
 ```
 And use the `shiva` global in your code. e.g. `shiva.Container`, `shiva.Button`, `shiva.Loader` etc.
 
-If your IDE supports declaration files, download [https://cdn.jsdelivr.net/shiva/2.0.0/shiva-global.d.ts](https://cdn.jsdelivr.net/shiva/2.0.0/shiva-global.d.ts) and place in your project. This should provide code completion for the library.
+If your IDE supports declaration files, download [https://cdn.jsdelivr.net/shiva/latest/shiva-global.d.ts](https://cdn.jsdelivr.net/shiva/latest/shiva-global.d.ts) and place in your project. This should provide code completion for the library.
 
 ---
 ### **Now { code } !**
@@ -45,7 +45,7 @@ class App extends Container {
     }
 }
 
-window.onload = () ={
+window.onload = () => {
     new App();
 }; 
 ```
@@ -81,7 +81,7 @@ view.style({
 });
 ```
 
-#### Extend classes to give them the same abilities
+#### Extend your own classes to give them the same abilities
 ```
 import { Container } from "shiva";
 
@@ -100,33 +100,20 @@ const home = new Home();
 this.addChild(home);
 ```
 
-#### Maybe some event listeners
+#### Event listeners
+`Container` extends an event dispatcher class so you can listen / dispatch events on your classes.
 ```
+// outside home class
 home.addEventListener(this, "CUSTOM_EVENT", this.homeEventHandler);
+
+// inside home class 
+this.dispatchEvent(new Event("CUSTOM_EVENT", this));
+
+// this.homeEventHandler will fire outside of home 
 ```
 
-
-#### Loader wraps XMLHttpRequest, returns a Promise
-
-```
-import { Loader } from "shiva";
-
-const loader = new Loader();
-loader.load("//api.com/endpointABC", Loader.GET)
-.then((reponse)={
-    // something with the response
-    let parsed = JSON.parse(response);
-    return parsed.map((item) ={
-        return item.title;
-    }
-})
-.then((titles) ={
-    // do something else !
-    this.listView.update(titles);
-});
-```
-
-#### Use the .to and .fromTo methods of Container for smooth CSS transitions
+#### Animations!  
+Use the .to and .fromTo methods of Container for smooth CSS transitions
 ```
 const title = new Container({
     text: "Fade me out"
@@ -141,7 +128,7 @@ title.to({
 });
 ```
 
-#### Chain transitions with Promise
+#### Chain transitions
 ```
 title.to({
     duration: 2,
@@ -153,6 +140,31 @@ title.to({
 .then(this.doSomethingElse);   
 ```
 
+#### Loader wraps XMLHttpRequest, returns a Promise
+
+```
+import { Loader } from "shiva";
+
+Loader.get({
+    url: "//api.com/endpointABC",
+    params: {
+        page: 2,
+        limit: 20
+    }
+})
+.then(response => {
+    // something with the response
+    let parsed = JSON.parse(response);
+    return parsed.map(item => {
+        return item.title;
+    }
+})
+.catch(error => console.error(error))
+.then(titles => {
+    // do something else !
+    this.listView.update(titles);
+});
+```
 
 
 
@@ -182,16 +194,29 @@ Build applications quickly with these components, they all extend `Container`
 ### **Utilities**
 
 - **EventDispatcher**  
-Custom event dispatching, add / remove.
+Custom event dispatching, add / remove. `Container` extends this so you can listen / dispatch on your classes, see above for example.
+
+- **Loader**  
+XHR wrapper with event dispatcher and Promise chaining. See above for example.
+
+- **ObjectUtils**  
+Object utility helpers. Only contains a static `merge` method which merges two objects, source overwrites target.
+```
+ObjectUtils.merge(targetObject, sourceObject);
+```
 
 - **Observer**  
-A static version of EventDispatcher.
+A static version of EventDispatcher for listening and dispatching events globally.
+```
+// In a class where you want to listen for a global event
+Observer.addEventListener(this, "CUSTOM_EVENT", this.handler);
+
+// In the class where you want to dispatch a global event
+Observer.dispatchEvent(new Event("CUSTOM_EVENT", this));
+```
 
 - **Resize**  
 Some simple resize algorithms for fitting and filling.
-
-- **Loader**  
-XHR wrapper with event dispatcher and Promise chaining.
 
 - **Window**  
 Some Window polyfill methods.
@@ -201,7 +226,35 @@ Some Window polyfill methods.
 ### **Container API**
 
 Methods
+- **constructor( config: ContainerConfig )**: void;
+```
+interface ContainerConfig {
+    // to denote a root level container
+    root?: boolean;
+    
+    // sets the HTMLElement id attribute
+    id?: string; 
+    
+    // sets the HTMLElement type attribute, defaults to div
+    type?: string;
 
+    // sets the HTMLElement style attribute from a StyleDecaration object
+    style?: StyleDeclaration; 
+
+    // sets the HTMLElement style attribute from an array of StyleDeclaration objects
+    styles?: StyleDeclaration[];
+
+    // alias for innerHtml
+    text?: string;
+
+    // attaches custom data to the container
+    data?: any;
+
+    // sets HTMLElement class attribute
+    className?: string | string[];
+}    
+```
+    
 - **addToBody()**: void;  
 Add container directly to document.body.
 
@@ -209,9 +262,13 @@ Add container directly to document.body.
 Pass a StyleDeclaration class or object literal to set inline CSS styles.
 
 - **styles( vars: StyleDeclaration[] )**: void;  
-Pass an arrya of StyleDeclaration classes or object literals to set inline CSS styles.
+Pass an array of StyleDeclaration classes or object literals to set inline CSS styles.
 
 - **className( ...names: string[] )**: void;  
+Names of CSS classes to add to the container using spread.
+```
+container.className("navigation__container", "navigation__container--first", "top-navigation");
+```
 
 - **addChild( child: Container )**:void  
 Append a container to a parent.  

@@ -16,5 +16,6 @@
         
         text?: string;
         data?: any;
+        className?: string | string[];
     }
 }

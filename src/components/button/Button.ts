@@ -9,36 +9,26 @@ module shiva {
         private stateOver: boolean;
 
 
-        constructor(config: ButtonConfig) {
-            let type: string;
-            let id: string;
-            let href: string;
+        constructor(config?: ButtonConfig) {
+            config = config || {};
 
-            if (config) {
-                if (config.href) {
-                    type = "a";
-                    href = config.href;
-                }
-                else {
-                    type = "button";
-                }
-                if (config.type) {
-                    type = config.type;
-                }
-                id = config.id;
+            if (config.href) {
+                config.type = "a";
+            }
+            else {
+                config.type = "button";
             }
 
-            super({
-                id: id,
-                type: type,
-                data: config.data,
-                style: {
-                    cursor: "pointer"
-                }
-            });
+            config.style = {
+                cursor: "pointer"
+            }
+
+            super(config);
 
             this.stateOver = false;
-            this.href = href;
+            if (config.href) {
+                this.href = config.href;
+            }
             this.enabled = true;
 
             // copy default styles, copy config.style values, copy config values to the config object and then style the button with that object
@@ -48,19 +38,16 @@ module shiva {
             //     this.styles[i] = Styles.button[i];
             // }
 
-            if (config) {
-                if (config.styles) {
-                    config.styles.map((style) => {
-                        style = this.populateEmptyHoverStyles(style);
-                        this.styles = ObjectUtils.merge(this.styles, style);
-                    });
-                }
-                if (config.style) {
-                    config.style = this.populateEmptyHoverStyles(config.style);
-                    this.styles = ObjectUtils.merge(this.styles, config.style);
-                }
+            if (config.styles) {
+                config.styles.map((style) => {
+                    style = this.populateEmptyHoverStyles(style);
+                    this.styles = ObjectUtils.merge(this.styles, style);
+                });
             }
-
+            if (config.style) {
+                config.style = this.populateEmptyHoverStyles(config.style);
+                this.styles = ObjectUtils.merge(this.styles, config.style);
+            }
 
 
             let buttonLabel = Button.text;

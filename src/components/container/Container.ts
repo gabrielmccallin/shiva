@@ -62,9 +62,17 @@ module shiva {
                         this.style(style);
                     });
                 }
-                
+
                 this.style(config.style);
-                // this.style(config);
+
+                if (config.className) {
+                    if (typeof config.className === 'string') {
+                        this.className(config.className);
+                    }
+                    else {
+                        this.className(...config.className);
+                    }
+                }
             }
             else {
                 this._element = document.createElement("div");
@@ -81,9 +89,16 @@ module shiva {
         }
 
         className(...names: string[]) {
-            names.map((name => {
-                this._element.className = name;
-            }))
+            const className = names.reduce((acc, val) => {
+                return acc + " " + val;
+            });
+            if (!this._element.className) {
+                this._element.className = className;
+            }
+            else {
+                this._element.className = this._element.className + " " + className;
+            }
+            // this._element.removeAttribute("style");
         }
 
         addChild(child: Container) {

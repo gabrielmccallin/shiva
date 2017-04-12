@@ -5,28 +5,34 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
-## `[2.0.0]` 2017-04-07
+## `[2.0.0]` 2017-04-12
 ### Added
+- ContainerConfig `styles` property for passing multiple styles (:warning: BREAKING CHANGE)
+- ContainerConfig `classNames` property 
 - CHANGELOG.md
 - hover style property for hoverable components
 - ObjectUtils helper class (didn't want a lodash dep!)
 - HoverStyle interface
 - Starting to add documentation comments
+- npm publish with bitbucket pipeline :green_heart:
 ### Changed
-- README.md updates with new Container signature
-- ContainerConfig takes `style` and `styles` properties to be more explicit (:warning: BREAKING CHANGE)
 - ButtonConfig takes `text` property instead of `label` (:warning: BREAKING CHANGE)
+- :hammer: Dropdown component, much easier to style (:warning: BREAKING CHANGE)
+- README.md updates with new Container signature
+- Container classNames method works with multiple classes
 - Some refactoring of style interfaces
 - Some union type experimentation
 - :art: grouped all classes into new folder structure
-- :hammer: Dropdown component, much easier to style (:warning: BREAKING CHANGE)
 - :hammer: Button component, more resilient to style abuse
 - :lipstick: tidied default styles 
-- Button component can now store custom data
+- Button component can now store custom data, constructor tidy up
 - removed some references to the curly library :blush:
 - width property of StyleDeclaration is a string | Number
 - :hammer: Pages component now does routing, history management and address bar updates, can toggle with `routes` property
 - removed some console.logs :blush:
+- Promise decalaration file explictly included in gulp build instead of ///ref
+- Loader component now with static methods and returns the response of the network request instead of an event
+- Loader component uses modern XMLHttpRequest API
 
 ---
 ## `[1.0.0]` 2017-03-14
