@@ -694,7 +694,7 @@ var shiva;
                         this.className(config.className);
                     }
                     else {
-                        this.className.apply(this, config.className);
+                        this.className.apply(this, (config.className));
                     }
                 }
             }
@@ -1313,17 +1313,6 @@ var shiva;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
-    var Dimensions = (function () {
-        function Dimensions(width, height) {
-            this.width = width;
-            this.height = height;
-        }
-        return Dimensions;
-    }());
-    shiva.Dimensions = Dimensions;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
     var DropDown = (function (_super) {
         __extends(DropDown, _super);
         function DropDown(config) {
@@ -1601,6 +1590,17 @@ var shiva;
         return DropDown;
     }(shiva.Container));
     shiva.DropDown = DropDown;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Dimensions = (function () {
+        function Dimensions(width, height) {
+            this.width = width;
+            this.height = height;
+        }
+        return Dimensions;
+    }());
+    shiva.Dimensions = Dimensions;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
@@ -1904,7 +1904,7 @@ var shiva;
     shiva.LoaderEvent = LoaderEvent;
 })(shiva || (shiva = {}));
 
-
+//# sourceMappingURL=shiva.js.map
 
  /** Detect free variable `global` from Node.js. */
     var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
@@ -1953,5 +1953,3 @@ var shiva;
         root.shiva = shiva;
     }
 }.call(this));
-
-//# sourceMappingURL=shiva.js.map

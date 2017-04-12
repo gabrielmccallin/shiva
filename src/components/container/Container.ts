@@ -67,10 +67,10 @@ module shiva {
 
                 if (config.className) {
                     if (typeof config.className === 'string') {
-                        this.className(config.className);
+                        this.className(<string>config.className);
                     }
                     else {
-                        this.className(...config.className);
+                        this.className(...<string[]>config.className);
                     }
                 }
             }
