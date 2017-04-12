@@ -24,4 +24,4 @@ pipelines:
           script:
             - echo "Publish"
             - npm install ci-publish
-            - ci-publish
+            - npm run ci-publish
