@@ -1,5 +1,6 @@
 var SHIVA = "shiva",
   SOURCE = "src",
+  TYPES = "types",
   TARGET = "dist",
   PORT = "1338",
 
@@ -38,7 +39,7 @@ gulp.task("watch-dev", function () {
 
 gulp.task("transpile", function () {
   var tsResult = gulp
-    .src([SOURCE + "/**/*.ts"])
+    .src([TYPES + "/**/*.ts", SOURCE + "/**/*.ts"])
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(ts({
       "target": "ES5",

@@ -239,71 +239,134 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var shiva;
 (function (shiva) {
-    var Properties = (function () {
-        function Properties() {
+    var Styles = (function () {
+        function Styles() {
         }
-        Properties.style = function (object, vars) {
-            var element;
-            if (object.element) {
-                element = object.element;
-            }
-            else {
-                element = object;
-            }
-            for (var i in vars) {
-                if (vars.hasOwnProperty(i)) {
-                    var value = vars[i];
-                    if (typeof (value) === "number") {
-                        if (value) {
-                            switch (i) {
-                                case "x":
-                                    value = vars[i].toString();
-                                    value += "px";
-                                    break;
-                                case "y":
-                                    value = vars[i].toString();
-                                    value += "px";
-                                    break;
-                                case "height":
-                                    value = vars[i].toString();
-                                    value += "px";
-                                    break;
-                                case "width":
-                                    value = vars[i].toString();
-                                    value += "px";
-                                    break;
-                                case "backgroundColor":
-                                    value = "rgb(" + (vars[i] >> 16) + "," + ((vars[i] >> 8) & 255) + "," + (vars[i] & 255) + ")";
-                                    break;
-                                case "color":
-                                    value = "rgb(" + (vars[i] >> 16) + "," + ((vars[i] >> 8) & 255) + "," + (vars[i] & 255) + ")";
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    }
-                    var styleName = i;
-                    switch (i) {
-                        case "x":
-                            styleName = "left";
-                            break;
-                        case "y":
-                            styleName = "top";
-                            break;
-                        case "alpha":
-                            styleName = "opacity";
-                            break;
-                        default:
-                            break;
-                    }
-                    element.style[styleName] = value;
-                }
+        Styles.button = {
+            fontSize: "1.2em",
+            fontFamily: "sans-serif",
+            backgroundColor: "#fefefe",
+            hover: {
+                backgroundColor: "#dddddd",
+                durationOut: 1,
+                durationIn: 0,
+                color: "#000000"
+            },
+            padding: "0.75rem",
+            textAlign: "left",
+            whiteSpace: "nowrap",
+            msTouchAction: "manipulation",
+            touchAction: "manipulation",
+            cursor: "pointer",
+            webkitUserSelect: "none",
+            mozUserSelect: "none",
+            msUserSelect: "none",
+            userSelect: "none",
+            border: "2px solid transparent",
+            borderColor: "#eeeeee",
+            color: "#000000",
+            text: "Button"
+        };
+        Styles.drop = {
+            fontFamily: "sans-serif",
+            fontSize: "1.2rem",
+            backgroundColor: "#ffffff",
+            color: "#000000",
+            padding: "1rem",
+            durationExpand: 0.5,
+            durationContract: 0.5,
+            border: "2px solid transparent",
+            borderColor: "#eeeeee",
+            dropGap: "0.1rem",
+            hover: {
+                backgroundColor: "#dddddd",
+                color: "#000000",
+                durationIn: 0,
+                durationOut: 0.5,
+            },
+            caret: {
+                width: "0px",
+                height: "0px",
+                borderLeftWidth: "0.35rem",
+                borderLeftStyle: "solid",
+                borderLeftColor: "transparent",
+                borderRightWidth: "0.35rem",
+                borderRightStyle: "solid",
+                borderRightColor: "transparent",
+                borderTopWidth: "0.35rem",
+                borderTopStyle: "solid",
+                borderTopColor: "black",
+                display: "inline-block",
+                verticalAlign: "middle",
+                marginLeft: "0.35rem",
+                pointerEvents: "none",
+                transform: "translateY(-0.1rem)"
             }
         };
-        return Properties;
+        return Styles;
     }());
-    shiva.Properties = Properties;
+    shiva.Styles = Styles;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Ease = (function () {
+        function Ease() {
+        }
+        Ease.Linear = "linear";
+        Ease.Ease = "ease";
+        Ease.EaseIn = "ease-in";
+        Ease.EaseOut = "ease-out";
+        Ease.EaseInOut = "ease-in-out";
+        return Ease;
+    }());
+    shiva.Ease = Ease;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Transition = (function () {
+        function Transition() {
+            this.callback = function () { console.error("transition not set"); };
+        }
+        Transition.prototype.then = function (callback, data) {
+            this.callback = callback;
+            return new Transition();
+        };
+        Transition.prototype.execute = function () {
+            if (this.callback) {
+                this.callback(this.data);
+            }
+        };
+        Transition.prototype.printCallback = function () {
+            return this;
+        };
+        return Transition;
+    }());
+    shiva.Transition = Transition;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var ObjectUtils = (function () {
+        function ObjectUtils() {
+        }
+        ObjectUtils.merge = function (target, source) {
+            if (typeof target !== 'object') {
+                target = {};
+            }
+            for (var property in source) {
+                if (source.hasOwnProperty(property)) {
+                    var sourceProperty = source[property];
+                    if (typeof sourceProperty === 'object') {
+                        target[property] = ObjectUtils.merge(target[property], sourceProperty);
+                        continue;
+                    }
+                    target[property] = sourceProperty;
+                }
+            }
+            return target;
+        };
+        return ObjectUtils;
+    }());
+    shiva.ObjectUtils = ObjectUtils;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
@@ -401,6 +464,185 @@ var shiva;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
+    var Observer = (function () {
+        function Observer() {
+        }
+        Observer.addEventListener = function (scope, type, callback) {
+            if (!this.observers[type]) {
+                this.observers[type] = [];
+            }
+            this.observers[type].push({ scope: scope, type: type, callback: callback });
+        };
+        Observer.removeEventListener = function (type, callback) {
+            var indexOfClosureToRemove;
+            for (var i = 0; i < this.observers[type].length; i++) {
+                if (this.observers[type].callback === callback) {
+                    indexOfClosureToRemove = i;
+                    break;
+                }
+            }
+            this.observers[type].splice(indexOfClosureToRemove, 1);
+        };
+        Observer.dispatchEvent = function (evt) {
+            var type = evt.type;
+            if (this.observers[type]) {
+                for (var i = 0; i < this.observers[type].length; i++) {
+                    this.observers[type][i].callback.call(this.observers[type][i].scope, evt);
+                }
+            }
+            else {
+                console.error("No Observer registered for: ", evt);
+            }
+        };
+        Observer.observers = {};
+        return Observer;
+    }());
+    shiva.Observer = Observer;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Resize = (function () {
+        function Resize() {
+        }
+        Resize.proportionalOutside = function (objectWidth, objectHeight, areaWidth, areaHeight) {
+            var ratio = objectWidth / objectHeight;
+            var targetWidth = areaWidth;
+            var targetHeight = areaWidth / ratio;
+            if (targetHeight < areaHeight) {
+                targetHeight = areaHeight;
+                targetWidth = targetHeight * ratio;
+            }
+            return { height: targetHeight, width: targetWidth };
+        };
+        Resize.proportionalInside = function (objectWidth, objectHeight, areaWidth, areaHeight) {
+            var ratio = objectWidth / objectHeight;
+            var targetWidth = areaWidth;
+            var targetHeight = areaWidth * ratio;
+            if (targetHeight > areaHeight) {
+                targetHeight = areaHeight;
+                targetWidth = targetHeight * ratio;
+            }
+            return { height: targetHeight, width: targetWidth };
+        };
+        return Resize;
+    }());
+    shiva.Resize = Resize;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Window = (function () {
+        function Window() {
+        }
+        Window.scrollY = function () {
+            var scrollTop = document.body.scrollTop;
+            if (scrollTop == 0) {
+                if (window.pageYOffset) {
+                    scrollTop = window.pageYOffset;
+                }
+                else {
+                    scrollTop = (document.body.parentElement) ? document.body.parentElement.scrollTop : 0;
+                }
+            }
+            return scrollTop;
+        };
+        Window.scrollX = function () {
+            var scrollLeft = document.body.scrollLeft;
+            if (scrollLeft == 0) {
+                if (window.pageXOffset) {
+                    scrollLeft = window.pageXOffset;
+                }
+                else {
+                    scrollLeft = (document.body.parentElement) ? document.body.parentElement.scrollLeft : 0;
+                }
+            }
+            return scrollLeft;
+        };
+        Object.defineProperty(Window, "height", {
+            get: function () {
+                return window.innerHeight
+                    || document.documentElement.clientHeight
+                    || document.body.clientHeight;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Window, "width", {
+            get: function () {
+                return window.innerWidth
+                    || document.documentElement.clientWidth
+                    || document.body.clientWidth;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return Window;
+    }());
+    shiva.Window = Window;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Properties = (function () {
+        function Properties() {
+        }
+        Properties.style = function (object, vars) {
+            var element;
+            if (object.element) {
+                element = object.element;
+            }
+            else {
+                element = object;
+            }
+            for (var i in vars) {
+                if (vars.hasOwnProperty(i)) {
+                    var value = vars[i];
+                    if (typeof (value) === "number") {
+                        if (value) {
+                            switch (i) {
+                                case "x":
+                                    value = vars[i].toString();
+                                    value += "px";
+                                    break;
+                                case "y":
+                                    value = vars[i].toString();
+                                    value += "px";
+                                    break;
+                                case "height":
+                                    value = vars[i].toString();
+                                    value += "px";
+                                    break;
+                                case "width":
+                                    value = vars[i].toString();
+                                    value += "px";
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                    var styleName = i;
+                    switch (i) {
+                        case "x":
+                            styleName = "left";
+                            break;
+                        case "y":
+                            styleName = "top";
+                            break;
+                        case "alpha":
+                            styleName = "opacity";
+                            break;
+                        default:
+                            break;
+                    }
+                    element.style[styleName] = value;
+                }
+            }
+        };
+        return Properties;
+    }());
+    shiva.Properties = Properties;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
     var Container = (function (_super) {
         __extends(Container, _super);
         function Container(config) {
@@ -434,15 +676,20 @@ var shiva;
                     this.innerHtml = config.text;
                 }
                 this._data = config.data;
-                if (Array.isArray(config.style)) {
-                    var styles = config.style;
+                if (config.styles) {
+                    var styles = config.styles;
                     styles.map(function (style) {
                         _this.style(style);
                     });
                 }
-                else {
-                    var style = config.style;
-                    this.style(style);
+                this.style(config.style);
+                if (config.className) {
+                    if (typeof config.className === 'string') {
+                        this.className(config.className);
+                    }
+                    else {
+                        this.className.apply(this, (config.className));
+                    }
                 }
             }
             else {
@@ -456,14 +703,19 @@ var shiva;
             shiva.Properties.style(this._element, vars);
         };
         Container.prototype.className = function () {
-            var _this = this;
             var names = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 names[_i - 0] = arguments[_i];
             }
-            names.map((function (name) {
-                _this._element.className = name;
-            }));
+            var className = names.reduce(function (acc, val) {
+                return acc + " " + val;
+            });
+            if (!this._element.className) {
+                this._element.className = className;
+            }
+            else {
+                this._element.className = this._element.className + " " + className;
+            }
         };
         Container.prototype.addChild = function (child) {
             var childElement;
@@ -860,63 +1112,52 @@ var shiva;
     var Button = (function (_super) {
         __extends(Button, _super);
         function Button(config) {
-            var type;
-            var id;
-            var href;
-            if (config) {
-                if (config.href) {
-                    type = "a";
-                    href = config.href;
-                }
-                else {
-                    type = "button";
-                }
-                if (config.type) {
-                    type = config.type;
-                }
-                id = config.id;
+            var _this = this;
+            config = config || {};
+            if (config.href) {
+                config.type = "a";
             }
-            _super.call(this, {
-                id: id,
-                type: type,
-                style: {
-                    cursor: "pointer"
-                }
-            });
-            this.href = href;
+            else {
+                config.type = "button";
+            }
+            config.style = {
+                cursor: "pointer"
+            };
+            _super.call(this, config);
+            this.stateOver = false;
+            if (config.href) {
+                this.href = config.href;
+            }
             this.enabled = true;
-            this.config = {};
-            for (var i in shiva.Styles.button) {
-                this.config[i] = shiva.Styles.button[i];
+            this.styles = shiva.ObjectUtils.merge({}, shiva.Styles.button);
+            if (config.styles) {
+                config.styles.map(function (style) {
+                    style = _this.populateEmptyHoverStyles(style);
+                    _this.styles = shiva.ObjectUtils.merge(_this.styles, style);
+                });
             }
-            if (config) {
-                for (var i in config.style) {
-                    this.config[i] = config.style[i];
-                }
+            if (config.style) {
+                config.style = this.populateEmptyHoverStyles(config.style);
+                this.styles = shiva.ObjectUtils.merge(this.styles, config.style);
             }
-            for (var i in config) {
-                this.config[i] = config[i];
-            }
-            var buttonLabel = Button.label;
-            if (config.label) {
-                buttonLabel = config.label;
+            var buttonLabel = Button.text;
+            if (config.text) {
+                buttonLabel = config.text;
             }
             var label = document.createTextNode(buttonLabel);
             this.element.appendChild(label);
-            if (this.config.icon && this.config.icon.code) {
+            if (this.styles.icon && this.styles.icon.code) {
                 var icon = new shiva.Container({
                     type: "span",
                     style: {
                         display: "inline-block",
+                        fontFamily: shiva.Styles.button.fontFamily,
+                        fontSize: shiva.Styles.button.fontSize,
+                        pointerEvents: "none"
                     },
-                    text: this.config.icon.code
+                    text: this.styles.icon.code
                 });
-                icon.style({
-                    fontFamily: shiva.Styles.button.fontFamily,
-                    fontSize: shiva.Styles.button.fontSize,
-                    pointerEvents: "none"
-                });
-                if (this.config.icon.align === "left") {
+                if (this.styles.icon.align === "left") {
                     icon.style({
                         paddingRight: shiva.Styles.button.padding,
                     });
@@ -930,27 +1171,53 @@ var shiva;
                     });
                     this.addChild(icon);
                 }
-                icon.style(this.config.icon.style);
+                icon.style(this.styles.icon.style);
             }
             this.addEventListener(this, "mouseover", this.overWithEnable);
             this.addEventListener(this, "mouseout", this.outWithEnable);
-            this.style(this.config);
+            console.log("this.styles: ", this.styles);
+            this.style(this.styles);
         }
+        Button.prototype.showOutTransition = function (e) {
+            var _this = this;
+            console.log("this.stateOver", this.stateOver);
+            console.log("event", e);
+            if (this.stateOver && this.enabled) {
+                var event_1 = e.sourceEvent;
+                console.log("play out animation", event_1.type);
+                event_1.preventDefault();
+                event_1.stopImmediatePropagation();
+                event_1.stopPropagation();
+                this.to({
+                    duration: this.styles.hover.durationOut,
+                    toVars: {
+                        backgroundColor: this.styles.backgroundColor,
+                        color: this.styles.color
+                    }
+                }).then(function () {
+                    if (_this.stateOver) {
+                        _this.over();
+                    }
+                });
+            }
+        };
         Button.prototype.over = function () {
+            this.stateOver = true;
             this.to({
-                duration: this.config.durationIn,
+                duration: this.styles.hover.durationIn,
                 toVars: {
-                    backgroundColor: this.config.backgroundColorHover,
-                    color: this.config.colorHover
+                    backgroundColor: this.styles.hover.backgroundColor,
+                    color: this.styles.hover.color
                 }
             });
         };
         Button.prototype.out = function () {
+            this.stateOver = false;
             this.to({
-                duration: this.config.durationOut,
+                duration: this.styles.hover.durationOut,
                 toVars: {
-                    backgroundColor: this.config.backgroundColor,
-                    color: this.config.color
+                    backgroundColor: this.styles.backgroundColor,
+                    color: this.styles.color
                 }
             });
         };
@@ -973,13 +1240,6 @@ var shiva;
             this.style({ cursor: "pointer" });
             this.out();
         };
-        Object.defineProperty(Button.prototype, "data", {
-            get: function () {
-                return this.config.data;
-            },
-            enumerable: true,
-            configurable: true
-        });
         Button.prototype.overWithEnable = function (e) {
             if (this.enabled) {
                 this.over();
@@ -990,8 +1250,25 @@ var shiva;
                 this.out();
             }
         };
+        Button.prototype.populateEmptyHoverStyles = function (style) {
+            if (!this.styles.hover) {
+                style.hover = {
+                    backgroundColor: style.backgroundColor,
+                    color: style.color
+                };
+            }
+            else {
+                if (!this.styles.hover.color) {
+                    style.hover.color = style.color;
+                }
+                if (!this.styles.hover.backgroundColor) {
+                    style.hover.backgroundColor = style.backgroundColor;
+                }
+            }
+            return style;
+        };
         Button.CLICK = "click";
-        Button.label = "Button";
+        Button.text = "Button";
         return Button;
     }(shiva.Container));
     shiva.Button = Button;
@@ -1041,17 +1318,283 @@ var shiva;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
-    var Ease = (function () {
-        function Ease() {
+    var DropDown = (function (_super) {
+        __extends(DropDown, _super);
+        function DropDown(config) {
+            var _this = this;
+            _super.call(this, {
+                id: config.id || "drop-down"
+            });
+            this.items = [];
+            this.buttonStyle = shiva.ObjectUtils.merge({}, shiva.Styles.drop);
+            if (config.styles) {
+                config.styles.map(function (style) {
+                    _this.buttonStyle = shiva.ObjectUtils.merge(_this.buttonStyle, style);
+                    if (style.button) {
+                        _this.buttonStyle = shiva.ObjectUtils.merge(_this.buttonStyle, style.button);
+                    }
+                });
+            }
+            if (config.style) {
+                this.buttonStyle = shiva.ObjectUtils.merge(this.buttonStyle, config.style);
+                if (config.style.button) {
+                    this.buttonStyle = shiva.ObjectUtils.merge(this.buttonStyle, config.style.button);
+                }
+            }
+            this.buttonStyle.zIndex = "1337";
+            this.button = new shiva.Button({
+                style: this.buttonStyle,
+                text: config.text
+            });
+            this.addChild(this.button);
+            var caretStyle = shiva.ObjectUtils.merge({}, shiva.Styles.drop.caret);
+            if (config.styles) {
+                config.styles.map(function (style) {
+                    if (style.color) {
+                        caretStyle.borderTopColor = style.color;
+                    }
+                    if (style.caret) {
+                        caretStyle = shiva.ObjectUtils.merge(caretStyle, style.caret);
+                    }
+                });
+            }
+            if (config.style) {
+                if (config.style.color) {
+                    caretStyle.borderTopColor = config.style.color;
+                }
+                if (config.style.caret) {
+                    caretStyle = shiva.ObjectUtils.merge(caretStyle, config.style.caret);
+                }
+            }
+            this.caret = new shiva.Container({
+                id: "drop-caret",
+                style: caretStyle
+            });
+            this.button.addChild(this.caret);
+            this.button.addEventListener(this, "mouseup", this.buttonClicked);
+            this.button.addEventListener(this, "mouseover", this.buttonOver);
+            this.button.addEventListener(this, "mouseout", this.buttonOut);
+            this.dropStyle = shiva.ObjectUtils.merge({}, shiva.Styles.drop);
+            if (config.styles) {
+                config.styles.map(function (style) {
+                    _this.dropStyle = shiva.ObjectUtils.merge(_this.dropStyle, style);
+                });
+            }
+            if (config.style) {
+                this.dropStyle = shiva.ObjectUtils.merge(this.dropStyle, config.style);
+            }
+            this.unorderedList = new shiva.Container({
+                type: "ul",
+                styles: [
+                    this.dropStyle,
+                    {
+                        listStyle: "none",
+                        zIndex: "1336",
+                        position: "absolute",
+                        overflow: "hidden",
+                        padding: "0rem",
+                        marginTop: this.dropStyle.dropGap
+                    }
+                ]
+            });
+            this.addChild(this.unorderedList);
+            this.itemStyle = shiva.ObjectUtils.merge({}, shiva.Styles.drop);
+            this.itemStyle.borderStyle = "";
+            this.itemStyle.borderWidth = "";
+            this.itemStyle.borderColor = "";
+            this.itemStyle.borderImage = "";
+            if (config.styles) {
+                config.styles.map(function (style) {
+                    _this.itemStyle = shiva.ObjectUtils.merge(_this.itemStyle, style);
+                    _this.itemStyle.borderStyle = "";
+                    _this.itemStyle.borderWidth = "";
+                    _this.itemStyle.borderColor = "";
+                    _this.itemStyle.borderImage = "";
+                    if (style.item) {
+                        _this.itemStyle = shiva.ObjectUtils.merge(_this.itemStyle, style.item);
+                    }
+                });
+            }
+            if (config.style) {
+                this.itemStyle = shiva.ObjectUtils.merge(this.itemStyle, config.style);
+                this.itemStyle.borderStyle = "";
+                this.itemStyle.borderWidth = "";
+                this.itemStyle.borderColor = "";
+                this.itemStyle.borderImage = "";
+                if (config.style.item) {
+                    this.itemStyle = shiva.ObjectUtils.merge(this.itemStyle, config.style.item);
+                }
+            }
+            var count = 0;
+            config.options.map(function (option) {
+                var item = new shiva.Container({
+                    id: count.toString(),
+                    type: "li",
+                });
+                _this.unorderedList.addChild(item);
+                var anchor = new shiva.Container({
+                    id: count.toString(),
+                    type: "a",
+                    styles: [
+                        _this.itemStyle,
+                        {
+                            display: "list-item",
+                            cursor: "pointer"
+                        }
+                    ]
+                });
+                _this.items.push(item);
+                anchor.innerHtml = option;
+                anchor.addEventListener(_this, "mouseover", _this.itemOver);
+                anchor.addEventListener(_this, "mouseout", _this.itemOut);
+                anchor.addEventListener(_this, "mouseup", _this.itemClicked);
+                item.addChild(anchor);
+                count++;
+            });
+            if (!this.itemStyle.backgroundColor) {
+                this.itemStyle.backgroundColor = this.dropStyle.backgroundColor;
+            }
+            if (!this.itemStyle.color) {
+                this.itemStyle.color = this.dropStyle.color;
+            }
+            this.unorderedList.style({
+                display: "none"
+            });
+            this.style({
+                position: "relative"
+            });
+            this.durationContract = shiva.Styles.drop.durationContract;
+            this.durationExpand = shiva.Styles.drop.durationExpand;
+            if (config.styles) {
+                config.styles.map(function (style) {
+                    if (style.durationExpand) {
+                        _this.durationExpand = style.durationExpand;
+                    }
+                    if (style.durationContract) {
+                        _this.durationContract = style.durationContract;
+                    }
+                });
+            }
+            if (config.style) {
+                if (config.style.durationExpand) {
+                    this.durationExpand = config.style.durationExpand;
+                }
+                if (config.style.durationContract) {
+                    this.durationContract = config.style.durationContract;
+                }
+            }
         }
-        Ease.Linear = "linear";
-        Ease.Ease = "ease";
-        Ease.EaseIn = "ease-in";
-        Ease.EaseOut = "ease-out";
-        Ease.EaseInOut = "ease-in-out";
-        return Ease;
-    }());
-    shiva.Ease = Ease;
+        DropDown.prototype.buttonOver = function (e) {
+            if (this.buttonStyle.hover) {
+                this.caret.to({
+                    duration: this.buttonStyle.hover.durationIn,
+                    toVars: {
+                        borderTopColor: this.buttonStyle.hover.color,
+                    }
+                });
+            }
+        };
+        DropDown.prototype.buttonOut = function (e) {
+            if (this.buttonStyle.hover) {
+                this.caret.to({
+                    duration: this.buttonStyle.hover.durationOut,
+                    toVars: {
+                        borderTopColor: this.buttonStyle.color,
+                    }
+                });
+            }
+        };
+        DropDown.prototype.itemClicked = function (e) {
+            var _this = this;
+            var element = e.target;
+            this.dispatchEvent(new shiva.Event(DropDown.CHANGE, this, element.id));
+            this.unorderedList.style({
+                opacity: "1"
+            });
+            this.unorderedList.to({
+                duration: this.durationContract,
+                delay: 0.3,
+                toVars: {
+                    opacity: "0"
+                }
+            })
+                .then(function () {
+                _this.unorderedList.style({
+                    display: "none"
+                });
+            });
+        };
+        DropDown.prototype.itemOver = function (e) {
+            var element = e.target;
+            element.to({
+                duration: this.itemStyle.hover.durationIn,
+                toVars: {
+                    backgroundColor: this.itemStyle.hover.backgroundColor,
+                    color: this.itemStyle.hover.color,
+                }
+            });
+        };
+        DropDown.prototype.itemOut = function (e) {
+            var element = e.target;
+            element.to({
+                duration: this.itemStyle.hover.durationOut,
+                toVars: {
+                    backgroundColor: this.itemStyle.backgroundColor,
+                    color: this.itemStyle.color
+                }
+            });
+        };
+        DropDown.prototype.buttonClicked = function (e) {
+            var _this = this;
+            this.unorderedList.style({
+                display: "block",
+            });
+            this.unorderedList.fromTo({
+                duration: this.durationExpand,
+                immediateRender: true,
+                fromVars: {
+                    opacity: "0",
+                    transform: "translateY(-10px)"
+                },
+                toVars: {
+                    opacity: "1",
+                    transform: "translateY(0px)"
+                }
+            });
+            this.scopedEventHandler = function (g) { _this.closeDrop(g); };
+            document.addEventListener("mouseup", this.scopedEventHandler, true);
+            this.button.removeEventListener("mouseup", this.buttonClicked);
+        };
+        DropDown.prototype.closeDrop = function (e) {
+            var _this = this;
+            document.removeEventListener("mouseup", this.scopedEventHandler, true);
+            setTimeout(function () {
+                _this.button.addEventListener(_this, "mouseup", _this.buttonClicked);
+            }, 10);
+            this.unorderedList.to({
+                duration: this.durationContract,
+                toVars: {
+                    opacity: "0",
+                }
+            })
+                .then(function () {
+                _this.unorderedList.style({
+                    display: "none"
+                });
+            });
+        };
+        DropDown.prototype.disable = function () {
+            this.button.disable();
+            this.button.removeEventListener(shiva.Button.CLICK, this.buttonClicked);
+        };
+        DropDown.prototype.enable = function () {
+            this.button.enable();
+            this.button.addEventListener(this, shiva.Button.CLICK, this.buttonClicked);
+        };
+        DropDown.CHANGE = "change";
+        return DropDown;
+    }(shiva.Container));
+    shiva.DropDown = DropDown;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
@@ -1080,56 +1623,208 @@ var shiva;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
+    var Pages = (function (_super) {
+        __extends(Pages, _super);
+        function Pages(config) {
+            var _this = this;
+            _super.call(this, {
+                id: config.id,
+                style: {
+                    position: "relative"
+                }
+            });
+            this.pages = {};
+            this.zIndex = 100;
+            this.routes = true;
+            this.config = config;
+            this.style(config.style);
+            if (config.routes === false) {
+                this.routes = false;
+            }
+            if (this.routes) {
+                window.addEventListener('popstate', function (event) {
+                    var page;
+                    if (event.state === null) {
+                        page = window.location.pathname;
+                    }
+                    else {
+                        page = event.state;
+                    }
+                    _this.changePage(page);
+                });
+            }
+        }
+        Pages.prototype.update = function (page) {
+            page = decodeURIComponent(page);
+            if (page !== this.currentPageName) {
+                if (this.routes) {
+                    history.pushState(null, null, page);
+                }
+                this.changePage(page);
+            }
+            else {
+            }
+        };
+        Pages.prototype.changePage = function (page) {
+            var _this = this;
+            this.currentPageName = page;
+            if (this.config.pages[page]) {
+                clearTimeout(this.delayTimeout);
+                if (this.currentPage) {
+                    if (this.currentPage.sleep) {
+                        this.currentPage.sleep();
+                    }
+                    if (this.config.delayTransition) {
+                        var viewToRemove_1 = this.currentPage;
+                        this.delayTimeout = setTimeout(function () {
+                            _this.removeChild(viewToRemove_1);
+                        }, this.config.delayTransition * 1000);
+                    }
+                    else {
+                        this.removeChild(this.currentPage);
+                    }
+                }
+                if (this.pages[page]) {
+                }
+                else {
+                    var pageTemp = new this.config.pages[page](page);
+                    this.pages[page] = pageTemp;
+                }
+                this.currentPage = this.pages[page];
+                if (this.currentPage.wake) {
+                    this.currentPage.wake();
+                }
+                this.currentPage.style({
+                    position: "absolute",
+                    width: "100%",
+                    top: "0px",
+                    left: "0px"
+                });
+                this.addChild(this.currentPage);
+            }
+            else {
+            }
+        };
+        return Pages;
+    }(shiva.Container));
+    shiva.Pages = Pages;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var RadioButton = (function (_super) {
+        __extends(RadioButton, _super);
+        function RadioButton(config) {
+            _super.call(this, {
+                type: "input"
+            });
+            var element = this.element;
+            element.type = "radio";
+            if (config) {
+                if (config.id) {
+                    this.id = config.id;
+                }
+                this.style(config.style);
+                this.style(config);
+                element.checked = config.checked;
+            }
+        }
+        Object.defineProperty(RadioButton.prototype, "checked", {
+            get: function () {
+                var element = this.element;
+                return element.checked;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        RadioButton.CLICK = "click";
+        return RadioButton;
+    }(shiva.Container));
+    shiva.RadioButton = RadioButton;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Select = (function (_super) {
+        __extends(Select, _super);
+        function Select(config) {
+            var _this = this;
+            config.type = "select";
+            _super.call(this, config);
+            var element = this.element;
+            if (config.name) {
+                element.name = config.name;
+            }
+            var options = config.options;
+            options.map(function (option) {
+                var item = new shiva.Container({
+                    text: option,
+                    type: "option"
+                });
+                _this.addChild(item);
+            });
+        }
+        Object.defineProperty(Select.prototype, "value", {
+            get: function () {
+                var element = this.element;
+                return element.value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Select.prototype, "selectedIndex", {
+            get: function () {
+                var element = this.element;
+                return element.selectedIndex;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Select.CHANGE = "change";
+        return Select;
+    }(shiva.Container));
+    shiva.Select = Select;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
     var Loader = (function (_super) {
         __extends(Loader, _super);
         function Loader() {
-            _super.call(this);
+            _super.apply(this, arguments);
         }
-        Loader.prototype.load = function (config) {
+        Loader.get = function (config) {
+            return this.load(config, this.httpMethods.GET);
+        };
+        Loader.post = function (config) {
+            return this.load(config, this.httpMethods.POST);
+        };
+        Loader.put = function (config) {
+            return this.load(config, this.httpMethods.PUT);
+        };
+        Loader.update = function (config) {
+            return this.load(config, this.httpMethods.UPDATE);
+        };
+        Loader.delete = function (config) {
+            return this.load(config, this.httpMethods.DELETE);
+        };
+        Loader.load = function (config, method) {
             var _this = this;
-            if (this.http) {
-                this.http.abort();
-            }
-            else {
-                this.http = new XMLHttpRequest();
-            }
-            if (config.method === Loader.httpMethods.GET) {
-                config.url = config.url + this.concatParams(config.params);
-            }
-            var methodString;
-            switch (config.method) {
-                case Loader.httpMethods.GET:
-                    methodString = "GET";
-                    break;
-                case Loader.httpMethods.POST:
-                    methodString = "POST";
-                    break;
-                case Loader.httpMethods.PUT:
-                    methodString = "PUT";
-                    break;
-                case Loader.httpMethods.UPDATE:
-                    methodString = "UPDATE";
-                    break;
-                default:
-                    methodString = "GET";
-                    break;
-            }
-            this._data = config.data;
-            this.http.open(methodString, config.url, true);
-            this.http.timeout = 20000;
-            if (config.headers) {
-                config.headers.map(function (header) {
-                    _this.http.setRequestHeader(header.value, header.variable);
-                });
-            }
-            this.http.onreadystatechange = this.handleResponse.bind(this);
             return new Promise(function (resolve, reject) {
-                _this.resolve = resolve;
-                _this.reject = reject;
-                _this.http.send(config.params);
+                var http = new XMLHttpRequest();
+                if (method === Loader.httpMethods.GET) {
+                    config.url = config.url + _this.concatParams(config.params);
+                }
+                http.open(method, config.url, true);
+                http.timeout = 20000;
+                if (config.headers) {
+                    config.headers.map(function (header) {
+                        http.setRequestHeader(header.value, header.variable);
+                    });
+                }
+                http.onload = function () { return _this.handleResponse(http, resolve, reject, config.data); };
+                http.onerror = function () { return reject(new Error("Network Error")); };
+                http.send(config.params);
             });
         };
-        Loader.prototype.concatParams = function (params) {
+        Loader.concatParams = function (params) {
             var queryString = "?";
             for (var i in params) {
                 if (params.hasOwnProperty(i)) {
@@ -1139,32 +1834,19 @@ var shiva;
             queryString = queryString.slice(0, -1);
             return queryString;
         };
-        Loader.prototype.setRequestHeader = function (header) {
-            this.http.setRequestHeader(header.value, header.variable);
-        };
-        Loader.prototype.handleResponse = function () {
-            if (this.http.readyState === 4) {
-                if (this.http.status === 200) {
-                    var event_1 = new shiva.LoaderEvent(Loader.COMPLETE, this, this.http.responseText, this.http.status, this.http, this._data);
-                    _super.prototype.dispatchEvent.call(this, event_1);
-                    this.resolve(event_1);
-                    this.http.onreadystatechange = undefined;
+        Loader.handleResponse = function (http, resolve, reject, data) {
+            if (http.status === 200) {
+                return resolve(http.responseText);
+            }
+            else {
+                var error = void 0;
+                if (http.status === 0) {
+                    error = "Network Error 0x2ee7";
                 }
                 else {
-                    var error = void 0;
-                    if (this.http.status === 0) {
-                        error = "Network Error 0x2ee7";
-                    }
-                    else {
-                        error = this.http.statusText;
-                    }
-                    var event_2 = new shiva.LoaderEvent(Loader.ERROR, this, error, this.http.status, this.http);
-                    _super.prototype.dispatchEvent.call(this, event_2);
-                    this.reject({
-                        error: error,
-                        status: this.http.status
-                    });
+                    error = http.statusText;
                 }
+                return reject(new Error(error));
             }
         };
         Loader.httpMethods = {
@@ -1215,589 +1897,8 @@ var shiva;
     }(shiva.Event));
     shiva.LoaderEvent = LoaderEvent;
 })(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var Observer = (function () {
-        function Observer() {
-        }
-        Observer.addEventListener = function (scope, type, callback) {
-            if (!this.observers[type]) {
-                this.observers[type] = [];
-            }
-            this.observers[type].push({ scope: scope, type: type, callback: callback });
-        };
-        Observer.removeEventListener = function (type, callback) {
-            var indexOfClosureToRemove;
-            for (var i = 0; i < this.observers[type].length; i++) {
-                if (this.observers[type].callback === callback) {
-                    indexOfClosureToRemove = i;
-                    break;
-                }
-            }
-            this.observers[type].splice(indexOfClosureToRemove, 1);
-        };
-        Observer.dispatchEvent = function (evt) {
-            var type = evt.type;
-            if (this.observers[type]) {
-                for (var i = 0; i < this.observers[type].length; i++) {
-                    this.observers[type][i].callback.call(this.observers[type][i].scope, evt);
-                }
-            }
-            else {
-                console.log("DISPATCH ERROR: NO OBSERVER REGISTERED");
-            }
-        };
-        Observer.observers = {};
-        return Observer;
-    }());
-    shiva.Observer = Observer;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var Pages = (function (_super) {
-        __extends(Pages, _super);
-        function Pages(config) {
-            _super.call(this, {
-                id: config.id,
-                style: {
-                    position: "relative"
-                }
-            });
-            this.pages = {};
-            this.zIndex = 100;
-            this.config = config;
-            this.style(config.style);
-        }
-        Pages.prototype.update = function (pageName) {
-            var _this = this;
-            if (pageName !== this.currentPageName) {
-                if (this.config.pages[pageName]) {
-                    clearTimeout(this.delayTimeout);
-                    this.currentPageName = pageName;
-                    if (this.currentPage) {
-                        if (this.currentPage.sleep) {
-                            this.currentPage.sleep();
-                        }
-                        if (this.config.delayTransition) {
-                            var viewToRemove_1 = this.currentPage;
-                            this.delayTimeout = setTimeout(function () {
-                                _this.removeChild(viewToRemove_1);
-                            }, this.config.delayTransition * 1000);
-                        }
-                        else {
-                            this.removeChild(this.currentPage);
-                        }
-                    }
-                    if (this.pages[pageName]) {
-                    }
-                    else {
-                        var page = new this.config.pages[pageName](pageName);
-                        this.pages[pageName] = page;
-                    }
-                    this.currentPage = this.pages[pageName];
-                    if (this.currentPage.wake) {
-                        this.currentPage.wake();
-                    }
-                    this.currentPage.style({
-                        position: "absolute",
-                        width: "100%",
-                        top: "0px",
-                        left: "0px"
-                    });
-                    this.addChild(this.currentPage);
-                }
-                else {
-                }
-            }
-            else {
-                console.log("view already loaded: ");
-            }
-        };
-        return Pages;
-    }(shiva.Container));
-    shiva.Pages = Pages;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var RadioButton = (function (_super) {
-        __extends(RadioButton, _super);
-        function RadioButton(config) {
-            _super.call(this, {
-                type: "input"
-            });
-            var element = this.element;
-            element.type = "radio";
-            if (config) {
-                if (config.id) {
-                    this.id = config.id;
-                }
-                this.style(config.style);
-                this.style(config);
-                element.checked = config.checked;
-            }
-        }
-        Object.defineProperty(RadioButton.prototype, "checked", {
-            get: function () {
-                var element = this.element;
-                return element.checked;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        RadioButton.CLICK = "click";
-        return RadioButton;
-    }(shiva.Container));
-    shiva.RadioButton = RadioButton;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var Resize = (function () {
-        function Resize() {
-        }
-        Resize.proportionalOutside = function (objectWidth, objectHeight, areaWidth, areaHeight) {
-            var ratio = objectWidth / objectHeight;
-            var targetWidth = areaWidth;
-            var targetHeight = areaWidth / ratio;
-            if (targetHeight < areaHeight) {
-                targetHeight = areaHeight;
-                targetWidth = targetHeight * ratio;
-            }
-            return { height: targetHeight, width: targetWidth };
-        };
-        Resize.proportionalInside = function (objectWidth, objectHeight, areaWidth, areaHeight) {
-            var ratio = objectWidth / objectHeight;
-            var targetWidth = areaWidth;
-            var targetHeight = areaWidth * ratio;
-            if (targetHeight > areaHeight) {
-                targetHeight = areaHeight;
-                targetWidth = targetHeight * ratio;
-            }
-            return { height: targetHeight, width: targetWidth };
-        };
-        return Resize;
-    }());
-    shiva.Resize = Resize;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var Select = (function (_super) {
-        __extends(Select, _super);
-        function Select(config) {
-            var _this = this;
-            config.type = "select";
-            _super.call(this, config);
-            var element = this.element;
-            if (config.name) {
-                element.name = config.name;
-            }
-            var options = config.options;
-            options.map(function (option) {
-                var item = new shiva.Container({
-                    text: option,
-                    type: "option"
-                });
-                _this.addChild(item);
-            });
-        }
-        Object.defineProperty(Select.prototype, "value", {
-            get: function () {
-                var element = this.element;
-                return element.value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Select.prototype, "selectedIndex", {
-            get: function () {
-                var element = this.element;
-                return element.selectedIndex;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Select.CHANGE = "change";
-        return Select;
-    }(shiva.Container));
-    shiva.Select = Select;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var Styles = (function () {
-        function Styles() {
-        }
-        Styles.button = {
-            fontSize: "1.2em",
-            fontFamily: "sans-serif",
-            fontWeight: "300",
-            backgroundColor: "#fefefe",
-            backgroundColorHover: "#dddddd",
-            durationOut: 1,
-            durationIn: 0,
-            padding: "1rem",
-            textAlign: "left",
-            whiteSpace: "nowrap",
-            msTouchAction: "manipulation",
-            touchAction: "manipulation",
-            cursor: "pointer",
-            webkitUserSelect: "none",
-            mozUserSelect: "none",
-            msUserSelect: "none",
-            userSelect: "none",
-            border: "2px solid transparent",
-            borderColor: "#eeeeee",
-            color: "#000000",
-            colorHover: "#000000",
-            text: "Button"
-        };
-        Styles.drop = {
-            fontFamily: "sans-serif",
-            fontSize: "1.2rem",
-            backgroundColor: "#ffffff",
-            backgroundColorHover: "#dddddd",
-            colorHover: "#000000",
-            color: "#000000",
-            durationIn: 0,
-            durationOut: 0.5,
-            fontWeight: "300",
-            padding: "0rem",
-            durationExpand: 0.5,
-            durationContract: 0.5,
-            marginTop: "0.3rem",
-            listStyle: "none",
-            zIndex: "1336",
-            position: "absolute",
-            overflow: "hidden",
-            border: "2px solid transparent",
-            borderColor: "#eeeeee",
-            caret: {
-                width: "0px",
-                height: "0px",
-                borderLeftWidth: "0.35rem",
-                borderLeftStyle: "solid",
-                borderLeftColor: "transparent",
-                borderRightWidth: "0.35rem",
-                borderRightStyle: "solid",
-                borderRightColor: "transparent",
-                borderTopWidth: "0.35rem",
-                borderTopStyle: "solid",
-                borderTopColor: "black",
-                display: "inline-block",
-                verticalAlign: "middle",
-                marginLeft: "0.35rem",
-                pointerEvents: "none"
-            },
-            listItem: {
-                padding: "1rem",
-                display: "list-item",
-                cursor: "pointer"
-            }
-        };
-        return Styles;
-    }());
-    shiva.Styles = Styles;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var Transition = (function () {
-        function Transition() {
-            this.callback = function () { console.log("not set"); };
-        }
-        Transition.prototype.then = function (callback, data) {
-            this.callback = callback;
-            console.log("callback: ", this.callback);
-            return new Transition();
-        };
-        Transition.prototype.execute = function () {
-            if (this.callback) {
-                this.callback(this.data);
-            }
-        };
-        Transition.prototype.printCallback = function () {
-            return this;
-        };
-        return Transition;
-    }());
-    shiva.Transition = Transition;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var Window = (function () {
-        function Window() {
-        }
-        Window.scrollY = function () {
-            var scrollTop = document.body.scrollTop;
-            if (scrollTop == 0) {
-                if (window.pageYOffset) {
-                    scrollTop = window.pageYOffset;
-                }
-                else {
-                    scrollTop = (document.body.parentElement) ? document.body.parentElement.scrollTop : 0;
-                }
-            }
-            return scrollTop;
-        };
-        Window.scrollX = function () {
-            var scrollLeft = document.body.scrollLeft;
-            if (scrollLeft == 0) {
-                if (window.pageXOffset) {
-                    scrollLeft = window.pageXOffset;
-                }
-                else {
-                    scrollLeft = (document.body.parentElement) ? document.body.parentElement.scrollLeft : 0;
-                }
-            }
-            return scrollLeft;
-        };
-        Object.defineProperty(Window, "height", {
-            get: function () {
-                return window.innerHeight
-                    || document.documentElement.clientHeight
-                    || document.body.clientHeight;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Window, "width", {
-            get: function () {
-                return window.innerWidth
-                    || document.documentElement.clientWidth
-                    || document.body.clientWidth;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        return Window;
-    }());
-    shiva.Window = Window;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var DropDown = (function (_super) {
-        __extends(DropDown, _super);
-        function DropDown(config) {
-            var _this = this;
-            config.id = config.id || "drop-down";
-            var style = {};
-            for (var i in config.style) {
-                style[i] = config.style[i];
-            }
-            delete config.style;
-            _super.call(this, config);
-            this.items = [];
-            var buttonLabel = shiva.Button.label;
-            if (style && style.button) {
-                buttonLabel = style.button.label;
-            }
-            if (config.label) {
-                buttonLabel = config.label;
-            }
-            var buttonStyle = {};
-            for (var i in shiva.Styles.button) {
-                buttonStyle[i] = shiva.Styles.button[i];
-            }
-            for (var i in style) {
-                buttonStyle[i] = style[i];
-            }
-            if (style) {
-                for (var i in style.button) {
-                    buttonStyle[i] = style.button[i];
-                }
-            }
-            this.button = new shiva.Button({
-                style: buttonStyle,
-                zIndex: "1337",
-                label: buttonLabel
-            });
-            this.addChild(this.button);
-            var caretStyle = {};
-            for (var i in shiva.Styles.drop.caret) {
-                caretStyle[i] = shiva.Styles.drop.caret[i];
-            }
-            if (style) {
-                caretStyle['borderTopColor'] = style['color'];
-                for (var i in style.caret) {
-                    caretStyle[i] = style.caret[i];
-                }
-            }
-            this.caret = new shiva.Container({
-                id: "drop-caret",
-                style: caretStyle
-            });
-            this.button.addChild(this.caret);
-            this.button.addEventListener(this, "mousedown", this.buttonClicked);
-            this.button.addEventListener(this, "mouseover", this.buttonOver);
-            this.button.addEventListener(this, "mouseout", this.buttonOut);
-            this.dropConfig = {};
-            for (var i in shiva.Styles.drop) {
-                this.dropConfig[i] = shiva.Styles.drop[i];
-            }
-            for (var i in style) {
-                this.dropConfig[i] = style[i];
-            }
-            if (style) {
-                for (var i in style.drop) {
-                    this.dropConfig[i] = style.drop[i];
-                }
-            }
-            this.unorderedList = new shiva.Container({
-                type: "ul",
-                style: this.dropConfig
-            });
-            this.unorderedList.style({
-                padding: "0rem"
-            });
-            this.addChild(this.unorderedList);
-            var count = 0;
-            config.options.map(function (option) {
-                var item = new shiva.Container({
-                    id: count.toString(),
-                    type: "li",
-                });
-                _this.unorderedList.addChild(item);
-                var anchorStyle = {};
-                for (var i in shiva.Styles.drop.listItem) {
-                    anchorStyle[i] = shiva.Styles.drop.listItem[i];
-                }
-                if (style) {
-                    anchorStyle['padding'] = style['padding'];
-                    anchorStyle['paddingLeft'] = style['paddingLeft'];
-                    anchorStyle['paddingRight'] = style['paddingRight'];
-                    anchorStyle['paddingTop'] = style['paddingTop'];
-                    anchorStyle['paddingBottom'] = style['paddingBottom'];
-                    for (var i in style.item) {
-                        anchorStyle[i] = style.item[i];
-                    }
-                }
-                var anchor = new shiva.Container({
-                    id: count.toString(),
-                    type: "a",
-                    style: anchorStyle
-                });
-                _this.items.push(item);
-                anchor.innerHtml = option;
-                anchor.addEventListener(_this, "mouseover", _this.itemOver);
-                anchor.addEventListener(_this, "mouseout", _this.itemOut);
-                anchor.addEventListener(_this, "mousedown", _this.itemClicked);
-                item.addChild(anchor);
-                count++;
-            });
-            this.unorderedList.style({
-                display: "none"
-            });
-            this.style({
-                position: "relative"
-            });
-        }
-        DropDown.prototype.buttonOver = function (e) {
-            this.caret.to({
-                duration: this.dropConfig.durationIn,
-                toVars: {
-                    borderTopColor: this.dropConfig.colorHover,
-                }
-            });
-        };
-        DropDown.prototype.buttonOut = function (e) {
-            this.caret.to({
-                duration: this.dropConfig.durationOut,
-                toVars: {
-                    borderTopColor: this.dropConfig.color,
-                }
-            });
-        };
-        DropDown.prototype.itemClicked = function (e) {
-            var _this = this;
-            var element = e.target;
-            this.dispatchEvent(new shiva.Event(DropDown.CHANGE, this, element.id));
-            this.unorderedList.style({
-                opacity: "1"
-            });
-            this.unorderedList.to({
-                duration: this.dropConfig.durationContract,
-                delay: 0.3,
-                toVars: {
-                    opacity: "0"
-                }
-            })
-                .then(function () {
-                _this.unorderedList.style({
-                    display: "none"
-                });
-            });
-        };
-        DropDown.prototype.itemOver = function (e) {
-            var element = e.target;
-            element.to({
-                duration: this.dropConfig.durationIn,
-                toVars: {
-                    backgroundColor: this.dropConfig.backgroundColorHover,
-                    color: this.dropConfig.colorHover,
-                }
-            });
-        };
-        DropDown.prototype.itemOut = function (e) {
-            var element = e.target;
-            element.to({
-                duration: this.dropConfig.durationOut,
-                toVars: {
-                    backgroundColor: this.dropConfig.backgroundColor,
-                    color: this.dropConfig.color
-                }
-            });
-        };
-        DropDown.prototype.buttonClicked = function (e) {
-            var _this = this;
-            this.unorderedList.style({
-                display: "block",
-            });
-            this.unorderedList.fromTo({
-                duration: this.dropConfig.durationExpand,
-                immediateRender: true,
-                fromVars: {
-                    opacity: "0",
-                    transform: "translateY(-10px)"
-                },
-                toVars: {
-                    opacity: "1",
-                    transform: "translateY(0px)"
-                }
-            });
-            this.scopedEventHandler = function (g) { _this.closeDrop(g); };
-            document.addEventListener("mousedown", this.scopedEventHandler, true);
-            this.button.removeEventListener("mousedown", this.buttonClicked);
-        };
-        DropDown.prototype.closeDrop = function (e) {
-            var _this = this;
-            document.removeEventListener("mousedown", this.scopedEventHandler, true);
-            setTimeout(function () {
-                _this.button.addEventListener(_this, "mousedown", _this.buttonClicked);
-            }, 10);
-            this.unorderedList.to({
-                duration: this.dropConfig.durationContract,
-                toVars: {
-                    opacity: "0",
-                }
-            })
-                .then(function () {
-                _this.unorderedList.style({
-                    display: "none"
-                });
-            });
-        };
-        DropDown.prototype.disable = function () {
-            this.button.disable();
-            this.button.removeEventListener(shiva.Button.CLICK, this.buttonClicked);
-        };
-        DropDown.prototype.enable = function () {
-            this.button.enable();
-            this.button.addEventListener(this, shiva.Button.CLICK, this.buttonClicked);
-        };
-        DropDown.CHANGE = "change";
-        return DropDown;
-    }(shiva.Container));
-    shiva.DropDown = DropDown;
-})(shiva || (shiva = {}));
 
-//# sourceMappingURL=shiva.js.map
+
 
  /** Detect free variable `global` from Node.js. */
     var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
@@ -1846,3 +1947,5 @@ var shiva;
         root.shiva = shiva;
     }
 }.call(this));
+
+//# sourceMappingURL=shiva.js.map
