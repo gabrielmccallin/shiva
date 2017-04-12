@@ -18,10 +18,6 @@ pipelines:
             # - git config --global user.email "gabrielmccallin@outlook.com"
             # - git config --global user.name "Gabriel McCallin"
             # - git push https://gabrielmccallin:itnujra010@github.com/gabrielmccallin/shiva.git
-            # - npm publish activates jsdelivr as well I think
-    publish: 
-      - step:
-          script:
-            - echo "Publish"
+            # - npm publish activates jsdelivr as well I think            
             - npm install ci-publish
             - npm run ci-publish
