@@ -1,8 +1,7 @@
 ﻿/// <reference path="../../components/container/eventdispatcher.ts" />
-/// <reference path="LoaderHTTPMethods.ts" />
 
 module shiva {
-    // export type httpMethods = "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+    export type LoaderHTTPMethods = "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
     export class Loader extends EventDispatcher {
         static httpMethods = {
             GET: "GET" as LoaderHTTPMethods,
@@ -13,42 +12,49 @@ module shiva {
         };
         static COMPLETE: string = "COMPLETE";
         static ERROR: string = "ERROR";
-        // private _data: any;
-        // private http: XMLHttpRequest;
-
-
-        // constructor() {
-        //     super();
-        // }
 
         static get(config: LoaderConfig): Promise<any> {
             return this.load(config, this.httpMethods.GET);
         }
 
+        static post(config: LoaderConfig): Promise<any> {
+            return this.load(config, this.httpMethods.POST);
+        }
+
+        static put(config: LoaderConfig): Promise<any> {
+            return this.load(config, this.httpMethods.PUT);
+        }
+
+        static update(config: LoaderConfig): Promise<any> {
+            return this.load(config, this.httpMethods.UPDATE);
+        }
+
+        static delete(config: LoaderConfig): Promise<any> {
+            return this.load(config, this.httpMethods.DELETE);
+        }
 
         private static load(config: LoaderConfig, method: LoaderHTTPMethods): Promise<any> {
-            const http = new XMLHttpRequest();
-
-            if (method === Loader.httpMethods.GET) {
-                config.url = config.url + this.concatParams(config.params);
-            }
-
-            // this._data = config.data;
-
-            http.open(method, config.url, true);
-            http.timeout = 20000;
-            //http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');  
-            if (config.headers) {
-                config.headers.map(header => {
-                    http.setRequestHeader(header.value, header.variable);
-                });
-            }
-            //if (!cache) {
-            //    http.setRequestHeader("If-Modified-Since", "Sat, 01 Jan 2005 00:00:00 GMT");
-            //}
-
             return new Promise((resolve, reject) => {
-                http.onreadystatechange = () => this.handleResponse(http, resolve, reject, config.data);
+                const http = new XMLHttpRequest();
+
+                if (method === Loader.httpMethods.GET) {
+                    config.url = config.url + this.concatParams(config.params);
+                }
+
+                http.open(method, config.url, true);
+                http.timeout = 20000;
+                //http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');  
+                if (config.headers) {
+                    config.headers.map(header => {
+                        http.setRequestHeader(header.value, header.variable);
+                    });
+                }
+                //if (!cache) {
+                //    http.setRequestHeader("If-Modified-Since", "Sat, 01 Jan 2005 00:00:00 GMT");
+                //}
+
+                http.onload = () => this.handleResponse(http, resolve, reject, config.data);
+                http.onerror = () => reject(new Error("Network Error"));
                 http.send(config.params);
             });
         }
@@ -64,21 +70,14 @@ module shiva {
             return queryString;
         }
 
-        // private setRequestHeader(header: any) {
-        //     this.http.setRequestHeader(header.value, header.variable);
-        // }
-
 
         private static handleResponse(http: XMLHttpRequest, resolve: Function, reject: Function, data?: any) {
-            if (http.readyState === 4) {
-                http.onreadystatechange = undefined;
+            // if (http.readyState === 4) {
+                // http.onreadystatechange = undefined;
                 if (http.status === 200) {
-                    let event: LoaderEvent = new LoaderEvent(Loader.COMPLETE, this, http.responseText, http.status, http, data);
-                    // super.dispatchEvent(event);
+                    // let event: LoaderEvent = new LoaderEvent(Loader.COMPLETE, this, http.responseText, http.status, http, data);
 
-                    // this.resolve(http.responseText);
-
-                    return resolve(event);
+                    return resolve(http.responseText);
                 }
                 else {
                     let error: string;
@@ -88,12 +87,11 @@ module shiva {
                     else {
                         error = http.statusText;
                     }
-                    let event: LoaderEvent = new LoaderEvent(Loader.ERROR, this, error, http.status, http);
-                    // super.dispatchEvent(event);
+                    // let event: LoaderEvent = new LoaderEvent(Loader.ERROR, this, error, http.status, http);
 
-                    return reject(Error(error));
+                    return reject(new Error(error));
                 }
-            }
+            // }
         }
     }
 

@@ -1799,21 +1799,34 @@ var shiva;
         Loader.get = function (config) {
             return this.load(config, this.httpMethods.GET);
         };
+        Loader.post = function (config) {
+            return this.load(config, this.httpMethods.POST);
+        };
+        Loader.put = function (config) {
+            return this.load(config, this.httpMethods.PUT);
+        };
+        Loader.update = function (config) {
+            return this.load(config, this.httpMethods.UPDATE);
+        };
+        Loader.delete = function (config) {
+            return this.load(config, this.httpMethods.DELETE);
+        };
         Loader.load = function (config, method) {
             var _this = this;
-            var http = new XMLHttpRequest();
-            if (method === Loader.httpMethods.GET) {
-                config.url = config.url + this.concatParams(config.params);
-            }
-            http.open(method, config.url, true);
-            http.timeout = 20000;
-            if (config.headers) {
-                config.headers.map(function (header) {
-                    http.setRequestHeader(header.value, header.variable);
-                });
-            }
             return new Promise(function (resolve, reject) {
-                http.onreadystatechange = function () { return _this.handleResponse(http, resolve, reject, config.data); };
+                var http = new XMLHttpRequest();
+                if (method === Loader.httpMethods.GET) {
+                    config.url = config.url + _this.concatParams(config.params);
+                }
+                http.open(method, config.url, true);
+                http.timeout = 20000;
+                if (config.headers) {
+                    config.headers.map(function (header) {
+                        http.setRequestHeader(header.value, header.variable);
+                    });
+                }
+                http.onload = function () { return _this.handleResponse(http, resolve, reject, config.data); };
+                http.onerror = function () { return reject(new Error("Network Error")); };
                 http.send(config.params);
             });
         };
@@ -1828,23 +1841,18 @@ var shiva;
             return queryString;
         };
         Loader.handleResponse = function (http, resolve, reject, data) {
-            if (http.readyState === 4) {
-                http.onreadystatechange = undefined;
-                if (http.status === 200) {
-                    var event_2 = new shiva.LoaderEvent(Loader.COMPLETE, this, http.responseText, http.status, http, data);
-                    return resolve(event_2);
+            if (http.status === 200) {
+                return resolve(http.responseText);
+            }
+            else {
+                var error = void 0;
+                if (http.status === 0) {
+                    error = "Network Error 0x2ee7";
                 }
                 else {
-                    var error = void 0;
-                    if (http.status === 0) {
-                        error = "Network Error 0x2ee7";
-                    }
-                    else {
-                        error = http.statusText;
-                    }
-                    var event_3 = new shiva.LoaderEvent(Loader.ERROR, this, error, http.status, http);
-                    return reject(Error(error));
+                    error = http.statusText;
                 }
+                return reject(new Error(error));
             }
         };
         Loader.httpMethods = {
