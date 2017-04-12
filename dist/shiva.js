@@ -1629,6 +1629,38 @@ var shiva;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
+    var RadioButton = (function (_super) {
+        __extends(RadioButton, _super);
+        function RadioButton(config) {
+            _super.call(this, {
+                type: "input"
+            });
+            var element = this.element;
+            element.type = "radio";
+            if (config) {
+                if (config.id) {
+                    this.id = config.id;
+                }
+                this.style(config.style);
+                this.style(config);
+                element.checked = config.checked;
+            }
+        }
+        Object.defineProperty(RadioButton.prototype, "checked", {
+            get: function () {
+                var element = this.element;
+                return element.checked;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        RadioButton.CLICK = "click";
+        return RadioButton;
+    }(shiva.Container));
+    shiva.RadioButton = RadioButton;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
     var Pages = (function (_super) {
         __extends(Pages, _super);
         function Pages(config) {
@@ -1714,38 +1746,6 @@ var shiva;
         return Pages;
     }(shiva.Container));
     shiva.Pages = Pages;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var RadioButton = (function (_super) {
-        __extends(RadioButton, _super);
-        function RadioButton(config) {
-            _super.call(this, {
-                type: "input"
-            });
-            var element = this.element;
-            element.type = "radio";
-            if (config) {
-                if (config.id) {
-                    this.id = config.id;
-                }
-                this.style(config.style);
-                this.style(config);
-                element.checked = config.checked;
-            }
-        }
-        Object.defineProperty(RadioButton.prototype, "checked", {
-            get: function () {
-                var element = this.element;
-                return element.checked;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        RadioButton.CLICK = "click";
-        return RadioButton;
-    }(shiva.Container));
-    shiva.RadioButton = RadioButton;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
