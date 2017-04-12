@@ -5,7 +5,8 @@
   "main": "./dist/shiva.min.js",
   "types": "./dist/shiva.d.ts",
   "scripts": {
-    "start": "echo And in all, the creator, preserver, destroyer, revealer and concealer of all that is. && gulp"
+    "start": "echo And in all, the creator, preserver, destroyer, revealer and concealer of all that is. && gulp",
+    "ci-publish": "ci-publish"
   },
   "dependencies": {},
   "repository": {
