@@ -1,69 +1,4 @@
 declare module shiva {
-    class Styles {
-        static button: {
-            fontSize: string;
-            fontFamily: string;
-            backgroundColor: string;
-            hover: {
-                backgroundColor: string;
-                durationOut: number;
-                durationIn: number;
-                color: string;
-            };
-            padding: string;
-            textAlign: string;
-            whiteSpace: string;
-            msTouchAction: string;
-            touchAction: string;
-            cursor: string;
-            webkitUserSelect: string;
-            mozUserSelect: string;
-            msUserSelect: string;
-            userSelect: string;
-            border: string;
-            borderColor: string;
-            color: string;
-            text: string;
-        };
-        static drop: {
-            fontFamily: string;
-            fontSize: string;
-            backgroundColor: string;
-            color: string;
-            padding: string;
-            durationExpand: number;
-            durationContract: number;
-            border: string;
-            borderColor: string;
-            dropGap: string;
-            hover: {
-                backgroundColor: string;
-                color: string;
-                durationIn: number;
-                durationOut: number;
-            };
-            caret: {
-                width: string;
-                height: string;
-                borderLeftWidth: string;
-                borderLeftStyle: string;
-                borderLeftColor: string;
-                borderRightWidth: string;
-                borderRightStyle: string;
-                borderRightColor: string;
-                borderTopWidth: string;
-                borderTopStyle: string;
-                borderTopColor: string;
-                display: string;
-                verticalAlign: string;
-                marginLeft: string;
-                pointerEvents: string;
-                transform: string;
-            };
-        };
-    }
-}
-declare module shiva {
     class Ease {
         static Linear: string;
         static Ease: string;
@@ -145,6 +80,113 @@ declare module shiva {
         static scrollX(): number;
         static height: number;
         static width: number;
+    }
+}
+declare module shiva {
+    class Styles {
+        static button: {
+            fontSize: string;
+            fontFamily: string;
+            backgroundColor: string;
+            hover: {
+                backgroundColor: string;
+                durationOut: number;
+                durationIn: number;
+                color: string;
+            };
+            padding: string;
+            textAlign: string;
+            whiteSpace: string;
+            msTouchAction: string;
+            touchAction: string;
+            cursor: string;
+            webkitUserSelect: string;
+            mozUserSelect: string;
+            msUserSelect: string;
+            userSelect: string;
+            border: string;
+            borderColor: string;
+            color: string;
+            text: string;
+        };
+        static drop: {
+            fontFamily: string;
+            fontSize: string;
+            backgroundColor: string;
+            color: string;
+            padding: string;
+            durationExpand: number;
+            durationContract: number;
+            border: string;
+            borderColor: string;
+            dropGap: string;
+            hover: {
+                backgroundColor: string;
+                color: string;
+                durationIn: number;
+                durationOut: number;
+            };
+            caret: {
+                width: string;
+                height: string;
+                borderLeftWidth: string;
+                borderLeftStyle: string;
+                borderLeftColor: string;
+                borderRightWidth: string;
+                borderRightStyle: string;
+                borderRightColor: string;
+                borderTopWidth: string;
+                borderTopStyle: string;
+                borderTopColor: string;
+                display: string;
+                verticalAlign: string;
+                marginLeft: string;
+                pointerEvents: string;
+                transform: string;
+            };
+        };
+    }
+}
+declare module shiva {
+    type LoaderHTTPMethods = "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+    class Loader extends EventDispatcher {
+        static httpMethods: {
+            GET: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            PUT: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            POST: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            DELETE: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            UPDATE: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+        };
+        static COMPLETE: string;
+        static ERROR: string;
+        static get(config: LoaderConfig): Promise<any>;
+        static post(config: LoaderConfig): Promise<any>;
+        static put(config: LoaderConfig): Promise<any>;
+        static update(config: LoaderConfig): Promise<any>;
+        static delete(config: LoaderConfig): Promise<any>;
+        private static load(config, method);
+        private static concatParams(params);
+        private static handleResponse(http, resolve, reject, data?);
+    }
+}
+declare module shiva {
+    interface LoaderConfig {
+        url: string;
+        params?: any;
+        headers?: Array<any>;
+        cache?: boolean;
+        data?: any;
+    }
+}
+declare module shiva {
+    class LoaderEvent extends Event {
+        private _response;
+        private _status;
+        private _httpMetaData;
+        constructor(type: string, targetObj: any, response: any, status: any, httpMetaData: any, data?: any, sourceEvent?: any);
+        response: string;
+        status: string;
+        httpMetaData: any;
     }
 }
 declare module shiva {
@@ -751,47 +793,5 @@ declare module shiva {
     interface SelectConfig extends ContainerConfig {
         name?: string;
         options: string[];
-    }
-}
-declare module shiva {
-    type LoaderHTTPMethods = "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
-    class Loader extends EventDispatcher {
-        static httpMethods: {
-            GET: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
-            PUT: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
-            POST: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
-            DELETE: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
-            UPDATE: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
-        };
-        static COMPLETE: string;
-        static ERROR: string;
-        static get(config: LoaderConfig): Promise<any>;
-        static post(config: LoaderConfig): Promise<any>;
-        static put(config: LoaderConfig): Promise<any>;
-        static update(config: LoaderConfig): Promise<any>;
-        static delete(config: LoaderConfig): Promise<any>;
-        private static load(config, method);
-        private static concatParams(params);
-        private static handleResponse(http, resolve, reject, data?);
-    }
-}
-declare module shiva {
-    interface LoaderConfig {
-        url: string;
-        params?: any;
-        headers?: Array<any>;
-        cache?: boolean;
-        data?: any;
-    }
-}
-declare module shiva {
-    class LoaderEvent extends Event {
-        private _response;
-        private _status;
-        private _httpMetaData;
-        constructor(type: string, targetObj: any, response: any, status: any, httpMetaData: any, data?: any, sourceEvent?: any);
-        response: string;
-        status: string;
-        httpMetaData: any;
     }
 }
