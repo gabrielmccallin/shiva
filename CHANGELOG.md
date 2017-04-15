@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.0.1]` 2017-04-15
+### Changed
+- Oh no! Fixed button component showing label twice
+
+---
 ## `[2.0.0]` 2017-04-12
 ### Added
 - ContainerConfig `styles` property for passing multiple styles (:warning: BREAKING CHANGE)

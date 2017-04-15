@@ -19,6 +19,12 @@ module shiva {
                 config.type = "button";
             }
 
+            let buttonLabel = Button.text;
+            if (config.text) {
+                buttonLabel = config.text;
+                config.text = null;
+            }
+
             config.style = {
                 cursor: "pointer"
             }
@@ -50,11 +56,7 @@ module shiva {
             }
 
 
-            let buttonLabel = Button.text;
-            if (config.text) {
-                buttonLabel = config.text;
 
-            }
             let label = document.createTextNode(buttonLabel);
             this.element.appendChild(label);
 
@@ -98,17 +100,17 @@ module shiva {
             // this.addEventListener(this, "pointerdown", this.showOutTransition);
             // this.addEventListener(this, "touchdown", this.showOutTransition);
 
-            console.log("this.styles: ", this.styles);
+            // console.log("this.styles: ", this.styles);
             this.style(this.styles);
 
         }
 
         showOutTransition(e: Event) {
-            console.log("this.stateOver", this.stateOver);
-            console.log("event", e);
+            // console.log("this.stateOver", this.stateOver);
+            // console.log("event", e);
             if (this.stateOver && this.enabled) {
                 let event = <MouseEvent>e.sourceEvent;
-                console.log("play out animation", event.type);
+                // console.log("play out animation", event.type);
                 event.preventDefault();
                 event.stopImmediatePropagation();
                 event.stopPropagation();
