@@ -25,7 +25,6 @@ module shiva {
                 config.text = null;
             }
 
-            config.style.cursor = "pointer";
 
             super(config);
 
@@ -88,27 +87,21 @@ module shiva {
 
                 icon.style(this.styles.icon.style);
 
-
             }
-
+            
+            this.styles.cursor = "pointer";
 
             this.addEventListener(this, "mouseover", this.overWithEnable);
             this.addEventListener(this, "mouseout", this.outWithEnable);
-            // this.addEventListener(this, "click", this.showOutTransition);
-            // this.addEventListener(this, "pointerdown", this.showOutTransition);
-            // this.addEventListener(this, "touchdown", this.showOutTransition);
 
-            // console.log("this.styles: ", this.styles);
             this.style(this.styles);
 
         }
 
         showOutTransition(e: Event) {
-            // console.log("this.stateOver", this.stateOver);
-            // console.log("event", e);
             if (this.stateOver && this.enabled) {
                 let event = <MouseEvent>e.sourceEvent;
-                // console.log("play out animation", event.type);
+
                 event.preventDefault();
                 event.stopImmediatePropagation();
                 event.stopPropagation();
