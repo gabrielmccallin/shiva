@@ -27,6 +27,7 @@
     "gulp-uglify": "^1.4.1",
     "gulp-util": "^3.0.7",
     "gulp-watch": "^4.3.5",
+    "jasmine": "^2.5.3",
     "merge2": "^0.3.6",
     "typescript": "^2.0.10"
   }
