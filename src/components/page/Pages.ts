@@ -34,6 +34,9 @@ module shiva {
                     }
                     this.changePage(page);
                 });
+
+                // GO !!!
+                this.changePage(window.location.pathname);
             }
         }
 
@@ -90,7 +93,15 @@ module shiva {
 
             }
             else {
-                // console.log("no view defined called: ", state);
+                // no view defined, falling back 
+                if (this.config.redirect) {
+                    this.update("/");
+                }
+                else {
+                    if (this.config.errorPage) {
+                        this.changePage(this.config.errorPage);
+                    }
+                }
             }
         }
     }

@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.0.2]` 2017-04-18
+### Added
+- Page config new properties
+    - Redirect to "/" if address not found
+    - Error view if address not found
+### Changed
+- Page component reads address bar on start up
+
+---
 ## `[2.0.1]` 2017-04-15
 ### Changed
 - Oh no! Fixed button component showing label twice
