@@ -1,4 +1,88 @@
 declare module "shiva" {
+    class ObjectUtils {
+        static merge(target: any, source: any): any;
+    }
+}
+declare module "shiva" {
+    class Event {
+        private _type;
+        private _target;
+        private _data;
+        private _sourceEvent;
+        constructor(type: string, targetObj: any, data?: any, sourceEvent?: any);
+        target: Container;
+        type: string;
+        data: any;
+        sourceEvent: any;
+    }
+    class EventDispatcher {
+        private _listeners;
+        hasEventListener(type: string, listener: Function): Boolean;
+        addEventListener(scope: any, typeStr: string, listenerFunc: Function, data?: any, useCapture?: boolean, scopedEventListener?: Function): void;
+        removeEventListener(typeStr: string, listenerFunc: Function): {};
+        dispatchEvent(evt: Event): void;
+    }
+}
+declare module "shiva" {
+    class Observer {
+        private static observers;
+        static addEventListener(scope: any, type: string, callback: Function): void;
+        static removeEventListener(type: string, callback: Function): void;
+        static dispatchEvent(evt: Event): void;
+    }
+}
+declare module "shiva" {
+    class Resize {
+        static proportionalOutside(objectWidth: number, objectHeight: number, areaWidth: number, areaHeight: number): {
+            height: number;
+            width: number;
+        };
+        static proportionalInside(objectWidth: number, objectHeight: number, areaWidth: number, areaHeight: number): Object;
+    }
+}
+declare module "shiva" {
+    class Window {
+        static scrollY(): number;
+        static scrollX(): number;
+        static height: number;
+        static width: number;
+    }
+}
+declare module "shiva" {
+    class Ease {
+        static Linear: string;
+        static Ease: string;
+        static EaseIn: string;
+        static EaseOut: string;
+        static EaseInOut: string;
+    }
+}
+declare module "shiva" {
+    class Transition {
+        private callback;
+        private data;
+        constructor();
+        then(callback: Function, data?: any): Transition;
+        execute(): void;
+        printCallback(): Transition;
+    }
+}
+declare module "shiva" {
+    interface TransitionFromToConfig extends TransitionToConfig {
+        fromVars: StyleDeclaration;
+    }
+}
+declare module "shiva" {
+    interface TransitionToConfig {
+        duration: number;
+        toVars: StyleDeclaration;
+        ease?: Ease;
+        delay?: number;
+        immediateRender?: boolean;
+        resolve?: Function;
+    }
+}
+declare module "shiva" {
     class Styles {
         static button: {
             fontSize: string;
@@ -64,87 +148,45 @@ declare module "shiva" {
     }
 }
 declare module "shiva" {
-    class Ease {
-        static Linear: string;
-        static Ease: string;
-        static EaseIn: string;
-        static EaseOut: string;
-        static EaseInOut: string;
-    }
-}
-declare module "shiva" {
-    class Transition {
-        private callback;
-        private data;
-        constructor();
-        then(callback: Function, data?: any): Transition;
-        execute(): void;
-        printCallback(): Transition;
-    }
-}
-declare module "shiva" {
-    interface TransitionFromToConfig extends TransitionToConfig {
-        fromVars: StyleDeclaration;
-    }
-}
-declare module "shiva" {
-    interface TransitionToConfig {
-        duration: number;
-        toVars: StyleDeclaration;
-        ease?: Ease;
-        delay?: number;
-        immediateRender?: boolean;
-        resolve?: Function;
-    }
-}
-declare module "shiva" {
-    class ObjectUtils {
-        static merge(target: any, source: any): any;
-    }
-}
-declare module "shiva" {
-    class Event {
-        private _type;
-        private _target;
-        private _data;
-        private _sourceEvent;
-        constructor(type: string, targetObj: any, data?: any, sourceEvent?: any);
-        target: Container;
-        type: string;
-        data: any;
-        sourceEvent: any;
-    }
-    class EventDispatcher {
-        private _listeners;
-        hasEventListener(type: string, listener: Function): Boolean;
-        addEventListener(scope: any, typeStr: string, listenerFunc: Function, data?: any, useCapture?: boolean, scopedEventListener?: Function): void;
-        removeEventListener(typeStr: string, listenerFunc: Function): {};
-        dispatchEvent(evt: Event): void;
-    }
-}
-declare module "shiva" {
-    class Observer {
-        private static observers;
-        static addEventListener(scope: any, type: string, callback: Function): void;
-        static removeEventListener(type: string, callback: Function): void;
-        static dispatchEvent(evt: Event): void;
-    }
-}
-declare module "shiva" {
-    class Resize {
-        static proportionalOutside(objectWidth: number, objectHeight: number, areaWidth: number, areaHeight: number): {
-            height: number;
-            width: number;
+    type LoaderHTTPMethods = "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+    class Loader extends EventDispatcher {
+        static httpMethods: {
+            GET: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            PUT: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            POST: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            DELETE: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
+            UPDATE: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
         };
-        static proportionalInside(objectWidth: number, objectHeight: number, areaWidth: number, areaHeight: number): Object;
+        static COMPLETE: string;
+        static ERROR: string;
+        static get(config: LoaderConfig): Promise<any>;
+        static post(config: LoaderConfig): Promise<any>;
+        static put(config: LoaderConfig): Promise<any>;
+        static update(config: LoaderConfig): Promise<any>;
+        static delete(config: LoaderConfig): Promise<any>;
+        private static load(config, method);
+        private static concatParams(params);
+        private static handleResponse(http, resolve, reject, data?);
     }
 }
 declare module "shiva" {
-    class Window {
-        static scrollY(): number;
-        static scrollX(): number;
-        static height: number;
-        static width: number;
+    interface LoaderConfig {
+        url: string;
+        params?: any;
+        headers?: Array<any>;
+        cache?: boolean;
+        data?: any;
+    }
+}
+declare module "shiva" {
+    class LoaderEvent extends Event {
+        private _response;
+        private _status;
+        private _httpMetaData;
+        constructor(type: string, targetObj: any, response: any, status: any, httpMetaData: any, data?: any, sourceEvent?: any);
+        response: string;
+        status: string;
+        httpMetaData: any;
     }
 }
 declare module "shiva" {
@@ -192,16 +234,6 @@ declare module "shiva" {
         element: HTMLElement;
         innerHtml: string;
         href: string;
-    }
-}
-declare module "shiva" {
-    class Anchor extends Container {
-        constructor(config: AnchorConfig);
-    }
-}
-declare module "shiva" {
-    interface AnchorConfig extends ContainerConfig {
-        href?: any;
     }
 }
 declare module "shiva" {
@@ -608,6 +640,16 @@ declare module "shiva" {
     }
 }
 declare module "shiva" {
+    class Anchor extends Container {
+        constructor(config: AnchorConfig);
+    }
+}
+declare module "shiva" {
+    interface AnchorConfig extends ContainerConfig {
+        href?: any;
+    }
+}
+declare module "shiva" {
     class CheckBox extends Container {
         static CLICK: string;
         private enabled;
@@ -753,47 +795,5 @@ declare module "shiva" {
     interface SelectConfig extends ContainerConfig {
         name?: string;
         options: string[];
-    }
-}
-declare module "shiva" {
-    type LoaderHTTPMethods = "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
-    class Loader extends EventDispatcher {
-        static httpMethods: {
-            GET: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
-            PUT: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
-            POST: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
-            DELETE: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
-            UPDATE: "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
-        };
-        static COMPLETE: string;
-        static ERROR: string;
-        static get(config: LoaderConfig): Promise<any>;
-        static post(config: LoaderConfig): Promise<any>;
-        static put(config: LoaderConfig): Promise<any>;
-        static update(config: LoaderConfig): Promise<any>;
-        static delete(config: LoaderConfig): Promise<any>;
-        private static load(config, method);
-        private static concatParams(params);
-        private static handleResponse(http, resolve, reject, data?);
-    }
-}
-declare module "shiva" {
-    interface LoaderConfig {
-        url: string;
-        params?: any;
-        headers?: Array<any>;
-        cache?: boolean;
-        data?: any;
-    }
-}
-declare module "shiva" {
-    class LoaderEvent extends Event {
-        private _response;
-        private _status;
-        private _httpMetaData;
-        constructor(type: string, targetObj: any, response: any, status: any, httpMetaData: any, data?: any, sourceEvent?: any);
-        response: string;
-        status: string;
-        httpMetaData: any;
     }
 }

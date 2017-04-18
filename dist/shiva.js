@@ -239,112 +239,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var shiva;
 (function (shiva) {
-    var Styles = (function () {
-        function Styles() {
-        }
-        Styles.button = {
-            fontSize: "1.2em",
-            fontFamily: "sans-serif",
-            backgroundColor: "#fefefe",
-            hover: {
-                backgroundColor: "#dddddd",
-                durationOut: 1,
-                durationIn: 0,
-                color: "#000000"
-            },
-            padding: "0.75rem",
-            textAlign: "left",
-            whiteSpace: "nowrap",
-            msTouchAction: "manipulation",
-            touchAction: "manipulation",
-            cursor: "pointer",
-            webkitUserSelect: "none",
-            mozUserSelect: "none",
-            msUserSelect: "none",
-            userSelect: "none",
-            border: "2px solid transparent",
-            borderColor: "#eeeeee",
-            color: "#000000",
-            text: "Button"
-        };
-        Styles.drop = {
-            fontFamily: "sans-serif",
-            fontSize: "1.2rem",
-            backgroundColor: "#ffffff",
-            color: "#000000",
-            padding: "1rem",
-            durationExpand: 0.5,
-            durationContract: 0.5,
-            border: "2px solid transparent",
-            borderColor: "#eeeeee",
-            dropGap: "0.1rem",
-            hover: {
-                backgroundColor: "#dddddd",
-                color: "#000000",
-                durationIn: 0,
-                durationOut: 0.5,
-            },
-            caret: {
-                width: "0px",
-                height: "0px",
-                borderLeftWidth: "0.35rem",
-                borderLeftStyle: "solid",
-                borderLeftColor: "transparent",
-                borderRightWidth: "0.35rem",
-                borderRightStyle: "solid",
-                borderRightColor: "transparent",
-                borderTopWidth: "0.35rem",
-                borderTopStyle: "solid",
-                borderTopColor: "black",
-                display: "inline-block",
-                verticalAlign: "middle",
-                marginLeft: "0.35rem",
-                pointerEvents: "none",
-                transform: "translateY(-0.1rem)"
-            }
-        };
-        return Styles;
-    }());
-    shiva.Styles = Styles;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var Ease = (function () {
-        function Ease() {
-        }
-        Ease.Linear = "linear";
-        Ease.Ease = "ease";
-        Ease.EaseIn = "ease-in";
-        Ease.EaseOut = "ease-out";
-        Ease.EaseInOut = "ease-in-out";
-        return Ease;
-    }());
-    shiva.Ease = Ease;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var Transition = (function () {
-        function Transition() {
-            this.callback = function () { console.error("transition not set"); };
-        }
-        Transition.prototype.then = function (callback, data) {
-            this.callback = callback;
-            return new Transition();
-        };
-        Transition.prototype.execute = function () {
-            if (this.callback) {
-                this.callback(this.data);
-            }
-        };
-        Transition.prototype.printCallback = function () {
-            return this;
-        };
-        return Transition;
-    }());
-    shiva.Transition = Transition;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
     var ObjectUtils = (function () {
         function ObjectUtils() {
         }
@@ -578,6 +472,226 @@ var shiva;
         return Window;
     }());
     shiva.Window = Window;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Ease = (function () {
+        function Ease() {
+        }
+        Ease.Linear = "linear";
+        Ease.Ease = "ease";
+        Ease.EaseIn = "ease-in";
+        Ease.EaseOut = "ease-out";
+        Ease.EaseInOut = "ease-in-out";
+        return Ease;
+    }());
+    shiva.Ease = Ease;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Transition = (function () {
+        function Transition() {
+            this.callback = function () { console.error("transition not set"); };
+        }
+        Transition.prototype.then = function (callback, data) {
+            this.callback = callback;
+            return new Transition();
+        };
+        Transition.prototype.execute = function () {
+            if (this.callback) {
+                this.callback(this.data);
+            }
+        };
+        Transition.prototype.printCallback = function () {
+            return this;
+        };
+        return Transition;
+    }());
+    shiva.Transition = Transition;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Styles = (function () {
+        function Styles() {
+        }
+        Styles.button = {
+            fontSize: "1.2em",
+            fontFamily: "sans-serif",
+            backgroundColor: "#fefefe",
+            hover: {
+                backgroundColor: "#dddddd",
+                durationOut: 1,
+                durationIn: 0,
+                color: "#000000"
+            },
+            padding: "0.75rem",
+            textAlign: "left",
+            whiteSpace: "nowrap",
+            msTouchAction: "manipulation",
+            touchAction: "manipulation",
+            cursor: "pointer",
+            webkitUserSelect: "none",
+            mozUserSelect: "none",
+            msUserSelect: "none",
+            userSelect: "none",
+            border: "2px solid transparent",
+            borderColor: "#eeeeee",
+            color: "#000000",
+            text: "Button"
+        };
+        Styles.drop = {
+            fontFamily: "sans-serif",
+            fontSize: "1.2rem",
+            backgroundColor: "#ffffff",
+            color: "#000000",
+            padding: "1rem",
+            durationExpand: 0.5,
+            durationContract: 0.5,
+            border: "2px solid transparent",
+            borderColor: "#eeeeee",
+            dropGap: "0.1rem",
+            hover: {
+                backgroundColor: "#dddddd",
+                color: "#000000",
+                durationIn: 0,
+                durationOut: 0.5,
+            },
+            caret: {
+                width: "0px",
+                height: "0px",
+                borderLeftWidth: "0.35rem",
+                borderLeftStyle: "solid",
+                borderLeftColor: "transparent",
+                borderRightWidth: "0.35rem",
+                borderRightStyle: "solid",
+                borderRightColor: "transparent",
+                borderTopWidth: "0.35rem",
+                borderTopStyle: "solid",
+                borderTopColor: "black",
+                display: "inline-block",
+                verticalAlign: "middle",
+                marginLeft: "0.35rem",
+                pointerEvents: "none",
+                transform: "translateY(-0.1rem)"
+            }
+        };
+        return Styles;
+    }());
+    shiva.Styles = Styles;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Loader = (function (_super) {
+        __extends(Loader, _super);
+        function Loader() {
+            _super.apply(this, arguments);
+        }
+        Loader.get = function (config) {
+            return this.load(config, this.httpMethods.GET);
+        };
+        Loader.post = function (config) {
+            return this.load(config, this.httpMethods.POST);
+        };
+        Loader.put = function (config) {
+            return this.load(config, this.httpMethods.PUT);
+        };
+        Loader.update = function (config) {
+            return this.load(config, this.httpMethods.UPDATE);
+        };
+        Loader.delete = function (config) {
+            return this.load(config, this.httpMethods.DELETE);
+        };
+        Loader.load = function (config, method) {
+            var _this = this;
+            return new Promise(function (resolve, reject) {
+                var http = new XMLHttpRequest();
+                if (method === Loader.httpMethods.GET) {
+                    config.url = config.url + _this.concatParams(config.params);
+                }
+                http.open(method, config.url, true);
+                http.timeout = 20000;
+                if (config.headers) {
+                    config.headers.map(function (header) {
+                        http.setRequestHeader(header.value, header.variable);
+                    });
+                }
+                http.onload = function () { return _this.handleResponse(http, resolve, reject, config.data); };
+                http.onerror = function () { return reject(new Error("Network Error")); };
+                http.send(config.params);
+            });
+        };
+        Loader.concatParams = function (params) {
+            var queryString = "?";
+            for (var i in params) {
+                if (params.hasOwnProperty(i)) {
+                    queryString = queryString.concat(i, "=", encodeURI(params[i]), "&");
+                }
+            }
+            queryString = queryString.slice(0, -1);
+            return queryString;
+        };
+        Loader.handleResponse = function (http, resolve, reject, data) {
+            if (http.status === 200) {
+                return resolve(http.responseText);
+            }
+            else {
+                var error = void 0;
+                if (http.status === 0) {
+                    error = "Network Error 0x2ee7";
+                }
+                else {
+                    error = http.statusText;
+                }
+                return reject(new Error(error));
+            }
+        };
+        Loader.httpMethods = {
+            GET: "GET",
+            PUT: "PUT",
+            POST: "POST",
+            DELETE: "DELETE",
+            UPDATE: "UPDATE"
+        };
+        Loader.COMPLETE = "COMPLETE";
+        Loader.ERROR = "ERROR";
+        return Loader;
+    }(shiva.EventDispatcher));
+    shiva.Loader = Loader;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var LoaderEvent = (function (_super) {
+        __extends(LoaderEvent, _super);
+        function LoaderEvent(type, targetObj, response, status, httpMetaData, data, sourceEvent) {
+            _super.call(this, type, targetObj, data, sourceEvent);
+            this._response = response;
+            this._status = status;
+            this._httpMetaData = httpMetaData;
+        }
+        Object.defineProperty(LoaderEvent.prototype, "response", {
+            get: function () {
+                return this._response;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(LoaderEvent.prototype, "status", {
+            get: function () {
+                return this._status;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(LoaderEvent.prototype, "httpMetaData", {
+            get: function () {
+                return this._httpMetaData;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return LoaderEvent;
+    }(shiva.Event));
+    shiva.LoaderEvent = LoaderEvent;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
@@ -1095,20 +1209,6 @@ var shiva;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
-    var Anchor = (function (_super) {
-        __extends(Anchor, _super);
-        function Anchor(config) {
-            config.type = "a";
-            _super.call(this, config);
-            var element = this.element;
-            element.href = config.href;
-        }
-        return Anchor;
-    }(shiva.Container));
-    shiva.Anchor = Anchor;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
     var Button = (function (_super) {
         __extends(Button, _super);
         function Button(config) {
@@ -1125,9 +1225,7 @@ var shiva;
                 buttonLabel = config.text;
                 config.text = null;
             }
-            config.style = {
-                cursor: "pointer"
-            };
+            config.style.cursor = "pointer";
             _super.call(this, config);
             this.stateOver = false;
             if (config.href) {
@@ -1269,6 +1367,20 @@ var shiva;
         return Button;
     }(shiva.Container));
     shiva.Button = Button;
+})(shiva || (shiva = {}));
+var shiva;
+(function (shiva) {
+    var Anchor = (function (_super) {
+        __extends(Anchor, _super);
+        function Anchor(config) {
+            config.type = "a";
+            _super.call(this, config);
+            var element = this.element;
+            element.href = config.href;
+        }
+        return Anchor;
+    }(shiva.Container));
+    shiva.Anchor = Anchor;
 })(shiva || (shiva = {}));
 var shiva;
 (function (shiva) {
@@ -1788,120 +1900,6 @@ var shiva;
         return Select;
     }(shiva.Container));
     shiva.Select = Select;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var Loader = (function (_super) {
-        __extends(Loader, _super);
-        function Loader() {
-            _super.apply(this, arguments);
-        }
-        Loader.get = function (config) {
-            return this.load(config, this.httpMethods.GET);
-        };
-        Loader.post = function (config) {
-            return this.load(config, this.httpMethods.POST);
-        };
-        Loader.put = function (config) {
-            return this.load(config, this.httpMethods.PUT);
-        };
-        Loader.update = function (config) {
-            return this.load(config, this.httpMethods.UPDATE);
-        };
-        Loader.delete = function (config) {
-            return this.load(config, this.httpMethods.DELETE);
-        };
-        Loader.load = function (config, method) {
-            var _this = this;
-            return new Promise(function (resolve, reject) {
-                var http = new XMLHttpRequest();
-                if (method === Loader.httpMethods.GET) {
-                    config.url = config.url + _this.concatParams(config.params);
-                }
-                http.open(method, config.url, true);
-                http.timeout = 20000;
-                if (config.headers) {
-                    config.headers.map(function (header) {
-                        http.setRequestHeader(header.value, header.variable);
-                    });
-                }
-                http.onload = function () { return _this.handleResponse(http, resolve, reject, config.data); };
-                http.onerror = function () { return reject(new Error("Network Error")); };
-                http.send(config.params);
-            });
-        };
-        Loader.concatParams = function (params) {
-            var queryString = "?";
-            for (var i in params) {
-                if (params.hasOwnProperty(i)) {
-                    queryString = queryString.concat(i, "=", encodeURI(params[i]), "&");
-                }
-            }
-            queryString = queryString.slice(0, -1);
-            return queryString;
-        };
-        Loader.handleResponse = function (http, resolve, reject, data) {
-            if (http.status === 200) {
-                return resolve(http.responseText);
-            }
-            else {
-                var error = void 0;
-                if (http.status === 0) {
-                    error = "Network Error 0x2ee7";
-                }
-                else {
-                    error = http.statusText;
-                }
-                return reject(new Error(error));
-            }
-        };
-        Loader.httpMethods = {
-            GET: "GET",
-            PUT: "PUT",
-            POST: "POST",
-            DELETE: "DELETE",
-            UPDATE: "UPDATE"
-        };
-        Loader.COMPLETE = "COMPLETE";
-        Loader.ERROR = "ERROR";
-        return Loader;
-    }(shiva.EventDispatcher));
-    shiva.Loader = Loader;
-})(shiva || (shiva = {}));
-var shiva;
-(function (shiva) {
-    var LoaderEvent = (function (_super) {
-        __extends(LoaderEvent, _super);
-        function LoaderEvent(type, targetObj, response, status, httpMetaData, data, sourceEvent) {
-            _super.call(this, type, targetObj, data, sourceEvent);
-            this._response = response;
-            this._status = status;
-            this._httpMetaData = httpMetaData;
-        }
-        Object.defineProperty(LoaderEvent.prototype, "response", {
-            get: function () {
-                return this._response;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(LoaderEvent.prototype, "status", {
-            get: function () {
-                return this._status;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(LoaderEvent.prototype, "httpMetaData", {
-            get: function () {
-                return this._httpMetaData;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        return LoaderEvent;
-    }(shiva.Event));
-    shiva.LoaderEvent = LoaderEvent;
 })(shiva || (shiva = {}));
 
 //# sourceMappingURL=shiva.js.map
