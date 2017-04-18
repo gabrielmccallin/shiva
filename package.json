@@ -6,6 +6,7 @@
   "types": "./dist/shiva.d.ts",
   "scripts": {
     "start": "echo And in all, the creator, preserver, destroyer, revealer and concealer of all that is. && gulp",
+    "build": "gulp publish",
     "ci-publish": "ci-publish"
   },
   "dependencies": {},
