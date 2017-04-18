@@ -25,9 +25,7 @@ module shiva {
                 config.text = null;
             }
 
-            config.style = {
-                cursor: "pointer"
-            }
+            config.style.cursor = "pointer";
 
             super(config);
 
