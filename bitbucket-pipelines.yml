@@ -21,3 +21,8 @@ pipelines:
             # - npm publish activates jsdelivr as well I think            
             - npm install ci-publish
             - npm run ci-publish
+    develop:
+      - step:
+          script:
+            - npm install
+            - npm run build
