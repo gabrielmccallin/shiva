@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.0.6]` 2017-04-25
+### Changed
+- 💚 run build in master for release
+
+---
 ## `[2.0.5]` 2017-04-25
 ### Added
 - Adding spec example and jasmine tool
