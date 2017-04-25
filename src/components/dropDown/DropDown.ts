@@ -150,7 +150,7 @@ module shiva {
 
             config.options.map((option) => {
                 const item = new Container({
-                    id: count.toString(),
+                    data: option,
                     type: "li",
                     text: option,
                     styles: [
@@ -256,7 +256,7 @@ module shiva {
         private itemClicked(e: Event) {
             let element = e.target;
 
-            this.dispatchEvent(new Event(DropDown.CHANGE, this, element.id));
+            this.dispatchEvent(new Event(DropDown.CHANGE, this, element.data));
 
             this.unorderedList.style({
                 opacity: "1"
