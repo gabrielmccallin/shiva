@@ -1,11 +1,11 @@
 ﻿/// <reference path="../container/container.ts" />
 module shiva {
     export class Button extends Container {
+        styles: ButtonStyleDeclaration;
         static CLICK: string = "click";
         static text: string = "Button";
         private enabled: boolean;
         private icon: Container;
-        private styles: ButtonStyleDeclaration;
         private stateOver: boolean;
 
 
@@ -88,11 +88,11 @@ module shiva {
                 icon.style(this.styles.icon.style);
 
             }
-            
+
             this.styles.cursor = "pointer";
 
-            this.addEventListener(this, "mouseover", this.overWithEnable);
-            this.addEventListener(this, "mouseout", this.outWithEnable);
+            this.addEventListener(this, "mouseover", this.over);
+            this.addEventListener(this, "mouseout", this.out);
 
             this.style(this.styles);
 
@@ -102,7 +102,7 @@ module shiva {
             if (this.stateOver && this.enabled) {
                 let event = <MouseEvent>e.sourceEvent;
 
-                event.preventDefault();
+                event.preventDefault(); 
                 event.stopImmediatePropagation();
                 event.stopPropagation();
 
@@ -114,32 +114,36 @@ module shiva {
                     }
                 }).then(() => {
                     if (this.stateOver) {
-                        this.over();
+                        this.over(null);
                     }
                 });
             }
         }
 
-        over() {
-            this.stateOver = true;
-            this.to({
-                duration: this.styles.hover.durationIn,
-                toVars: {
-                    backgroundColor: this.styles.hover.backgroundColor,
-                    color: this.styles.hover.color
-                }
-            });
+        over(e) {
+            if (this.enabled) {
+                this.stateOver = true;
+                this.to({
+                    duration: this.styles.hover.durationIn,
+                    toVars: {
+                        backgroundColor: this.styles.hover.backgroundColor,
+                        color: this.styles.hover.color
+                    }
+                });
+            }
         }
 
-        out() {
-            this.stateOver = false;
-            this.to({
-                duration: this.styles.hover.durationOut,
-                toVars: {
-                    backgroundColor: this.styles.backgroundColor,
-                    color: this.styles.color
-                }
-            });
+        out(e) {
+            if (this.enabled) {
+                this.stateOver = false;
+                this.to({
+                    duration: this.styles.hover.durationOut,
+                    toVars: {
+                        backgroundColor: this.styles.backgroundColor,
+                        color: this.styles.color
+                    }
+                });
+            }
         }
 
 
@@ -164,20 +168,12 @@ module shiva {
         enable() {
             this.enabled = true;
             this.style({ cursor: "pointer" });
-            this.out();
+            this.out(null);
         }
 
-
-        private overWithEnable(e) {
-            if (this.enabled) {
-                this.over();
-            }
-        }
-
-        private outWithEnable(e) {
-            if (this.enabled) {
-                this.out();
-            }
+        style(_style: ButtonStyleDeclaration) {
+            this.styles = ObjectUtils.merge(this.styles, _style);
+            super.style(_style);
         }
 
         private populateEmptyHoverStyles(style: HoverStyleDeclaration): HoverStyleDeclaration {

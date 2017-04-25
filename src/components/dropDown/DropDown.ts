@@ -149,15 +149,10 @@ module shiva {
             let count = 0;
 
             config.options.map((option) => {
-                let item = new Container({
+                const item = new Container({
                     id: count.toString(),
                     type: "li",
-                });
-                this.unorderedList.addChild(item);
-
-                let anchor = new Container({
-                    id: count.toString(),
-                    type: "a",
+                    text: option,
                     styles: [
                         this.itemStyle,
                         {
@@ -166,16 +161,29 @@ module shiva {
                         }
                     ]
                 });
+                this.unorderedList.addChild(item);
+
+                // let anchor = new Container({
+                //     id: count.toString(),
+                //     type: "a",
+                //     styles: [
+                //         this.itemStyle,
+                //         {
+                //             display: "list-item",
+                //             cursor: "pointer"
+                //         }
+                //     ]
+                // });
 
                 this.items.push(item);
 
-                anchor.innerHtml = option;
+                // anchor.innerHtml = option;
 
-                anchor.addEventListener(this, "mouseover", this.itemOver);
-                anchor.addEventListener(this, "mouseout", this.itemOut);
-                anchor.addEventListener(this, "mouseup", this.itemClicked);
+                item.addEventListener(this, "mouseover", this.itemOver);
+                item.addEventListener(this, "mouseout", this.itemOut);
+                item.addEventListener(this, "mouseup", this.itemClicked);
 
-                item.addChild(anchor);
+                // item.addChild(anchor);
                 count++;
 
             });
