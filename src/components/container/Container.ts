@@ -59,11 +59,11 @@ module shiva {
                 if (config.styles) {
                     let styles = <StyleDeclaration[]>config.styles;
                     styles.map((style) => {
-                        this.style(style);
+                        Properties.style(this._element, style);
                     });
                 }
 
-                this.style(config.style);
+                Properties.style(this._element, config.style);
 
                 if (config.className) {
                     if (typeof config.className === 'string') {
@@ -145,22 +145,22 @@ module shiva {
 
                 }
 
-                this.style({
+                Properties.style(this._element, {
                     transition: this.convertTransitionObjectToString(this.transitions),
                 });
 
                 if (config.ease) {
-                    this.style({
+                    Properties.style(this._element, {
                         transitionTimingFunction: config.ease.toString()
-                    })
+                    });
                 }
 
-                this.style(config.toVars);
+                Properties.style(this._element, config.toVars);
             }, delay);
 
             if (config.resolve) {
                 setTimeout(() => {
-                    this.style({
+                    Properties.style(this._element, {
                         transition: this.removeCompletedTransitionsAndReapply(config.toVars)
                     });
                     this.dispatchEvent(new Event("TRANSITION_COMPLETE", this));
@@ -173,7 +173,7 @@ module shiva {
             else {
                 return new Promise((resolve, reject) => {
                     setTimeout(() => {
-                        this.style({
+                        Properties.style(this._element, {
                             transition: this.removeCompletedTransitionsAndReapply(config.toVars)
                         });
                         resolve();
@@ -259,17 +259,18 @@ module shiva {
             if (config.delay) {
                 config.delay = config.delay * 1000;
                 if (config.immediateRender) {
-                    this.style(config.fromVars);
+                    Properties.style(this._element, config.fromVars);
                 }
             }
             else {
-                this.style(config.fromVars);
+                Properties.style(this._element, config.fromVars);
                 config.delay = 10;
             }
 
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
-                    this.style(config.fromVars);
+
+                    Properties.style(this._element, config.fromVars);
                     setTimeout(() => {
                         this.to({
                             duration: config.duration,
@@ -344,15 +345,17 @@ module shiva {
 
         removeEventListener(typeStr: string, listenerFunc: Function): {} {
             let listener: any = super.removeEventListener(typeStr, listenerFunc);
+            if (listener) {
 
-            if (this._element.removeEventListener) {
-                // Firefox, Google Chrome and Safari (and Opera and Internet Explorer from
-                // version 9).
-                this._element.removeEventListener(typeStr, listener.scopedEventListener, listener.useCapture);
-                // return true;
-            } else if (this._element["detachEvent"]) {
-                // Opera and Explorer (version < 9).
-                this._element["detachEvent"]('on' + typeStr, <EventListener>listenerFunc);
+                if (this._element.removeEventListener) {
+                    // Firefox, Google Chrome and Safari (and Opera and Internet Explorer from
+                    // version 9).
+                    this._element.removeEventListener(typeStr, listener.scopedEventListener, listener.useCapture);
+                    // return true;
+                } else if (this._element["detachEvent"]) {
+                    // Opera and Explorer (version < 9).
+                    this._element["detachEvent"]('on' + typeStr, <EventListener>listenerFunc);
+                }
             }
 
             return listener;
@@ -447,10 +450,10 @@ module shiva {
 
         private shadow(): Dimensions {
             if (!document.body.contains(this._element)) {
-                let parent = this._element.parentElement;
+                const parent = this._element.parentElement;
                 document.body.appendChild(this._element);
 
-                let dimensions = this.dimensionsPolyfill();
+                const dimensions = this.dimensionsPolyfill();
 
                 document.body.removeChild(this._element);
 

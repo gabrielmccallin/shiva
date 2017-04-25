@@ -5,11 +5,36 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.0.5]` 2017-04-25
+### Added
+- Adding spec example and jasmine tool
+- .gitignore build output 🙈
+- git rm --cached -r . 🙊
+- :white_check_mark: Anchor, Button, Checkbox, Container, Dropdown specs
+### Changed
+- 💚 test build in pipeline
+- ⚡ hit the super method instead to avoid deep copying the style object to itself
+- dispatch data instead of id on drop down
+- 🐛 rollout on Button not working
+- dropdown items not in anchor tags
+
+---
+## `[2.0.4]` 2017-04-18
+### Changed
+- 🐛 crash if no style property on button config payload
+
+---
+## `[2.0.3]` 2017-04-18
+### Changed
+- 🐛 wiping out styles in constructor
+
+
+---
 ## `[2.0.2]` 2017-04-18
 ### Added
 - Page config new properties
-    - Redirect to "/" if address not found
-    - Error view if address not found
+- Redirect to "/" if address not found
+- Error view if address not found
 ### Changed
 - Page component reads address bar on start up
 

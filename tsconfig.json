@@ -6,13 +6,13 @@
         "noImplicitAny": false,
         "removeComments": true,
         "sourceMap": true,
+        // "module": "commonjs"
         "out": "shiva.js"
     },
     
     "exclude":[
-        "typings",
-        "dist",
-        "serve"
+        "types",
+        "dist"
         
     ]
     

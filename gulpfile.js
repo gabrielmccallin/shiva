@@ -104,4 +104,20 @@ gulp.task("dev", ["transpile", "add-defs"], function () {
     .pipe(gulp.dest(TARGET))
 });
 
+var jasmineBrowser = require('gulp-jasmine-browser');
+
+// gulp.task('jasmine', function() {
+//   return gulp.src(['dist/shiva.js', 'spec/Container.spec.ts'])
+//     .pipe(jasmineBrowser.specRunner())
+//     .pipe(jasmineBrowser.server({port: 8888}));
+// });
+
+gulp.task('jasmine', function() {
+  var filesForTest = ['dist/shiva.js', 'spec/*.spec.js'];
+  return gulp.src(filesForTest)
+    .pipe(watch(filesForTest))
+    .pipe(jasmineBrowser.specRunner())
+    .pipe(jasmineBrowser.server({port: 8888}));
+});
+
 gulp.task("default", ["webserver", "watch-dev"]);
