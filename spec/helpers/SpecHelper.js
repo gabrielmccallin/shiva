@@ -1,3 +1,4 @@
+// example of custom matcher
 beforeEach(function () {
   jasmine.addMatchers({
     toBePlaying: function () {
