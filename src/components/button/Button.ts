@@ -94,7 +94,9 @@ module shiva {
             this.addEventListener(this, "mouseover", this.over);
             this.addEventListener(this, "mouseout", this.out);
 
-            this.style(this.styles);
+            // this.style(this.styles);
+            
+            super.style(this.styles);
 
         }
 
