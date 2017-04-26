@@ -244,7 +244,8 @@ describe("BUTTON", function () {
           hover: {
             durationIn: 0,
             durationOut: 1,
-            color: "red"
+            color: "red",
+            backgroundColor: "green"
           }
         }
       });
