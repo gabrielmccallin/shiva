@@ -1,8 +1,9 @@
 dist/*.js.map
+spec
 assets
 libs
 src
-typings
+types
 gulpfile.js
 tsconfig.json
 .npmignore
