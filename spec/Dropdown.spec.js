@@ -72,11 +72,6 @@ describe("DROPDOWN", function () {
 
       container.disable();
       expect(button.style.cursor).toEqual('default');
-      // expect(button.onmouseup).toEqual('default');
-      // expect(button.onmouseover).toEqual('default');
-
-      // spyOn(button, 'over');
-
 
     });
 
