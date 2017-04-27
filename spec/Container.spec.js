@@ -221,6 +221,27 @@ describe("CONTAINER", function () {
       }, 200);
     });
 
+    it("✔️ to with zero duration", function (done) {
+      var container = new shiva.Container({
+      });
+
+      container.to({
+        duration: 0,
+        // delay: 0.2,
+        toVars: {
+          backgroundColor: 'grey',
+          color: 'blue'
+        }
+      });
+
+      // setTimeout(function () {
+        expect(container.element.style.color).toEqual('blue');
+        expect(container.element.style.backgroundColor).toEqual('grey');
+        expect(container.element.style.transition).toEqual('');
+        done();
+      // }, 10);
+    });
+
     it("✔️ fromTo", function (done) {
       var container = new shiva.Container({
       });
