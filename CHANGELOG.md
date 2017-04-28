@@ -5,12 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
-## `[2.0.7]` 2017
+## `[2.0.7]` 2017-04-28
 ### Added
-
+- ️️☑️ tests and test runner (Jasmine)
+- 🐛 Container transition with zero duration
 ### Changed
-
----
+- remove ☑️ specs folder from npm distribution
 
 ---
 ## `[2.0.6]` 2017-04-25
