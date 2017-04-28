@@ -1,35 +1,34 @@
 ﻿module shiva {
+    export interface Dimension {
+        width: number,
+        height: number
+    }
+
     export class Resize {
+        
 
-        static proportionalOutside(
-            objectWidth: number,
-            objectHeight:number,
-            areaWidth: number,
-            areaHeight: number)
+        static proportionalOutside(source: Dimension, target: Dimension) 
         {
-            var ratio: number = objectWidth / objectHeight;
-            var targetWidth: number = areaWidth;
-            var targetHeight: number = areaWidth / ratio;
+            var ratio: number = source.width / source.height;
+            var targetWidth: number = target.width;
+            var targetHeight: number = target.width / ratio;
 
-            if (targetHeight < areaHeight) {
-                targetHeight = areaHeight;
+            if (targetHeight < target.height) {
+                targetHeight = target.height;
                 targetWidth = targetHeight * ratio;
             }
 
             return { height: targetHeight, width: targetWidth };
         }
 
-        static proportionalInside(
-            objectWidth: number,
-            objectHeight: number,
-            areaWidth: number,
-            areaHeight: number):Object {
-            var ratio: number = objectWidth / objectHeight;
-            var targetWidth: number = areaWidth;
-            var targetHeight: number = areaWidth * ratio;
+        static proportionalInside(source: Dimension, target: Dimension) :Object 
+        {
+            var ratio: number = source.width / source.height;
+            var targetWidth: number = target.width;
+            var targetHeight: number = target.width * ratio;
 
-            if (targetHeight > areaHeight) {
-                targetHeight = areaHeight;
+            if (targetHeight > target.height) {
+                targetHeight = target.height;
                 targetWidth = targetHeight * ratio;
             }
 

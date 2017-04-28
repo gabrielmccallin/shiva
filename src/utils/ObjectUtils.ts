@@ -1,8 +1,7 @@
 ﻿module shiva {
     export class ObjectUtils {
         static merge(target, source) {
-            /* Merges two (or more) objects,
-               giving the last one precedence */
+            /* Merges two objects recursive */
             if (typeof target !== 'object') {
                 target = {};
             }

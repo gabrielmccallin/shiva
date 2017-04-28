@@ -148,7 +148,6 @@ module shiva {
                 Properties.style(this._element, {
                     transition: this.convertTransitionObjectToString(this.transitions)
                 });
-                console.log("transition: ", this.convertTransitionObjectToString(this.transitions));
 
                 if (config.ease) {
                     Properties.style(this._element, {
@@ -157,7 +156,6 @@ module shiva {
                 }
 
                 Properties.style(this._element, config.toVars);
-                console.log("go to : ", config.toVars);
             }, delay);
 
             if (config.resolve) {

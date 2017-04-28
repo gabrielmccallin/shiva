@@ -234,12 +234,12 @@ describe("CONTAINER", function () {
         }
       });
 
-      // setTimeout(function () {
+      setTimeout(function () {
         expect(container.element.style.color).toEqual('blue');
         expect(container.element.style.backgroundColor).toEqual('grey');
         expect(container.element.style.transition).toEqual('');
         done();
-      // }, 10);
+      }, 10);
     });
 
     it("✔️ fromTo", function (done) {
