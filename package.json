@@ -1,6 +1,6 @@
 {
   "name": "shiva",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "A JavaScript library for programming the web.",
   "main": "./dist/shiva.min.js",
   "types": "./dist/shiva.d.ts",

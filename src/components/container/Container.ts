@@ -130,7 +130,7 @@ module shiva {
                 for (let i in config.toVars) {
                     let vo = {};
 
-                    if (config.duration) {
+                    if (config.duration >= 0) {
                         vo["duration"] = config.duration;
                     }
 
@@ -146,7 +146,7 @@ module shiva {
                 }
 
                 Properties.style(this._element, {
-                    transition: this.convertTransitionObjectToString(this.transitions),
+                    transition: this.convertTransitionObjectToString(this.transitions)
                 });
 
                 if (config.ease) {
