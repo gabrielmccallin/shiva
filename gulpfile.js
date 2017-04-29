@@ -120,4 +120,13 @@ gulp.task('jasmine', function() {
     .pipe(jasmineBrowser.server({port: 8888}));
 });
 
+var karmaServer = require("karma").Server;
+gulp.task('karma', function (done) {
+  new karmaServer({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done).start();
+});
+
+
 gulp.task("default", ["webserver", "watch-dev"]);

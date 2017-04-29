@@ -19,8 +19,10 @@ describe("PAGES", function () {
         pages: {
           "/": home,
           "/contact": "contact"
-        }
+        },
+        routes: false
       });
+      container.update("/");
 
       var page = container.element.children.item(0);
       // var li = ul.children.item(0);

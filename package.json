@@ -7,9 +7,9 @@
   "scripts": {
     "start": "echo And in all, the creator, preserver, destroyer, revealer and concealer of all that is. && gulp",
     "build": "gulp publish",
-    "ci-publish": "ci-publish"
+    "ci-publish": "ci-publish",
+    "test": "gulp karma"
   },
-  "test": "jasmine spec/Container.spec.js",
   "dependencies": {},
   "repository": {
     "type": "git",
@@ -33,6 +33,8 @@
     "gulp-watch": "^4.3.5",
     "jasmine": "^2.5.3",
     "jasmine-ts": "^0.1.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-jasmine": "^1.1.0",
     "merge2": "^0.3.6",
     "typescript": "^2.0.10"
   }
