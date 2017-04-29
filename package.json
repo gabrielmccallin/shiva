@@ -33,6 +33,7 @@
     "gulp-watch": "^4.3.5",
     "jasmine": "^2.5.3",
     "jasmine-ts": "^0.1.0",
+    "karma": "^1.6.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-jasmine": "^1.1.0",
     "merge2": "^0.3.6",
