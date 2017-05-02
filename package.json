@@ -8,7 +8,7 @@
     "start": "echo And in all, the creator, preserver, destroyer, revealer and concealer of all that is. && gulp",
     "build": "gulp publish",
     "ci-publish": "ci-publish",
-    "test": "gulp karma"
+    "test": "gulp publish"
   },
   "dependencies": {},
   "repository": {
