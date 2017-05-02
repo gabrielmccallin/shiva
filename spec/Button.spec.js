@@ -28,14 +28,14 @@ describe("BUTTON", function () {
       var container = new shiva.Button({
         type: "button"
       });
-      expect(container.element.matches("button")).toBeTruthy();
+      expect(container.element.tagName).toEqual("BUTTON");
     });
 
     it("✔️ type is a if href in config object", function () {
       var container = new shiva.Button({
         href: "//hello.com"
       });
-      expect(container.element.matches("a")).toBeTruthy();
+      expect(container.element.tagName).toEqual("A");
     });
 
     it("✔️ default style", function () {
@@ -240,7 +240,7 @@ describe("BUTTON", function () {
       var container = new shiva.Button({
         style: {
           color: "blue",
-          backgroundColor: "grey",
+          backgroundColor: "rgb(128, 128, 128)",
           hover: {
             durationIn: 0,
             durationOut: 1,
@@ -255,7 +255,7 @@ describe("BUTTON", function () {
 
       setTimeout(function () {
         expect(container.element.style.color).toEqual('blue');
-        expect(container.element.style.backgroundColor).toEqual('grey');
+        expect(container.element.style.backgroundColor).toEqual('rgb(128, 128, 128)');
         expect(container.element.style.transition).toEqual('background-color 1s, color 1s');
         done();
       }, 100);
@@ -264,7 +264,7 @@ describe("BUTTON", function () {
     it("✔️ click", function () {
       var container = new shiva.Button({});
       container.addEventListener(this, shiva.Button.CLICK, function (e) {
-        expect(e.target.element.matches("button")).toBeTruthy();
+        expect(e.target.element.tagName).toEqual("BUTTON");
       });
       container.click(null);
     });

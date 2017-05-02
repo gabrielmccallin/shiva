@@ -4,7 +4,7 @@ describe("IMAGE", function () {
     it("✔️ constructed", function () {
       var container = new shiva.Image({
       });
-      expect(container.element.matches('img')).toBeTruthy();
+      expect(container.element.tagName).toEqual("IMG");
     });
 
     it("✔️ src correct", function () {

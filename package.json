@@ -36,6 +36,7 @@
     "karma": "^1.6.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.4",
     "merge2": "^0.3.6",
     "typescript": "^2.0.10"
   }

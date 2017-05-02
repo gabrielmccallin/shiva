@@ -1,23 +1,49 @@
 describe("PAGES", function () {
+
+  // inheritance helper
+  var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+
+  var Home = (function (_super) {
+    __extends(Home, _super);
+    function Home() {
+      var _this = _super.call(this, {
+        id: "Home"
+      }) || this;
+      var title = new shiva.Container({
+        text: "Home",
+      });
+      _this.addChild(title);
+      return _this;
+    }
+    return Home;
+  }(shiva.Container));
+
+  var Contact = (function (_super) {
+    __extends(Contact, _super);
+    function Contact() {
+      var _this = _super.call(this, {
+        id: "Contact"
+      }) || this;
+      var title = new shiva.Container({
+        text: "Contact",
+      });
+      _this.addChild(title);
+      return _this;
+    }
+    return Contact;
+  }(shiva.Container));
+
+
   describe("constructor", function () {
-
     it("✔️ constructed", function () {
-      class home extends shiva.Container {
-        constructor() {
-          super({
-            id: "home"
-          });
-
-          var title = new shiva.Container({
-            text: "Home"
-          });
-          this.addChild(title);
-        }
-      }
 
       var container = new shiva.Pages({
         pages: {
-          "/": home,
+          "/": Home,
           "/contact": "contact"
         },
         routes: false
@@ -25,9 +51,7 @@ describe("PAGES", function () {
       container.update("/");
 
       var page = container.element.children.item(0);
-      // var li = ul.children.item(0);
-
-      expect(page.id).toEqual('home');
+      expect(page.id).toEqual('Home');
       expect(page.style.position).toEqual('absolute');
 
       var title = page.children.item(0);
@@ -36,44 +60,18 @@ describe("PAGES", function () {
     });
 
     it("✔️ page changed", function () {
-      class home extends shiva.Container {
-        constructor() {
-          super({
-            id: "home"
-          });
-
-          var title = new shiva.Container({
-            text: "Home"
-          });
-          this.addChild(title);
-        }
-      }
-
-      class contact extends shiva.Container {
-        constructor() {
-          super({
-            id: "contact"
-          });
-
-          var title = new shiva.Container({
-            text: "Contact"
-          });
-          this.addChild(title);
-        }
-      }
-
       var container = new shiva.Pages({
         routes: false,
         pages: {
-          "/": home,
-          "/contact": contact
+          "/": Home,
+          "/contact": Contact
         }
       });
 
       container.update("/contact");
 
       var page = container.element.children.item(0);
-      expect(page.id).toEqual('contact');
+      expect(page.id).toEqual('Contact');
 
       var title = page.children.item(0);
       expect(title.innerText).toEqual("Contact");
@@ -81,7 +79,7 @@ describe("PAGES", function () {
       container.update("/");
 
       var page = container.element.children.item(0);
-      expect(page.id).toEqual('home');
+      expect(page.id).toEqual('Home');
 
       var title = page.children.item(0);
       expect(title.innerText).toEqual("Home");

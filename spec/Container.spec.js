@@ -52,7 +52,7 @@ describe("CONTAINER", function () {
       var container = new shiva.Container({
         type: "p"
       });
-      expect(container.element.matches("p")).toBeTruthy();
+      expect(container.element.tagName).toEqual("P");
     });
 
 
@@ -208,14 +208,14 @@ describe("CONTAINER", function () {
         duration: 1,
         delay: 0.2,
         toVars: {
-          backgroundColor: 'grey',
+          backgroundColor: 'rgb(128, 128, 128)',
           color: 'blue'
         }
       });
 
       setTimeout(function () {
         expect(container.element.style.color).toEqual('blue');
-        expect(container.element.style.backgroundColor).toEqual('grey');
+        expect(container.element.style.backgroundColor).toEqual('rgb(128, 128, 128)');
         expect(container.element.style.transition).toEqual('background-color 1s, color 1s');
         done();
       }, 200);
@@ -229,14 +229,14 @@ describe("CONTAINER", function () {
         duration: 0,
         // delay: 0.2,
         toVars: {
-          backgroundColor: 'grey',
+          backgroundColor: 'rgb(128, 128, 128)',
           color: 'blue'
         }
       });
 
       setTimeout(function () {
         expect(container.element.style.color).toEqual('blue');
-        expect(container.element.style.backgroundColor).toEqual('grey');
+        expect(container.element.style.backgroundColor).toEqual('rgb(128, 128, 128)');
         expect(container.element.style.transition).toEqual('');
         done();
       }, 10);
@@ -253,7 +253,7 @@ describe("CONTAINER", function () {
           color: 'white'
         },
         toVars: {
-          backgroundColor: 'grey',
+          backgroundColor: 'rgb(128, 128, 128)',
           color: 'blue'
         }
       });
@@ -265,7 +265,7 @@ describe("CONTAINER", function () {
 
       setTimeout(function () {
         expect(container.element.style.color).toEqual('blue');
-        expect(container.element.style.backgroundColor).toEqual('grey');
+        expect(container.element.style.backgroundColor).toEqual('rgb(128, 128, 128)');
         expect(container.element.style.transition).toEqual('background-color 0.2s, color 0.2s');
         done();
       }, 200);
@@ -284,7 +284,7 @@ describe("CONTAINER", function () {
           color: 'white'
         },
         toVars: {
-          backgroundColor: 'grey',
+          backgroundColor: 'rgb(128, 128, 128)',
           color: 'blue'
         }
       });
@@ -296,7 +296,7 @@ describe("CONTAINER", function () {
 
       setTimeout(function () {
         expect(container.element.style.color).toEqual('blue');
-        expect(container.element.style.backgroundColor).toEqual('grey');
+        expect(container.element.style.backgroundColor).toEqual('rgb(128, 128, 128)');
         expect(container.element.style.transition).toEqual('background-color 0.2s, color 0.2s');
         done();
       }, 250);
