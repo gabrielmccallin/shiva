@@ -83,7 +83,7 @@ gulp.task("add-defs-global", ["add-defs"], function () {
 });
 
 
-gulp.task("publish", ["transpile", "add-defs", "add-defs-global"], function () {
+gulp.task("prod-build", ["transpile", "add-defs", "add-defs-global"], function () {
   return gulp.src(["libs/promise-polyfill.js", "libs/begin-iife.js", TARGET + "/" + SHIVA + ".js", "libs/umd.js"])
     .pipe(concat(SHIVA + ".js"))
     .pipe(gulp.dest(TARGET))
@@ -92,6 +92,8 @@ gulp.task("publish", ["transpile", "add-defs", "add-defs-global"], function () {
     .pipe(rename(SHIVA + '.min.js'))
     .pipe(gulp.dest(TARGET))
 });
+
+gulp.task("publish", ["prod-build", "karma"]);
 
 
 gulp.task("dev", ["transpile", "add-defs"], function () {
@@ -119,5 +121,14 @@ gulp.task('jasmine', function() {
     .pipe(jasmineBrowser.specRunner())
     .pipe(jasmineBrowser.server({port: 8888}));
 });
+
+var karmaServer = require("karma").Server;
+gulp.task('karma', ["prod-build"], function (done) {
+  new karmaServer({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done).start();
+});
+
 
 gulp.task("default", ["webserver", "watch-dev"]);

@@ -24,16 +24,16 @@ describe("DROPDOWN", function () {
       });
 
       var button = dropdown.element.children.item(0);
-      expect(button.matches("button")).toBeTruthy();
+      expect(button.tagName).toEqual("BUTTON");
       expect(button.style.color).toEqual("white");
       expect(button.style.backgroundColor).toEqual("blue");
 
       var ul = dropdown.element.children.item(1);
-      expect(ul.matches("ul")).toBeTruthy();
+      expect(ul.tagName).toEqual("UL");
       expect(ul.childElementCount).toEqual(3);
 
       var li = ul.children.item(0);
-      expect(li.matches("li")).toBeTruthy();
+      expect(li.tagName).toEqual("LI");
       expect(li.style.padding).toEqual('1rem');
 
     });

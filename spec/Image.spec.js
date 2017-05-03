@@ -4,14 +4,14 @@ describe("IMAGE", function () {
     it("✔️ constructed", function () {
       var container = new shiva.Image({
       });
-      expect(container.element.matches('img')).toBeTruthy();
+      expect(container.element.tagName).toEqual("IMG");
     });
 
     it("✔️ src correct", function () {
       var container = new shiva.Image({
-        path: "/assets/curly.png"
+        path: "assets/curly.png"
       });
-      expect(container.element.src).toEqual(window.location + "assets/curly.png");
+      expect(container.element.src).toEqual(window.location.protocol + "//" + window.location.host + "/" + "assets/curly.png");
     });
 
   });
