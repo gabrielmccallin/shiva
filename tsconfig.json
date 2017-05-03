@@ -5,11 +5,10 @@
         "declaration": true,
         "noImplicitAny": false,
         "removeComments": true,
-        "sourceMap": true,
+        "sourceMap": true
         // "module": "commonjs"
-        "out": "shiva.js"
-    },
-    
+        // "out": "shiva.js"
+    },    
     "exclude":[
         "types",
         "dist"

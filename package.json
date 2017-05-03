@@ -6,7 +6,7 @@
   "types": "./dist/shiva.d.ts",
   "scripts": {
     "start": "echo And in all, the creator, preserver, destroyer, revealer and concealer of all that is. && gulp",
-    "build": "gulp publish",
+    "build": "rollup -c",
     "ci-publish": "ci-publish",
     "test": "gulp publish"
   },
@@ -38,6 +38,9 @@
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "^1.0.4",
     "merge2": "^0.3.6",
+    "rollup": "^0.41.6",
+    "rollup-plugin-multi-entry": "^2.0.1",
+    "rollup-plugin-typescript": "^0.8.1",
     "typescript": "^2.0.10"
   }
 }
