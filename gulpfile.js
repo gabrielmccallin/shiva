@@ -1,5 +1,5 @@
 var SHIVA = "shiva",
-  SOURCE = "src",
+  SOURCE = "src-no-module",
   TYPES = "types",
   TARGET = "dist",
   PORT = "1338",
