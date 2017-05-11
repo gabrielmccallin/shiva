@@ -24,7 +24,8 @@ module shiva {
             super();
             if (config) {
 
-                if (config.root) {
+                if (config.root && (!document.getElementById("app"))) {
+
                     this._element = document.createElement("div");
 
                     // recommended properties
