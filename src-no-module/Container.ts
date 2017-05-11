@@ -7,7 +7,11 @@ namespace shiva {
             super();
 
             console.log("hey");
-            
+
+        }
+
+        method() {
+            console.log("public method");
         }
     }
 }

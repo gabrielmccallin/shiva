@@ -9,7 +9,7 @@
         // "sourceMap": true
         // "module": "commonjs"
         "out": "dist/wow.js",
-        "noLib": true
+        // "noLib": true
     },
     "exclude":[
         "src",
