@@ -5,17 +5,24 @@
         "declaration": true,
         "noImplicitAny": false,
         "removeComments": true,
-        "diagnostics": true,
+        // "diagnostics": true
         // "sourceMap": true
-        // "module": "commonjs"
-        "out": "dist/wow.js",
-        // "noLib": true
+        // "module": "system",
+        // "out": "dist/wow.js"
+        // "noLib": true,
+        // "moduleResolution": "node",
+        // "outFile": "dist/wow.js",
+        "declarationDir": "dist/types"
+
+        // "outDir": "dist"
     },
-    "exclude":[
+    "exclude": [
         "src",
         "node_modules",
-        "dist"
-        
+        "dist",
+        "libs"
+    ],
+    "include": [
+        "src-no-module/**/*"
     ]
-    
 }

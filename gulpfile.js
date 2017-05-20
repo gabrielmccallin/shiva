@@ -1,4 +1,4 @@
-var SHIVA = "shiva",
+var SHIVA = "gulp-dts",
   SOURCE = "src-no-module",
   TYPES = "types",
   TARGET = "dist",
@@ -42,11 +42,12 @@ gulp.task("transpile", function () {
     .src([TYPES + "/**/*.ts", SOURCE + "/**/*.ts"])
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(ts({
-      "target": "ES5",
+      "target": "es5",
+      "module": "es2015",
       "declaration": true,
       "noImplicitAny": false,
       "removeComments": true,
-      "out": SHIVA + ".js",
+      "out": SHIVA + ".js"      
     }));
 
   return merge([
@@ -114,12 +115,12 @@ var jasmineBrowser = require('gulp-jasmine-browser');
 //     .pipe(jasmineBrowser.server({port: 8888}));
 // });
 
-gulp.task('jasmine', function() {
+gulp.task('jasmine', function () {
   var filesForTest = ['dist/shiva.js', 'spec/*.spec.js'];
   return gulp.src(filesForTest)
     .pipe(watch(filesForTest))
     .pipe(jasmineBrowser.specRunner())
-    .pipe(jasmineBrowser.server({port: 8888}));
+    .pipe(jasmineBrowser.server({ port: 8888 }));
 });
 
 var karmaServer = require("karma").Server;

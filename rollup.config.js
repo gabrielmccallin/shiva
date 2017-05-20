@@ -3,11 +3,13 @@ import entries from 'rollup-plugin-multi-entry';
 
 export default {
     entry: 'src-no-module/**/*.ts',
-    format: 'iife',
+    format: 'es',
     moduleName: "shiva",
-    dest: 'dist/rollup.test.js',
+    dest: 'dist/shiva.js',
     plugins: [
-        typescript(),
+        typescript({
+            typescript: require("typescript")
+        }),
         entries()
     ]
 }
