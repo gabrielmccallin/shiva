@@ -1,5 +1,4 @@
 {
-    "version": "1.5.0",
     "compilerOptions": {
         "target": "es5",
         "declaration": true,
@@ -7,21 +6,20 @@
         "removeComments": true,
         // "diagnostics": true
         // "sourceMap": true
-        // "module": "system",
+        "module": "es6",
         // "out": "dist/wow.js"
         // "noLib": true,
-        // "moduleResolution": "node",
-        // "outFile": "dist/wow.js",
-        "declarationDir": "dist/types"
-
-        // "outDir": "dist"
+        // "moduleResolution": "classic",
+        // "out": "dist/wow.js"
+        "declarationDir": "dist/types",
+        "outDir": "dist/temp"
     },
-    "exclude": [
-        "src",
-        "node_modules",
-        "dist",
-        "libs"
-    ],
+    // "exclude": [
+    //     "src",
+    //     "node_modules",
+    //     "dist",
+    //     "libs"
+    // ],
     "include": [
         "src-no-module/**/*"
     ]

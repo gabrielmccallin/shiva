@@ -6,14 +6,17 @@
   "types": "./dist/shiva.d.ts",
   "scripts": {
     "start": "echo And in all, the creator, preserver, destroyer, revealer and concealer of all that is. && gulp",
-    "build": "rollup -c",
+    "build": "rollup -c && npm run declaration && npm run remove-temporary",
+    "rollup": "rollup -c",
     "declaration": "tsc && dts-bundle --name shiva --main dist/types/**/*.d.ts --outputAsModuleFolder --out ../shiva.d.ts",
+    "remove-temporary": "rimraf dist/types dist/temp",
     "ci-publish": "ci-publish",
     "test": "gulp publish",
     "dts-bundle": "dts-bundle --name shiva --main dist/types/**/*.d.ts --outputAsModuleFolder --out ../shiva.d.ts",
     "dev": "run-p dev-server rollup-watch",
     "dev-server": "serve ./dist -p 1338",
-    "rollup-watch": "rollup -c -o ./dist/global/shiva.js -f iife -w"
+    "rollup-watch": "rollup -c -o ./dist/global/shiva.js -f iife -w",
+    "tsc": "tsc"
   },
   "dependencies": {},
   "repository": {
@@ -46,6 +49,7 @@
     "karma-phantomjs-launcher": "^1.0.4",
     "merge2": "^0.3.6",
     "npm-run-all": "^4.0.2",
+    "rimraf": "^2.6.1",
     "rollup": "^0.41.6",
     "rollup-plugin-multi-entry": "^2.0.1",
     "rollup-plugin-typescript": "^0.8.1",
