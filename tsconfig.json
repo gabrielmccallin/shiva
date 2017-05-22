@@ -14,12 +14,12 @@
         "declarationDir": "dist/types",
         "outDir": "dist/temp"
     },
-    // "exclude": [
-    //     "src",
-    //     "node_modules",
-    //     "dist",
-    //     "libs"
-    // ],
+    "exclude": [
+        "src",
+        "node_modules",
+        "dist",
+        "libs"
+    ],
     "include": [
         "src-no-module/**/*"
     ]

@@ -4,21 +4,28 @@
   "description": "A JavaScript library for programming the web.",
   "main": "./dist/shiva.min.js",
   "types": "./dist/shiva.d.ts",
+  "config": {
+    "package-name": "shiva"
+  },
   "scripts": {
     "start": "echo And in all, the creator, preserver, destroyer, revealer and concealer of all that is. && gulp",
-    "build": "rollup -c && npm run declaration && npm run remove-temporary",
+    "build": "rollup -c && npm run declaration && npm run dts-bundle && npm run remove-temporary && npm run concat-global-declaration",
     "rollup": "rollup -c",
-    "declaration": "tsc && dts-bundle --name shiva --main dist/types/**/*.d.ts --outputAsModuleFolder --out ../shiva.d.ts",
+    "declaration": "tsc",
     "remove-temporary": "rimraf dist/types dist/temp",
+    "concat-global-declaration": "concat -o dist/shiva-global.d.ts libs/shiva-global-start.d.ts dist/shiva.d.ts libs/shiva-global-end.d.ts",
     "ci-publish": "ci-publish",
     "test": "gulp publish",
     "dts-bundle": "dts-bundle --name shiva --main dist/types/**/*.d.ts --outputAsModuleFolder --out ../shiva.d.ts",
     "dev": "run-p dev-server rollup-watch",
     "dev-server": "serve ./dist -p 1338",
     "rollup-watch": "rollup -c -o ./dist/global/shiva.js -f iife -w",
-    "tsc": "tsc"
+    "test-cross-env": "cross-env NAME=shiva",
+    "print-env-var": "echo $NAME"
   },
-  "dependencies": {},
+  "dependencies": {
+    "promise-polyfill": "^6.0.2"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://bitbucket.org/gabrielmccallin/shiva.git"
@@ -28,6 +35,8 @@
   "homepage": "https://gabrielmccallin.bitbucket.io/shiva",
   "devDependencies": {
     "@types/jasmine": "^2.5.47",
+    "concat": "^1.0.3",
+    "cross-env": "^5.0.0",
     "dts-bundle": "^0.7.2",
     "dts-generator": "^2.1.0",
     "gulp": "^3.9.0",
@@ -51,7 +60,9 @@
     "npm-run-all": "^4.0.2",
     "rimraf": "^2.6.1",
     "rollup": "^0.41.6",
+    "rollup-plugin-commonjs": "^8.0.2",
     "rollup-plugin-multi-entry": "^2.0.1",
+    "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-typescript": "^0.8.1",
     "rollup-watch": "^3.2.2",
     "serve": "^5.1.5",
