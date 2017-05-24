@@ -1,14 +1,17 @@
 ﻿import { GEvent } from './GEvent';
+import Promise from 'promise-polyfill';
+
 export class Container extends GEvent {
 
     constructor() {
         super();
 
-        console.log("hey there cowgirl!!!!");  
+        console.log("hey there cowgirl!!!!");
 
     }
 
-    method() {
-        console.log("public method"); 
+    method(): Promise <Container> {
+        console.log("public method");
+        return new Promise();
     }
 }
