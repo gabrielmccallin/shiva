@@ -21,7 +21,8 @@
     "dev-server": "serve ./dist -p 1338",
     "rollup-watch": "rollup -c -o ./dist/global/shiva.js -f iife -w",
     "test-cross-env": "cross-env NAME=shiva",
-    "print-env-var": "echo $NAME"
+    "print-env-var": "echo $NAME",
+    "test-karma": "karma start ./karma.conf.js --single-run --colors"
   },
   "dependencies": {
     "promise-polyfill": "^6.0.2"
