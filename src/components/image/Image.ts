@@ -1,10 +1,13 @@
-﻿/// <reference path="../container/container.ts" />
-module shiva { 
+﻿import { Container } from '../container/Container';
+import { ContainerConfig } from '../container/ContainerConfig';
+import { ImageConfig } from './ImageConfig';
+
+module shiva {
     export class Image extends Container {
 
         static COMPLETE: string = "load";
         static ERROR: string = "error";
- 
+
         constructor(config: ImageConfig) {
             let containerConfig;
             if (config.style) {

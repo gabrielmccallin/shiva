@@ -1,13 +1,11 @@
-﻿/// <reference path="../container/HoverStyle.ts" />
-/// <reference path="../container/StyleDeclaration.ts" />
+﻿import { StyleDeclaration } from '../../components/container/StyleDeclaration';
+import { HoverStyle } from '../../components/container/HoverStyle';
 
-module shiva {
-    export interface ButtonStyleDeclaration extends StyleDeclaration {
-        hover?: HoverStyle,
-        icon?: {
-            code: string;
-            align?: string;
-            style?: StyleDeclaration;
-        }
+export interface ButtonStyleDeclaration extends StyleDeclaration {
+    hover?: HoverStyle,
+    icon?: {
+        code: string;
+        align?: string;
+        style?: StyleDeclaration;
     }
 }

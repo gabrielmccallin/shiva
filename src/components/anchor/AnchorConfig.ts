@@ -1,5 +1,5 @@
-﻿module shiva {
-    export interface AnchorConfig extends ContainerConfig {
-        href?: any;
-    }
+﻿import { ContainerConfig } from '../container/ContainerConfig';
+
+export interface AnchorConfig extends ContainerConfig {
+    href?: any;
 }

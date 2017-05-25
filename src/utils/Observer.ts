@@ -1,40 +1,37 @@
-﻿/// <reference path="../components/container/EventDispatcher.ts" />
+﻿import { EventDispatcher } from '../components/container/EventDispatcher';
 
-module shiva {
-    export class Observer {
-        private static observers = {};
+export class Observer {
+    private static observers = {};
 
-        static addEventListener(scope: any, type: string, callback: Function) {
-            if (!this.observers[type]) {
-                this.observers[type] = [];
+    static addEventListener(scope: any, type: string, callback: Function) {
+        if (!this.observers[type]) {
+            this.observers[type] = [];
+        }
+        this.observers[type].push({ scope: scope, type: type, callback: callback });
+    }
+
+
+    static removeEventListener(type: string, callback: Function) {
+        var indexOfClosureToRemove;
+        for (var i = 0; i < this.observers[type].length; i++) {
+            if (this.observers[type].callback === callback) {
+                indexOfClosureToRemove = i;
+                break;
             }
-            this.observers[type].push({ scope: scope, type: type, callback: callback });
         }
 
+        this.observers[type].splice(indexOfClosureToRemove, 1);
+    }
 
-        static removeEventListener(type: string, callback: Function) {
-            var indexOfClosureToRemove;
+    static dispatchEvent(evt: Event) {
+        var type = evt.type;
+        if (this.observers[type]) {
             for (var i = 0; i < this.observers[type].length; i++) {
-                if (this.observers[type].callback === callback) {
-                    indexOfClosureToRemove = i;
-                    break;
-                }
+                this.observers[type][i].callback.call(this.observers[type][i].scope, evt);
             }
-
-            this.observers[type].splice(indexOfClosureToRemove, 1);
         }
-
-        static dispatchEvent(evt: Event) {
-            var type = evt.type;
-            if (this.observers[type]) {
-                for (var i = 0; i < this.observers[type].length; i++) {
-                    this.observers[type][i].callback.call(this.observers[type][i].scope, evt);
-                }
-            }
-            else {
-                console.error("No Observer registered for: ", evt);
-            }
+        else {
+            console.error("No Observer registered for: ", evt);
         }
     }
 }
- 

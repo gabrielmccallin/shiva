@@ -1,33 +1,33 @@
-﻿/// <reference path="../container/container.ts" />
-module shiva {
-    export class CheckBox extends Container {
-        static CLICK: string = "click";
-        private enabled: boolean;
+﻿import { Container } from '../container/Container';
+import { InputConfig } from '../radioButton/InputConfig';
+
+export class CheckBox extends Container {
+    static CLICK: string = "click";
+    private enabled: boolean;
 
 
-        constructor(config?: InputConfig) {
-            super({
-                type: "input"
-            });
+    constructor(config?: InputConfig) {
+        super({
+            type: "input"
+        });
 
-            let element = <HTMLInputElement>this.element;
-            element.type = "checkbox";
+        let element = <HTMLInputElement>this.element;
+        element.type = "checkbox";
 
-            if (config) {
-                if (config.id) {
-                    this.id = config.id;
-                }
-                this.style(config.style);
-                //anything else in the config
-                this.style(config);
-
-                element.checked = config.checked;
+        if (config) {
+            if (config.id) {
+                this.id = config.id;
             }
-        }
+            this.style(config.style);
+            //anything else in the config
+            this.style(config);
 
-        get checked(): boolean {
-            let element = <HTMLInputElement>this.element;
-            return element.checked;
+            element.checked = config.checked;
         }
+    }
+
+    get checked(): boolean {
+        let element = <HTMLInputElement>this.element;
+        return element.checked;
     }
 }
