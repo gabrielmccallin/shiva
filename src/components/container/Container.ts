@@ -8,6 +8,7 @@ import { TransitionFromToConfig } from '../../transitions/TransitionFromToConfig
 import Promise from 'promise-polyfill';
 
 
+
 /**
  * Container (TypeScript)
  * - Container
@@ -77,6 +78,9 @@ export class Container extends EventDispatcher {
                     this.className(...<string[]>config.className);
                 }
             }
+
+            // style all other config
+            Properties.style(this._element, config);
         }
         else {
             this._element = document.createElement("div");
@@ -416,6 +420,7 @@ export class Container extends EventDispatcher {
     get data() {
         return this._data;
     }
+
 
     hide() {
         Properties.style(this._element, { display: "none" });

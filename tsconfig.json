@@ -1,23 +1,13 @@
 {
-    "compilerOptions": {
+    "compilerOptions": {        
         "target": "es5",
-        "declaration": true,
-        "noImplicitAny": false,
-        "removeComments": true,
-        // "diagnostics": true
-        // "sourceMap": true
-        "module": "es6",
-        // "out": "dist/wow.js"
-        // "noLib": true,
-        "moduleResolution": "node",
-        // "out": "dist/wow.js"
         "declarationDir": "dist/types",
-        "outDir": "dist/temp"
+        "declaration": true,
+        "removeComments": true,
+        "module": "es2015",
+        "moduleResolution": "node",
+        "outDir": "dist/modules"
     },
-    "exclude": [
-        "dist",
-        "libs"
-    ],
     "include": [
         "src/**/*"
     ]
