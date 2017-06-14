@@ -11,7 +11,7 @@
     "start": "echo And in all, the creator, preserver, destroyer, revealer and concealer of all that is. && gulp",
     "build": "npm run build:modules && npm run build:global-cjs",
     "build:global-cjs": "rollup -c",
-    "build:modules": "tsc && npm run dts-bundle && npm run remove-temporary && npm run concat-global-declaration && npm run copy-module-map",
+    "build:modules": "tsc && npm run delete-empty && npm run dts-bundle && npm run remove-temporary && npm run concat-global-declaration && npm run copy-module-map",
     "remove-temporary": "rimraf dist/types",
     "concat-global-declaration": "concat -o dist/shiva-global.d.ts libs/shiva-global-start.d.ts dist/shiva.d.ts libs/shiva-global-end.d.ts",
     "copy-module-map": "concat -o dist/shiva.js libs/shiva.js",
@@ -23,7 +23,8 @@
     "rollup-watch": "rollup -c -o ./dist/global/shiva.js -f iife -w",
     "test-cross-env": "cross-env NAME=shiva",
     "print-env-var": "echo $NAME",
-    "test-karma": "karma start ./karma.conf.js --single-run --colors"
+    "test-karma": "karma start ./karma.conf.js --single-run --colors",
+    "delete-empty": "node libs/delete-empty-files dist/modules"
   },
   "dependencies": {
     "promise-polyfill": "^6.0.2"
