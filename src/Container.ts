@@ -3,8 +3,8 @@ import { Dimensions } from './Dimensions';
 import { Event, EventDispatcher } from './EventDispatcher';
 import { ContainerConfig } from './ContainerConfig';
 import { StyleDeclaration } from './StyleDeclaration';
-import { TransitionToConfig } from '../../transitions/TransitionToConfig';
-import { TransitionFromToConfig } from '../../transitions/TransitionFromToConfig';
+import { TransitionToConfig } from './TransitionToConfig';
+import { TransitionFromToConfig } from './TransitionFromToConfig';
 import Promise from 'promise-polyfill';
 
 

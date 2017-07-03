@@ -1,4 +1,4 @@
-﻿import { Container } from '../container/Container';
+﻿import { Container } from './Container';
 import { Page } from './Page';
 import { PagesConfig } from './PagesConfig';
 

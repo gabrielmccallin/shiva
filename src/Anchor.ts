@@ -1,4 +1,4 @@
-﻿import { Container } from '../container/Container';
+﻿import { Container } from './Container';
 import { AnchorConfig } from './AnchorConfig';
 
 export class Anchor extends Container {

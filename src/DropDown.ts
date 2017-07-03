@@ -1,11 +1,11 @@
-﻿import { Container } from '../container/Container';
-import { Button } from '../button/Button';
-import { ObjectUtils } from '../../utils/ObjectUtils';
-import { Styles } from '../../components/Styles';
-import { Event } from '../../components/container/EventDispatcher';
+﻿import { Container } from './Container';
+import { Button } from './Button';
+import { ObjectUtils } from './ObjectUtils';
+import { Styles } from './Styles';
+import { Event } from './EventDispatcher';
 import { DropDownConfig } from './DropDownConfig';
 import { DropStyleDeclaration } from './DropStyleDeclaration';
-import { HoverStyleDeclaration } from '../../components/container/HoverStyleDeclaration';
+import { HoverStyleDeclaration } from './HoverStyleDeclaration';
 
 
 export class DropDown extends Container {

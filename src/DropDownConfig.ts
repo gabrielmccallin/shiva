@@ -1,4 +1,4 @@
-﻿import { ContainerConfig } from '../container/ContainerConfig';
+﻿import { ContainerConfig } from './ContainerConfig';
 import { DropStyleDeclaration } from './DropStyleDeclaration';
 
 export interface DropDownConfig extends ContainerConfig {

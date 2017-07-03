@@ -1,5 +1,5 @@
-﻿import { Container } from '../container/Container';
-import { ContainerConfig } from '../container/ContainerConfig';
+﻿import { Container } from './Container';
+import { ContainerConfig } from './ContainerConfig';
 import { ImageConfig } from './ImageConfig';
 
 export class Image extends Container {

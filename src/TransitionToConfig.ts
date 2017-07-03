@@ -1,4 +1,4 @@
-﻿import { StyleDeclaration } from '../components/container/StyleDeclaration';
+﻿import { StyleDeclaration } from './StyleDeclaration';
 import { Ease } from './Ease';
 
 export interface TransitionToConfig {

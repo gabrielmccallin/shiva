@@ -1,4 +1,4 @@
-﻿import { ContainerConfig } from '../container/ContainerConfig';
+﻿import { ContainerConfig } from './ContainerConfig';
 
 export interface AnchorConfig extends ContainerConfig {
     href?: any;

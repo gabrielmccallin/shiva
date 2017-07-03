@@ -1,4 +1,4 @@
-﻿import { Container } from '../container/Container';
+﻿import { Container } from './Container';
 import { InputConfig } from './InputConfig';
 
 export class RadioButton extends Container {

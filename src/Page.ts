@@ -1,4 +1,4 @@
-import { Container } from '../container/Container';
+import { Container } from './Container';
 
 export interface Page extends Container {
     wake();

@@ -1,12 +1,12 @@
 {
     "compilerOptions": {        
         "target": "es5",
-        "declarationDir": "dist/types",
+        "declarationDir": "dist",
         "declaration": true,
         "removeComments": true,
         "module": "es2015",
         "moduleResolution": "node",
-        "outDir": "dist/modules"
+        "outDir": "dist"
     },
     "include": [
         "src/**/*"

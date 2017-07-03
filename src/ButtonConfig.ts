@@ -1,4 +1,4 @@
-﻿import { ContainerConfig } from '../../components/container/ContainerConfig';
+﻿import { ContainerConfig } from './ContainerConfig';
 import { ButtonStyleDeclaration } from './ButtonStyleDeclaration';
 
 export interface ButtonConfig extends ContainerConfig {

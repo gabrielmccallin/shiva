@@ -1,4 +1,4 @@
-﻿import { EventDispatcher } from '../../components/container/EventDispatcher';
+﻿import { EventDispatcher } from './EventDispatcher';
 import { LoaderConfig } from './LoaderConfig';
 import Promise from 'promise-polyfill';
 

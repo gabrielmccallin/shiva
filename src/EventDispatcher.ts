@@ -6,7 +6,7 @@
  * @author John Vrbanac
  * @license MIT License
  **/
-import { Container } from '../container/Container';
+import { Container } from './Container';
 
 export class Event {
     private _type: string;

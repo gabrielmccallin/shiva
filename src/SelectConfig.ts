@@ -1,4 +1,4 @@
-﻿import { ContainerConfig } from '../../components/container/ContainerConfig';
+﻿import { ContainerConfig } from './ContainerConfig';
 
 export interface SelectConfig extends ContainerConfig {
     name?: string;

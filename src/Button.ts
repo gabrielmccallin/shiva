@@ -1,10 +1,10 @@
-﻿import { Container } from '../container/Container';
-import { ObjectUtils } from '../../utils/ObjectUtils';
-import { Event } from '../../components/container/EventDispatcher';
-import { Styles } from '../../components/Styles';
+﻿import { Container } from './Container';
+import { ObjectUtils } from './ObjectUtils';
+import { Event } from './EventDispatcher';
+import { Styles } from './Styles';
 import { ButtonConfig } from './ButtonConfig';
 import { ButtonStyleDeclaration } from './ButtonStyleDeclaration';
-import { HoverStyleDeclaration } from '../../components/container/HoverStyleDeclaration';
+import { HoverStyleDeclaration } from './HoverStyleDeclaration';
 
 export class Button extends Container {
     styles: ButtonStyleDeclaration;

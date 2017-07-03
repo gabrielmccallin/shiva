@@ -2,27 +2,26 @@
   "name": "shiva",
   "version": "2.1.0",
   "description": "A JavaScript library for programming the web.",
-  "main": "./dist/shiva.cjs.js",
-  "types": "./dist/shiva.d.ts",
-  "module": "dist/shiva.js",
+  "main": "shiva-cjs.js",
+  "types": "shiva.d.ts",
   "config": {
     "package-name": "shiva"
   },
   "scripts": {
     "start": "echo And in all, the creator, preserver, destroyer, revealer and concealer of all that is. && npm run dev",
-    "build": "npm run build:modules && npm run build:global-cjs && npm test",
+    "build": "npm run build:modules && npm run build:global-cjs && npm run copy-files && npm test",
     "build:global-cjs": "rollup -c",
-    "build:modules": "tsc && npm run delete-empty && npm run dts-bundle && npm run remove-temporary && npm run concat-global-declaration && npm run copy-module-map",
+    "build:modules": "tsc && npm run dts-bundle && npm run delete-empty && npm run concat-global-declaration",
     "remove-temporary": "rimraf dist/types",
     "concat-global-declaration": "concat -o dist/shiva-global.d.ts libs/shiva-global-start.d.ts dist/shiva.d.ts libs/shiva-global-end.d.ts",
-    "copy-module-map": "concat -o dist/shiva.js libs/shiva.js",
-    "ci-publish": "ci-publish",
-    "dts-bundle": "dts-bundle --name shiva --main dist/types/**/*.d.ts --outputAsModuleFolder --out ../shiva.d.ts",
+    "copy-files": "mkdirp dist && copy package.json dist && copy README.md dist && copy CHANGELOG.md dist",
+    "ci-publish": "cd dist && ci-publish",
+    "dts-bundle": "dts-bundle --name shiva --main dist/**/*.d.ts --outputAsModuleFolder --out shiva.d.ts",
     "dev": "parallelshell \"npm run serve\" \"npm run rollup-watch\"",
     "serve": "serve ./dist -p 1338",
-    "rollup-watch": "rollup -c -o ./dist/global/shiva.js -f iife -w",
+    "rollup-watch": "rollup -c -o ./dist/shiva-global.js -f iife -w",
     "test": "karma start ./karma.conf.js --single-run --colors",
-    "delete-empty": "node libs/delete-empty-files dist/modules",
+    "delete-empty": "node libs/delete-empty-files dist",
     "env": "env"
   },
   "dependencies": {
@@ -36,15 +35,15 @@
   "license": "MIT",
   "homepage": "https://gabrielmccallin.bitbucket.io/shiva",
   "devDependencies": {
-    "@types/jasmine": "^2.5.47",
     "concat": "^1.0.3",
+    "copy": "^0.3.0",
     "dts-bundle": "^0.7.2",
-    "dts-generator": "^2.1.0",
     "jasmine": "^2.5.3",
     "jasmine-ts": "^0.1.0",
     "karma": "^1.6.0",
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "^1.0.4",
+    "mkdirp": "^0.5.1",
     "parallelshell": "^2.0.0",
     "rimraf": "^2.6.1",
     "rollup": "^0.41.6",
@@ -52,10 +51,9 @@
     "rollup-plugin-multi-entry": "^2.0.1",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-typescript": "^0.8.1",
-    "rollup-plugin-typescript2": "^0.4.2",
     "rollup-watch": "^3.2.2",
     "serve": "^5.1.5",
     "tslib": "^1.7.1",
-    "typescript": "^2.3.2"
+    "typescript": "^2.3.4"
   }
 }

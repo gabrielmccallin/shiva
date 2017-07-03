@@ -1,4 +1,4 @@
-﻿import { Container } from '../container/Container';
+﻿import { Container } from './Container';
 import { SelectConfig } from './SelectConfig';
 
 export class Select extends Container {

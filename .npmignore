@@ -1,12 +1,11 @@
-dist/*.js.map
 spec
 assets
 libs
 src
 types
-gulpfile.js
 tsconfig.json
 .npmignore
 .gitattributes
 .vscode
 *.yml
+.rpt2_cache

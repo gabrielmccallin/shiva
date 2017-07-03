@@ -1,4 +1,4 @@
-import { Event, EventDispatcher } from '../../components/container/EventDispatcher';
+import { Event, EventDispatcher } from './EventDispatcher';
 
 export class LoaderEvent extends Event {
 

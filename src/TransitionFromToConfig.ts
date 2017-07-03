@@ -1,5 +1,5 @@
 ﻿import { TransitionToConfig } from './TransitionToConfig';
-import { StyleDeclaration } from '../components/container/StyleDeclaration';
+import { StyleDeclaration } from './StyleDeclaration';
 
 export interface TransitionFromToConfig extends TransitionToConfig {
     fromVars: StyleDeclaration;

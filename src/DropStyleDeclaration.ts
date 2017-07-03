@@ -1,5 +1,5 @@
-﻿import { HoverStyleDeclaration } from '../container/HoverStyleDeclaration';
-import { StyleDeclaration } from '../container/StyleDeclaration';
+﻿import { HoverStyleDeclaration } from './HoverStyleDeclaration';
+import { StyleDeclaration } from './StyleDeclaration';
 
 export interface DropStyleDeclaration extends HoverStyleDeclaration {
     durationExpand?: number;

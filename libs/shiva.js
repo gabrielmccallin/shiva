@@ -1,4 +1,4 @@
-export { Anchor } from './modules/components/Anchor.js';
+export { Anchor } from './modules/components/anchor/Anchor.js';
 export { Button } from './modules/components/button/Button.js';
 export { CheckBox } from './modules/components/checkbox/CheckBox.js';
 export { Container } from './modules/components/container/Container.js';
@@ -8,7 +8,6 @@ export { Properties } from './modules/components/container/Properties.js';
 export { RootContainer } from './modules/components/container/RootContainer.js';
 export { DropDown } from './modules/components/dropdown/DropDown.js';
 export { Image } from './modules/components/image/Image.js';
-export { Page } from './modules/components/page/Page.js';
 export { Pages } from './modules/components/page/Pages.js';
 export { RadioButton } from './modules/components/radiobutton/RadioButton.js';
 export { Select } from './modules/components/select/Select.js';

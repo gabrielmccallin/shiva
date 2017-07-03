@@ -7,18 +7,15 @@ export default {
     entry: 'src/**/*.ts',
     moduleName: "shiva",
     plugins: [
-        typescript({
-            // typescript: require('typescript'), // use local version
-            tsconfig: false,
-            target: "es5"
-        }),
         entries(),
+        typescript({
+            typescript: require('typescript') // use local version
+        }),
         resolve(),
-        commonjs()
+        commonjs(),
     ],
     targets: [
-        { dest: 'dist/shiva.cjs.js', format: 'cjs' },
-        { dest: 'dist/shiva.global.js', format: 'iife' }
-        // { dest: 'dist/shiva.esm.js', format: 'es' }
+        { dest: 'dist/shiva-cjs.js', format: 'cjs' },
+        { dest: 'dist/shiva-global.js', format: 'iife' }
     ]
 }

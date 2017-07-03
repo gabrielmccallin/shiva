@@ -1,5 +1,5 @@
-﻿import { Container } from '../container/Container';
-import { InputConfig } from '../radioButton/InputConfig';
+﻿import { Container } from './Container';
+import { InputConfig } from './InputConfig';
 
 export class CheckBox extends Container {
     static CLICK: string = "click";
