@@ -1,4 +1,4 @@
-﻿import { EventDispatcher } from './EventDispatcher';
+﻿import { Event, EventDispatcher } from './EventDispatcher';
 
 export class Observer {
     private static observers = {};
