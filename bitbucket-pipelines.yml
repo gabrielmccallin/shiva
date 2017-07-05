@@ -16,13 +16,12 @@ pipelines:
           script:
             - echo "This script runs only on commit to the master branch."
             - npm install
-            - npm install ci-publish 
             - npm run build
+            - npm install ci-publish 
             - npm run ci-publish
             # activates jsdelivr as well I think            
     develop:
       - step:
           script:
             - npm install
-            - echo "Testing with Karma and PhantomJS."
-            - npm test
+            - npm run build
