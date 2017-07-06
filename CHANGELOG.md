@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.1.0]` 2017-07-06
+### Changed
+- Now uses module loader pattern
+- Flat structure for easier consumption using direct module loading (e.g. `import { Container } from 'shiva/Container')
+- Using npm scripts instead of gulp for building
+- Using rollup for bundling
+- Promise-polyfill as a dependency
+
+---
 ## `[2.0.7]` 2017-04-29
 ### Added
 - ️️☑️ tests and test runner (Jasmine)
