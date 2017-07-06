@@ -55,12 +55,18 @@ describe("CONTAINER", function () {
       expect(container.element.tagName).toEqual("P");
     });
 
-
     it("✔️ style", function () {
       var container = new shiva.Container({
         style: {
           color: "red"
         }
+      });
+      expect(container.element.style.color).toEqual("red");
+    });
+
+    it("✔️ style on root of configuration object", function () {
+      var container = new shiva.Container({
+        color: "red"
       });
       expect(container.element.style.color).toEqual("red");
     });
@@ -309,7 +315,7 @@ describe("CONTAINER", function () {
       });
 
       var testDouble = {
-        handle: function () {}
+        handle: function () { }
       }
 
       spyOn(testDouble, 'handle');

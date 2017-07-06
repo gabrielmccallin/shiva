@@ -80,7 +80,7 @@ export class Container extends EventDispatcher {
             }
 
             // style all other config
-            Properties.style(this._element, config.style);
+            Properties.style(this._element, config);
         }
         else {
             this._element = document.createElement("div");
