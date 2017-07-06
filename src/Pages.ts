@@ -8,7 +8,7 @@ export class Pages extends Container {
     private pages: any = {};
     private currentPageName: string;
     private zIndex = 100;
-    private delayTimeout: number;
+    private delayTimeout;
     private routes: boolean = true;
 
     constructor(config: PagesConfig) {

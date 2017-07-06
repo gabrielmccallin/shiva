@@ -1,6 +1,6 @@
 ﻿import { StyleDeclaration } from './StyleDeclaration';
 
-export interface ContainerConfig {
+export interface ContainerConfig extends StyleDeclaration {
     root?: boolean;
     id?: string;
     type?: string;

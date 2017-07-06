@@ -1,5 +1,7 @@
-﻿export interface InputConfig {
+﻿import { StyleDeclaration } from './StyleDeclaration'
+
+export interface InputConfig {
     id?: string;
-    style?: InputConfig;
+    style?: StyleDeclaration;
     checked?: boolean;
 }
