@@ -1,47 +1,83 @@
-# shiva :trident:
+# shiva 🔱
 
 A JavaScript library for programming the web.  
 
-No markup, no templates, no CSS. Just code();
+No markup, no templates, no CSS. Just code(😃);
 
 [https://gabrielmccallin.bitbucket.io/shiva/](https://gabrielmccallin.bitbucket.io/shiva/)
 
 ---
-### **Getting started**
-#### npm
+## Getting started
+### Global
+
+Include the library in the `head` of your html.
+```
+<head>
+    <script src="https://cdn.jsdelivr.net/shiva/latest/shiva.min.js">
+    </script>
+</head>
+```
+
+Put this code into your page, either via an external `script` tag in the `body` or directly into the `body` like below.
+
+```
+<body>
+    <script>
+        var app = new shiva.RootContainer();
+
+        const container = new shiva.Container({
+            text: "hello you 😀",
+            fontSize: "1rem",
+            fontFamily: "monospace",
+            color: "white",
+            backgroundColor: "grey",
+            width: "100%",
+            height: "100%",
+            textAlign: "center",
+            paddingTop: "2rem"
+        });
+        app.addChild(container);
+
+        container.to({
+            duration: 5,
+            toVars: {
+                fontSize: "3rem",
+                backgroundColor: "purple"
+            }
+        });
+    </script>
+</body>
+```
+
+That's all you need to start putting animated elements on the web 😤
+
+See below for the `shiva🔱` API documentation and starter projects.
+
+If your IDE supports declaration files, download [https://cdn.jsdelivr.net/shiva/latest/shiva-global.d.ts](https://cdn.jsdelivr.net/shiva/latest/shiva-global.d.ts) and place in your project. This should provide code completion for the library.
+
+---
+
+### Module
 
 ```
 npm install shiva --save
 ```
 
-And use something like `browserify` to bundle `shiva` with your app code.    
+- Use something like `browserify` or `rollup` to bundle `shiva🔱` with your application code.    
 
-If your IDE supports declaration files, `shiva.d.ts` is in the `/dist` folder. This should provide code completion for the library.
+If your IDE supports declaration files, there is a `d.ts` for every class. This should provide code completion for the library.
 
+#### Create root container
 
-#### Global
-```
-<script src="https://cdn.jsdelivr.net/shiva/latest/shiva.min.js"></script>
-```
-And use the `shiva` global in your code. e.g. `shiva.Container`, `shiva.Button`, `shiva.Loader` etc.
-
-If your IDE supports declaration files, download [https://cdn.jsdelivr.net/shiva/latest/shiva-global.d.ts](https://cdn.jsdelivr.net/shiva/latest/shiva-global.d.ts) and place in your project. This should provide code completion for the library.
-
----
-### **Now { code } !**
-
-Extend your entry class with Container and tell it to be the root of the app.  
-
-Add an onload event to `window` and :grinning:   
+Extend your entry class with RootContainer.
+Add an onload event to `window` and 🙌   
 
 ```
-import { Container } from "shiva";
+import { RootContainer } from "shiva/RootContainer";
 
-class App extends Container {
+class App extends RootContainer {
     constructor() {
-        super({
-            root: true
-        });
+        super();
     }
 }
 
@@ -49,11 +85,12 @@ window.onload = () => {
     new App();
 }; 
 ```
+Creating containers requires the DOM to be available so we have to wait for the onload event.
 
 #### Create container
 
 ```
-import { Container } from "shiva";
+import { Container } from "shiva/Container";
 
 const view = new Container({
     text: "I'm a view",
@@ -65,7 +102,7 @@ const view = new Container({
 this.addChild(view);
 ```
 
-#### Update
+#### Update container
 
 ```
 view.innerHtml = "I'm still a view";
@@ -83,12 +120,12 @@ view.style({
 
 #### Extend your own classes to give them the same abilities
 ```
-import { Container } from "shiva";
+import { Container } from "shiva/Container";
 
-class Home extends Container {
+class MyClass extends Container {
     constructor() {
         super({
-            id: "Home"
+            id: "my-class"
         });
     }
 }
@@ -96,20 +133,20 @@ class Home extends Container {
 
 #### Add this class to the DOM
 ```
-const home = new Home();
-this.addChild(home);
+const myClass = new MyClass();
+this.addChild(myClass);
 ```
 
 #### Event listeners
 `Container` extends an event dispatcher class so you can listen / dispatch events on your classes.
 ```
-// outside home class
-home.addEventListener(this, "CUSTOM_EVENT", this.homeEventHandler);
+// outside myClass
+myClass.addEventListener(this, "CUSTOM_EVENT", this.myEventHandler);
 
-// inside home class 
+// inside myClass 
 this.dispatchEvent(new Event("CUSTOM_EVENT", this));
 
-// this.homeEventHandler will fire outside of home 
+// this.myEventHandler will fire outside of home 
 ```
 
 #### Animations!  
@@ -143,7 +180,7 @@ title.to({
 #### Loader wraps XMLHttpRequest, returns a Promise
 
 ```
-import { Loader } from "shiva";
+import { Loader } from "shiva/Loader";
 
 Loader.get({
     url: "//api.com/endpointABC",
@@ -319,10 +356,10 @@ Getters / setters
 
 ---
 ### **Links**
-- Extremely simple example with shiva:trident: as a global library:  
+- Extremely simple example with `shiva🔱` as a global library:  
 [https://bitbucket.org/gabrielmccallin/shiva-global](https://bitbucket.org/gabrielmccallin/shiva-global)
 
-- Start coding with shiva:trident: and Typescript:  
+- Start coding with `shiva🔱` and Typescript:  
 [https://bitbucket.org/gabrielmccallin/shiva-seed](https://bitbucket.org/gabrielmccallin/shiva-seed)
 
 - Example with simple routing:  
