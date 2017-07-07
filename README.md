@@ -94,10 +94,8 @@ import { Container } from "shiva/Container";
 
 const view = new Container({
     text: "I'm a view",
-    style: {
-        display: "block",
-        backgroundColor: "#333333",
-    }
+    display: "block",
+    backgroundColor: "#333333"
 });
 this.addChild(view);
 ```
@@ -265,7 +263,7 @@ Some Window polyfill methods.
 Methods
 - **constructor( config: ContainerConfig )**: void;
 ```
-interface ContainerConfig {
+interface ContainerConfig extends StyleDeclaration {
     // to denote a root level container
     root?: boolean;
     
