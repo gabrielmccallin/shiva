@@ -38,8 +38,7 @@
     "concat": "^1.0.3",
     "copy": "^0.3.0",
     "dts-bundle": "^0.7.2",
-    "jasmine": "^2.5.3",
-    "jasmine-ts": "^0.1.0",
+    "jasmine-core": "^2.6.4",
     "karma": "^1.6.0",
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "^1.0.4",
@@ -53,6 +52,6 @@
     "rollup-plugin-typescript": "^0.8.1",
     "rollup-watch": "^3.2.2",
     "serve": "^5.1.5",
-    "typescript": "^2.3.4"
+    "typescript": "^2.4.1"
   }
 }
