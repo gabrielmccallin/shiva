@@ -109,17 +109,16 @@ export class Container extends EventDispatcher {
         // this._element.removeAttribute("style");
     }
 
-    addChild(child: Container) {
+    appendChild(child: Container) {
         let childElement: HTMLElement;
         if (child.element) {
             childElement = child.element;
         }
-        // else {
-        //     childElement = <HTMLElement>child;
-        // }
-
-
         this._element.appendChild(childElement);
+    }
+
+    addChild(child: Container) {
+        this.appendChild(child);
     }
 
     removeChild(child: Container) {

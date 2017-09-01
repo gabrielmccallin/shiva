@@ -158,6 +158,17 @@ describe("CONTAINER", function () {
       expect(parent.element.hasChildNodes(child)).toBeTruthy();
     });
 
+    it("✔️ appendChild", function () {
+      var parent = new shiva.Container({
+      });
+
+      var child = new shiva.Container({
+      });
+      parent.appendChild(child);
+
+      expect(parent.element.hasChildNodes(child)).toBeTruthy();
+    });
+
     it("✔️ removeChild", function () {
       var parent = new shiva.Container({
       });
