@@ -1,18 +1,26 @@
 ﻿export class ObjectUtils {
-    static merge(target, source) {
-        /* Merges two objects recursive */
+    /**
+     * Merges two objects recursive, source overwrites target if matching properties
+     * @param {Object} target Object to be merged onto
+     * @param {Object} source Object to be merged from
+     * @return {Object} Will be an object containing all properties recursive from target and source
+     */
+    static merge(target: any, source: any): any {
         if (typeof target !== 'object') {
-            target = {};
+            target = source;
         }
-
-        for (var property in source) {
-            if (source.hasOwnProperty(property)) {
-                var sourceProperty = source[property];
-                if (typeof sourceProperty === 'object') {
-                    target[property] = ObjectUtils.merge(target[property], sourceProperty);
-                    continue;
+        else {
+            for (var property in source) {
+                if (source.hasOwnProperty(property)) {
+                    if (typeof source[property] === 'object') {
+                        target[property] = ObjectUtils.merge(target[property], source[property]);
+                        continue;
+                    }
+                    target[property] = source[property];
                 }
-                target[property] = sourceProperty;
+            }
+            if (!source.hasOwnProperty(property)) {
+                target = source;
             }
         }
         return target;

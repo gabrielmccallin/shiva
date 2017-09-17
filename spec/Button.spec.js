@@ -229,7 +229,6 @@ describe("BUTTON", function () {
 
       setTimeout(function () {
         expect(container.element.style.color).toEqual('red');
-        expect(container.element.style.backgroundColor).toEqual('rgb(221, 221, 221)');
         expect(container.element.style.transition).toEqual('background-color 1s, color 1s');
         done();
       }, 10);
@@ -307,7 +306,6 @@ describe("BUTTON", function () {
 
       setTimeout(function () {
         expect(container.element.style.color).toEqual('red');
-        expect(container.element.style.backgroundColor).toEqual('rgb(221, 221, 221)');
         expect(container.element.style.transition).toEqual('background-color 1s, color 1s');
         done();
       }, 10);
