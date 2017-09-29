@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.2.0]` 2017-09-29
+### Changed
+- 🐛 ObjectUtils.merge can handle Date objects
+### Added
+- ✨ Pass HTMLElement attributes as an array of objects in ContainerConfig
+- ✨ HTMLElement.innerText getter and setter
+
+---
 ## `[2.1.0]` 2017-07-06
 ### Changed
 - Module loader pattern
