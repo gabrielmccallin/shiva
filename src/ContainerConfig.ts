@@ -6,16 +6,17 @@ export interface ContainerConfig extends StyleDeclaration {
     type?: string;
 
     /**
-     * Takes a shiva.StyleDeclaration 
+     * Takes a shiva.StyleDeclaration
     */
     style?: StyleDeclaration;
 
     /**
-     * Takes an array of shiva.StyleDeclarations 
+     * Takes an array of shiva.StyleDeclarations
     */
     styles?: StyleDeclaration[];
 
     text?: string;
     data?: any;
     className?: string | string[];
+    for?: string;
 }
