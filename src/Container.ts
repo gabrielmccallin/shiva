@@ -59,6 +59,12 @@ export class Container extends EventDispatcher {
                 this.innerHtml = config.text;
             }
 
+            if (config.attributes){
+                for (var index = 0; index < config.attributes.length; index++) {
+                    this._element.setAttribute(config.attributes[index].name, config.attributes[index].value);
+                }
+            }
+
             this._data = config.data;
 
             if (config.styles) {
@@ -323,20 +329,20 @@ export class Container extends EventDispatcher {
 
     // from(duration: number, vars: Object): TweenLite {
     //     return TweenLite.from(this._element, duration, vars);
-    // } 
+    // }
 
     addEventListener(scope: any, typeStr: string, listenerFunc: Function, data?: any, useCapture = false): void {
         let that = this;
         let scopedEventListener: EventListener = function (e) {
-            // console.log("captured at add", e); 
+            // console.log("captured at add", e);
             listenerFunc.apply(scope, [new Event(typeStr, that, data, e)]);
         };
 
         super.addEventListener(scope, typeStr, listenerFunc, data, useCapture, scopedEventListener);
-        // add to element 
+        // add to element
         if (this._element.addEventListener) {
             // Firefox, Google Chrome and Safari (and Opera and Internet Explorer from
-            // version 9). 
+            // version 9).
             this._element.addEventListener(typeStr, scopedEventListener, useCapture);
         } else if (this._element["attachEvent"]) {
             // Opera and Explorer (version < 9).
@@ -422,7 +428,14 @@ export class Container extends EventDispatcher {
     get data() {
         return this._data;
     }
+    
+    get innerText() : string {
+        return this._element.innerText;
+    }
 
+    set innerText(text : string) {
+        this._element.innerText = text;
+    }
 
     hide() {
         Properties.style(this._element, { display: "none" });

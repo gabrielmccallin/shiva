@@ -120,6 +120,32 @@ describe("CONTAINER", function () {
       expect(container.element.className).toEqual(classNamesString);
     });
 
+    it("✔️ pass attributes", function () {
+      var attributes = [
+        {
+          name: "for",
+          value: "hello"
+        },
+        {
+          name: "src",
+          value: "//hello.com/hello.jpg"
+        },
+        {
+          name: "hello",
+          value: "there"
+        }
+      ];
+
+      var container = new shiva.Container({
+        type: "label",
+        attributes: attributes
+      });
+
+      attributes.forEach(function(attribute){
+        expect(container.element.getAttribute(attribute.name)).toEqual(attribute.value);
+      });
+    });
+
   });
 
   describe("methods", function () {
@@ -359,6 +385,24 @@ describe("CONTAINER", function () {
       expect(container.element.style.opacity).toEqual("0.2");
 
     });
-
   });
+
+  describe("getters / setters", function () {
+    
+    var text = "Hello";
+    it("✔️ innerText setter", function () {
+      var container = new shiva.Container();
+      container.innerText = text;
+      
+      expect(container.element.innerText).toEqual(text);
+    });
+
+    it("✔️ innerText getter", function () {
+      var container = new shiva.Container();
+      container.element.innerText = text;
+      
+      expect(container.innerText).toEqual(text);
+    });
+  });
+
 });
