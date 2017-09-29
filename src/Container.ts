@@ -59,8 +59,10 @@ export class Container extends EventDispatcher {
                 this.innerHtml = config.text;
             }
 
-            if (config.for) {
-                this._element.htmlFor = config.for;
+            if (config.attributes){
+                for (var index = 0; index < config.attributes.length; index++) {
+                    this._element.setAttribute(config.attributes[index].name, config.attributes[index].value);
+                }
             }
 
             this._data = config.data;
@@ -426,7 +428,14 @@ export class Container extends EventDispatcher {
     get data() {
         return this._data;
     }
+    
+    get innerText() : string {
+        return this._element.innerText;
+    }
 
+    set innerText(text : string) {
+        this._element.innerText = text;
+    }
 
     hide() {
         Properties.style(this._element, { display: "none" });

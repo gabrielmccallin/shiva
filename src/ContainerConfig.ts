@@ -18,5 +18,5 @@ export interface ContainerConfig extends StyleDeclaration {
     text?: string;
     data?: any;
     className?: string | string[];
-    for?: string;
+    attributes?: { name: string, value: string }[];
 }

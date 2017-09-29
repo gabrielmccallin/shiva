@@ -287,6 +287,9 @@ interface ContainerConfig extends StyleDeclaration {
 
     // sets HTMLElement class attribute
     className?: string | string[];
+    
+    // sets HTMLElement attributes 
+    attributes?: { name: string, value: string }[];
 }    
 ```
     
