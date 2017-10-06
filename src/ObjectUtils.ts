@@ -19,7 +19,7 @@
                     target[property] = source[property];
                 }
             }
-            if (!source.hasOwnProperty(property)) {
+            if (source && !source.hasOwnProperty(property)) {
                 target = source;
             }
         }
