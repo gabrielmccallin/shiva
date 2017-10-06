@@ -141,10 +141,26 @@ describe("CONTAINER", function () {
         attributes: attributes
       });
 
-      attributes.forEach(function(attribute){
+      attributes.forEach(function (attribute) {
         expect(container.element.getAttribute(attribute.name)).toEqual(attribute.value);
       });
     });
+
+    it("✔️ pass responsive", function () {
+
+      var container = new shiva.Container({
+        responsive: {
+          maxWidth: 900,
+          style: {
+            backgroundColor: "aliceblue"
+          }
+        }
+      });
+      expect(container.element.style.backgroundColor).toEqual("rgb(240, 248, 255)");
+
+    });
+
+
 
   });
 
@@ -385,22 +401,186 @@ describe("CONTAINER", function () {
       expect(container.element.style.opacity).toEqual("0.2");
 
     });
+
+    it("✔️ responsive less than width max", function () {
+      // Phantom set to width 400
+      var container = new shiva.Container();
+      container.responsive([
+        {
+          maxWidth: 1000,
+          style: {
+            backgroundColor: "aliceblue"
+          }
+        }
+      ]);
+      expect(container.element.style.backgroundColor).toEqual("rgb(240, 248, 255)");
+
+    });
+
+    it("✔️ responsive greater than width max", function () {
+      // Phantom set to width 400
+      var container = new shiva.Container();
+      container.responsive([
+        {
+          maxWidth: 300,
+          style: {
+            backgroundColor: "aliceblue"
+          }
+        }
+      ]);
+      expect(container.element.style.backgroundColor).toEqual("");
+
+    });
+
+    it("✔️ responsive less than width min", function () {
+      // Phantom set to width 400
+      var container = new shiva.Container();
+      container.responsive({
+        minWidth: 1000,
+        style: {
+          backgroundColor: "aliceblue"
+        }
+      });
+      expect(container.element.style.backgroundColor).toEqual("");
+
+    });
+
+    it("✔️ responsive greater than width min", function () {
+      // Phantom set to width 400
+      var container = new shiva.Container();
+      container.responsive({
+        minWidth: 300,
+        style: {
+          backgroundColor: "aliceblue"
+        }
+      });
+      expect(container.element.style.backgroundColor).toEqual("rgb(240, 248, 255)");
+
+    });
+
+    it("✔️ responsive between max and min width", function () {
+      // Phantom set to width 400
+      var container = new shiva.Container();
+      container.responsive({
+        maxWidth: 500,
+        minWidth: 300,
+        style: {
+          backgroundColor: "aliceblue"
+        }
+      });
+      expect(container.element.style.backgroundColor).toEqual("rgb(240, 248, 255)");
+
+    });
+
+    it("✔️ responsive less than max and min width", function () {
+      // Phantom set to width 400
+      var container = new shiva.Container();
+      container.responsive({
+        maxWidth: 1500,
+        minWidth: 500,
+        style: {
+          backgroundColor: "aliceblue"
+        }
+      });
+      expect(container.element.style.backgroundColor).toEqual("");
+
+    });
+
+    it("✔️ responsive greater than max and min width", function () {
+      // Phantom set to width 400
+      var container = new shiva.Container();
+      container.responsive({
+        maxWidth: 400,
+        minWidth: 300,
+        style: {
+          backgroundColor: "aliceblue"
+        }
+      });
+      expect(container.element.style.backgroundColor).toEqual("");
+
+    });
+
+    it("✔️ responsive combinations", function () {
+      // Phantom set to width 400
+      var container = new shiva.Container();
+      container.responsive([
+        {
+          maxWidth: 300,
+          style: {
+            backgroundColor: "grey"
+          }
+        },
+        {
+          maxWidth: 500,
+          minWidth: 300,
+          style: {
+            backgroundColor: "aliceblue"
+          }
+        },
+        {
+          minWidth: 500,
+          style: {
+            backgroundColor: "goldenrod"
+          }
+        }
+      ]);
+      expect(container.element.style.backgroundColor).toEqual("rgb(240, 248, 255)");
+
+    });
+
+
+    it("✔️ responsive duration", function () {
+      // Phantom set to width 400
+      var container = new shiva.Container();
+      container.responsive([
+        {
+          maxWidth: 300,
+          style: {
+            backgroundColor: "grey"
+          },
+          duration: 1
+        },
+        {
+          maxWidth: 500,
+          minWidth: 300,
+          style: {
+            backgroundColor: "aliceblue"
+          },
+          duration: 2
+        },
+        {
+          minWidth: 500,
+          style: {
+            backgroundColor: "goldenrod"
+          },
+          duration: 3
+        }
+      ]);
+
+
+      setTimeout(function () {
+        expect(container.element.style.backgroundColor).toEqual('aliceblue');
+        expect(container.element.style.transition).toEqual('backgroundColor 3s');
+        done();
+      }, 200);
+    });
+
   });
 
   describe("getters / setters", function () {
-    
+
     var text = "Hello";
     it("✔️ innerText setter", function () {
       var container = new shiva.Container();
       container.innerText = text;
-      
+
       expect(container.element.innerText).toEqual(text);
     });
 
     it("✔️ innerText getter", function () {
       var container = new shiva.Container();
       container.element.innerText = text;
-      
+
       expect(container.innerText).toEqual(text);
     });
   });

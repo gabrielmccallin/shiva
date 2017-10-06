@@ -19,4 +19,12 @@ export interface ContainerConfig extends StyleDeclaration {
     data?: any;
     className?: string | string[];
     attributes?: { name: string, value: string }[];
+    responsive?: ResponsiveConfig | ResponsiveConfig[];
+}
+
+export interface ResponsiveConfig {
+    minWidth?: number;
+    maxWidth?: number;
+    style: StyleDeclaration;
+    duration?: number;
 }

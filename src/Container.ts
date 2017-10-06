@@ -1,7 +1,8 @@
-﻿import { Properties } from './Properties';
+﻿import { ObjectUtils } from './ObjectUtils';
+import { Properties } from './Properties';
 import { Dimensions } from './Dimensions';
 import { Event, EventDispatcher } from './EventDispatcher';
-import { ContainerConfig } from './ContainerConfig';
+import { ContainerConfig, ResponsiveConfig } from './ContainerConfig';
 import { StyleDeclaration } from './StyleDeclaration';
 import { TransitionToConfig } from './TransitionToConfig';
 import { TransitionFromToConfig } from './TransitionFromToConfig';
@@ -24,6 +25,7 @@ export class Container extends EventDispatcher {
     private _element: HTMLElement;
     private _data: any;
     private transitions: {} = {};
+    private responsiveRules: ResponsiveConfig[] | ResponsiveConfig;
 
     constructor(config?: ContainerConfig) {
         super();
@@ -59,7 +61,7 @@ export class Container extends EventDispatcher {
                 this.innerHtml = config.text;
             }
 
-            if (config.attributes){
+            if (config.attributes) {
                 for (var index = 0; index < config.attributes.length; index++) {
                     this._element.setAttribute(config.attributes[index].name, config.attributes[index].value);
                 }
@@ -83,6 +85,10 @@ export class Container extends EventDispatcher {
                 else {
                     this.className(...<string[]>config.className);
                 }
+            }
+
+            if (config.responsive) {
+                this.responsive(config.responsive);
             }
 
             // style all other config
@@ -381,6 +387,78 @@ export class Container extends EventDispatcher {
         e.preventDefault ? e.preventDefault() : e.returnValue = false;
     }
 
+    responsive(config: ResponsiveConfig | ResponsiveConfig[]) {
+        this.responsiveRules = config;
+        this.addResizeListener();
+        this.resizeHandler(null);
+    }
+
+    private addResizeListener() {
+        window.addEventListener("resize", event => {
+            this.resizeHandler(event);
+        });
+    }
+
+    private resizeHandler(e: UIEvent) {
+        const width = window.innerWidth
+            || document.documentElement.clientWidth
+            || document.body.clientWidth;
+
+        let mergedRules: StyleDeclaration = {};
+        let duration = 0;
+        if (this.responsiveRules.constructor === Array) {
+            const rulesArray = <ResponsiveConfig[]>this.responsiveRules;
+            for (let index = 0; index < rulesArray.length; index++) {
+                const rule = rulesArray[index];
+                if (rule.duration) {
+                    duration = rule.duration;
+                }
+                mergedRules = this.calculateResponsiveStyles(width, rule, mergedRules);
+            }
+        }
+        else {
+            const rule = <ResponsiveConfig>this.responsiveRules;
+            if (rule.duration) {
+                duration = rule.duration;
+            }
+            mergedRules = this.calculateResponsiveStyles(width, rule);
+
+        }
+        if (duration === 0) {
+            this.style(mergedRules);
+        }
+        else {
+            this.to({
+                duration: duration,
+                toVars: mergedRules
+            })
+        }
+    }
+
+    private calculateResponsiveStyles(width: number, rule: ResponsiveConfig, mergedRules: StyleDeclaration = {}): StyleDeclaration {
+
+        if (rule.maxWidth && rule.maxWidth !== 0) {
+            if (width < rule.maxWidth) {
+                if (rule.minWidth || rule.minWidth === 0) {
+                    if (width > rule.minWidth) {
+                        mergedRules = ObjectUtils.merge(mergedRules, rule.style);
+                    }
+                }
+                else {
+                    mergedRules = ObjectUtils.merge(mergedRules, rule.style);
+                }
+            }
+        }
+        else {
+            if (rule.minWidth || rule.minWidth === 0) {
+                if (width > rule.minWidth) {
+                    mergedRules = ObjectUtils.merge(mergedRules, rule.style);
+                }
+            }
+        }
+        return mergedRules;
+    }
+
     get width(): number {
         return this.shadow().width;
     }
@@ -428,12 +506,12 @@ export class Container extends EventDispatcher {
     get data() {
         return this._data;
     }
-    
-    get innerText() : string {
+
+    get innerText(): string {
         return this._element.innerText;
     }
 
-    set innerText(text : string) {
+    set innerText(text: string) {
         this._element.innerText = text;
     }
 
