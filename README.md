@@ -34,7 +34,10 @@ Put this code into your page, either via an external `script` tag in the `body` 
             width: "100%",
             height: "100%",
             textAlign: "center",
-            paddingTop: "2rem"
+            paddingTop: "2rem",
+            attributes: {
+                tabIndex: "0"
+            }
         });
         app.addChild(container);
 

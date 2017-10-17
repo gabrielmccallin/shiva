@@ -62,8 +62,8 @@ export class Container extends EventDispatcher {
             }
 
             if (config.attributes) {
-                for (var index = 0; index < config.attributes.length; index++) {
-                    this._element.setAttribute(config.attributes[index].name, config.attributes[index].value);
+                for (let key in config.attributes) {
+                    this._element.setAttribute(key, config.attributes[key]);
                 }
             }
 

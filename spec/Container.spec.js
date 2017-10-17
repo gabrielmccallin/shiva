@@ -121,29 +121,20 @@ describe("CONTAINER", function () {
     });
 
     it("✔️ pass attributes", function () {
-      var attributes = [
-        {
-          name: "for",
-          value: "hello"
-        },
-        {
-          name: "src",
-          value: "//hello.com/hello.jpg"
-        },
-        {
-          name: "hello",
-          value: "there"
-        }
-      ];
+      var attributes = {
+        for: "hello",
+        src: "//hello.com/hello.jpg",
+        hello: "there"
+      };
 
       var container = new shiva.Container({
         type: "label",
         attributes: attributes
       });
 
-      attributes.forEach(function (attribute) {
-        expect(container.element.getAttribute(attribute.name)).toEqual(attribute.value);
-      });
+      for (var key in attributes) {
+        expect(container.element.getAttribute(key)).toEqual(attributes[key]);
+      }
     });
 
     it("✔️ pass responsive", function () {
