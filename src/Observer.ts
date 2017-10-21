@@ -30,8 +30,5 @@ export class Observer {
                 this.observers[type][i].callback.call(this.observers[type][i].scope, evt);
             }
         }
-        else {
-            console.error("No Observer registered for: ", evt);
-        }
     }
 }
