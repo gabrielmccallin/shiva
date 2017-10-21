@@ -61,17 +61,14 @@ export class Container extends EventDispatcher {
                 this.innerHtml = config.text;
             }
 
-            if (config.attributes) {
-                for (var index = 0; index < config.attributes.length; index++) {
-                    this._element.setAttribute(config.attributes[index].name, config.attributes[index].value);
-                }
+            for (let key in config.attributes) {
+                this._element.setAttribute(key, config.attributes[key]);
             }
 
             this._data = config.data;
 
             if (config.styles) {
-                let styles = <StyleDeclaration[]>config.styles;
-                styles.map((style) => {
+                config.styles.forEach((style) => {
                     Properties.style(this._element, style);
                 });
             }

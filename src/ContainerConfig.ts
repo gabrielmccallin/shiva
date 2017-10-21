@@ -18,7 +18,7 @@ export interface ContainerConfig extends StyleDeclaration {
     text?: string;
     data?: any;
     className?: string | string[];
-    attributes?: { name: string, value: string }[];
+    attributes?: {};
     responsive?: ResponsiveConfig | ResponsiveConfig[];
 }
 
