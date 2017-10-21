@@ -1,7 +1,7 @@
 // Karma configuration
 // Generated on Sat Apr 29 2017 20:52:44 GMT+0100 (GMT Daylight Time)
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -11,7 +11,7 @@ module.exports = function(config) {
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine'],
-    
+
 
 
     // list of files / patterns to load in the browser
@@ -50,23 +50,28 @@ module.exports = function(config) {
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
     logLevel: config.LOG_INFO,
 
+    browserConsoleLogOptions: {
+      level: 'log',
+      format: '%b %T: %m',
+      terminal: true
+    },
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
+    autoWatch: false,
 
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: ['PhantomJS'],
     // phantomjsLauncher: {
-    //   // Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom)
-    //   exitOnResourceError: true
+      // Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom)
+      // exitOnResourceError: true
     // },
 
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
 
     // Concurrency level
     // how many browser should be started simultaneous

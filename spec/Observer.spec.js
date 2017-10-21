@@ -16,6 +16,19 @@ describe("OBSERVER", function () {
 
   });
 
+  it("✔️ dispatchEvent without addEventListener", function () {
+    var testDouble = {
+      handle: function () { }
+    }
+
+    spyOn(testDouble, 'handle');
+
+    shiva.Observer.dispatchEvent(new shiva.Event("EVENT!"));
+
+    expect(testDouble.handle).toHaveBeenCalledTimes(0);
+
+  });
+
   it("✔️ removeEventListener", function () {
     var testDouble = {
       handle: function () { }
