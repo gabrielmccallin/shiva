@@ -69,11 +69,11 @@ export class Container extends EventDispatcher {
 
             if (config.styles) {
                 config.styles.forEach((style) => {
-                    Properties.style(this._element, style);
+                    this.style(style);
                 });
             }
 
-            Properties.style(this._element, config.style);
+            this.style(config.style);
 
             if (config.className) {
                 if (typeof config.className === 'string') {
@@ -84,12 +84,12 @@ export class Container extends EventDispatcher {
                 }
             }
 
+            // style all other config
+            this.style(config);
+
             if (config.responsive) {
                 this.responsive(config.responsive);
             }
-
-            // style all other config
-            Properties.style(this._element, config);
         }
         else {
             this._element = document.createElement("div");
@@ -115,7 +115,6 @@ export class Container extends EventDispatcher {
         else {
             this._element.className = this._element.className + " " + className;
         }
-        // this._element.removeAttribute("style");
     }
 
     appendChild(child: Container) {
@@ -123,9 +122,6 @@ export class Container extends EventDispatcher {
         if (child.element) {
             childElement = child.element;
         }
-        // else {
-        //     childElement = <HTMLElement>child;
-        // }
         this._element.appendChild(childElement);
     }
 
@@ -164,22 +160,22 @@ export class Container extends EventDispatcher {
 
             }
 
-            Properties.style(this._element, {
+            this.style({
                 transition: this.convertTransitionObjectToString(this.transitions)
             });
 
             if (config.ease) {
-                Properties.style(this._element, {
+                this.style({
                     transitionTimingFunction: config.ease.toString()
                 });
             }
 
-            Properties.style(this._element, config.toVars);
+            this.style(config.toVars);
         }, delay);
 
         if (config.resolve) {
             setTimeout(() => {
-                Properties.style(this._element, {
+                this.style({
                     transition: this.removeCompletedTransitionsAndReapply(config.toVars)
                 });
                 this.dispatchEvent(new Event("TRANSITION_COMPLETE", this));
@@ -192,7 +188,7 @@ export class Container extends EventDispatcher {
         else {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
-                    Properties.style(this._element, {
+                    this.style({
                         transition: this.removeCompletedTransitionsAndReapply(config.toVars)
                     });
                     resolve();
@@ -278,18 +274,18 @@ export class Container extends EventDispatcher {
         if (config.delay) {
             config.delay = config.delay * 1000;
             if (config.immediateRender) {
-                Properties.style(this._element, config.fromVars);
+                this.style(config.fromVars);
             }
         }
         else {
-            Properties.style(this._element, config.fromVars);
+            this.style(config.fromVars);
             config.delay = 10;
         }
 
         return new Promise((resolve, reject) => {
             setTimeout(() => {
 
-                Properties.style(this._element, config.fromVars);
+                this.style(config.fromVars);
                 setTimeout(() => {
                     this.to({
                         duration: config.duration,
@@ -321,28 +317,16 @@ export class Container extends EventDispatcher {
     private hyphenToCamel(hyphen): string {
         return hyphen.replace(/-([a-z])/g, (match, index) => {
             return match[1].toUpperCase();
-
-            // let result = "";
-            // matchArray.map((char) => {
-            //     result += char;
-            // });
-            // return result;
         });
     }
-
-    // from(duration: number, vars: Object): TweenLite {
-    //     return TweenLite.from(this._element, duration, vars);
-    // }
 
     addEventListener(scope: any, typeStr: string, listenerFunc: Function, data?: any, useCapture = false): void {
         let that = this;
         let scopedEventListener: EventListener = function (e) {
-            // console.log("captured at add", e);
             listenerFunc.apply(scope, [new Event(typeStr, that, data, e)]);
         };
 
         super.addEventListener(scope, typeStr, listenerFunc, data, useCapture, scopedEventListener);
-        // add to element
         if (this._element.addEventListener) {
             // Firefox, Google Chrome and Safari (and Opera and Internet Explorer from
             // version 9).
@@ -370,7 +354,6 @@ export class Container extends EventDispatcher {
                 // Firefox, Google Chrome and Safari (and Opera and Internet Explorer from
                 // version 9).
                 this._element.removeEventListener(typeStr, listener.scopedEventListener, listener.useCapture);
-                // return true;
             } else if (this._element["detachEvent"]) {
                 // Opera and Explorer (version < 9).
                 this._element["detachEvent"]('on' + typeStr, <EventListener>listenerFunc);
@@ -461,7 +444,7 @@ export class Container extends EventDispatcher {
     }
 
     set width(w: number) {
-        Properties.style(this._element, { width: w });
+        this.style({ width: w });
     }
 
     get height(): number {
@@ -469,7 +452,7 @@ export class Container extends EventDispatcher {
     }
 
     set height(h: number) {
-        Properties.style(this._element, { height: h });
+        this.style({ height: h });
     }
 
     get y(): number {
@@ -481,11 +464,11 @@ export class Container extends EventDispatcher {
     }
 
     set y(yPos: number) {
-        Properties.style(this._element, { y: yPos });
+        this.style({ y: yPos });
     }
 
     set x(xPos: number) {
-        Properties.style(this._element, { x: xPos });
+        this.style({ x: xPos });
     }
 
     get alpha(): number {
@@ -493,7 +476,7 @@ export class Container extends EventDispatcher {
     }
 
     set alpha(value: number) {
-        Properties.style(this._element, { opacity: value.toString() });
+        this.style({ opacity: value.toString() });
     }
 
     set data(_data: any) {
@@ -513,15 +496,15 @@ export class Container extends EventDispatcher {
     }
 
     hide() {
-        Properties.style(this._element, { display: "none" });
+        this.style({ display: "none" });
     }
 
     show() {
-        Properties.style(this._element, { display: "block" });
+        this.style({ display: "block" });
     }
 
     fillContainer() {
-        Properties.style(this._element, {
+        this.style({
             minWidth: "100%",
             minHeight: "100%",
             left: "50%",
@@ -532,7 +515,7 @@ export class Container extends EventDispatcher {
     }
 
     centreHorizontal() {
-        Properties.style(this._element, {
+        this.style({
             display: "block",
             marginLeft: "auto",
             marginRight: "auto",
@@ -541,9 +524,8 @@ export class Container extends EventDispatcher {
     }
 
     centreHorizontalText() {
-        Properties.style(this._element, {
+        this.style({
             textAlign: "center"
-            // width: "100%"
         });
     }
 
@@ -576,8 +558,6 @@ export class Container extends EventDispatcher {
 
         let height = this._element.getBoundingClientRect().height;
         let width = this._element.getBoundingClientRect().width;
-        // width = this._element.scrollWidth;
-        // height = this._element.scrollHeight;
 
         if (width && height) {
         }
@@ -585,7 +565,6 @@ export class Container extends EventDispatcher {
             // fallback to scrollwidth and scrollheight
             width = this._element.scrollWidth;
             height = this._element.scrollHeight;
-
         }
 
         let dimensions = new Dimensions(width, height);
