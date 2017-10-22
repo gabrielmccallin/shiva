@@ -14,7 +14,6 @@ export class Button extends Container {
     private icon: Container;
     private stateOver: boolean;
 
-
     constructor(config?: ButtonConfig) {
         config = config || {};
 
@@ -26,11 +25,10 @@ export class Button extends Container {
         }
 
         let buttonLabel = Button.text;
-        if (config.text) {
+        if (config.text || config.text === "") {
             buttonLabel = config.text;
             config.text = null;
         }
-
 
         super(config);
 
@@ -43,9 +41,6 @@ export class Button extends Container {
         // copy default styles, copy config.style values, copy config values to the config object and then style the button with that object
         // this.config will also have values that are required later
         this.styles = ObjectUtils.merge({}, Styles.button);
-        // for (let i in Styles.button) {
-        //     this.styles[i] = Styles.button[i];
-        // }
 
         if (config.styles) {
             config.styles.map((style) => {
@@ -58,13 +53,11 @@ export class Button extends Container {
             this.styles = ObjectUtils.merge(this.styles, config.style);
         }
 
-
-
-        let label = document.createTextNode(buttonLabel);
+        const label = document.createTextNode(buttonLabel);
         this.element.appendChild(label);
 
         if (this.styles.icon && this.styles.icon.code) {
-            let icon = new Container({
+            const icon = new Container({
                 type: "span",
                 style: {
                     display: "inline-block",
@@ -92,7 +85,6 @@ export class Button extends Container {
             }
 
             icon.style(this.styles.icon.style);
-
         }
 
         this.styles.cursor = "pointer";
@@ -100,15 +92,13 @@ export class Button extends Container {
         this.addEventListener(this, "mouseover", this.over);
         this.addEventListener(this, "mouseout", this.out);
 
-        // this.style(this.styles);
-
         super.style(this.styles);
 
     }
 
     showOutTransition(e: Event) {
         if (this.stateOver && this.enabled) {
-            let event = <MouseEvent>e.sourceEvent;
+            const event = <MouseEvent>e.sourceEvent;
 
             event.preventDefault();
             event.stopImmediatePropagation();
@@ -157,7 +147,6 @@ export class Button extends Container {
 
     click(e: MouseEvent) {
         if (this.enabled) {
-            //this.out();
             var event = new Event(Button.CLICK, this, e);
             this.dispatchEvent(event);
         }

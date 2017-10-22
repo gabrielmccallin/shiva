@@ -108,6 +108,19 @@ describe("BUTTON", function () {
       expect(container.element.innerText).toEqual("hello");
     });
 
+    it("✔️ text empty string", function () {
+      var container = new shiva.Button({
+        text: ""
+      });
+      expect(container.element.innerText).toEqual("");
+    });
+
+    it("✔️ text default string", function () {
+      var container = new shiva.Button({
+      });
+      expect(container.element.innerText).toEqual("Button");
+    });
+
     it("✔️ data", function () {
       var data = { greeting: "hello" };
       var container = new shiva.Button({
