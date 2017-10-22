@@ -5,6 +5,31 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.3.5]` 2017-10-22
+### Changed
+- 📝 Update README with repo link, update CHANGELOG
+
+---
+## `[2.3.4]` 2017-10-22
+### Changed
+- 🐛 Fixed Button showing "Button" when passing empty string for text attribute in constructor object
+
+---
+## `[2.3.3]` 2017-10-21
+### Changed
+- 🐛 Fixed Observer console.error when event dispatched with no observer registered
+
+---
+## `[2.3.2]` 2017-10-21
+### Changed
+- 🐛 Fixed Container constructor not applying responsive styles at the right time
+
+---
+## `[2.3.1]` 2017-10-21
+### Changed
+- 👔 Pass HTMLElement attributes as an object in ContainerConfig, much nicer than before
+
+---
 ## `[2.3.0]` 2017-10-06
 ### Changed
 - 💚 Global definition file generated correctly

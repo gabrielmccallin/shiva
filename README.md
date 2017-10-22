@@ -4,7 +4,7 @@ A JavaScript library for programming the web.
 
 No markup, no templates, no CSS. Just code(😃);
 
-[https://gabrielmccallin.bitbucket.io/shiva/](https://gabrielmccallin.bitbucket.io/shiva/)
+[https://bitbucket.org/gabrielmccallin/shiva](https://bitbucket.org/gabrielmccallin/shiva)
 
 ---
 ## Getting started
@@ -292,8 +292,18 @@ interface ContainerConfig extends StyleDeclaration {
     className?: string | string[];
     
     // sets HTMLElement attributes 
-    attributes?: { name: string, value: string }[];
+    attributes?: {};
+    
+    // sets responsive rules 
+    responsive?: ResponsiveConfig | ResponsiveConfig[];
 }    
+
+interface ResponsiveConfig {
+    minWidth?: number;
+    maxWidth?: number;
+    style: StyleDeclaration;
+    duration?: number;
+}
 ```
     
 - **addToBody()**: void;  
@@ -331,6 +341,19 @@ Remove DOM and custom events.
 
 - **preventDefault( e: any )**: void;  
 Polyfill to prevent default event behavior.  
+
+- **responsive( config: ResponsiveConfig | ResponsiveConfig[] )**: void;  
+Set responsive rules on the container. An array of objects or object that has an optional minWidth, optional maxWidth, optional duration and a style to apply.  
+```
+    {
+        minWidth: 500,
+        maxWidth: 1000,
+        duration: 1,
+        style: {
+            backgroundColor: "red"
+        }
+    }
+```
 
 - **hide()**: void;  
 
