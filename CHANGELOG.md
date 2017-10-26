@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.3.6]` 2017-10-26
+### Changed
+- 🐛 Container.style() was going recursive mental when overridden by Button.style()
+
+---
 ## `[2.3.5]` 2017-10-22
 ### Changed
 - 📝 Update README with repo link, update CHANGELOG
