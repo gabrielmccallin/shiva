@@ -170,7 +170,7 @@ export class Button extends Container {
 
     style(_style: ButtonStyleDeclaration) {
         this.styles = ObjectUtils.merge(this.styles, _style);
-        super.style(_style);
+        super.style(this.styles);
     }
 
     private populateEmptyHoverStyles(style: HoverStyleDeclaration): HoverStyleDeclaration {

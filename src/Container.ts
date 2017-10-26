@@ -69,12 +69,12 @@ export class Container extends EventDispatcher {
 
             if (config.styles) {
                 config.styles.forEach((style) => {
-                    this.style(style);
+                    Properties.style(this._element, style);
                 });
             }
-
-            this.style(config.style);
-
+            
+            Properties.style(this._element, config.style);
+            
             if (config.className) {
                 if (typeof config.className === 'string') {
                     this.className(<string>config.className);
@@ -83,10 +83,10 @@ export class Container extends EventDispatcher {
                     this.className(...<string[]>config.className);
                 }
             }
-
+            
             // style all other config
-            this.style(config);
-
+            Properties.style(this._element, config);
+            
             if (config.responsive) {
                 this.responsive(config.responsive);
             }
