@@ -7,9 +7,9 @@ import { ButtonStyleDeclaration } from './ButtonStyleDeclaration';
 import { HoverStyleDeclaration } from './HoverStyleDeclaration';
 
 export class Button extends Container {
-    styles: ButtonStyleDeclaration;
     static CLICK: string = "click";
     static text: string = "Button";
+    private styles: ButtonStyleDeclaration;
     private enabled: boolean;
     private icon: Container;
     private stateOver: boolean;
@@ -38,18 +38,18 @@ export class Button extends Container {
         }
         this.enabled = true;
 
-        // copy default styles, copy config.style values, copy config values to the config object and then style the button with that object
-        // this.config will also have values that are required later
+        /* 
+            Copy default styles, copy config.style values, copy config values to this.styles and then style the button with that object.
+            this.styles will also have values that are required later, namely for rollover / rollout
+        */
         this.styles = ObjectUtils.merge({}, Styles.button);
 
         if (config.styles) {
             config.styles.map((style) => {
-                style = this.populateEmptyHoverStyles(style);
                 this.styles = ObjectUtils.merge(this.styles, style);
             });
         }
         if (config.style) {
-            config.style = this.populateEmptyHoverStyles(config.style);
             this.styles = ObjectUtils.merge(this.styles, config.style);
         }
 
@@ -96,29 +96,7 @@ export class Button extends Container {
 
     }
 
-    showOutTransition(e: Event) {
-        if (this.stateOver && this.enabled) {
-            const event = <MouseEvent>e.sourceEvent;
-
-            event.preventDefault();
-            event.stopImmediatePropagation();
-            event.stopPropagation();
-
-            this.to({
-                duration: this.styles.hover.durationOut,
-                toVars: {
-                    backgroundColor: this.styles.backgroundColor,
-                    color: this.styles.color
-                }
-            }).then(() => {
-                if (this.stateOver) {
-                    this.over(null);
-                }
-            });
-        }
-    }
-
-    over(e) {
+    over() {
         if (this.enabled) {
             this.stateOver = true;
             this.to({
@@ -131,7 +109,7 @@ export class Button extends Container {
         }
     }
 
-    out(e) {
+    out() {
         if (this.enabled) {
             this.stateOver = false;
             this.to({
@@ -143,7 +121,6 @@ export class Button extends Container {
             });
         }
     }
-
 
     click(e: MouseEvent) {
         if (this.enabled) {
@@ -165,29 +142,11 @@ export class Button extends Container {
     enable() {
         this.enabled = true;
         this.style({ cursor: "pointer" });
-        this.out(null);
+        this.out();
     }
 
     style(_style: ButtonStyleDeclaration) {
         this.styles = ObjectUtils.merge(this.styles, _style);
         super.style(this.styles);
-    }
-
-    private populateEmptyHoverStyles(style: HoverStyleDeclaration): HoverStyleDeclaration {
-        if (!this.styles.hover) {
-            style.hover = {
-                backgroundColor: style.backgroundColor,
-                color: style.color
-            }
-        }
-        else {
-            if (!this.styles.hover.color) {
-                style.hover.color = style.color;
-            }
-            if (!this.styles.hover.backgroundColor) {
-                style.hover.backgroundColor = style.backgroundColor;
-            }
-        }
-        return style;
     }
 }

@@ -238,7 +238,7 @@ describe("BUTTON", function () {
           }
         }
       });
-      container.over(null);
+      container.over();
 
       setTimeout(function () {
         expect(container.element.style.color).toEqual('red');
@@ -252,7 +252,7 @@ describe("BUTTON", function () {
       var container = new shiva.Button({
         style: {
           color: "blue",
-          backgroundColor: "rgb(128, 128, 128)",
+          backgroundColor: "yellow",
           hover: {
             durationIn: 0,
             durationOut: 1,
@@ -262,15 +262,15 @@ describe("BUTTON", function () {
         }
       });
 
-      container.over(null);
-      container.out(null);
+      container.over();
+      container.out();
 
       setTimeout(function () {
         expect(container.element.style.color).toEqual('blue');
-        expect(container.element.style.backgroundColor).toEqual('rgb(128, 128, 128)');
+        expect(container.element.style.backgroundColor).toEqual('yellow');
         expect(container.element.style.transition).toEqual('background-color 1s, color 1s');
         done();
-      }, 100);
+      }, 10);
     });
 
     it("✔️ click", function () {
@@ -293,7 +293,7 @@ describe("BUTTON", function () {
       });
 
       container.disable();
-      container.over(null);
+      container.over();
 
       setTimeout(function () {
         expect(container.element.style.color).toEqual('blue');
@@ -315,7 +315,7 @@ describe("BUTTON", function () {
 
       container.disable();
       container.enable();
-      container.over(null);
+      container.over();
 
       setTimeout(function () {
         expect(container.element.style.color).toEqual('red');
