@@ -8,17 +8,18 @@ export class Select extends Container {
         config.type = "select";
         super(config);
 
-        let element = <HTMLSelectElement>this.element;
+        const element = <HTMLSelectElement>this.element;
         if (config.name) {
             element.name = config.name;
         }
 
-
-        let options = config.options;
-        options.map((option) => {
-            let item = new Container({
-                text: option,
-                type: "option"
+        config.options.forEach((option) => {
+            const item = new Container({
+                text: option.text,
+                type: "option",
+                attributes: {
+                    'value': option.value
+                }
             });
             this.addChild(item);
         });
@@ -34,6 +35,11 @@ export class Select extends Container {
         let element = <HTMLSelectElement>this.element;
         return element.selectedIndex;
 
+    }
+
+    set selectedIndex(selectedIndex: number) {
+        let element = <HTMLSelectElement>this.element;
+        element.selectedIndex = selectedIndex;
     }
 
 }

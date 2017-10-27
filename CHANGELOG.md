@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.4.0]` 2017-10-27
+### Added
+- ✨ Select now takes an array of { value: string, text: string } objects to populate the list
+- ✨ Select can now set selected index
+
+---
 ## `[2.3.7]` 2017-10-27
 ### Changed
 - 🐛 Button rollout now working
