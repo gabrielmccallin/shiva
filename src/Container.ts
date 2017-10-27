@@ -72,9 +72,9 @@ export class Container extends EventDispatcher {
                     Properties.style(this._element, style);
                 });
             }
-            
+
             Properties.style(this._element, config.style);
-            
+
             if (config.className) {
                 if (typeof config.className === 'string') {
                     this.className(<string>config.className);
@@ -83,10 +83,10 @@ export class Container extends EventDispatcher {
                     this.className(...<string[]>config.className);
                 }
             }
-            
+
             // style all other config
             Properties.style(this._element, config);
-            
+
             if (config.responsive) {
                 this.responsive(config.responsive);
             }
@@ -160,24 +160,25 @@ export class Container extends EventDispatcher {
 
             }
 
-            this.style({
+            Properties.style(this._element, {
                 transition: this.convertTransitionObjectToString(this.transitions)
             });
 
             if (config.ease) {
-                this.style({
+                Properties.style(this._element, {
                     transitionTimingFunction: config.ease.toString()
-                });
+                }); 
             }
-
-            this.style(config.toVars);
+            
+            Properties.style(this._element, config.toVars);
         }, delay);
 
         if (config.resolve) {
             setTimeout(() => {
-                this.style({
+                Properties.style(this._element, {
                     transition: this.removeCompletedTransitionsAndReapply(config.toVars)
                 });
+
                 this.dispatchEvent(new Event("TRANSITION_COMPLETE", this));
                 config.resolve();
             }, (config.duration * 1000) + delay);
@@ -188,9 +189,10 @@ export class Container extends EventDispatcher {
         else {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
-                    this.style({
+                    Properties.style(this._element, {
                         transition: this.removeCompletedTransitionsAndReapply(config.toVars)
                     });
+
                     resolve();
                     this.dispatchEvent(new Event("TRANSITION_COMPLETE", this));
                 }, (config.duration * 1000) + delay);
@@ -274,18 +276,17 @@ export class Container extends EventDispatcher {
         if (config.delay) {
             config.delay = config.delay * 1000;
             if (config.immediateRender) {
-                this.style(config.fromVars);
+                Properties.style(this._element, config.fromVars);
             }
         }
         else {
-            this.style(config.fromVars);
+            Properties.style(this._element, config.fromVars);
             config.delay = 10;
         }
 
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-
-                this.style(config.fromVars);
+                Properties.style(this._element, config.fromVars);
                 setTimeout(() => {
                     this.to({
                         duration: config.duration,
@@ -405,7 +406,7 @@ export class Container extends EventDispatcher {
 
         }
         if (duration === 0) {
-            this.style(mergedRules);
+            Properties.style(this._element, mergedRules);
         }
         else {
             this.to({
@@ -444,7 +445,7 @@ export class Container extends EventDispatcher {
     }
 
     set width(w: number) {
-        this.style({ width: w });
+        Properties.style(this._element, { width: w });
     }
 
     get height(): number {
@@ -452,7 +453,7 @@ export class Container extends EventDispatcher {
     }
 
     set height(h: number) {
-        this.style({ height: h });
+        Properties.style(this._element, { height: h });
     }
 
     get y(): number {
@@ -464,11 +465,11 @@ export class Container extends EventDispatcher {
     }
 
     set y(yPos: number) {
-        this.style({ y: yPos });
+        Properties.style(this._element, { y: yPos });
     }
 
     set x(xPos: number) {
-        this.style({ x: xPos });
+        Properties.style(this._element, { x: xPos });
     }
 
     get alpha(): number {
@@ -476,7 +477,7 @@ export class Container extends EventDispatcher {
     }
 
     set alpha(value: number) {
-        this.style({ opacity: value.toString() });
+        Properties.style(this._element, { opacity: value.toString() });
     }
 
     set data(_data: any) {
@@ -496,15 +497,15 @@ export class Container extends EventDispatcher {
     }
 
     hide() {
-        this.style({ display: "none" });
+        Properties.style(this._element, { display: "none" });
     }
 
     show() {
-        this.style({ display: "block" });
+        Properties.style(this._element, { display: "block" });
     }
 
     fillContainer() {
-        this.style({
+        Properties.style(this._element, {
             minWidth: "100%",
             minHeight: "100%",
             left: "50%",
@@ -515,7 +516,7 @@ export class Container extends EventDispatcher {
     }
 
     centreHorizontal() {
-        this.style({
+        Properties.style(this._element, {
             display: "block",
             marginLeft: "auto",
             marginRight: "auto",
@@ -524,7 +525,7 @@ export class Container extends EventDispatcher {
     }
 
     centreHorizontalText() {
-        this.style({
+        Properties.style(this._element, {
             textAlign: "center"
         });
     }
