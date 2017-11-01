@@ -28,7 +28,11 @@ export class Select extends Container {
     get value(): string {
         let element = <HTMLSelectElement>this.element;
         return element.value;
+    }
 
+    set value(_value: string) {
+        let element = <HTMLSelectElement>this.element;
+        element.value = _value;
     }
 
     get selectedIndex(): number {

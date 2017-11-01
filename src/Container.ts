@@ -573,12 +573,12 @@ export class Container extends EventDispatcher {
     }
 
     get value(): string {
-        let inputElement = <HTMLInputElement>this._element;
+        let inputElement = <HTMLFormElement>this._element;
         return inputElement.value;
     }
 
     set value(_value: string) {
-        let inputElement = <HTMLInputElement>this._element;
+        let inputElement = <HTMLFormElement>this._element;
         inputElement.value = _value;
     }
 

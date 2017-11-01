@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.4.1]` 2017-11-01
+### Added
+- ✨ Select can now set value
+
+---
 ## `[2.4.0]` 2017-10-27
 ### Added
 - ✨ Select now takes an array of { value: string, text: string } objects to populate the list

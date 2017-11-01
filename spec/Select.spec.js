@@ -36,5 +36,29 @@ describe("SELECT", function () {
       expect(container.selectedIndex).toEqual(1);
     });
 
+    it("✔️ get select value", function () {
+      var container = new shiva.Select({
+        options: [
+          {value:"hello", text:"shiva"}, 
+          {value:"goodbye", text:"shiva"}
+        ]
+      });
+ 
+      expect(container.value).toEqual('hello');
+    });
+
+    it("✔️ set select value", function () {
+      var container = new shiva.Select({
+        options: [
+          {value:"hello", text:"shiva"}, 
+          {value:"goodbye", text:"shiva"}
+        ]
+      });
+
+      container.value = 'goodbye';
+ 
+      expect(container.value).toEqual('goodbye');
+    });
+
   });
 });
