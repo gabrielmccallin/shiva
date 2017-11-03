@@ -1,70 +1,59 @@
-describe("BUTTON", function () {
+import { Button } from '../src/Button';
 
-  describe("constructor", function () {
+describe("BUTTON", () => {
+  describe("constructor", () => {
 
 
-    it("✔️ constructed", function () {
-      var container = new shiva.Button({
+    it("✔️ constructed", () => {
+      var container = new Button({
 
       });
       expect(container).toBeDefined();
     });
 
-    it("✔️ html element created", function () {
-      var container = new shiva.Button({
+    it("✔️ html element created", () => {
+      var container = new Button({
 
       });
       expect(container.element).toBeDefined();
     });
 
-    it("✔️ id", function () {
-      var container = new shiva.Button({
+    it("✔️ id", () => {
+      var container = new Button({
         id: "hello"
       });
       expect(container.id).toBe("hello");
     });
 
-    it("✔️ type is button", function () {
-      var container = new shiva.Button({
+    it("✔️ type is button", () => {
+      var container = new Button({
         type: "button"
       });
       expect(container.element.tagName).toEqual("BUTTON");
     });
 
-    it("✔️ type is a if href in config object", function () {
-      var container = new shiva.Button({
+    it("✔️ type is a if href in config object", () => {
+      var container = new Button({
         href: "//hello.com"
       });
       expect(container.element.tagName).toEqual("A");
     });
 
-    it("✔️ default style", function () {
-      var container = new shiva.Button({
+    it("✔️ default style", () => {
+      var container = new Button({
       });
-      expect(container.element.style.fontSize).toEqual("1.2em")
-      expect(container.element.style.fontFamily).toEqual("sans-serif")
-      expect(container.element.style.backgroundColor).toEqual("rgb(254, 254, 254)")
-      expect(container.styles.hover.backgroundColor).toEqual("#dddddd")
-      expect(container.styles.hover.durationOut).toEqual(1)
-      expect(container.styles.hover.durationIn).toEqual(0)
-      expect(container.styles.hover.color).toEqual("#000000")
-      expect(container.element.style.padding).toEqual("0.75rem")
-      expect(container.element.style.textAlign).toEqual("left")
       expect(container.element.style.whiteSpace).toEqual("nowrap")
       expect(container.element.style.msTouchAction).toEqual("manipulation")
       expect(container.element.style.touchAction).toEqual("manipulation")
       expect(container.element.style.cursor).toEqual("pointer")
       expect(container.element.style.webkitUserSelect).toEqual("none")
-      expect(container.element.style.mozUserSelect).toEqual("none")
       expect(container.element.style.msUserSelect).toEqual("none")
       expect(container.element.style.userSelect).toEqual("none")
-      expect(container.element.style.border).toEqual("2px solid rgb(238, 238, 238)")
-      expect(container.element.style.color).toEqual("rgb(0, 0, 0)")
-      expect(container.element.innerText).toEqual("Button")
+      expect(container.element.textContent).toEqual("Button")
     });
 
-    it("✔️ style", function () {
-      var container = new shiva.Button({
+    it("✔️ style", () => {
+      var container = new Button({
         style: {
           color: "red",
           hover: {
@@ -80,8 +69,8 @@ describe("BUTTON", function () {
       expect(container.styles.icon.code).toEqual("hello");
     });
 
-    it("✔️ styles", function () {
-      var container = new shiva.Button({
+    it("✔️ styles", () => {
+      var container = new Button({
         styles: [
           {
             color: "blue",
@@ -101,45 +90,45 @@ describe("BUTTON", function () {
       expect(container.styles.hover.durationIn).toEqual(10);
     });
 
-    it("✔️ text", function () {
-      var container = new shiva.Button({
+    it("✔️ text", () => {
+      var container = new Button({
         text: "hello"
       });
-      expect(container.element.innerText).toEqual("hello");
+      expect(container.element.textContent).toEqual("hello");
     });
 
-    it("✔️ text empty string", function () {
-      var container = new shiva.Button({
+    it("✔️ text empty string", () => {
+      var container = new Button({
         text: ""
       });
-      expect(container.element.innerText).toEqual("");
+      expect(container.element.textContent).toEqual("");
     });
 
-    it("✔️ text default string", function () {
-      var container = new shiva.Button({
+    it("✔️ text default string", () => {
+      var container = new Button({
       });
-      expect(container.element.innerText).toEqual("Button");
+      expect(container.element.textContent).toEqual("Button");
     });
 
-    it("✔️ data", function () {
+    it("✔️ data", () => {
       var data = { greeting: "hello" };
-      var container = new shiva.Button({
+      var container = new Button({
         data: data
       });
       expect(container.data).toEqual(data);
     });
 
-    it("✔️ className", function () {
+    it("✔️ className", () => {
       var className = "hello";
-      var container = new shiva.Button({
+      var container = new Button({
         className: className
       });
       expect(container.element.className).toEqual(className);
     });
 
-    it("✔️ classNames", function () {
+    it("✔️ classNames", () => {
       var classNames = ["hello", "goodbye"];
-      var container = new shiva.Button({
+      var container = new Button({
         className: classNames
       });
 
@@ -151,18 +140,18 @@ describe("BUTTON", function () {
 
   });
 
-  describe("methods", function () {
+  describe("methods", () => {
 
-    it("✔️ className", function () {
+    it("✔️ className", () => {
       var className = "hello";
-      var container = new shiva.Button({
+      var container = new Button({
       });
       container.className(className);
       expect(container.element.className).toEqual(className);
     });
 
-    it("✔️ classNames", function () {
-      var container = new shiva.Button({
+    it("✔️ classNames", () => {
+      var container = new Button({
       });
 
       container.className("hello", "goodbye");
@@ -170,8 +159,8 @@ describe("BUTTON", function () {
     });
 
 
-    it("✔️ styles set by the constructor and then overridden by style", function () {
-      var container = new shiva.Button({
+    it("✔️ styles set by the constructor and then overridden by style", () => {
+      var container = new Button({
         styles: [
           {
             color: "blue",
@@ -209,8 +198,8 @@ describe("BUTTON", function () {
       expect(container.styles.icon.code).toEqual("goodbye");
     });
 
-    it("✔️ style", function () {
-      var container = new shiva.Button({
+    it("✔️ style", () => {
+      var container = new Button({
       });
       container.style({
         color: "red",
@@ -228,8 +217,8 @@ describe("BUTTON", function () {
       expect(container.styles.icon.code).toEqual("hello");
     });
 
-    it("✔️ over", function (done) {
-      var container = new shiva.Button({
+    it("✔️ over", () => {
+      var container = new Button({
         style: {
           color: "blue",
           hover: {
@@ -240,16 +229,19 @@ describe("BUTTON", function () {
       });
       container.over();
 
-      setTimeout(function () {
+      jest.useFakeTimers();
+
+      setTimeout(() => {
         expect(container.element.style.color).toEqual('red');
         expect(container.element.style.transition).toEqual('background-color 1s, color 1s');
-        done();
       }, 10);
+
+      jest.runAllTimers();
     });
 
 
-    it("✔️ out", function (done) {
-      var container = new shiva.Button({
+    it("✔️ out", () => {
+      var container = new Button({
         style: {
           color: "blue",
           backgroundColor: "yellow",
@@ -265,24 +257,29 @@ describe("BUTTON", function () {
       container.over();
       container.out();
 
-      setTimeout(function () {
+      jest.useFakeTimers();
+
+      setTimeout(() => {
         expect(container.element.style.color).toEqual('blue');
         expect(container.element.style.backgroundColor).toEqual('yellow');
         expect(container.element.style.transition).toEqual('background-color 1s, color 1s');
-        done();
+        
       }, 10);
+
+      jest.runAllTimers();
     });
 
-    it("✔️ click", function () {
-      var container = new shiva.Button({});
-      container.addEventListener(this, shiva.Button.CLICK, function (e) {
+    it("✔️ click", () => {
+      var container = new Button({});
+      container.addEventListener(this, Button.CLICK, function (e) {
         expect(e.target.element.tagName).toEqual("BUTTON");
       });
       container.click(null);
     });
 
-    it("✔️ disable", function (done) {
-      var container = new shiva.Button({
+
+    it("✔️ disable", () => {
+      var button = new Button({
         style: {
           color: "blue",
           hover: {
@@ -292,18 +289,23 @@ describe("BUTTON", function () {
         }
       });
 
-      container.disable();
-      container.over();
+      button.disable();
+      button.over();
 
-      setTimeout(function () {
-        expect(container.element.style.color).toEqual('blue');
-        expect(container.element.style.transition).toEqual('');
-        done();
+      jest.useFakeTimers();
+
+      setTimeout(() => {
+        expect(button.element.style.color).toEqual('blue');
+        expect(button.element.style.transition).toEqual(undefined);
       }, 10);
+
+
+      jest.runAllTimers();
+
     });
 
-    it("✔️ enable", function (done) {
-      var container = new shiva.Button({
+    it("✔️ enable", () => {
+      var container = new Button({
         style: {
           color: "blue",
           hover: {
@@ -317,12 +319,57 @@ describe("BUTTON", function () {
       container.enable();
       container.over();
 
-      setTimeout(function () {
+      jest.useFakeTimers();
+
+      setTimeout(() => {
         expect(container.element.style.color).toEqual('red');
         expect(container.element.style.transition).toEqual('background-color 1s, color 1s');
-        done();
+        
       }, 10);
-    });
 
+      
+      jest.runAllTimers();
+
+    });
+  });
+
+  describe("multiple buttons", () => {
+
+    jest.useFakeTimers();
+
+    it("✔️ check over states are different", () => {
+      const b1 = new Button({
+        style: {
+          color: "blue",
+          hover: {
+            durationIn: 1,
+            color: "red"
+          }
+        }
+      });
+
+      const b2 = new Button({
+        style: {
+          color: "yellow",
+          hover: {
+            durationIn: 1,
+            color: "green"
+          }
+        }
+      });
+
+      b1.over();
+      b2.over();
+
+
+      setTimeout(() => {
+        expect(b1.element.style.color).toEqual('red');
+        expect(b1.element.style.transition).toEqual('background-color 1s, color 1s');
+        expect(b2.element.style.color).toEqual('green');
+        expect(b2.element.style.transition).toEqual('background-color 1s, color 1s');
+      }, 20);
+
+      jest.runAllTimers();
+    });
   });
 });

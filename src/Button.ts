@@ -9,7 +9,7 @@ import { HoverStyleDeclaration } from './HoverStyleDeclaration';
 export class Button extends Container {
     static CLICK: string = "click";
     static text: string = "Button";
-    private styles: ButtonStyleDeclaration;
+    styles: ButtonStyleDeclaration;
     private enabled: boolean;
     private icon: Container;
     private stateOver: boolean;

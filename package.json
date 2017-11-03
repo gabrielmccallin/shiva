@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "echo And in all, the creator, preserver, destroyer, revealer and concealer of all that is. && npm run dev",
-    "build": "rimraf dist && npm run build:modules && npm run build:global-cjs && npm run copy-files && npm test",
+    "build": "rimraf dist && npm run build:modules && npm run build:global-cjs && npm run copy-files && jest",
     "build:global-cjs": "rollup -c",
     "build:modules": "tsc && npm run dts-bundle && npm run delete-empty && npm run delete-promise-polyfill-from-global-declaration && npm run concat-global-declaration",
     "remove-temporary": "rimraf dist/types",
@@ -20,31 +20,31 @@
     "dev": "parallelshell \"npm run serve\" \"npm run rollup-watch\"",
     "serve": "npm run build && serve ./dist -p 1347",
     "rollup-watch": "rollup -c -o ./dist/shiva-global.js -f iife -w",
-    "test": "karma start ./karma.conf.js --single-run --colors",
+    "test:build": "jest",
+    "test": "jest --watchAll",
     "delete-empty": "node libs/delete-empty-files dist",
-    "delete-promise-polyfill-from-global-declaration": "node libs/remove-promise-polyfill.js",
-    "env": "env"
+    "delete-promise-polyfill-from-global-declaration": "node libs/remove-promise-polyfill.js"
   },
   "dependencies": {
     "promise-polyfill": "^6.0.2"
   },
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/gabrielmccallin/shiva" 
+    "url": "https://bitbucket.org/gabrielmccallin/shiva"
   },
   "author": "Gabriel McCallin",
   "license": "MIT",
   "homepage": "https://gabrielmccallin.bitbucket.io/shiva",
   "devDependencies": {
+    "@types/jest": "^21.1.5",
+    "babel-preset-es2015": "^6.24.1",
     "concat": "^1.0.3",
     "copy": "^0.3.0",
     "dts-bundle": "^0.7.2",
     "jasmine-core": "^2.6.4",
-    "karma": "^1.6.0",
-    "karma-jasmine": "^1.1.0",
-    "karma-phantomjs-launcher": "^1.0.4",
+    "jest": "^21.2.1",
     "mkdirp": "^0.5.1",
-    "parallelshell": "^2.0.0",
+    "parallelshell": "^3.0.2",
     "rimraf": "^2.6.1",
     "rollup": "^0.41.6",
     "rollup-plugin-commonjs": "^8.0.2",
@@ -53,6 +53,37 @@
     "rollup-plugin-typescript": "^0.8.1",
     "rollup-watch": "^3.2.2",
     "serve": "^5.1.5",
+    "ts-jest": "^21.1.4",
     "typescript": "^2.4.1"
+  },
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.test.json"
+      },
+      "google": {}
+    },
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
+    "testMatch": [
+      "<rootDir>/test/**/?(*.)test.ts"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 0,
+        "functions": 0,
+        "lines": 0,
+        "statements": 0
+      }
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "\\.(ts)$": "<rootDir>/node_modules/ts-jest/preprocessor.js",
+      "^.+\\.js$": "babel-jest"
+    }
   }
 }

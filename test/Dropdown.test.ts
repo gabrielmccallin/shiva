@@ -1,8 +1,10 @@
+import { DropDown } from '../src/DropDown';
+
 describe("DROPDOWN", function () {
   describe("constructor", function () {
 
-    it("✔️ constructed", function () {
-      var dropdown = new shiva.DropDown({
+    it("constructed", function () { 
+      const dropdown = new DropDown({
         options: ["hello", "goodbye", "stay here"],
         style: {
           button: {
@@ -10,7 +12,10 @@ describe("DROPDOWN", function () {
             backgroundColor: "blue"
           },
           item: {
-            padding: "1rem",
+            padding: "1em", 
+            color: "yellow",
+            backgroundColor: "green",
+            width: "100%",
             hover: {
               backgroundColor: "green",
               color: "black",
@@ -23,41 +28,41 @@ describe("DROPDOWN", function () {
         id: "dropdown-hello"
       });
 
-      var button = dropdown.element.children.item(0);
+      const button = <HTMLButtonElement>dropdown.element.children.item(0);
       expect(button.tagName).toEqual("BUTTON");
       expect(button.style.color).toEqual("white");
       expect(button.style.backgroundColor).toEqual("blue");
 
-      var ul = dropdown.element.children.item(1);
+      const ul = <HTMLUListElement>dropdown.element.children.item(1);
       expect(ul.tagName).toEqual("UL");
       expect(ul.childElementCount).toEqual(3);
 
-      var li = ul.children.item(0);
+      const li = <HTMLLIElement>ul.children.item(0);
       expect(li.tagName).toEqual("LI");
-      expect(li.style.padding).toEqual('1rem');
+      expect(li.style.padding).toEqual('1em');
 
     });
 
-    it("✔️ click item in dropdown", function () {
-      var dropdown = new shiva.DropDown({
+    it("click item in dropdown", function () {
+      const dropdown = new DropDown({
         options: ["hello", "goodbye", "stay here"],
         text: "hello",
         id: "dropdown-hello"
       });
 
-      dropdown.addEventListener(this, shiva.DropDown.CHANGE, function (e) {
+      dropdown.addEventListener(this, DropDown.CHANGE, function (e) {
         expect(e.data).toEqual("hello");
       });
 
-      var ul = dropdown.element.children.item(1);
-      var li = ul.children.item(0);
+      const ul = dropdown.element.children.item(1);
+      const li = ul.children.item(0);
 
       li.dispatchEvent(new Event("mouseup"));
 
     });
 
-    it("✔️ disable", function () {
-      var container = new shiva.DropDown({
+    it("disable", function () {
+      const container = new DropDown({
         options: ["hello", "there"],
         style: {
           color: "blue",
@@ -68,15 +73,15 @@ describe("DROPDOWN", function () {
         }
       });
 
-      var button = container.element.children.item(0);
+      const button = <HTMLButtonElement>container.element.children.item(0);
 
       container.disable();
       expect(button.style.cursor).toEqual('default');
 
     });
 
-    it("✔️ enable", function () {
-      var container = new shiva.DropDown({
+    it("enable", function () {
+      const container = new DropDown({
         options: ["hello", "there"],
         style: {
           color: "blue",
@@ -87,7 +92,7 @@ describe("DROPDOWN", function () {
         }
       });
 
-      var button = container.element.children.item(0);
+      const button = <HTMLButtonElement>container.element.children.item(0);
 
       container.disable();
       container.enable();

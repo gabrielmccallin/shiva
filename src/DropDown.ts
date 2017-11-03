@@ -97,7 +97,6 @@ export class DropDown extends Container {
             this.dropStyle = ObjectUtils.merge(this.dropStyle, config.style);
         }
 
-
         this.unorderedList = new Container({
             type: "ul",
             styles: [
@@ -141,22 +140,22 @@ export class DropDown extends Container {
         }
         if (config.style) {
             // take root style
-            this.itemStyle = ObjectUtils.merge(this.itemStyle, config.style);
+            if (config.style.item) {
+                this.itemStyle = ObjectUtils.merge(this.itemStyle, config.style.item);
+            } else {
+                this.itemStyle = ObjectUtils.merge(this.itemStyle, config.style);
+            }
             // but not the border
             this.itemStyle.borderStyle = "";
             this.itemStyle.borderWidth = "";
             this.itemStyle.borderColor = "";
             this.itemStyle.borderImage = "";
 
-            if (config.style.item) {
-                this.itemStyle = ObjectUtils.merge(this.itemStyle, config.style.item);
-            }
         }
-
 
         let count = 0;
 
-        config.options.map((option) => {
+        config.options.forEach((option) => {
             const item = new Container({
                 data: option,
                 type: "li",
@@ -171,27 +170,12 @@ export class DropDown extends Container {
             });
             this.unorderedList.addChild(item);
 
-            // let anchor = new Container({
-            //     id: count.toString(),
-            //     type: "a",
-            //     styles: [
-            //         this.itemStyle,
-            //         {
-            //             display: "list-item",
-            //             cursor: "pointer"
-            //         }
-            //     ]
-            // });
-
             this.items.push(item);
-
-            // anchor.innerHtml = option;
 
             item.addEventListener(this, "mouseover", this.itemOver);
             item.addEventListener(this, "mouseout", this.itemOut);
             item.addEventListener(this, "mouseup", this.itemClicked);
 
-            // item.addChild(anchor);
             count++;
 
         });
