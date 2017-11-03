@@ -1,17 +1,5 @@
 ﻿export class Styles {
     static button = {
-        fontSize: "1.2em",
-        fontFamily: "sans-serif",
-        // fontWeight: "300",
-        backgroundColor: "#fefefe",
-        hover: {
-            backgroundColor: "#dddddd",
-            durationOut: 1,
-            durationIn: 0,
-            color: "#000000"
-        },
-        padding: "0.75rem",
-        textAlign: "left",
         whiteSpace: "nowrap",
         msTouchAction: "manipulation",
         touchAction: "manipulation",
@@ -20,10 +8,10 @@
         mozUserSelect: "none",
         msUserSelect: "none",
         userSelect: "none",
-        border: "2px solid transparent",
-        borderColor: "#eeeeee",
-        color: "#000000",
-        text: "Button"
+        text: "Button",
+        icon: {
+            padding: "0.75rem"
+        }
     };
     static drop = {
         fontFamily: "sans-serif",
