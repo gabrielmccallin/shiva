@@ -431,7 +431,7 @@ export class Container extends EventDispatcher {
         }
         else {
             if (rule.minWidth || rule.minWidth === 0) {
-                if (width > rule.minWidth) {
+                if (width >= rule.minWidth) {
                     mergedRules = ObjectUtils.merge(mergedRules, rule.style);
                 }
             }

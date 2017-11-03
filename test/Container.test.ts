@@ -337,6 +337,19 @@ describe("CONTAINER", () => {
 
     });
 
+    it("responsive greater or equals to min width", () => {
+      // JSDOM set to width 1024
+      var container = new Container();
+      container.responsive({
+        minWidth: 1024,
+        style: {
+          backgroundColor: "blue"
+        }
+      });
+      expect(container.element.style.backgroundColor).toEqual("blue");
+
+    });
+
     it("responsive between max and min width", () => {
       // JSDOM set to width 1024
       var container = new Container();
