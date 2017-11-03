@@ -9,7 +9,7 @@ import { HoverStyleDeclaration } from './HoverStyleDeclaration';
 export class Button extends Container {
     static CLICK: string = "click";
     static text: string = "Button";
-    private styles: ButtonStyleDeclaration;
+    styles: ButtonStyleDeclaration;
     private enabled: boolean;
     private icon: Container;
     private stateOver: boolean;
@@ -55,37 +55,6 @@ export class Button extends Container {
 
         const label = document.createTextNode(buttonLabel);
         this.element.appendChild(label);
-
-        if (this.styles.icon && this.styles.icon.code) {
-            const icon = new Container({
-                type: "span",
-                style: {
-                    display: "inline-block",
-                    fontFamily: Styles.button.fontFamily,
-                    fontSize: Styles.button.fontSize,
-                    pointerEvents: "none"
-                },
-                text: this.styles.icon.code
-            });
-
-            if (this.styles.icon.align === "left") {
-                icon.style({
-                    paddingRight: Styles.button.padding,
-                });
-                this.element.removeChild(label);
-                this.addChild(icon);
-                this.element.appendChild(label);
-            }
-            else {
-                icon.style({
-                    paddingLeft: Styles.button.padding
-                });
-                this.addChild(icon);
-
-            }
-
-            icon.style(this.styles.icon.style);
-        }
 
         this.styles.cursor = "pointer";
 

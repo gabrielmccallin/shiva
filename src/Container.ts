@@ -1,4 +1,5 @@
-﻿import { ObjectUtils } from './ObjectUtils';
+﻿import { Window } from './Window';
+import { ObjectUtils } from './ObjectUtils';
 import { Properties } from './Properties';
 import { Dimensions } from './Dimensions';
 import { Event, EventDispatcher } from './EventDispatcher';
@@ -159,7 +160,7 @@ export class Container extends EventDispatcher {
                 this.transitions[i] = vo;
 
             }
-
+            
             Properties.style(this._element, {
                 transition: this.convertTransitionObjectToString(this.transitions)
             });
@@ -381,13 +382,11 @@ export class Container extends EventDispatcher {
     }
 
     private resizeHandler(e: UIEvent) {
-        const width = window.innerWidth
-            || document.documentElement.clientWidth
-            || document.body.clientWidth;
+        const width = Window.width;
 
         let mergedRules: StyleDeclaration = {};
         let duration = 0;
-        if (this.responsiveRules.constructor === Array) {
+        if (Array.isArray(this.responsiveRules)) {
             const rulesArray = <ResponsiveConfig[]>this.responsiveRules;
             for (let index = 0; index < rulesArray.length; index++) {
                 const rule = rulesArray[index];
@@ -432,7 +431,7 @@ export class Container extends EventDispatcher {
         }
         else {
             if (rule.minWidth || rule.minWidth === 0) {
-                if (width > rule.minWidth) {
+                if (width >= rule.minWidth) {
                     mergedRules = ObjectUtils.merge(mergedRules, rule.style);
                 }
             }

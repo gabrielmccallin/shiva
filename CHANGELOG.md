@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.4.2]` 2017-11-03
+### Changed
+- 🚿 ObjectUtils: copies all properties instead of references
+- ➖ Button: default styles removed
+- ✔️ Tests: migrated to Jest 👢
+- 🐛 Container: Fix for when only min width is specified the check should be greater than or equal to width
+
+---
 ## `[2.4.1]` 2017-11-01
 ### Added
 - ✨ Select can now set value

@@ -6,21 +6,29 @@
      * @return {Object} Will be an object containing all properties recursive from target and source
      */
     static merge(target: any, source: any): any {
-        if (typeof target !== 'object') {
-            target = source;
-        }
-        else {
-            for (var property in source) {
-                if (source.hasOwnProperty(property)) {
-                    if (typeof source[property] === 'object') {
-                        target[property] = ObjectUtils.merge(target[property], source[property]);
-                        continue;
+        if(target){
+            if (typeof target !== 'object') {
+                target = source;
+            }
+            else {
+                for (var property in source) {
+                    if (source.hasOwnProperty(property)) {
+                        if (typeof source[property] === 'object') {
+                            target[property] = ObjectUtils.merge(target[property], source[property]);
+                            continue;
+                        }
+                        target[property] = source[property];
                     }
-                    target[property] = source[property];
+                }
+                if (source && !source.hasOwnProperty(property)) {
+                    target = source;
                 }
             }
-            if (source && !source.hasOwnProperty(property)) {
-                target = source;
+        } else {
+            if(Array.isArray(source)){
+                target = [].concat(source);
+            } else {
+                target = ObjectUtils.merge({}, source);
             }
         }
         return target;

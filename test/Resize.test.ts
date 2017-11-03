@@ -1,7 +1,8 @@
-describe("RESIZE", function () {
+import { Resize } from '../src/Resize';
 
-  it("✔️ proportionalOutside", function () {
-    var dimensions = shiva.Resize.proportionalOutside({
+describe("RESIZE", function () {
+  test("proportionalOutside", function () {
+    const dimensions = Resize.proportionalOutside({
       width: 1000,
       height: 500
     },
@@ -11,7 +12,7 @@ describe("RESIZE", function () {
       }
     );
 
-    var expectedResult = {
+    const expectedResult = {
       width: 500,
       height: 250
     };
@@ -19,8 +20,8 @@ describe("RESIZE", function () {
     expect(dimensions).toEqual(expectedResult);
   });
 
-  it("✔️ proportionalInside", function () {
-    var dimensions = shiva.Resize.proportionalInside({
+  test("proportionalInside", function () {
+    const dimensions = Resize.proportionalInside({
       width: 1200,
       height: 600
     },
@@ -30,14 +31,11 @@ describe("RESIZE", function () {
       }
     );
 
-    var expectedResult = {
+    const expectedResult = {
       width: 400,
       height: 200
     };
 
     expect(dimensions).toEqual(expectedResult);
   });
-
-
-
 });
