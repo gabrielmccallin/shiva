@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.4.3]` 2017-11-07
+### Changed
+- 🐛 Button: check if there is a hover style
+- 🙇 Button: by default is of type='button'
+
+---
 ## `[2.4.2]` 2017-11-03
 ### Changed
 - 🚿 ObjectUtils: copies all properties instead of references
