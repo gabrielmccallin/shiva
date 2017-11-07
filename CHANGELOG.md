@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.4.4]` 2017-11-07
+### Added
+- ✨ Select: can set / get options list
+
+---
 ## `[2.4.3]` 2017-11-07
 ### Changed
 - 🐛 Button: check if there is a hover style
