@@ -22,6 +22,7 @@ export class Button extends Container {
         }
         else {
             config.type = "button";
+            config.attributes = { type: 'button' };
         }
 
         let buttonLabel = Button.text;
@@ -66,28 +67,32 @@ export class Button extends Container {
     }
 
     over() {
-        if (this.enabled) {
-            this.stateOver = true;
-            this.to({
-                duration: this.styles.hover.durationIn,
-                toVars: {
-                    backgroundColor: this.styles.hover.backgroundColor,
-                    color: this.styles.hover.color
-                }
-            });
+        if (this.styles.hover) {
+            if (this.enabled) {
+                this.stateOver = true;
+                this.to({
+                    duration: this.styles.hover.durationIn,
+                    toVars: {
+                        backgroundColor: this.styles.hover.backgroundColor,
+                        color: this.styles.hover.color
+                    }
+                });
+            }
         }
     }
 
     out() {
-        if (this.enabled) {
-            this.stateOver = false;
-            this.to({
-                duration: this.styles.hover.durationOut,
-                toVars: {
-                    backgroundColor: this.styles.backgroundColor,
-                    color: this.styles.color
-                }
-            });
+        if (this.styles.hover) {
+            if (this.enabled) {
+                this.stateOver = false;
+                this.to({
+                    duration: this.styles.hover.durationOut,
+                    toVars: {
+                        backgroundColor: this.styles.backgroundColor,
+                        color: this.styles.color
+                    }
+                });
+            }
         }
     }
 
