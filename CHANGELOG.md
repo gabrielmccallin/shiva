@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.4.5]` 2017-11-13
+### Added
+- 📯 Container: can kill all animations and get any active timeouts
+
+---
 ## `[2.4.4]` 2017-11-07
 ### Added
 - ✨ Select: can set / get options list
