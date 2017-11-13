@@ -26,6 +26,7 @@ export class Container extends EventDispatcher {
     private _element: HTMLElement;
     private _data: any;
     private transitions: {} = {};
+    private timeoutsArray = [];
     private responsiveRules: ResponsiveConfig[] | ResponsiveConfig;
 
     constructor(config?: ContainerConfig) {
@@ -97,6 +98,16 @@ export class Container extends EventDispatcher {
         }
     }
 
+    get timeouts(): Array<number> {
+        return this.timeoutsArray;
+    }
+
+    killAnimations() {
+        this.timeoutsArray.forEach(timeout => {
+            clearTimeout(timeout);
+        });
+        this.timeoutsArray = [];
+    }
 
     addToBody() {
         document.body.appendChild(this._element);
@@ -142,7 +153,7 @@ export class Container extends EventDispatcher {
             delay = config.delay * 1000;
         }
 
-        setTimeout(() => {
+        this.timeoutsArray.push(setTimeout(() => {
             for (let i in config.toVars) {
                 let vo = {};
 
@@ -160,7 +171,7 @@ export class Container extends EventDispatcher {
                 this.transitions[i] = vo;
 
             }
-            
+
             Properties.style(this._element, {
                 transition: this.convertTransitionObjectToString(this.transitions)
             });
@@ -168,35 +179,35 @@ export class Container extends EventDispatcher {
             if (config.ease) {
                 Properties.style(this._element, {
                     transitionTimingFunction: config.ease.toString()
-                }); 
+                });
             }
-            
+
             Properties.style(this._element, config.toVars);
-        }, delay);
+        }, delay));
 
         if (config.resolve) {
-            setTimeout(() => {
+            this.timeoutsArray.push(setTimeout(() => {
                 Properties.style(this._element, {
                     transition: this.removeCompletedTransitionsAndReapply(config.toVars)
                 });
 
                 this.dispatchEvent(new Event("TRANSITION_COMPLETE", this));
-                config.resolve();
-            }, (config.duration * 1000) + delay);
+                config.resolve(this);
+            }, (config.duration * 1000) + delay));
 
             // !!
             return null;
         }
         else {
             return new Promise((resolve, reject) => {
-                setTimeout(() => {
+                this.timeoutsArray.push(setTimeout(() => {
                     Properties.style(this._element, {
                         transition: this.removeCompletedTransitionsAndReapply(config.toVars)
                     });
 
-                    resolve();
+                    resolve(this);
                     this.dispatchEvent(new Event("TRANSITION_COMPLETE", this));
-                }, (config.duration * 1000) + delay);
+                }, (config.duration * 1000) + delay));
             });
         }
     }
@@ -286,17 +297,17 @@ export class Container extends EventDispatcher {
         }
 
         return new Promise((resolve, reject) => {
-            setTimeout(() => {
+            this.timeoutsArray.push(setTimeout(() => {
                 Properties.style(this._element, config.fromVars);
-                setTimeout(() => {
+                this.timeoutsArray.push(setTimeout(() => {
                     this.to({
                         duration: config.duration,
                         ease: config.ease,
                         toVars: config.toVars,
                         resolve: resolve
                     });
-                }, 10);
-            }, config.delay);
+                }, 10));
+            }, config.delay));
         });
     }
 

@@ -10,7 +10,7 @@ describe("CONTAINER", () => {
     it("pass responsive duration", () => {
       // JSDOM set to width 1024
 
-      var container = new Container({
+      const container = new Container({
         backgroundColor: "black",
         responsive: [
           {
@@ -49,22 +49,22 @@ describe("CONTAINER", () => {
   describe("methods", () => {
 
     it("addToBody", () => {
-      var container = new Container({
+      const container = new Container({
       });
       container.addToBody();
       expect(container.element.parentElement.localName).toEqual("body");
     });
 
     it("className", () => {
-      var className = "hello";
-      var container = new Container({
+      const className = "hello";
+      const container = new Container({
       });
       container.className(className);
       expect(container.element.className).toEqual(className);
     });
 
     it("classNames", () => {
-      var container = new Container({
+      const container = new Container({
       });
 
       container.className("hello", "goodbye");
@@ -72,10 +72,10 @@ describe("CONTAINER", () => {
     });
 
     it("addChild", () => {
-      var parent = new Container({
+      const parent = new Container({
       });
 
-      var child = new Container({
+      const child = new Container({
       });
       parent.addChild(child);
 
@@ -83,10 +83,10 @@ describe("CONTAINER", () => {
     });
 
     it("appendChild", () => {
-      var parent = new Container({
+      const parent = new Container({
       });
 
-      var child = new Container({
+      const child = new Container({
       });
       parent.appendChild(child);
 
@@ -94,10 +94,10 @@ describe("CONTAINER", () => {
     });
 
     it("removeChild", () => {
-      var parent = new Container({
+      const parent = new Container({
       });
 
-      var child = new Container({
+      const child = new Container({
       });
       parent.addChild(child);
       parent.removeChild(child);
@@ -106,7 +106,7 @@ describe("CONTAINER", () => {
     });
 
     it("styles set by the constructor and then overridden by style", () => {
-      var container = new Container({
+      const container = new Container({
         styles: [
           {
             color: "blue"
@@ -123,7 +123,7 @@ describe("CONTAINER", () => {
     });
 
     it("style", () => {
-      var container = new Container({
+      const container = new Container({
       });
       container.style({
         color: "red"
@@ -132,7 +132,7 @@ describe("CONTAINER", () => {
     });
 
     it("event dispatched", () => {
-      var container = new Container({});
+      const container = new Container({});
       container.addEventListener(this, "CUSTOM", function (e) {
         expect(e.type).toEqual('CUSTOM');
         expect(e.target.element).toBeDefined();
@@ -142,7 +142,7 @@ describe("CONTAINER", () => {
 
 
     it("to", () => {
-      var container = new Container({
+      const container = new Container({
       });
 
       container.to({
@@ -164,7 +164,7 @@ describe("CONTAINER", () => {
     });
 
     it("to with zero duration", () => {
-      var container = new Container({
+      const container = new Container({
       });
 
       container.to({
@@ -186,7 +186,7 @@ describe("CONTAINER", () => {
 
     it("fromTo", () => {
 
-      var container = new Container({
+      const container = new Container({
       });
 
       container.fromTo({
@@ -213,7 +213,7 @@ describe("CONTAINER", () => {
 
     it("fromTo with immediate render", () => {
 
-      var container = new Container({
+      const container = new Container({
       });
 
       container.fromTo({
@@ -243,10 +243,10 @@ describe("CONTAINER", () => {
 
 
     it("remove listener", () => {
-      var container = new Container({
+      const container = new Container({
       });
 
-      var testDouble = {
+      const testDouble = {
         handle: () => { }
       }
 
@@ -262,7 +262,7 @@ describe("CONTAINER", () => {
     });
 
     it("style with numeric properties", () => {
-      var container = new Container({
+      const container = new Container({
 
       });
       container.style({
@@ -283,7 +283,7 @@ describe("CONTAINER", () => {
 
     it("responsive less than width max", () => {
       // JSDOM set to width 1024
-      var container = new Container();
+      const container = new Container();
       container.responsive([
         {
           maxWidth: 1100,
@@ -298,7 +298,7 @@ describe("CONTAINER", () => {
 
     it("responsive greater than width max", () => {
       // JSDOM set to width 1024
-      var container = new Container();
+      const container = new Container();
       container.responsive([
         {
           maxWidth: 300,
@@ -313,7 +313,7 @@ describe("CONTAINER", () => {
 
     it("responsive less than width min", () => {
       // JSDOM set to width 1024
-      var container = new Container();
+      const container = new Container();
       container.responsive({
         minWidth: 1100,
         style: {
@@ -326,7 +326,7 @@ describe("CONTAINER", () => {
 
     it("responsive greater than width min", () => {
       // JSDOM set to width 1024
-      var container = new Container();
+      const container = new Container();
       container.responsive({
         minWidth: 300,
         style: {
@@ -339,7 +339,7 @@ describe("CONTAINER", () => {
 
     it("responsive greater or equals to min width", () => {
       // JSDOM set to width 1024
-      var container = new Container();
+      const container = new Container();
       container.responsive({
         minWidth: 1024,
         style: {
@@ -352,7 +352,7 @@ describe("CONTAINER", () => {
 
     it("responsive between max and min width", () => {
       // JSDOM set to width 1024
-      var container = new Container();
+      const container = new Container();
       container.responsive({
         maxWidth: 1500,
         minWidth: 300,
@@ -366,7 +366,7 @@ describe("CONTAINER", () => {
 
     it("responsive less than max and min width", () => {
       // JSDOM set to width 1024
-      var container = new Container();
+      const container = new Container();
       container.responsive({
         maxWidth: 1000,
         minWidth: 500,
@@ -380,7 +380,7 @@ describe("CONTAINER", () => {
 
     it("responsive greater than max and min width", () => {
       // JSDOM set to width 1024
-      var container = new Container();
+      const container = new Container();
       container.responsive({
         maxWidth: 400,
         minWidth: 300,
@@ -394,7 +394,7 @@ describe("CONTAINER", () => {
 
     it("responsive combinations", () => {
       // JSDOM set to width 1024
-      var container = new Container();
+      const container = new Container();
       container.responsive([
         {
           maxWidth: 300,
@@ -424,7 +424,7 @@ describe("CONTAINER", () => {
     it("responsive duration", () => {
       // JSDOM set to width 1024
 
-      var container = new Container();
+      const container = new Container();
       container.responsive([
         {
           maxWidth: 300,
@@ -457,20 +457,48 @@ describe("CONTAINER", () => {
 
     });
 
+    test("kill animation timeouts", () => {
+      // JSDOM set to width 1024
+
+      const container = new Container({
+        backgroundColor: 'white'
+      });
+      container.to({
+        duration: 1,
+        toVars: {
+          backgroundColor: 'blue'
+        }
+      })
+      .then((container) => {
+        container.style({
+          backgroundColor: 'red'
+        })
+      });
+
+      jest.runTimersToTime(20);
+      
+      expect(container.element.style.backgroundColor).toEqual('blue');
+      
+      container.killAnimations();
+
+      jest.runAllTimers();
+      
+      expect(container.element.style.backgroundColor).toEqual('blue');
+    });
   });
 
   describe("getters / setters", () => {
 
-    var text = "Hello";
+    const text = "Hello";
     it("innerText setter", () => {
-      var container = new Container();
+      const container = new Container();
       container.innerText = text;
 
       expect(container.element.innerText).toEqual(text);
     });
 
     it("innerText getter", function () {
-      var container = new Container();
+      const container = new Container();
       container.element.innerText = text;
 
       expect(container.innerText).toEqual(text);
