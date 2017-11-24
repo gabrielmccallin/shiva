@@ -11,6 +11,10 @@
         text: "Button",
         icon: {
             padding: "0.75rem"
+        },
+        type: "button",
+        attributes: {
+            type: "button"
         }
     };
     static drop = {

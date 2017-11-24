@@ -5,9 +5,11 @@
      * @param {Object} source Object to be merged from
      * @return {Object} Will be an object containing all properties recursive from target and source
      */
-    static merge(target: any, source: any): any {
-        if(target){
-            if (typeof target !== 'object') {
+    static merge(target: any = {}, source: any = {}): any {
+        if (Array.isArray(source) && (Object.keys(target).length === 0)) {
+            target = [].concat(source);
+        } else {
+            if (typeof target !== 'object' || typeof source !== 'object') {
                 target = source;
             }
             else {
@@ -20,15 +22,6 @@
                         target[property] = source[property];
                     }
                 }
-                if (source && !source.hasOwnProperty(property)) {
-                    target = source;
-                }
-            }
-        } else {
-            if(Array.isArray(source)){
-                target = [].concat(source);
-            } else {
-                target = ObjectUtils.merge({}, source);
             }
         }
         return target;

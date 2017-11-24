@@ -1,11 +1,11 @@
-﻿import { Container } from './Container';
-import { Button } from './Button';
-import { ObjectUtils } from './ObjectUtils';
-import { Styles } from './Styles';
-import { Event } from './EventDispatcher';
+﻿import { Button } from './Button';
+import { Container } from './Container';
 import { DropDownConfig } from './DropDownConfig';
 import { DropStyleDeclaration } from './DropStyleDeclaration';
+import { Event } from './EventDispatcher';
 import { HoverStyleDeclaration } from './HoverStyleDeclaration';
+import { ObjectUtils } from './ObjectUtils';
+import { Styles } from './Styles';
 
 
 export class DropDown extends Container {
@@ -328,9 +328,9 @@ export class DropDown extends Container {
         this.unorderedList.to({
             duration: this.durationContract,
             toVars:
-            {
-                opacity: "0",
-            }
+                {
+                    opacity: "0",
+                }
         })
             .then(() => {
                 this.unorderedList.style({

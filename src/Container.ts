@@ -1,18 +1,16 @@
-﻿import { Window } from './Window';
-import { ObjectUtils } from './ObjectUtils';
-import { Properties } from './Properties';
+﻿import Promise from 'promise-polyfill';
+
+import { ContainerConfig, ResponsiveConfig } from './ContainerConfig';
 import { Dimensions } from './Dimensions';
 import { Event, EventDispatcher } from './EventDispatcher';
-import { ContainerConfig, ResponsiveConfig } from './ContainerConfig';
+import { ObjectUtils } from './ObjectUtils';
+import { Properties } from './Properties';
 import { StyleDeclaration } from './StyleDeclaration';
-import { TransitionToConfig } from './TransitionToConfig';
 import { TransitionFromToConfig } from './TransitionFromToConfig';
-import Promise from 'promise-polyfill';
-
-
+import { TransitionToConfig } from './TransitionToConfig';
+import { Window } from './Window';
 
 /**
- * Container (TypeScript)
  * - Container
  *
  * @version 0.1.5

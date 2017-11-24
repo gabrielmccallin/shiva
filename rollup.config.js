@@ -12,7 +12,7 @@ export default {
             typescript: require('typescript') // use local version
         }),
         resolve(),
-        commonjs(),
+        commonjs()
     ],
     targets: [
         { dest: 'dist/shiva-cjs.js', format: 'cjs' },
