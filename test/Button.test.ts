@@ -1,48 +1,43 @@
 import { Button } from '../src/Button';
+import { Styles } from '../src/Styles';
 
 jest.useFakeTimers();
 
 describe("BUTTON", () => {
   describe("constructor", () => {
 
-    it("constructed", () => {
-      const container = new Button({
-
-      });
+    test("constructed", () => {
+      const container = new Button();
       expect(container).toBeDefined();
     });
 
-    it("html element created", () => {
-      const container = new Button({
-
-      });
+    test("html element created", () => {
+      const container = new Button();
       expect(container.element).toBeDefined();
     });
 
-    it("id", () => {
+    test("id", () => {
       const container = new Button({
         id: "hello"
       });
       expect(container.id).toBe("hello");
     });
 
-    it("type is button", () => {
-      const container = new Button({
-        type: "button"
-      });
+    test("type is button", () => {
+      const container = new Button();
       expect(container.element.tagName).toEqual("BUTTON");
     });
 
-    it("type is a if href in config object", () => {
+    test("type is button with other config", () => {
       const container = new Button({
-        href: "//hello.com"
+        color: "white"
       });
-      expect(container.element.tagName).toEqual("A");
+      expect(container.element.tagName).toEqual("BUTTON");
+      expect(container.element.style.color).toEqual("white");
     });
 
-    it("default style", () => {
-      const container = new Button({
-      });
+    test("default style", () => {
+      const container = new Button();
       expect(container.element.style.whiteSpace).toEqual("nowrap");
       expect(container.element.style.msTouchAction).toEqual("manipulation");
       expect(container.element.style.touchAction).toEqual("manipulation");
@@ -51,11 +46,30 @@ describe("BUTTON", () => {
       expect(container.element.style.msUserSelect).toEqual("none");
       expect(container.element.style.userSelect).toEqual("none");
       expect(container.element.textContent).toEqual("Button");
-
-      expect(container.styles.hover).toBeUndefined();
     });
 
-    it("style", () => {
+    test("takes style from root config", () => {
+      const container = new Button({
+        color: "red",
+        hover: {
+          durationIn: 1,
+          color: "blue"
+        }
+      });
+      expect(container.element.style.color).toEqual("red");
+
+      container.over();
+      jest.runAllTimers();
+      expect(container.element.style.color).toEqual("blue");
+
+      container.out();
+      jest.runAllTimers();
+      expect(container.element.style.color).toEqual("red");
+
+
+    });
+
+    test("style", () => {
       const container = new Button({
         style: {
           color: "red",
@@ -65,10 +79,9 @@ describe("BUTTON", () => {
         }
       });
       expect(container.element.style.color).toEqual("red");
-      expect(container.styles.hover.durationIn).toEqual(1);
     });
 
-    it("styles", () => {
+    test("styles", () => {
       const container = new Button({
         styles: [
           {
@@ -80,36 +93,39 @@ describe("BUTTON", () => {
           {
             color: "red",
             hover: {
-              durationIn: 10
+              durationIn: 10,
+              color: "blue"
             }
           }
         ]
       });
       expect(container.element.style.color).toEqual("red");
-      expect(container.styles.hover.durationIn).toEqual(10);
+
+      container.over();
+      jest.runAllTimers();
+      expect(container.element.style.color).toEqual("blue");
     });
 
-    it("text", () => {
+    test("text", () => {
       const container = new Button({
         text: "hello"
       });
       expect(container.element.textContent).toEqual("hello");
     });
 
-    it("text empty string", () => {
+    test("text empty string", () => {
       const container = new Button({
         text: ""
       });
       expect(container.element.textContent).toEqual("");
     });
 
-    it("text default string", () => {
-      const container = new Button({
-      });
-      expect(container.element.textContent).toEqual("Button");
+    test("text default string", () => {
+      const button = new Button();
+      expect(button.element.textContent).toEqual("Button");
     });
 
-    it("data", () => {
+    test("data", () => {
       const data = { greeting: "hello" };
       const container = new Button({
         data: data
@@ -117,7 +133,7 @@ describe("BUTTON", () => {
       expect(container.data).toEqual(data);
     });
 
-    it("className", () => {
+    test("className", () => {
       const className = "hello";
       const container = new Button({
         className: className
@@ -125,7 +141,7 @@ describe("BUTTON", () => {
       expect(container.element.className).toEqual(className);
     });
 
-    it("classNames", () => {
+    test("classNames", () => {
       const classNames = ["hello", "goodbye"];
       const container = new Button({
         className: classNames
@@ -141,7 +157,7 @@ describe("BUTTON", () => {
 
   describe("methods", () => {
 
-    it("className", () => {
+    test("className", () => {
       const className = "hello";
       const container = new Button({
       });
@@ -149,7 +165,7 @@ describe("BUTTON", () => {
       expect(container.element.className).toEqual(className);
     });
 
-    it("classNames", () => {
+    test("classNames", () => {
       const container = new Button({
       });
 
@@ -158,7 +174,7 @@ describe("BUTTON", () => {
     });
 
 
-    it("styles set by the constructor and then overridden by style", () => {
+    test("styles set by the constructor and then overridden by style", () => {
       const container = new Button({
         styles: [
           {
@@ -183,11 +199,13 @@ describe("BUTTON", () => {
         }
       })
       expect(container.element.style.color).toEqual("red");
-      expect(container.styles.hover.durationIn).toEqual(10);
-      expect(container.styles.hover.color).toEqual("blue");
+
+      container.over();
+      jest.runAllTimers();
+      expect(container.element.style.color).toEqual("blue");
     });
 
-    it("style", () => {
+    test("style", () => {
       const container = new Button({
       });
       container.style({
@@ -198,11 +216,9 @@ describe("BUTTON", () => {
         }
       });
       expect(container.element.style.color).toEqual("red");
-      expect(container.styles.hover.color).toEqual("blue");
-      expect(container.styles.hover.durationIn).toEqual(10);
     });
 
-    it("over", () => {
+    test("over", () => {
       const container = new Button({
         style: {
           color: "blue",
@@ -222,7 +238,7 @@ describe("BUTTON", () => {
     });
 
 
-    it("out", () => {
+    test("out", () => {
       const container = new Button({
         style: {
           color: "blue",
@@ -247,16 +263,16 @@ describe("BUTTON", () => {
 
     });
 
-    it("click", () => {
+    test("click", () => {
       const container = new Button({});
       container.addEventListener(this, Button.CLICK, function (e) {
         expect(e.target.element.tagName).toEqual("BUTTON");
       });
-      container.click(null);
+      container.click();
     });
 
 
-    it("disable", () => {
+    test("disable", () => {
       const button = new Button({
         style: {
           color: "blue",
@@ -274,10 +290,11 @@ describe("BUTTON", () => {
 
       expect(button.element.style.color).toEqual('blue');
       expect(button.element.style.transition).toEqual(undefined);
+      expect(button.element.getAttribute("disabled")).toEqual("true");
 
     });
 
-    it("enable", () => {
+    test("enable", () => {
       const container = new Button({
         style: {
           color: "blue",
@@ -296,13 +313,14 @@ describe("BUTTON", () => {
 
       expect(container.element.style.color).toEqual('red');
       expect(container.element.style.transition).toEqual('background-color 1s, color 1s');
+      expect(container.element.getAttribute("disabled")).toBeNull();
 
     });
   });
 
   describe("multiple buttons", () => {
 
-    it("check over states are different", () => {
+    test("check over states are different", () => {
       const b1 = new Button({
         style: {
           color: "blue",

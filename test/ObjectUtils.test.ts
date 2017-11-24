@@ -6,6 +6,10 @@ describe("OBJECTUTILS", function () {
 
     const source = {
       riders: ["Rossi", "Marquez", "Lorenzo", "Vinales", "Dovizioso", date],
+      compounds: [{
+        "slick": ["soft", "medium", "hard"],
+        "wet": ["supersoft", "hard"]
+      }],
       sport: "MotoGP",
       champion: "Marquez",
       circuits: {
@@ -22,6 +26,10 @@ describe("OBJECTUTILS", function () {
 
     const targetDate = new Date("2012-08-12");
     const target = {
+      compounds: [{
+        "slick": ["soft", "medium", "hard"],
+        "wett": ["soft", "hard"]
+      }],
       sport: "Dorma MotoGP",
       rounds: 20,
       circuits: {
@@ -39,6 +47,11 @@ describe("OBJECTUTILS", function () {
 
     const expectedResult = {
       riders: ["Rossi", "Marquez", "Lorenzo", "Vinales", "Dovizioso", date],
+      compounds: [{
+        "slick": ["soft", "medium", "hard"],
+        "wett": ["soft", "hard"],
+        "wet": ["supersoft", "hard"]
+      }],
       sport: "MotoGP",
       rounds: 20,
       champion: "Marquez",
@@ -75,6 +88,23 @@ describe("OBJECTUTILS", function () {
   test("merge booleans", function () {
     const result = ObjectUtils.merge(false, true);
     expect(result).toEqual(true);
+  });
+
+  test("merge different types", function () {
+    const hello = {
+      hello: 'hello'
+    }
+    let result = ObjectUtils.merge(false, hello);
+    expect(result).toEqual(hello);
+
+    result = ObjectUtils.merge(hello, false);
+    expect(result).toEqual(false);
+
+    result = ObjectUtils.merge(hello, {});
+    expect(result).toEqual(hello);
+
+    result = ObjectUtils.merge({}, hello);
+    expect(result).toEqual(hello);
   });
 
 });

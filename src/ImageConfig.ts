@@ -1,6 +1,8 @@
-﻿import { StyleDeclaration } from './StyleDeclaration';
+﻿import { ContainerConfig } from './ContainerConfig';
+import { StyleDeclaration } from './StyleDeclaration';
 
-export interface ImageConfig {
+export interface ImageConfig extends ContainerConfig {
+    // TODO deprecate path
     path?: any;
-    style?: StyleDeclaration;
+    src?: any;
 }

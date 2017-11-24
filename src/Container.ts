@@ -1,18 +1,16 @@
-﻿import { Window } from './Window';
-import { ObjectUtils } from './ObjectUtils';
-import { Properties } from './Properties';
+﻿import Promise from 'promise-polyfill';
+
+import { ContainerConfig, ResponsiveConfig } from './ContainerConfig';
 import { Dimensions } from './Dimensions';
 import { Event, EventDispatcher } from './EventDispatcher';
-import { ContainerConfig, ResponsiveConfig } from './ContainerConfig';
+import { ObjectUtils } from './ObjectUtils';
+import { Properties } from './Properties';
 import { StyleDeclaration } from './StyleDeclaration';
-import { TransitionToConfig } from './TransitionToConfig';
 import { TransitionFromToConfig } from './TransitionFromToConfig';
-import Promise from 'promise-polyfill';
-
-
+import { TransitionToConfig } from './TransitionToConfig';
+import { Window } from './Window';
 
 /**
- * Container (TypeScript)
  * - Container
  *
  * @version 0.1.5
@@ -429,7 +427,7 @@ export class Container extends EventDispatcher {
     private calculateResponsiveStyles(width: number, rule: ResponsiveConfig, mergedRules: StyleDeclaration = {}): StyleDeclaration {
 
         if (rule.maxWidth && rule.maxWidth !== 0) {
-            if (width < rule.maxWidth) {
+            if (width <= rule.maxWidth) {
                 if (rule.minWidth || rule.minWidth === 0) {
                     if (width > rule.minWidth) {
                         mergedRules = ObjectUtils.merge(mergedRules, rule.style);
@@ -442,7 +440,7 @@ export class Container extends EventDispatcher {
         }
         else {
             if (rule.minWidth || rule.minWidth === 0) {
-                if (width >= rule.minWidth) {
+                if (width > rule.minWidth) {
                     mergedRules = ObjectUtils.merge(mergedRules, rule.style);
                 }
             }

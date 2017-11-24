@@ -3,19 +3,42 @@ import { Image } from '../src/Image';
 describe("IMAGE", function () {
   describe("constructor", function () {
 
-    it("✔️ constructed", function () {
-      var container = new Image({
+    test("constructed", function () {
+      const image = new Image({
       });
-      expect(container.element.tagName).toEqual("IMG");
+      expect(image.element.tagName).toEqual("IMG");
     });
 
-    it("✔️ src correct", function () {
-      var container = new Image({
+    test("path correct", function () {
+      const image = new Image({
         path: "assets/curly.png"
       });
 
-      const element = <HTMLImageElement>container.element;
+      const element = <HTMLImageElement>image.element;
       expect(element.src).toEqual("assets/curly.png");
+    });
+
+
+    test("src correct", function () {
+      const image = new Image({
+        src: "assets/curly.png"
+      });
+
+      const element = <HTMLImageElement>image.element;
+      expect(element.src).toEqual("assets/curly.png");
+    });
+
+
+    test("attributes", function () {
+      const image = new Image({
+        src: "assets/curly.png",
+        attributes: {
+          alt: "hello"
+        }
+      });
+
+      const element = <HTMLImageElement>image.element;
+      expect(element.getAttribute("alt")).toEqual("hello");
     });
 
   });

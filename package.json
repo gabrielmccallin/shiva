@@ -1,6 +1,6 @@
 {
   "name": "shiva",
-  "version": "2.4.5",
+  "version": "2.4.6",
   "description": "A JavaScript library for programming the web.",
   "main": "shiva-cjs.js",
   "types": "shiva.d.ts",
@@ -10,14 +10,15 @@
   "scripts": {
     "start": "echo And in all, the creator, preserver, destroyer, revealer and concealer of all that is. && npm run dev",
     "build": "rimraf dist && npm run build:modules && npm run build:global-cjs && npm run copy-files && jest",
-    "build:global-cjs": "rollup -c",
+    "build:global-cjs": "rollup -c && uglifyjs ./dist/shiva-global.js -c -m -o ./dist/shiva-global.js",
     "build:modules": "tsc && npm run dts-bundle && npm run delete-empty && npm run delete-promise-polyfill-from-global-declaration && npm run concat-global-declaration",
     "remove-temporary": "rimraf dist/types",
     "concat-global-declaration": "concat -o dist/shiva-global.d.ts libs/shiva-global-start.d.ts dist/shiva-global.d.ts libs/shiva-global-end.d.ts",
     "copy-files": "mkdirp dist && copy package.json dist && copy README.md dist && copy CHANGELOG.md dist",
     "ci-publish": "cd dist && ci-publish",
     "dts-bundle": "dts-bundle --name shiva --main dist/**/*.d.ts --outputAsModuleFolder --out shiva.d.ts",
-    "dev": "parallelshell \"npm run serve\" \"npm run rollup-watch\"",
+    "dev": "tsc -w",
+    "dev-global": "parallelshell \"npm run serve\" \"npm run rollup-watch\"",
     "serve": "npm run build && serve ./dist -p 1347",
     "rollup-watch": "rollup -c -o ./dist/shiva-global.js -f iife -w",
     "test:build": "jest",
@@ -54,7 +55,8 @@
     "rollup-watch": "^3.2.2",
     "serve": "^5.1.5",
     "ts-jest": "^21.1.4",
-    "typescript": "^2.4.1"
+    "typescript": "^2.4.1",
+    "uglify-js": "^3.1.10"
   },
   "jest": {
     "globals": {
