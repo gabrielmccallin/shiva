@@ -5,6 +5,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.4.6]` 2017-11-24
+### Added
+- 🐭 Added uglify to build
+- 🎃 Image: can pass src, can pass ContainerConfig values
+- 🎡 ShivaEvent
+### Changed
+- 💄 Minimal default button styling
+- 🐛 Mutating Styles.button class
+- ➖ ButtonConfig: remove href and target  
+- ➖ Button: Won't create an anchor if passed a href
+- 💄 Container: responsive rules work less than or equal to maxWidth, greater than minWidth
+- 👔 ObjectUtils: tidy
+
+---
 ## `[2.4.5]` 2017-11-13
 ### Added
 - 📯 Container: can kill all animations and get any active timeouts
