@@ -427,7 +427,7 @@ export class Container extends EventDispatcher {
     private calculateResponsiveStyles(width: number, rule: ResponsiveConfig, mergedRules: StyleDeclaration = {}): StyleDeclaration {
 
         if (rule.maxWidth && rule.maxWidth !== 0) {
-            if (width < rule.maxWidth) {
+            if (width <= rule.maxWidth) {
                 if (rule.minWidth || rule.minWidth === 0) {
                     if (width > rule.minWidth) {
                         mergedRules = ObjectUtils.merge(mergedRules, rule.style);
@@ -440,7 +440,7 @@ export class Container extends EventDispatcher {
         }
         else {
             if (rule.minWidth || rule.minWidth === 0) {
-                if (width >= rule.minWidth) {
+                if (width > rule.minWidth) {
                     mergedRules = ObjectUtils.merge(mergedRules, rule.style);
                 }
             }

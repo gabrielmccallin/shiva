@@ -50,9 +50,6 @@ export class Pages extends Container {
             }
             this.changePage(page);
         }
-        else {
-            // console.log("view already loaded: ");
-        }
     }
 
     changePage(page: string) {

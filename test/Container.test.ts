@@ -337,11 +337,28 @@ describe("CONTAINER", () => {
 
     });
 
-    it("responsive greater or equals to min width", () => {
+    it("responsive equals to min width", () => {
       // JSDOM set to width 1024
-      const container = new Container();
+      const container = new Container({
+        backgroundColor: "white"
+      });
       container.responsive({
         minWidth: 1024,
+        style: {
+          backgroundColor: "blue"
+        }
+      });
+      expect(container.element.style.backgroundColor).toEqual("white");
+
+    });
+
+    it("responsive equals to max width", () => {
+      // JSDOM set to width 1024
+      const container = new Container({
+        backgroundColor: "white"
+      });
+      container.responsive({
+        maxWidth: 1024,
         style: {
           backgroundColor: "blue"
         }
@@ -469,20 +486,20 @@ describe("CONTAINER", () => {
           backgroundColor: 'blue'
         }
       })
-      .then((container) => {
-        container.style({
-          backgroundColor: 'red'
-        })
-      });
+        .then((container) => {
+          container.style({
+            backgroundColor: 'red'
+          })
+        });
 
       jest.runTimersToTime(20);
-      
+
       expect(container.element.style.backgroundColor).toEqual('blue');
-      
+
       container.killAnimations();
 
       jest.runAllTimers();
-      
+
       expect(container.element.style.backgroundColor).toEqual('blue');
     });
   });
