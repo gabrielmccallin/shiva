@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.4.7]` 2017-11-27
+### Added
+- 🤩 ObjectUtils: copies Date object
+
+---
 ## `[2.4.6]` 2017-11-24
 ### Added
 - 🐭 Added uglify to build
