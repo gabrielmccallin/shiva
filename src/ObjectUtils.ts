@@ -22,6 +22,9 @@
                         target[property] = source[property];
                     }
                 }
+                if (source instanceof Date) {
+                    target = source;
+                }
             }
         }
         return target;
