@@ -90,6 +90,16 @@ describe("OBJECTUTILS", function () {
     expect(result).toEqual(true);
   });
 
+  test("merge dates", function () {
+    const sourceDate = new Date();
+    let result = ObjectUtils.merge({}, sourceDate);
+    expect(result).toEqual(sourceDate);
+
+    const targetDate = new Date("2049-10-11");
+    result = ObjectUtils.merge(targetDate, sourceDate);
+    expect(result).toEqual(sourceDate);
+  });
+
   test("merge different types", function () {
     const hello = {
       hello: 'hello'
