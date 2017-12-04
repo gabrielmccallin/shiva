@@ -4,8 +4,6 @@ A JavaScript library for programming the web.
 
 No markup, no templates, no CSS. Just code(😃);
 
-[https://bitbucket.org/gabrielmccallin/shiva](https://bitbucket.org/gabrielmccallin/shiva)
-
 ---
 ## Getting started
 ### Global
