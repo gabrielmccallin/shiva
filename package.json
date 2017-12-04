@@ -1,9 +1,9 @@
 {
   "name": "shiva",
-  "version": "2.4.8",
+  "version": "2.4.9",
   "description": "A JavaScript library for programming the web.",
-  "main": "shiva-cjs.js",
-  "types": "shiva.d.ts",
+  "main": "dist/shiva-cjs.js",
+  "types": "dist/shiva.d.ts",
   "config": {
     "package-name": "shiva"
   },
@@ -24,7 +24,8 @@
     "test:build": "jest",
     "test": "jest --watchAll",
     "delete-empty": "node libs/delete-empty-files dist",
-    "delete-promise-polyfill-from-global-declaration": "node libs/remove-promise-polyfill.js"
+    "delete-promise-polyfill-from-global-declaration": "node libs/remove-promise-polyfill.js",
+    "postinstall": "rimraf dist && npm run build:modules && npm run build:global-cjs && npm run copy-files"
   },
   "dependencies": {
     "promise-polyfill": "^6.0.2"
