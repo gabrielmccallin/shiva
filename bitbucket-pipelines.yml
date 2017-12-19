@@ -31,6 +31,6 @@ pipelines:
             - message=$(git log -1 --pretty=format:"%s")
             - git config --global user.email "gabriel.mccallin@outlook.com"
             - git config --global user.name "gabrielmccallin"
-            - git remote add github https://github.com/gabrielmccallin/shiva.git
+            - git remote add github git@github.com:gabrielmccallin/shiva.git
             - git remote -v
             - git push github feature/test-github
