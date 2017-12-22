@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.5.0]` 2017-12-22
+### Added
+- 🚌 Bus: static event management for instances
+
+---
 ## `[2.4.7]` 2017-11-27
 ### Added
 - 🤩 ObjectUtils: copies Date object
