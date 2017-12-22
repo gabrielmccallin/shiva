@@ -223,13 +223,27 @@ Build applications quickly with these components, they all extend `Container`
 
 - **RadioButton**
 
-- **StateMachine**  
+- **Pages**  
 
 - **Select**  
 
 
 ---
 ### **Utilities**
+
+
+- **Bus**  
+Extend this class to gain static listening and dispatching of events. This technique is useful for creating a globally available static channel for communications. 
+```
+// Extend Bus
+class DoubleDecker extends Bus {}
+
+// In a class where you want to listen for a event on a specific channel
+DoubleDecker.addEventListener(this, "EN_ROUTE", this.handler);
+
+// In the class where you want to dispatch an event on that channel
+DoubleDecker.dispatchEvent(new Event("EN_ROUTE", this));
+```
 
 - **EventDispatcher**  
 Custom event dispatching, add / remove. `Container` extends this so you can listen / dispatch on your classes, see above for example.
@@ -244,7 +258,7 @@ ObjectUtils.merge(targetObject, sourceObject);
 ```
 
 - **Observer**  
-A static version of EventDispatcher for listening and dispatching events globally.
+A static version of EventDispatcher for listening and dispatching events globally. Use `Bus` if you need more than one `Observer` in the application.
 ```
 // In a class where you want to listen for a global event
 Observer.addEventListener(this, "CUSTOM_EVENT", this.handler);
