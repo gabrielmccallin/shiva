@@ -1,8 +1,7 @@
 # shiva 🔱
 
-A JavaScript library for programming the web.  
-
-No markup, no templates, no CSS. Just code(😃);
+A minimal abstraction layer for VanillaJS DOM manipulation, events and animation.  
+No framework required.
 
 [https://bitbucket.org/gabrielmccallin/shiva](https://bitbucket.org/gabrielmccallin/shiva)
 
@@ -60,15 +59,15 @@ If your IDE supports declaration files, download [https://cdn.jsdelivr.net/shiva
 
 ---
 
-### Module
+### ES Modules
 
 ```
 npm install shiva --save
 ```
 
-- Use something like `browserify` or `rollup` to bundle `shiva🔱` with your application code.    
+- Use something like `browserify` or `rollup` to bundle `shiva🔱` modules with your application code.    
 
-If your IDE supports declaration files, there is a `d.ts` for every class. This should provide code completion for the library.
+If your IDE supports declaration files, there is a `d.ts` for every `shiva🔱` module. This should provide code completion for the library.
 
 #### Create root container
 
@@ -141,13 +140,23 @@ this.addChild(myClass);
 #### Event listeners
 `Container` extends an event dispatcher class so you can listen / dispatch events on your classes.
 ```
-// outside myClass
-myClass.addEventListener(this, "CUSTOM_EVENT", this.myEventHandler);
+// ViewA class
+import { Container } from 'shiva/Container';
+export class ViewA extends Container {
+    constructor() {
+        super();
+    }
 
-// inside myClass 
-this.dispatchEvent(new Event("CUSTOM_EVENT", this));
+    private somethingAMAZINGHappened() {
+        this.dispatchEvent(new Event("AMAZING_EVENT", this));
+    }
+}
 
-// this.myEventHandler will fire outside of home 
+// Somewhere else
+const viewA = new ViewA();
+viewA.addEventListener(this, "AMAZING_EVENT", () => {
+    console.log("YAY 🤸‍ AMAZING_EVENT was dispatched on viewA");
+});
 ```
 
 #### Animations!  
@@ -231,20 +240,6 @@ Build applications quickly with these components, they all extend `Container`
 ---
 ### **Utilities**
 
-
-- **Bus**  
-Extend this class to gain static listening and dispatching of events. This technique is useful for creating a globally available static channel for communications. 
-```
-// Extend Bus
-class DoubleDecker extends Bus {}
-
-// In a class where you want to listen for a event on a specific channel
-DoubleDecker.addEventListener(this, "EN_ROUTE", this.handler);
-
-// In the class where you want to dispatch an event on that channel
-DoubleDecker.dispatchEvent(new Event("EN_ROUTE", this));
-```
-
 - **EventDispatcher**  
 Custom event dispatching, add / remove. `Container` extends this so you can listen / dispatch on your classes, see above for example.
 
@@ -257,6 +252,19 @@ Object utility helpers. Only contains a static `merge` method which merges two o
 ObjectUtils.merge(targetObject, sourceObject);
 ```
 
+- **Bus**  
+Extend this class to gain static listening and dispatching of events. This technique is useful for creating a globally available static channel for communications. 
+```
+// Extend Bus
+class DoubleDecker extends Bus {}
+
+// In a class where you want to listen for a event on a specific channel
+DoubleDecker.addEventListener(this, "EN_ROUTE", this.handler);
+
+// In the class where you want to dispatch an event on that channel
+DoubleDecker.dispatchEvent(new Event("EN_ROUTE", this));
+
+```
 - **Observer**  
 A static version of EventDispatcher for listening and dispatching events globally. Use `Bus` if you need more than one `Observer` in the application.
 ```
@@ -278,7 +286,7 @@ Some Window polyfill methods.
 ### **Container API**
 
 Methods
-- **constructor( config: ContainerConfig )**: void;
+- **constructor( config: ContainerConfig )**: Container;
 ```
 interface ContainerConfig extends StyleDeclaration {
     // to denote a root level container
@@ -318,6 +326,30 @@ interface ResponsiveConfig {
     style: StyleDeclaration;
     duration?: number;
 }
+
+// for example
+const viewA = new Container({
+    id: "viewA",
+    text: "Hello there 💋",
+    type: "p",
+    data: { hello: "goodbye" },
+    className: "view-a__big",
+    attributes: { data-shiva: "🔱" },
+    responsive: [{
+        maxWidth: 500,
+        style: {
+            width: "100%
+        }
+    }, {
+        minWidth: 500,
+        style: {
+            width: "33%"
+        }
+    }],
+    backgroundColor: "yellow",
+    margin: "1rem",
+    style: Styles.bigView
+})
 ```
     
 - **addToBody()**: void;  
@@ -341,10 +373,10 @@ Append a container to a parent.
 - **removeChild( child: Container )**:void  
 Remove a container from a parent.  
 
-- **to( transitionToConfig : { duration: number, delay: number, ease: Ease, toVars: StyleDeclaration })**: Promise<Container  
+- **to( transitionToConfig : { duration: number, delay: number, ease: Ease, toVars: StyleDeclaration })**: Promise\<Container>  
 Wraps CSS transitions for smooth animations with chaining.  
 
-- **fromTo( transitionFromToConfig : { duration: number, delay: number, ease: Ease, toVars: StyleDeclaration, fromVars: StyleDeclaration)**: Promise<Container    
+- **fromTo( transitionFromToConfig : { duration: number, delay: number, ease: Ease, toVars: StyleDeclaration, fromVars: StyleDeclaration)**: Promise\<Container>    
 Wraps CSS transitions for smooth animations with chaining.  
 
 - **addEventListener( scope: any, typeStr: string, listenerFunc: Function, data?: any, useCapture?: boolean )**: void;  
