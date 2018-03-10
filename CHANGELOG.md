@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.5.2]` 2018-03-10
+### Changed
+- 👀 Observer / Bus fix for removing listener if it doesn't exist
+
+---
 ## `[2.5.1]` 2017-12-30
 ### Changed
 - 📝 README vanilla and better examples

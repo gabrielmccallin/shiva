@@ -10,14 +10,16 @@ export class Observer {
 
     static removeEventListener(type: string, callback: (e) => void) {
         let indexOfClosureToRemove;
-        for (let i = 0; i < this.observers[type].length; i++) {
-            if (this.observers[type].callback === callback) {
-                indexOfClosureToRemove = i;
-                break;
+        if (this.observers[type]) {
+            for (let i = 0; i < this.observers[type].length; i++) {
+                if (this.observers[type].callback === callback) {
+                    indexOfClosureToRemove = i;
+                    break;
+                }
             }
-        }
 
-        this.observers[type].splice(indexOfClosureToRemove, 1);
+            this.observers[type].splice(indexOfClosureToRemove, 1);
+        }
     }
 
     static dispatchEvent(evt: Event) {

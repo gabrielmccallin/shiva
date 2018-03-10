@@ -12,7 +12,7 @@ export class Bus {
     }
 
     static removeEventListener(type: string, callback: (e) => void) {
-        if (this['listeners']) {
+        if (this['listeners'] && this['listeners'][type]) {
             let indexOfClosureToRemove;
             for (let i = 0; i < this['listeners'][type].length; i++) {
                 if (this['listeners'][type].callback === callback) {
