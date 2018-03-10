@@ -1,12 +1,12 @@
 import { Observer } from '../src/Observer';
 import { Event } from '../src/EventDispatcher';
 
-describe("OBSERVER", function () {
+describe("OBSERVER", () => {
 
-  test("addEventListener and dispatchEvent", function () {
+  test("addEventListener and dispatchEvent", () => {
     const testDouble = {
-      handle: function () { }
-    }
+      handle: () => { return; }
+    };
 
     spyOn(testDouble, 'handle');
 
@@ -19,10 +19,10 @@ describe("OBSERVER", function () {
 
   });
 
-  test("dispatchEvent without addEventListener", function () {
+  test("dispatchEvent without addEventListener", () => {
     const testDouble = {
-      handle: function () { }
-    }
+      handle: () => { return; }
+    };
 
     spyOn(testDouble, 'handle');
 
@@ -32,10 +32,10 @@ describe("OBSERVER", function () {
 
   });
 
-  test("removeEventListener", function () {
+  test("removeEventListener", () => {
     const testDouble = {
-      handle: function () { }
-    }
+      handle: () => { return; }
+    };
 
     spyOn(testDouble, 'handle');
 
@@ -43,6 +43,21 @@ describe("OBSERVER", function () {
     Observer.removeEventListener("EVENT!", testDouble.handle);
 
     Observer.dispatchEvent(new Event("EVENT!", this));
+
+    expect(testDouble.handle).toHaveBeenCalledTimes(0);
+
+  });
+
+  test("removeEventListener without existing listener", () => {
+    const testDouble = {
+      handle: () => { return; }
+    };
+
+    spyOn(testDouble, 'handle');
+
+    Observer.removeEventListener("EVENT3", testDouble.handle);
+
+    Observer.dispatchEvent(new Event("EVENT3", this));
 
     expect(testDouble.handle).toHaveBeenCalledTimes(0);
 
