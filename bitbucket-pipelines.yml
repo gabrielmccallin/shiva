@@ -3,13 +3,15 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: node:8
+image: node:11
 
 pipelines:
   default:
     - step:
         script:
           - echo "And in all, the creator, preserver, destroyer, revealer and concealer of all that is."
+          - npm install
+          - npm run build
   branches:
     master:
       - step:
@@ -19,9 +21,4 @@ pipelines:
             - npm run build
             - npm install ci-publish 
             - npm run ci-publish
-            # activates jsdelivr as well I think            
-    develop:
-      - step:
-          script:
-            - npm install
-            - npm run build
+            # activates jsdelivr as well I think

@@ -474,7 +474,7 @@ describe("CONTAINER", () => {
 
     });
 
-    test("kill animation timeouts", () => {
+    it("kill animation timeouts", () => {
       // JSDOM set to width 1024
 
       const container = new Container({

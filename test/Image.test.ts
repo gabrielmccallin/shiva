@@ -15,7 +15,7 @@ describe("IMAGE", function () {
       });
 
       const element = <HTMLImageElement>image.element;
-      expect(element.src).toEqual("assets/curly.png");
+      expect(element.src).toEqual("http://localhost/assets/curly.png");
     });
 
 
@@ -25,7 +25,7 @@ describe("IMAGE", function () {
       });
 
       const element = <HTMLImageElement>image.element;
-      expect(element.src).toEqual("assets/curly.png");
+      expect(element.src).toEqual("http://localhost/assets/curly.png");
     });
 
 

@@ -1,6 +1,5 @@
 ﻿import { EventDispatcher } from './EventDispatcher';
 import { LoaderConfig } from './LoaderConfig';
-import Promise from 'promise-polyfill';
 
 export type LoaderHTTPMethods = "GET" | "PUT" | "POST" | "DELETE" | "UPDATE";
 export class Loader extends EventDispatcher {
