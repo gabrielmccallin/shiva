@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.5.5]`
+### Changed
+- ⬆️ Updated dependencies for 0 vulns
+
+---
 ## `[2.5.4]`
 ### Changed
 - 📝 README typos
