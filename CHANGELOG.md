@@ -5,10 +5,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.5.4]`
+### Changed
+- 📝 README typos
+- 🔥 Update npm-run-all to latest https://help.heroku.com/4OM7X18J/why-am-i-seeing-npm-404-errors-for-event-stream-flatmap-stream-in-my-build-logs
+
+---
 ## `[2.5.3]`
 ### Added
 - 🏃‍ Playground
 
+---
 ## `[2.5.2]` 2018-03-10
 ### Changed
 - 👀 Observer / Bus fix for removing listener if it doesn't exist

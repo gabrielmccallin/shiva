@@ -204,7 +204,7 @@ Loader.get({
     let parsed = JSON.parse(response);
     return parsed.map(item => {
         return item.title;
-    }
+    })
 })
 .catch(error => console.error(error))
 .then(titles => {
