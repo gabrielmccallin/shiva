@@ -1,5 +1,4 @@
 ﻿import Promise from 'promise-polyfill';
-
 import { ContainerConfig, ResponsiveConfig } from './ContainerConfig';
 import { Dimensions } from './Dimensions';
 import { Event, EventDispatcher } from './EventDispatcher';
@@ -9,6 +8,7 @@ import { StyleDeclaration } from './StyleDeclaration';
 import { TransitionFromToConfig } from './TransitionFromToConfig';
 import { TransitionToConfig } from './TransitionToConfig';
 import { Window } from './Window';
+
 
 /**
  * - Container
