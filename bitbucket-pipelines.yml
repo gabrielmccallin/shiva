@@ -19,6 +19,8 @@ pipelines:
             - echo "This script runs only on commit to the master branch."
             - npm install
             - npm run build
-            - npm install ci-publish 
-            - npm run ci-publish
+            - pipe: atlassian/npm-publish:0.2.0
+              variables:
+                NPM_TOKEN: "5b5460cc-f168-4b5f-ae9c-80a10d59801d"
+                FOLDER: "dist"
             # activates jsdelivr as well I think

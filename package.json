@@ -1,6 +1,6 @@
 {
   "name": "shiva",
-  "version": "2.5.6",
+  "version": "2.5.7",
   "description": "A minimal abstraction layer for VanillaJS DOM manipulation, events and animation. No framework required.",
   "main": "shiva-cjs.js",
   "types": "shiva.d.ts",
