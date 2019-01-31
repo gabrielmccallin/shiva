@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## `[2.5.8]`
+### Changed
+- 🚀 NPM_TOKEN in pipeline environment variable
+
+---
+## `[2.5.7]`
+### Changed
+- 🚀 Bitbucket npm publish pipe
+
+---
 ## `[2.5.6]`
 ### Changed
 - 👟 promise-polyfill back to a runtime dependency

@@ -21,6 +21,6 @@ pipelines:
             - npm run build
             - pipe: atlassian/npm-publish:0.2.0
               variables:
-                NPM_TOKEN: "5b5460cc-f168-4b5f-ae9c-80a10d59801d"
+                NPM_TOKEN: "$NPM_TOKEN"
                 FOLDER: "dist"
             # activates jsdelivr as well I think
