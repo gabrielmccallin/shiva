@@ -1,52 +1,30 @@
 {
-  "extends": [
-    "tslint:recommended",
-    "tslint-eslint-rules"
-  ],
-  "defaultSeverity": "warning",
-  "jsRules": {},
-  "rules": {
-    "curly": [
-      true,
-      "ignore-same-line"
-    ],
-    "interface-name": [
-      true,
-      "never-prefix"
-    ],
-    "max-line-length": [
-      true,
-      180
-    ],
-    "max-classes-per-file": false,
-    "no-string-literal": false,
-    "object-literal-sort-keys": false,
-    "trailing-comma": [
-      true,
-      {
-        "multiline": "never",
-        "singleline": "never"
-      }
-    ],
-    "arrow-parens": false,
-    "member-access": [
-      true,
-      "no-public"
-    ],
-    "eofline": false,
-    "whitespace": [
-      false,
-      "check-module"
-    ],
-    "no-angle-bracket-type-assertion": false,
-    "ordered-imports": false,
-    "quotemark": [
-      false
-    ],
-    "object-curly-spacing": [
-      true,
-      "always"
-    ]
-  },
-  "rulesDirectory": []
+    "extends": ["tslint:recommended"],
+    "defaultSeverity": "warning",
+    "jsRules": {},
+    "rules": {
+        "interface-name": false,
+        "curly": [true, "ignore-same-line"],
+        "max-line-length": [true, 180],
+        "max-classes-per-file": false,
+        "no-empty": false,
+        "no-string-literal": false,
+        "no-unused-expression": false,
+        "object-literal-sort-keys": false,
+        "trailing-comma": [
+            true,
+            {
+                "multiline": "never",
+                "singleline": "never"
+            }
+        ],
+        "arrow-parens": false,
+        "member-access": [true, "no-public"],
+        "eofline": false,
+        "whitespace": [false, "check-module"],
+        "no-angle-bracket-type-assertion": false,
+        "ordered-imports": false,
+        "quotemark": [true, "single"]
+    },
+    "rulesDirectory": []
 }

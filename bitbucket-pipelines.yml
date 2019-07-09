@@ -11,6 +11,8 @@ pipelines:
         script:
           - echo "And in all, the creator, preserver, destroyer, revealer and concealer of all that is."
           - npm install
+          - npm run lint
+          - npm run test
           - npm run build
   branches:
     master:
@@ -18,9 +20,18 @@ pipelines:
           script:
             - echo "This script runs only on commit to the master branch."
             - npm install
+            - npm run lint
+            - npm run test
             - npm run build
-            - pipe: atlassian/npm-publish:0.2.0
+          artifacts:
+            - dist/**
+      - step:
+          name: npm publish
+          deployment: npm publish
+          script:
+            - echo "Publish to NPM"
+            - pipe: atlassian/npm-publish:0.2.3
               variables:
                 NPM_TOKEN: "$NPM_TOKEN"
                 FOLDER: "dist"
-            # activates jsdelivr as well I think
+          # activates jsdelivr as well I think

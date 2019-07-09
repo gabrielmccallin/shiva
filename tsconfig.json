@@ -1,29 +1,14 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "es6",
         "declarationDir": "dist",
         "declaration": true,
-        "removeComments": true,
         "module": "es2015",
         "moduleResolution": "node",
         "outDir": "dist",
-        "types": [
-            "jest"
-        ],
-        "lib": [
-            "es5",
-            "es2015.promise",
-            "es2015.proxy",
-            "dom",
-            "scripthost",
-            "es2015.core"
-        ],
+        "lib": ["es6", "es2017.object", "dom"],
         "esModuleInterop": true
     },
-    "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-        "src/playground/**/*"
-    ]
+    "include": ["src/**/*"],
+    "exclude": ["src/**/*.test.ts"]
 }

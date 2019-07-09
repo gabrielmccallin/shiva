@@ -1,439 +1,204 @@
-# shiva 🔱
+# [**shiva** 🔱](https://gabrielmccallin.bitbucket.io/shiva/)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://bitbucket.org/gabrielmccallin/shiva/blob/master/LICENSE) [![npm version](https://img.shields.io/badge/npm-v3.0.0-blue.svg?style=flat)](https://www.npmjs.com/package/shiva) [![Bitbucket Pipeline Status](https://img.shields.io/badge/pipeline-passing-green.svg)](https://bitbucket.org/gabrielmccallin/shiva/addon/pipelines/home#!/results/branch/master/page/1) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://bitbucket.org/gabrielmccallin/shiva)  
+![javascript](https://img.shields.io/badge/-javascript-informational.svg) ![frontend](https://img.shields.io/badge/-frontend-informational.svg) ![declarative](https://img.shields.io/badge/-declarative-informational.svg) ![ui](https://img.shields.io/badge/-ui-informational.svg) ![library](https://img.shields.io/badge/-library-informational.svg)
 
-A minimal abstraction layer for VanillaJS DOM manipulation, events and animation.  
-No framework required.
+**`shiva`** is a minimal JavaScript library for building user interfaces.
 
-[https://bitbucket.org/gabrielmccallin/shiva](https://bitbucket.org/gabrielmccallin/shiva)
+**Declarative**  
+Describe component behaviour with a standard JavaScript syntax and **`shiva`** will efficiently update views when your data changes. Declarative views make your code more predictable, simpler to understand, and easier to debug.
 
----
-## Getting started
-### Global
+**Modular**  
+Build encapsulated components that manage their own state, then compose them to make complex UIs. Since component logic is written in JavaScript instead of templates, you can easily pass data through your app and keep state out of the DOM.
 
-Include the library in the `head` of your html.
-```
-<head>
-    <script src="https://cdn.jsdelivr.net/shiva/latest/shiva.min.js">
-    </script>
-</head>
-```
+**State management**  
+Render views with a simple one-way data binding syntax.
 
-Put this code into your page, either via an external `script` tag in the `body` or directly into the `body` like below.
-
-```
-<body>
-    <script>
-        var app = new shiva.RootContainer();
-
-        const container = new shiva.Container({
-            text: "hello you 😀",
-            fontSize: "1rem",
-            fontFamily: "monospace",
-            color: "white",
-            backgroundColor: "grey",
-            width: "100%",
-            height: "100%",
-            textAlign: "center",
-            paddingTop: "2rem",
-            attributes: {
-                tabIndex: "0"
-            }
-        });
-        app.addChild(container);
-
-        container.to({
-            duration: 5,
-            toVars: {
-                fontSize: "3rem",
-                backgroundColor: "purple"
-            }
-        });
-    </script>
-</body>
-```
-
-That's all you need to start putting animated elements on the web 😤
-
-See below for the `shiva🔱` API documentation and starter projects.
-
-If your IDE supports declaration files, download [https://cdn.jsdelivr.net/shiva/latest/shiva-global.d.ts](https://cdn.jsdelivr.net/shiva/latest/shiva-global.d.ts) and place in your project. This should provide code completion for the library.
-
----
-
-### ES Modules
-
+## **Installation**
 ```
 npm install shiva --save
 ```
 
-- Use something like `browserify` or `rollup` to bundle `shiva🔱` modules with your application code.    
+`shiva` is distributed as an ES module. Use a module aware build tool to `import` functions.
+See [example](https://example) for an example of how to include `shiva` in a project.
 
-If your IDE supports declaration files, there is a `d.ts` for every `shiva🔱` module. This should provide code completion for the library.
+## **Getting started**
 
 #### Create root container
+The `container()` function creates HTML elements and declares attributes, children, events, styles and many other properties.
 
-Extend your entry class with RootContainer.
-Add an onload event to `window` and 🙌   
+```javascript
+import { container } from 'shiva';
 
+const app = () => {
+    container({
+        root: true,
+        textContent: 'Hi there 🙋‍'
+    });
+};
+
+app();
 ```
-import { RootContainer } from "shiva/RootContainer";
 
-class App extends RootContainer {
-    constructor() {
-        super();
-    }
-}
-
-window.onload = () => {
-    new App();
-}; 
-```
-Creating containers requires the DOM to be available so we have to wait for the onload event.
+This will append a HTMLElement `<div>` to the body of the page with text content of 'Hi there 🙋‍'.
 
 #### Create container
 
-```
-import { Container } from "shiva/Container";
+```javascript
+import { container } from 'shiva';
 
-const view = new Container({
-    text: "I'm a view",
-    display: "block",
-    backgroundColor: "#333333"
-});
-this.addChild(view);
-```
-
-#### Update container
-
-```
-view.innerHtml = "I'm still a view";
-
-// keep your styles in a class
-view.style(styles.DifferentStyle);
-
-// or use an object literal
-view.style({
-    backgroundColor: "#dddddd",
-    position: "absolute",
-    top: "10rem"
+const view = container({
+    textContent: `I'm a view`
 });
 ```
 
-#### Extend your own classes to give them the same abilities
-```
-import { Container } from "shiva/Container";
+#### Add child containers
 
-class MyClass extends Container {
-    constructor() {
-        super({
-            id: "my-class"
-        });
-    }
-}
+```javascript
+const view = container({
+    textContent: `I'm a view`,
+    children: [
+        container({
+            textContent: 'child 1 🙍‍'
+        }),
+        container({
+            textContent: 'child 2 🙍‍'
+        }),
+    ]
+});
 ```
 
-#### Add this class to the DOM
-```
-const myClass = new MyClass();
-this.addChild(myClass);
+#### Declare containers anywhere and add them to the view
+
+```javascript
+const childFactory = () => {
+    return container({
+        textContent: 'child 1 🙍‍'
+    });
+};
+
+const view = container({
+    textContent: `I'm a view`,
+    children: childFactory()
+});
+
 ```
 
 #### Event listeners
-`Container` extends an event dispatcher class so you can listen / dispatch events on your classes.
-```
-// ViewA class
-import { Container } from 'shiva/Container';
-export class ViewA extends Container {
-    constructor() {
-        super();
-    }
 
-    private somethingAMAZINGHappened() {
-        this.dispatchEvent(new Event("AMAZING_EVENT", this));
-    }
-}
+```javascript
+const clickHandler = e => {
+    // do something
+};
 
-// Somewhere else
-const viewA = new ViewA();
-viewA.addEventListener(this, "AMAZING_EVENT", () => {
-    console.log("YAY 🤸‍ AMAZING_EVENT was dispatched on viewA");
+const clickMe = container({
+    textContent: 'Click me!',
+    events: [{
+        name: 'click',
+        handler: clickHandler
+    }]
 });
 ```
 
-#### Animations!  
-Use the .to and .fromTo methods of Container for smooth CSS transitions
-```
-const title = new Container({
-    text: "Fade me out"
-});
+#### Configuration
 
-title.to({
-    duration: 2,
-    delay: 1,
-    toVars: {
-        opacity: "0"
-    }
-});
-```
+`container()` takes a configuration object described by this interface:
 
-#### Chain transitions
-```
-title.to({
-    duration: 2,
-    delay: 1,
-    toVars: {
-        opacity: "0"
-    }
-})
-.then(this.doSomethingElse);   
-```
-
-#### Loader wraps XMLHttpRequest, returns a Promise
-
-```
-import { Loader } from "shiva/Loader";
-
-Loader.get({
-    url: "//api.com/endpointABC",
-    params: {
-        page: 2,
-        limit: 20
-    }
-})
-.then(response => {
-    // something with the response
-    let parsed = JSON.parse(response);
-    return parsed.map(item => {
-        return item.title;
-    })
-})
-.catch(error => console.error(error))
-.then(titles => {
-    // do something else !
-    this.listView.update(titles);
-});
-```
-
-
-
----
-### **Components** 
-
-Build applications quickly with these components, they all extend `Container`
-
-- **Anchor**  
-
-- **Button**  
-
-- **CheckBox**  
-
-- **DropDown**  
-
-- **Image**  
-
-- **RadioButton**
-
-- **Pages**  
-
-- **Select**  
-
-
----
-### **Utilities**
-
-- **EventDispatcher**  
-Custom event dispatching, add / remove. `Container` extends this so you can listen / dispatch on your classes, see above for example.
-
-- **Loader**  
-XHR wrapper with event dispatcher and Promise chaining. See above for example.
-
-- **ObjectUtils**  
-Object utility helpers. Only contains a static `merge` method which merges two objects, source overwrites target.
-```
-ObjectUtils.merge(targetObject, sourceObject);
-```
-
-- **Bus**  
-Extend this class to gain static listening and dispatching of events. This technique is useful for creating a globally available static channel for communications. 
-```
-// Extend Bus
-class DoubleDecker extends Bus {}
-
-// In a class where you want to listen for a event on a specific channel
-DoubleDecker.addEventListener(this, "EN_ROUTE", this.handler);
-
-// In the class where you want to dispatch an event on that channel
-DoubleDecker.dispatchEvent(new Event("EN_ROUTE", this));
-
-```
-- **Observer**  
-A static version of EventDispatcher for listening and dispatching events globally. Use `Bus` if you need more than one `Observer` in the application.
-```
-// In a class where you want to listen for a global event
-Observer.addEventListener(this, "CUSTOM_EVENT", this.handler);
-
-// In the class where you want to dispatch a global event
-Observer.dispatchEvent(new Event("CUSTOM_EVENT", this));
-```
-
-- **Resize**  
-Some simple resize algorithms for fitting and filling.
-
-- **Window**  
-Some Window polyfill methods.
-
-
----
-### **Container API**
-
-Methods
-- **constructor( config: ContainerConfig )**: Container;
-```
-interface ContainerConfig extends StyleDeclaration {
-    // to denote a root level container
+```typescript
+interface ContainerConfig {
+    attributes?: [key: string]: string | boolean | number | State;
+    children?: HTMLElement[] | HTMLElement | State;
+    events?: EventSchema[] | EventSchema;
     root?: boolean;
-    
-    // sets the HTMLElement id attribute
-    id?: string; 
-    
-    // sets the HTMLElement type attribute, defaults to div
-    type?: string;
-
-    // sets the HTMLElement style attribute from a StyleDecaration object
-    style?: StyleDeclaration; 
-
-    // sets the HTMLElement style attribute from an array of StyleDeclaration objects
-    styles?: StyleDeclaration[];
-
-    // alias for innerHtml
-    text?: string;
-
-    // attaches custom data to the container
-    data?: any;
-
-    // sets HTMLElement class attribute
-    className?: string | string[];
-    
-    // sets HTMLElement attributes 
-    attributes?: {};
-    
-    // sets responsive rules 
-    responsive?: ResponsiveConfig | ResponsiveConfig[];
-}    
-
-interface ResponsiveConfig {
-    minWidth?: number;
-    maxWidth?: number;
-    style: StyleDeclaration;
-    duration?: number;
+    style?: Partial<CSSStyleDeclaration> | State;
+    tagName?: HTMLTagName;
 }
+```
 
-// for example
-const viewA = new Container({
-    id: "viewA",
-    text: "Hello there 💋",
-    type: "p",
-    data: { hello: "goodbye" },
-    className: "view-a__big",
-    attributes: { data-shiva: "🔱" },
-    responsive: [{
-        maxWidth: 500,
-        style: {
-            width: "100%
-        }
-    }, {
-        minWidth: 500,
-        style: {
-            width: "33%"
-        }
+* **attributes**
+An object to populate HTML attributes, keys are string, values are primitives or a State object.
+
+* **children**
+A HTMLElement, array of HTMLElements to append to the container or State object.
+
+* **events**
+An object or array of objects that describe a event type and handler to add to the container.
+
+* **root**
+Appends the container to the body of the page. Use at the entrypoint of the application to attach all children to.
+
+* **style**
+Style the element with inline css declarations, this can also be a State object.
+
+* **tagName**
+Type of container, e.g. paragraph, input, anchor, select etc
+
+#### **Example**
+
+```javascript
+const app = container({
+    textContent: 'Hello there 💋',
+    tagName: 'p',
+    id: 'viewA',
+    attributes: {
+        data-shiva: '🔱',
+        ...otherAttributes
+    },
+    style: {
+        color: 'blue',
+        ...otherCSSStyles
+    },
+    children: [
+        container({
+            textContent: 'child 1'
+        }),
+        container({
+            textContent: 'child 2'
+        })
+    ],
+    events: [{
+        name: 'custom',
+        handler: customHandler
     }],
-    backgroundColor: "yellow",
-    margin: "1rem",
-    style: Styles.bigView
-})
-```
-    
-- **addToBody()**: void;  
-Add container directly to document.body.
-
-- **style( vars: StyleDeclaration )**: void;  
-Pass a StyleDeclaration class or object literal to set inline CSS styles.
-
-- **styles( vars: StyleDeclaration[] )**: void;  
-Pass an array of StyleDeclaration classes or object literals to set inline CSS styles.
-
-- **className( ...names: string[] )**: void;  
-Names of CSS classes to add to the container using spread.
-```
-container.className("navigation__container", "navigation__container--first", "top-navigation");
+    root: true;
+});
 ```
 
-- **addChild( child: Container )**:void  
-Append a container to a parent.  
+## **State**
 
-- **removeChild( child: Container )**:void  
-Remove a container from a parent.  
+Declare one-way data binding to keep views up to date with data changes.
 
-- **to( transitionToConfig : { duration: number, delay: number, ease: Ease, toVars: StyleDeclaration })**: Promise\<Container>  
-Wraps CSS transitions for smooth animations with chaining.  
+#### Setting state
+Inspired by React hooks, `useState()` will return a tuple; the first item is a state variable, the second item a function to update the variable.
 
-- **fromTo( transitionFromToConfig : { duration: number, delay: number, ease: Ease, toVars: StyleDeclaration, fromVars: StyleDeclaration)**: Promise\<Container>    
-Wraps CSS transitions for smooth animations with chaining.  
+```javascript
+const [temperature, setTemperature] = useState('21');
 
-- **addEventListener( scope: any, typeStr: string, listenerFunc: Function, data?: any, useCapture?: boolean )**: void;  
-Listen for DOM and custom events.  
+const view = container({
+    textContent: `${temperature}°C`,
+});
+// component shows 21°C
 
-- **removeEventListener( typeStr: string, listenerFunc: Function )**: {};  
-Remove DOM and custom events.  
-
-- **preventDefault( e: any )**: void;  
-Polyfill to prevent default event behavior.  
-
-- **responsive( config: ResponsiveConfig | ResponsiveConfig[] )**: void;  
-Set responsive rules on the container. An array of objects or object that has an optional minWidth, optional maxWidth, optional duration and a style to apply.  
-```
-    {
-        minWidth: 500,
-        maxWidth: 1000,
-        duration: 1,
-        style: {
-            backgroundColor: "red"
-        }
-    }
+setTemperature('31');
+// component shows 31°C ☀️
 ```
 
-- **hide()**: void;  
+#### Setting state with a reducer function
+Second parameter of `useState()` is a reducer function that will run every time the update function is called.
 
-- **show()**: void;  
+```javascript
+const addDegrees = temperature => `${temperature}°C`;
 
-- **fillContainer()**: void;  
+const [temperature, setTemperature] = useState('21', addDegrees);
 
-- **centreHorizontal()**: void;  
+const view = container({
+    textContent: temperature,
+});
+// component shows 21°C
 
-- **centreHorizontalText()**: void;
+setTemperature('31');
+// component shows 31°C ☀️
+```
 
+## License
 
-
-Getters / setters
-
-- **width**: number;
-- **height**: number;
-- **y**: number;
-- **x**: number;
-- **alpha**: number;
-- **value**: string;
-- **id**: string;
-- **element**: HTMLElement; (read-only)
-- **innerHtml**: string;
-- **href**: string;
-
-
----
-### **Links**
-- Extremely simple example with `shiva🔱` as a global library:  
-[https://bitbucket.org/gabrielmccallin/shiva-global](https://bitbucket.org/gabrielmccallin/shiva-global)
-
-- Start coding with `shiva🔱` and Typescript:  
-[https://bitbucket.org/gabrielmccallin/shiva-seed](https://bitbucket.org/gabrielmccallin/shiva-seed)
-
-- Example with simple routing:  
-[https://bitbucket.org/gabrielmccallin/shiva-pages](https://bitbucket.org/gabrielmccallin/shiva-pages)
+[MIT license](./LICENSE).
