@@ -17,6 +17,7 @@ pipelines:
   branches:
     master:
       - step:
+          name: test & build
           script:
             - echo "This script runs only on commit to the master branch."
             - npm install

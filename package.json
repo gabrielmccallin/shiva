@@ -29,5 +29,12 @@
     },
     "jest": {
         "preset": "ts-jest"
-    }
+    },
+    "keywords": [
+        "declarative",
+        "frontend",
+        "javascript",
+        "library",
+        "ui"
+    ]
 }
