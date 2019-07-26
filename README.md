@@ -11,7 +11,7 @@ Describe component behaviour with a standard JavaScript syntax and **`shiva`** w
 Build encapsulated components that manage their own state, then compose them to make complex UIs. Since component logic is written in JavaScript instead of templates, you can easily pass data through your app and keep state out of the DOM.
 
 **State management**  
-Render views with a simple one-way data binding syntax.
+Render views with a simple unidirectional data binding syntax.
 
 ## **Installation**
 ```
@@ -198,6 +198,38 @@ const view = container({
 setTemperature('31');
 // component shows 31°C ☀️
 ```
+
+#### Access state value
+A state variable is an object that contains all the properties required to update a container. The value that the container will be updated with can be accessed with `.value`;
+
+```javascript
+const addDegrees = temperature => `${temperature}°C`;
+
+const [temperature, setTemperature] = useState('21', addDegrees);
+
+let value = temperature.value; // will be 21°C
+
+const view = container({
+    textContent: temperature,
+});
+// component shows 21°C
+
+setTemperature('31');
+// component shows 31°C ☀️
+
+value = temperature.value; // will be 31°C
+```
+
+#### Use reducer for templating in the DOM
+Container attributes only take a `State` object. If you want to template, use the reducer argument of `useState()`.
+
+```javascript
+const [temperature, setTemperature] = useState('21', addDegrees);
+
+const view = container({
+    textContent: `${temperature}°C`,
+});
+// No, this won't work
 
 ## License
 

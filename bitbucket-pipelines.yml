@@ -35,4 +35,3 @@ pipelines:
               variables:
                 NPM_TOKEN: "$NPM_TOKEN"
                 FOLDER: "dist"
-          # activates jsdelivr as well I think

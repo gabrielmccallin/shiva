@@ -1,7 +1,18 @@
-import { container, ContainerSchema } from './container';
+import { container, ContainerSchema, appendChild } from './container';
 import { useState } from './state';
 
 describe('container', () => {
+    it('append child', () => {
+        const testContainer = container({
+            textContent: 'hello'
+        });
+
+        const textNode = document.createTextNode(' there');
+
+        testContainer.appendChild(textNode);
+        expect(testContainer.textContent).toEqual('hello there');
+    });
+
     it('create container with properties', () => {
         const textContentFixture = 'hello';
 
@@ -63,6 +74,30 @@ describe('container', () => {
         expect(testContainer.children.length).toEqual(2);
         expect(testContainer.children[0].textContent).toEqual('1');
         expect(testContainer.children[1].textContent).toEqual('2');
+        expect(testContainer.hasChildNodes()).toBeTruthy();
+    });
+
+    it('create container with HTMLElement children and textNodes', () => {
+        const testContainer = container({
+            children: [
+                'Hello',
+                container<HTMLElement>({ textContent: '2' })
+            ]
+        });
+
+        expect(testContainer.childNodes[0].textContent).toEqual('Hello');
+        expect(testContainer.children.length).toEqual(1);
+        expect(testContainer.children[0].textContent).toEqual('2');
+        expect(testContainer.children[0].tagName).toEqual('DIV');
+        expect(testContainer.hasChildNodes()).toBeTruthy();
+    });
+
+    it('create container with one textNode', () => {
+        const testContainer = container({
+            children: 'Hello'
+        });
+
+        expect(testContainer.childNodes[0].textContent).toEqual('Hello');
         expect(testContainer.hasChildNodes()).toBeTruthy();
     });
 

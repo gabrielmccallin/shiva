@@ -20,7 +20,7 @@ export type ContainerSchema<T = HTMLElement> = Merge<
     GenericOrState<T>,
     {
         attributes?: Primitive;
-        children?: HTMLElement[] | HTMLElement | State;
+        children?: HTMLElement[] | HTMLElement | State | string | Array<(HTMLElement | string)>;
         events?: EventSchema[] | EventSchema;
         root?: boolean;
         style?: GenericOrState<Partial<CSSStyleDeclaration>>;
@@ -30,7 +30,7 @@ export type ContainerSchema<T = HTMLElement> = Merge<
 
 export const removeAllChildren = (parent: HTMLElement) => {
     // TO DO Maybe don't use Object.values
-    Object.values(parent.children).forEach((child: HTMLElement) =>
+    Object.values(parent.childNodes).forEach((child: HTMLElement | Text) =>
         child.remove()
     );
 };
@@ -42,12 +42,12 @@ const addListener = (element: HTMLElement, event: { type; handler }) => {
 
 export const appendChild = (
     element: HTMLElement,
-    children: HTMLElement[] | HTMLElement
+    children: HTMLElement[] | HTMLElement | Text | Array<HTMLElement | Text>
 ) => {
     if (children instanceof Array) {
         children.forEach(child => element.appendChild(child));
     } else {
-        if (element instanceof HTMLElement) element.appendChild(children);
+        if (element) element.appendChild(children);
     }
 };
 
@@ -96,7 +96,16 @@ export const container = <T extends HTMLElement = HTMLElement>(
 
     Object.assign(element, elementProps);
 
-    appendChild(element, children as HTMLElement[] | HTMLElement);
+    const childrenArray = Array.isArray(children) ? children : [children];
+
+    const nodes = childrenArray.map(child => {
+        if (typeof child === 'string') {
+            return document.createTextNode(child);
+        } else {
+            return child;
+        }
+    });
+    appendChild(element, nodes);
 
     const styleElement = element as HTMLElement;
     Object.assign(styleElement.style, style);

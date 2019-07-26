@@ -1,11 +1,12 @@
-import { Primitive, removeAllChildren, appendChild } from './container';
+import { removeAllChildren, appendChild } from './container';
 
 export interface State {
     element?: HTMLElement;
-    initial?: Primitive;
     props?: Array<[string, string]>;
+    reducer?: any;
     setState?: (state) => void;
     subscribe?: (callback: (state: any) => void) => void;
+    value?: any;
 }
 
 export const checkForStateVariable = (
@@ -18,17 +19,17 @@ export const checkForStateVariable = (
         .forEach(([key, state]: [string, State]) => {
             state.props.push([key, type]);
             state.element = element;
-            props[key] = state.initial;
+            props[key] = state.reducer ? state.reducer(state.value) : state.value;
         });
 };
 
 export const useState = (
-    initial: State | any,
+    value: State | any,
     reducer?: (state) => any
 ): [State, any] => {
-    let callback;
-    if (initial && (<State>initial).setState) {
-        (<State>initial).subscribe = newState => setState(newState);
+    let callback: (state) => void;
+    if (value && (<State>value).setState) {
+        (<State>value).subscribe = newState => setState(newState);
     }
 
     const state: State = {
@@ -36,18 +37,24 @@ export const useState = (
         setState: state => {
             setState(state);
         },
-        get initial() {
-            return reducer && initial ? reducer(initial) : initial;
-        },
         set subscribe(subscriberCallback) {
             callback = subscriberCallback;
         },
+        get value() {
+            return value;
+        },
+        set value(newValue) {
+            value = newValue;
+        },
+        reducer,
         props: []
     };
 
     const setState = newState => {
         const { element, props } = state;
-        const reducedState = reducer && newState ? reducer(newState) : newState;
+        state.value = newState;
+
+        const reducedState = reducer ? reducer(newState) : newState;
 
         props &&
             props.forEach(([key, type]) => {
@@ -61,7 +68,10 @@ export const useState = (
                     case 'prop':
                         if (key === 'children') {
                             removeAllChildren(element);
-                            appendChild(element, reducedState);
+                            const child = typeof reducedState === 'string'
+                            ? document.createTextNode(reducedState)
+                            : reducedState;
+                            appendChild(element, child);
                         } else {
                             element[key] = reducedState;
                         }

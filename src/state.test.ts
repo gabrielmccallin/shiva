@@ -2,6 +2,24 @@ import { useState } from './state';
 import { container } from './container';
 
 describe('state', () => {
+    it('create state variable ', () => {
+        const fixture = ['hello'];
+        const [items, setItems] = useState(['hello']);
+        expect(items.value).toEqual(fixture);
+    });
+
+    it('set state variable ', () => {
+        const [items, setItems] = useState(['hello']);
+        setItems([...items.value, ['there']]);
+        expect(items.value.length as []).toBe(2);
+    });
+
+    it('set state variable with reducer', () => {
+        const [items, setItems] = useState(0, state => `Reduced ${state}`);
+        setItems(items.value + 1);
+        expect(items.value).toBe(1);
+    });
+
     it('create container with state children', () => {
         const [children, setChildren] = useState([
             container({ textContent: '1' }),
@@ -45,7 +63,7 @@ describe('state', () => {
         const [text, setText] = useState(fixture.textContent);
 
         const testContainer = container({
-            textContent: text
+            children: text
         });
 
         setText(fixture.updateTextContent);
@@ -146,7 +164,7 @@ describe('state', () => {
     it('create container with state properties', () => {
         const textContentFixture = 'hello';
         const prop: any = {
-            get initial() {
+            get value() {
                 return textContentFixture;
             },
             setState: () => {},
@@ -169,6 +187,21 @@ describe('state', () => {
             textContent: temperature
         });
         expect(component.textContent).toEqual('21°C');
+
+        setTemperature('31');
+
+        expect(component.textContent).toEqual('31°C');
+    });
+
+    it('update container with a initially empty state object and reducer', () => {
+        const addDegrees = (temp: string) => `${temp}°C`;
+
+        const [temperature, setTemperature] = useState(0, addDegrees);
+
+        const component = container({
+            textContent: temperature
+        });
+        expect(component.textContent).toEqual('0°C');
 
         setTemperature('31');
 
