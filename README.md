@@ -1,4 +1,4 @@
-# [**shiva** 🔱](https://gabrielmccallin.bitbucket.io/shiva/)
+# [**shiva** 🔱](https://shiva.gabrielmccallin.now.sh/)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://bitbucket.org/gabrielmccallin/shiva/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/shiva.svg?style=flat)](https://www.npmjs.com/package/shiva "View this project on npm") [![Bitbucket Pipeline Status](https://img.shields.io/badge/pipeline-passing-green.svg)](https://bitbucket.org/gabrielmccallin/shiva/addon/pipelines/home#!/results/branch/master/page/1) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://bitbucket.org/gabrielmccallin/shiva)  
 ![javascript](https://img.shields.io/badge/-javascript-informational.svg) ![frontend](https://img.shields.io/badge/-frontend-informational.svg) ![declarative](https://img.shields.io/badge/-declarative-informational.svg) ![ui](https://img.shields.io/badge/-ui-informational.svg) ![library](https://img.shields.io/badge/-library-informational.svg)
 
@@ -18,8 +18,8 @@ Render views with a simple unidirectional data binding syntax.
 npm install shiva --save
 ```
 
-`shiva` is distributed as an ES module. Use a module aware build tool to `import` functions.
-See [example](https://example) for an example of how to include `shiva` in a project.
+`shiva` is distributed as an ES module. Use a module aware build tool to `import` functions.  
+See https://bitbucket.org/gabrielmccallin/shiva-site for an example of how to include `shiva` in a project.
 
 ## **Getting started**
 

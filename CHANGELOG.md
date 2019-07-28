@@ -1,5 +1,9 @@
 # Change Log
 
+## `[3.1.1]`
+🏠 Update shiva homepage URL
+
+---
 ## `[3.1.0]`
 ✨ Access state value
 🐛 text nodes as children now handled properly with setState
