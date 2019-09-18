@@ -1,5 +1,9 @@
 # Change Log
 
+## `[3.1.2]`
+⬆ Update dependencies
+
+---
 ## `[3.1.1]`
 🏠 Update shiva homepage URL
 
