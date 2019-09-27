@@ -1,16 +1,20 @@
 # Change Log
 
+## `[3.2.0]`
+- 🦅 Nested state object
+
+---
 ## `[3.1.2]`
-⬆ Update dependencies
+- ⬆ Update dependencies
 
 ---
 ## `[3.1.1]`
-🏠 Update shiva homepage URL
+- 🏠 Update shiva homepage URL
 
 ---
 ## `[3.1.0]`
-✨ Access state value
-🐛 text nodes as children now handled properly with setState
+- ✨ Access state value
+- 🐛 text nodes as children now handled properly with setState
 
 ---
 ## `[3.0.3]`

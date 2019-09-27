@@ -1,16 +1,16 @@
 # [**shiva** 🔱](https://shiva.gabrielmccallin.now.sh/)
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://bitbucket.org/gabrielmccallin/shiva/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/shiva.svg?style=flat)](https://www.npmjs.com/package/shiva "View this project on npm") [![Bitbucket Pipeline Status](https://img.shields.io/badge/pipeline-passing-green.svg)](https://bitbucket.org/gabrielmccallin/shiva/addon/pipelines/home#!/results/branch/master/page/1) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://bitbucket.org/gabrielmccallin/shiva)  
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://bitbucket.org/gabrielmccallin/shiva/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/shiva.svg?style=flat)](https://www.npmjs.com/package/shiva "View this project on npm") [![Bitbucket Pipeline Status](https://img.shields.io/badge/pipeline-passing-green.svg)](https://bitbucket.org/gabrielmccallin/shiva/addon/pipelines/home#!/results/branch/master/page/1) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://bitbucket.org/gabrielmccallin/shiva)
 ![javascript](https://img.shields.io/badge/-javascript-informational.svg) ![frontend](https://img.shields.io/badge/-frontend-informational.svg) ![declarative](https://img.shields.io/badge/-declarative-informational.svg) ![ui](https://img.shields.io/badge/-ui-informational.svg) ![library](https://img.shields.io/badge/-library-informational.svg)
 
 **`shiva`** is a minimal JavaScript library for building user interfaces.
 
-**Declarative**  
+**Declarative**
 Describe component behaviour with a standard JavaScript syntax and **`shiva`** will efficiently update views when your data changes. Declarative views make your code more predictable, simpler to understand, and easier to debug.
 
-**Modular**  
+**Modular**
 Build encapsulated components that manage their own state, then compose them to make complex UIs. Since component logic is written in JavaScript instead of templates, you can easily pass data through your app and keep state out of the DOM.
 
-**State management**  
+**State management**
 Render views with a simple unidirectional data binding syntax.
 
 ## **Installation**
@@ -18,7 +18,7 @@ Render views with a simple unidirectional data binding syntax.
 npm install shiva --save
 ```
 
-`shiva` is distributed as an ES module. Use a module aware build tool to `import` functions.  
+`shiva` is distributed as an ES module. Use a module aware build tool to `import` functions.
 See https://bitbucket.org/gabrielmccallin/shiva-site for an example of how to include `shiva` in a project.
 
 ## **Getting started**
@@ -171,15 +171,38 @@ Declare one-way data binding to keep views up to date with data changes.
 Inspired by React hooks, `useState()` will return a tuple; the first item is a state variable, the second item a function to update the variable.
 
 ```javascript
-const [temperature, setTemperature] = useState('21');
+const [temperature, setTemperature] = useState('21°C');
 
 const view = container({
-    textContent: `${temperature}°C`,
+    textContent: temperature,
 });
 // component shows 21°C
 
-setTemperature('31');
+setTemperature('31°C');
 // component shows 31°C ☀️
+```
+
+#### Setting state with a nested data structure
+```javascript
+const [state, setState] = useState({
+    hello: 'there',
+    nested: 'data'
+});
+
+const hello = container({
+    textContent: state.hello,
+});
+// hello component shows 'there'
+
+const nested = container({
+    textContent: state.nested,
+});
+// nested component shows 'data'
+
+setState({
+    nested: 'updatedData'
+});
+// nested component shows 'updatedData'
 ```
 
 #### Setting state with a reducer function
@@ -207,7 +230,7 @@ const addDegrees = temperature => `${temperature}°C`;
 
 const [temperature, setTemperature] = useState('21', addDegrees);
 
-let value = temperature.value; // will be 21°C
+console.log(temperature.value); // 21°C
 
 const view = container({
     textContent: temperature,
@@ -217,11 +240,11 @@ const view = container({
 setTemperature('31');
 // component shows 31°C ☀️
 
-value = temperature.value; // will be 31°C
+console.log(temperature.value); // 31°C
 ```
 
-#### Use reducer for templating in the DOM
-Container attributes only take a `State` object. If you want to template, use the reducer argument of `useState()`.
+#### Use reducer for templating
+Container attributes only take a `State` object. If you want to template, use the reducer argument of `useState(value, reducer)`.
 
 ```javascript
 const [temperature, setTemperature] = useState('21', addDegrees);

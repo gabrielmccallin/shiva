@@ -4,7 +4,7 @@ import { container } from './container';
 describe('state', () => {
     it('create state variable ', () => {
         const fixture = ['hello'];
-        const [items, setItems] = useState(['hello']);
+        const [items] = useState(['hello']);
         expect(items.value).toEqual(fixture);
     });
 
@@ -21,7 +21,7 @@ describe('state', () => {
     });
 
     it('create container with state children', () => {
-        const [children, setChildren] = useState([
+        const [children] = useState([
             container({ textContent: '1' }),
             container({ textContent: '2' })
         ]);
@@ -60,14 +60,14 @@ describe('state', () => {
             updateTextContent: 'there'
         };
 
-        const [text, setText] = useState(fixture.textContent);
+        const [text, setText] = useState(fixture);
 
         const testContainer = container({
-            children: text
+            children: text.textContent
         });
 
-        setText(fixture.updateTextContent);
-        expect(testContainer.textContent).toEqual(fixture.updateTextContent);
+        setText(fixture);
+        expect(testContainer.textContent).toEqual(fixture.textContent);
     });
 
     it('update multiple container properties with the same state', () => {
@@ -193,7 +193,7 @@ describe('state', () => {
         expect(component.textContent).toEqual('31°C');
     });
 
-    it('update container with a initially empty state object and reducer', () => {
+    it('update container with an initially empty state object and reducer', () => {
         const addDegrees = (temp: string) => `${temp}°C`;
 
         const [temperature, setTemperature] = useState(0, addDegrees);
@@ -243,5 +243,113 @@ describe('state', () => {
     it('useState with null reducer', () => {
         const [fixture, setFixture] = useState(4, null);
         expect(fixture.setState).toBeTruthy();
+    });
+});
+
+describe('nested state object', () => {
+    it('should return state objects for each leaf node', () => {
+        const fixture = {
+            wow: {
+                wow: 'wow'
+            },
+            hey: 'hey'
+        };
+
+        const [nested] = useState(fixture);
+
+        expect(nested.wow.wow).toHaveProperty('value');
+        expect(nested.hey).toHaveProperty('setState');
+
+        expect(nested.wow.wow.value).toEqual('wow');
+    });
+
+    it('should update containers with new values', () => {
+        const fixture = {
+            wow: {
+                wow: 'wow'
+            },
+            hey: 'hey'
+        };
+        const [state, setState] = useState(fixture);
+
+        const testContainer = container({
+            children: state.hey
+        });
+
+        const testContainer2 = container({
+            children: state.wow.wow
+        });
+
+        expect(testContainer.childNodes[0].textContent).toEqual('hey');
+        expect(testContainer2.childNodes[0].textContent).toEqual('wow');
+
+        setState({
+            wow: {
+                wow: 'wownow'
+            },
+            hey: 'heynow'
+        });
+
+        expect(testContainer.childNodes[0].textContent).toEqual('heynow');
+        expect(testContainer2.childNodes[0].textContent).toEqual('wownow');
+    });
+
+    it('should update containers partially', () => {
+        const fixture = {
+            wow: {
+                wow: 'wow'
+            },
+            hey: 9
+        };
+        const [state, setState] = useState(fixture);
+
+        const testContainer = container({
+            children: state.hey
+        });
+
+        const testContainer2 = container({
+            children: state.wow.wow
+        });
+
+        expect(testContainer.childNodes[0].textContent).toEqual('9');
+        expect(testContainer2.childNodes[0].textContent).toEqual('wow');
+
+        setState({
+            wow: {
+                wow: 'wownow'
+            }
+        });
+
+        expect(testContainer.childNodes[0].textContent).toEqual('9');
+        expect(testContainer2.childNodes[0].textContent).toEqual('wownow');
+    });
+    it('should run the reducer on the whole state object', () => {
+        const fixture = {
+            monthly: 100,
+            left: 5
+        };
+
+        const reducer = ({ monthly, left }: { monthly: number, left: number }): { monthly: string, left: string } => ({
+            monthly: monthly.toFixed(2),
+            left: left.toFixed(0)
+        });
+
+        const [monthLeft, setMonthLeft] = useState(fixture, reducer);
+
+        const testContainer = container({
+            children: monthLeft.monthly
+        });
+
+        const testContainer2 = container({
+            children: monthLeft.left
+        });
+
+        setMonthLeft({
+            monthly: 200,
+            left: 10
+        });
+
+        expect(testContainer.childNodes[0].textContent).toEqual('200.00');
+        expect(testContainer2.childNodes[0].textContent).toEqual('10');
     });
 });

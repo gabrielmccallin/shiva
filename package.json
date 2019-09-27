@@ -1,6 +1,6 @@
 {
     "name": "shiva",
-    "version": "3.1.2",
+    "version": "3.2.0",
     "description": "Minimal JavaScript library for building user interfaces",
     "main": "shiva.js",
     "module": "shiva.js",
@@ -23,6 +23,7 @@
     "homepage": "https://shiva.gabrielmccallin.now.sh/",
     "devDependencies": {
         "@types/jest": "^24.0.15",
+        "@types/lodash.clonedeep": "^4.5.6",
         "jest": "^24.8.0",
         "ts-jest": "^24.0.2",
         "tslint": "^5.17.0",
@@ -37,5 +38,8 @@
         "javascript",
         "library",
         "ui"
-    ]
+    ],
+    "dependencies": {
+        "lodash.clonedeep": "^4.5.0"
+    }
 }

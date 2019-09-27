@@ -98,19 +98,26 @@ export const container = <T extends HTMLElement = HTMLElement>(
 
     const childrenArray = Array.isArray(children) ? children : [children];
 
-    const nodes = childrenArray.map(child => {
-        if (typeof child === 'string') {
-            return document.createTextNode(child);
-        } else {
-            return child;
-        }
-    });
+    const nodes = childrenArray.map(child => createTextNode(child));
     appendChild(element, nodes);
 
     const styleElement = element as HTMLElement;
     Object.assign(styleElement.style, style);
 
     return element as T;
+};
+
+export const createTextNode = (data): Text | HTMLElement => {
+    switch (typeof data) {
+        case 'string':
+            return document.createTextNode(data);
+        case 'number':
+            return document.createTextNode(data.toString());
+        case 'boolean':
+            return document.createTextNode(data.toString());
+        default:
+            return data;
+    }
 };
 
 export const replaceChild = (parent: HTMLElement, children: HTMLElement) => {
