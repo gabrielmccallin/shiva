@@ -1,5 +1,9 @@
 # Change Log
 
+## `[3.2.1]`
+- 🐛 added lodash dependency
+
+---
 ## `[3.2.0]`
 - 🦅 Nested state object
 
