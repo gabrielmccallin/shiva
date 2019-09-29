@@ -1,6 +1,6 @@
 {
     "name": "shiva",
-    "version": "3.2.1",
+    "version": "3.2.2",
     "description": "Minimal JavaScript library for building user interfaces",
     "main": "shiva.js",
     "module": "shiva.js",

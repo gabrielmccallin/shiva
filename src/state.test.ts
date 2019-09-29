@@ -352,4 +352,23 @@ describe('nested state object', () => {
         expect(testContainer.childNodes[0].textContent).toEqual('200.00');
         expect(testContainer2.childNodes[0].textContent).toEqual('10');
     });
+
+    it('should update with a HTMLElement from the reducer', () => {
+        const fixture = {
+            initial: 'hello',
+            expected: 'there'
+        };
+
+        const reducer = (state) => container({ children: state });
+
+        const [element, setElement] = useState(fixture.initial, reducer);
+
+        const testContainer = container({
+            children: element
+        });
+
+        setElement(fixture.expected);
+
+        expect(testContainer.childNodes[0].textContent).toEqual(fixture.expected);
+    });
 });

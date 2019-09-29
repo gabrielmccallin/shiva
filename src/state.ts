@@ -119,10 +119,8 @@ export const useState = (
         deepUpdate(cachedState, reducer ? reducer(stateObj) : stateObj);
     };
 
-    const reduced = reducer ? reducer(value) : value;
-
-    if (isObject(reduced) && !(<State>reduced).setState) {
-        cachedState = deepState(merge({}, reduced));
+    if (isObject(value) && !(<State>value).setState) {
+        cachedState = deepState(merge({}, value));
         return [cachedState, updateAll];
     } else {
         return createState(value, reducer);

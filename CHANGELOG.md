@@ -1,5 +1,9 @@
 # Change Log
 
+## `[3.2.2]`
+- 🐛 state reducer running twice in `useState()`
+
+---
 ## `[3.2.1]`
 - 🐛 added lodash dependency
 
