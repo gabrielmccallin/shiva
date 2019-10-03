@@ -1,5 +1,5 @@
 import { useState } from './state';
-import { container } from './container';
+import { container, ContainerSchema } from './container';
 
 describe('state', () => {
     it('create state variable ', () => {
@@ -34,6 +34,30 @@ describe('state', () => {
         expect(testContainer.childNodes[0].textContent).toEqual('1');
         expect(testContainer.childNodes[1].textContent).toEqual('2');
         expect(testContainer.hasChildNodes()).toBeTruthy();
+
+    });
+
+    it('should create a container from multiple properties with state objects', () => {
+        const [state] = useState('block');
+
+        const containerProps: ContainerSchema<HTMLImageElement> = {
+            attributes: {
+                hiya: state,
+                another: state
+            },
+            src: state,
+            style: {
+                display: state
+            },
+            tagName: 'img'
+        };
+
+        const testContainer = container<HTMLImageElement>(containerProps);
+
+        expect(testContainer.style.display).toEqual('block');
+        expect(testContainer['src']).toEqual('http://localhost/block');
+        expect(testContainer.getAttribute('hiya')).toEqual('block');
+        expect(testContainer.getAttribute('another')).toEqual('block');
     });
 
     it('update container with state children', () => {
@@ -68,6 +92,98 @@ describe('state', () => {
 
         setText(fixture);
         expect(testContainer.textContent).toEqual(fixture.textContent);
+    });
+
+    it('update container with state object and nested array', () => {
+        const fixture = {
+            original: {
+                children: ['hello', 'there']
+            },
+            update: {
+                children: ['goodbye', 'you']
+            }
+        };
+
+        const [text, setText] = useState(fixture.original);
+
+        const testContainer = container({
+            children: text.children
+        });
+
+        expect(testContainer.childNodes[0].textContent).toEqual(fixture.original.children[0]);
+        expect(testContainer.childNodes[1].textContent).toEqual(fixture.original.children[1]);
+
+        setText(fixture.update);
+        expect(testContainer.childNodes[0].textContent).toEqual(fixture.update.children[0]);
+    });
+
+    it('update container with state array', () => {
+        const fixture = {
+            original: ['hello', 'there'],
+            update: ['goodbye', 'you']
+        };
+
+        const [children, setChildren] = useState(fixture.original);
+
+        const testContainer = container({
+            children
+        });
+
+        expect(testContainer.childNodes[0].textContent).toEqual(fixture.original[0]);
+        expect(testContainer.childNodes[1].textContent).toEqual(fixture.original[1]);
+
+        setChildren(fixture.update);
+        expect(testContainer.childNodes[0].textContent).toEqual(fixture.update[0]);
+    });
+
+    it('should update containers without leaking', () => {
+        const fixture1 = {
+            original: { hello: 'there'},
+            update: { hello: 'you' }
+        };
+
+        const fixture2 = {
+            original: { hello: 'there2'},
+            update: { hello: 'you2' }
+        };
+
+        const [children, setChildren] = useState(fixture1.original);
+        const [children2, setChildren2] = useState(fixture2.original);
+
+        const testContainer1 = container({
+            children: children.hello
+        });
+
+        const testContainer2 = container({
+            children: children2.hello
+        });
+
+        expect(testContainer1.childNodes[0].textContent).toEqual(fixture1.original.hello);
+        expect(testContainer2.childNodes[0].textContent).toEqual(fixture2.original.hello);
+
+        setChildren(fixture1.update);
+        expect(testContainer1.childNodes[0].textContent).toEqual(fixture1.update.hello);
+
+        setChildren2(fixture2.update);
+        expect(testContainer2.childNodes[0].textContent).toEqual(fixture2.update.hello);
+    });
+
+    it('update container with dates', () => {
+        const fixture = {
+            original: Date.now(),
+            update: Date.now() + 1000
+        };
+
+        const [children, setChildren] = useState(fixture.original);
+
+        const testContainer = container({
+            children
+        });
+
+        expect(testContainer.childNodes[0].textContent).toEqual(fixture.original.toString());
+
+        setChildren(fixture.update);
+        expect(testContainer.childNodes[0].textContent).toEqual(fixture.update.toString());
     });
 
     it('update multiple container properties with the same state', () => {
@@ -163,7 +279,7 @@ describe('state', () => {
 
     it('create container with state properties', () => {
         const textContentFixture = 'hello';
-        const prop: any = {
+        const prop = {
             get value() {
                 return textContentFixture;
             },

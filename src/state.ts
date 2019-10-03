@@ -1,38 +1,40 @@
-import { removeAllChildren, appendChild, createTextNode } from './container';
-import merge from 'lodash/fp/merge';
+import { updateChildren } from './container';
 
 export interface State {
     element?: HTMLElement;
-    props?: Array<[string, string]>;
-    reducer?: any;
+    reducer?;
     setState?: (state) => void;
-    subscribe?: (callback: (state: any) => void) => void;
-    value?: any;
+    subscribe?: (callback: (state) => void) => void;
+    value?;
+    attributes?: string[];
+    events?;
+    styles?: string[];
+    properties?: string[];
 }
 
-export const checkForStateVariable = (
-    props,
-    element,
-    type: 'prop' | 'attribute' | 'style'
-) => {
-    Object.entries(props)
-        .filter(([key, value]: [string, State]) => value.setState)
-        .forEach(([key, state]: [string, State]) => {
-            state.props.push([key, type]);
-            state.element = element;
-            props[key] = state.reducer ? state.reducer(state.value) : state.value;
-        });
+export const updateState = (element, properties) => {
+    Object.entries(properties)
+        // property is attributes / style / properties, value should be an object
+        .forEach(([property, valueObj]) => Object.entries(valueObj)
+            .filter(([key, value]: [string, State]) => value.setState)
+            // [['hiya', state]]
+            .forEach(([key, state]: [string, State]) => {
+                state.element = element;
+                if (!state[property]) {
+                    state[property] = [];
+                }
+                state[property].push(key);
+                // TODO this is mutating property values
+                properties[property][key] = state.reducer ? state.reducer(state.value) : state.value;
+            })
+        );
 };
 
 export const createState = (
-    value: State | any,
+    value,
     reducer?: (state) => any
-): [State, any] => {
+) => {
     let callback: (state) => void;
-    if (value && (<State>value).setState) {
-        (<State>value).subscribe = newState => setState(newState);
-    }
-
     const state: State = {
         // tslint:disable-next-line: no-shadowed-variable
         setState: state => {
@@ -47,69 +49,63 @@ export const createState = (
         set value(newValue) {
             value = newValue;
         },
-        reducer,
-        props: []
+        reducer
     };
 
-    const setState = newState => {
-        const { element, props } = state;
-        state.value = newState;
+    const setState = (newState) => statePropertyArraysSetState(state, newState, callback, reducer);
 
-        const reducedState = reducer ? reducer(newState) : newState;
+    if (value && (<State>value).setState) {
+        (<State>value).subscribe = newState => setState(newState);
+    }
 
-        props &&
-            props.forEach(([key, type]) => {
-                switch (type) {
-                    case 'attribute':
-                        element.setAttribute(key, reducedState);
-                        break;
-                    case 'style':
-                        element.style[key] = reducedState;
-                        break;
-                    case 'prop':
-                        if (key === 'children') {
-                            removeAllChildren(element);
-                            appendChild(element, createTextNode(reducedState));
-                        } else {
-                            element[key] = reducedState;
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            });
-
-        callback && callback(reducedState);
-    };
     return [state, setState];
+};
+
+const statePropertyArraysSetState = (currentState, newState, callback, reducer?) => {
+    const { element, attributes = [], style = [], properties = [] } = currentState;
+    currentState.value = newState;
+
+    const reducedState = reducer ? reducer(newState) : newState;
+
+    attributes.map(attribute => element.setAttribute(attribute, reducedState));
+    style.map(prop => element.style[prop] = reducedState);
+    properties.map(prop => {
+        if (prop === 'children') {
+            updateChildren(element, reducedState);
+        } else {
+            element[prop] = reducedState;
+        }
+    });
+
+    callback && callback(reducedState);
 };
 
 const isObject = (obj) => {
     return obj === Object(obj) && !obj.length;
 };
 
-const deepState = (value: State | any): State => {
-    Object.keys(value).forEach(key => {
-        if (typeof value[key] === 'object') {
-            deepState(value[key]);
+const deepState = (target: State | any = {}, src: State | any = {}): State => {
+    Object.keys(src).forEach(key => {
+        if (typeof src[key] === 'object' && !src[key].length) {
+            target[key] = deepState(target[key], src[key]);
         } else {
-            const [state] = createState(value[key], value[key].reducer);
-            value[key] = state;
+            const [state] = createState(src[key]);
+            target[key] = state;
         }
     });
-    return value;
+    return target;
 };
 
 export const useState = (
-    value: State | any,
+    value,
     reducer?: (state) => any
-): [State | any, any] => {
+) => {
     let cachedState;
 
     const updateAll = (stateObj) => {
         const deepUpdate = (cache, state) => {
             Object.keys(state).forEach(key => {
-                if (typeof state[key] === 'object') {
+                if (typeof state[key] === 'object' && !state[key].length) {
                     deepUpdate(cache[key], state[key]);
                 } else {
                     cache[key].setState(state[key]);
@@ -120,7 +116,7 @@ export const useState = (
     };
 
     if (isObject(value) && !(<State>value).setState) {
-        cachedState = deepState(merge({}, value));
+        cachedState = deepState(cachedState, value);
         return [cachedState, updateAll];
     } else {
         return createState(value, reducer);

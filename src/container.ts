@@ -1,4 +1,4 @@
-import { State, checkForStateVariable } from './state';
+import { State, updateState } from './state';
 
 export interface EventSchema {
     type: string;
@@ -76,10 +76,24 @@ export const container = <T extends HTMLElement = HTMLElement>(
         element = document.createElement(tagName as string);
     }
 
-    checkForStateVariable(attributes, element, 'attribute');
-    checkForStateVariable(props, element, 'prop');
-    checkForStateVariable(style, element, 'style');
+    updateState(element, { attributes, properties: props, style });
 
+    return updateContainer({ element, attributes, props, style, events }) as T;
+};
+
+export const updateContainer = ({
+    element,
+    attributes = {},
+    props = {},
+    style = {},
+    events = []
+}: {
+    element: HTMLElement,
+    attributes?,
+    props?,
+    style?,
+    events?
+}) => {
     if (events instanceof Array) {
         events.forEach(event => {
             addListener(element, event);
@@ -96,15 +110,21 @@ export const container = <T extends HTMLElement = HTMLElement>(
 
     Object.assign(element, elementProps);
 
-    const childrenArray = Array.isArray(children) ? children : [children];
-
-    const nodes = childrenArray.map(child => createTextNode(child));
-    appendChild(element, nodes);
+    updateChildren(element, children);
 
     const styleElement = element as HTMLElement;
     Object.assign(styleElement.style, style);
 
-    return element as T;
+    return element;
+};
+
+export const updateChildren = (element, children) => {
+    const childrenArray = Array.isArray(children) ? children : [children];
+    const nodes = childrenArray.map(child => createTextNode(child));
+    if (nodes.length > 0) {
+        removeAllChildren(element);
+        appendChild(element, nodes);
+    }
 };
 
 export const createTextNode = (data): Text | HTMLElement => {

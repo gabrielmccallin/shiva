@@ -1,6 +1,6 @@
 {
     "name": "shiva",
-    "version": "3.2.2",
+    "version": "3.2.3",
     "description": "Minimal JavaScript library for building user interfaces",
     "main": "shiva.js",
     "module": "shiva.js",
@@ -22,12 +22,11 @@
     "license": "MIT",
     "homepage": "https://shiva.gabrielmccallin.now.sh/",
     "devDependencies": {
-        "@types/jest": "^24.0.15",
-        "@types/lodash": "^4.14.140",
-        "jest": "^24.8.0",
-        "ts-jest": "^24.0.2",
-        "tslint": "^5.17.0",
-        "typescript": "^3.5.2"
+        "@types/jest": "^24.0.18",
+        "jest": "^24.9.0",
+        "ts-jest": "^24.1.0",
+        "tslint": "^5.20.0",
+        "typescript": "^3.6.3"
     },
     "jest": {
         "preset": "ts-jest"
@@ -39,7 +38,5 @@
         "library",
         "ui"
     ],
-    "dependencies": {
-        "lodash": "^4.17.15"
-    }
+    "dependencies": {}
 }

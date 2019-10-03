@@ -1,4 +1,4 @@
-import { container, ContainerSchema, appendChild } from './container';
+import { container, ContainerSchema, appendChild, updateContainer } from './container';
 import { useState } from './state';
 
 describe('container', () => {
@@ -64,17 +64,32 @@ describe('container', () => {
         ];
 
         const fixture: ContainerSchema = {
-            textContent: 'hello',
             children
         };
 
         const testContainer = container(fixture);
 
-        expect(testContainer.childNodes[0].textContent).toEqual('hello');
         expect(testContainer.children.length).toEqual(2);
         expect(testContainer.children[0].textContent).toEqual('1');
         expect(testContainer.children[1].textContent).toEqual('2');
-        expect(testContainer.hasChildNodes()).toBeTruthy();
+    });
+
+    it('should create container with children and overwrite textContent', () => {
+        const children = [
+            container<HTMLElement>({ textContent: '1' }),
+            container<HTMLElement>({ textContent: '2' })
+        ];
+
+        const fixture: ContainerSchema = {
+            textContent: 'I should not be here',
+            children
+        };
+
+        const testContainer = container(fixture);
+
+        expect(testContainer.children.length).toEqual(2);
+        expect(testContainer.children[0].textContent).toEqual('1');
+        expect(testContainer.children[1].textContent).toEqual('2');
     });
 
     it('create container with HTMLElement children and textNodes', () => {
@@ -141,6 +156,21 @@ describe('container', () => {
         });
 
         expect(testContainer.value).toEqual('hello');
+    });
+
+    it('should update container', () => {
+        const testContainer = container({
+            children: 'hello'
+        });
+
+        updateContainer({
+            element: testContainer,
+            props: {
+                children: 'there'
+            }
+        });
+
+        expect(testContainer.childNodes[0].textContent).toEqual('there');
     });
 });
 

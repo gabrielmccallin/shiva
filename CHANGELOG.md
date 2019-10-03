@@ -1,5 +1,10 @@
 # Change Log
 
+## `[3.2.3]`
+- 🛠 refactor of internal state data structure
+- ⬇️ remove lodash.merge
+
+---
 ## `[3.2.2]`
 - 🐛 state reducer running twice in `useState()`
 
