@@ -2,12 +2,14 @@ import { State, updateState } from './state';
 
 export interface EventSchema {
     type: string;
-    handler: (e) => void;
+    handler: (e: Event) => void;
 }
 
-export interface Primitive {
-    [key: string]: string | boolean | number | State;
+interface PrimitiveObject {
+    [key: string]: string | boolean | number;
 }
+
+type Primitive = string | boolean | number;
 
 type HTMLTagName = keyof HTMLElementTagNameMap;
 
@@ -19,8 +21,8 @@ type Merge<M, N> = Omit<M, Extract<keyof M, keyof N>> & N;
 export type ContainerSchema<T = HTMLElement> = Merge<
     GenericOrState<T>,
     {
-        attributes?: Primitive;
-        children?: HTMLElement[] | HTMLElement | State | string | Array<(HTMLElement | string)>;
+        attributes?: PrimitiveObject;
+        children?: HTMLElement | State | Primitive | Array<(HTMLElement | State | Primitive)>;
         events?: EventSchema[] | EventSchema;
         root?: boolean;
         style?: GenericOrState<Partial<CSSStyleDeclaration>>;

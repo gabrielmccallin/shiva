@@ -1,23 +1,23 @@
-import { useState } from './state';
 import { container, ContainerSchema } from './container';
+import { State, useState, value } from './state';
 
 describe('state', () => {
     it('create state variable ', () => {
         const fixture = ['hello'];
         const [items] = useState(['hello']);
-        expect(items.value).toEqual(fixture);
+        expect(value(items)).toEqual(fixture);
     });
 
     it('set state variable ', () => {
         const [items, setItems] = useState(['hello']);
-        setItems([...items.value, ['there']]);
-        expect(items.value.length as []).toBe(2);
+        setItems([...value(items), ['there']]);
+        expect(value(items).length).toBe(2);
     });
 
     it('set state variable with reducer', () => {
         const [items, setItems] = useState(0, state => `Reduced ${state}`);
-        setItems(items.value + 1);
-        expect(items.value).toBe(1);
+        setItems(value(items) + 1);
+        expect(value(items)).toBe(1);
     });
 
     it('create container with state children', () => {
@@ -170,8 +170,8 @@ describe('state', () => {
 
     it('update container with dates', () => {
         const fixture = {
-            original: Date.now(),
-            update: Date.now() + 1000
+            original: Date.now().toString(),
+            update: (Date.now() + 1000).toString()
         };
 
         const [children, setChildren] = useState(fixture.original);
@@ -312,7 +312,7 @@ describe('state', () => {
     it('update container with an initially empty state object and reducer', () => {
         const addDegrees = (temp: string) => `${temp}°C`;
 
-        const [temperature, setTemperature] = useState(0, addDegrees);
+        const [temperature, setTemperature] = useState('0', addDegrees);
 
         const component = container({
             textContent: temperature
@@ -358,7 +358,7 @@ describe('state', () => {
 
     it('useState with null reducer', () => {
         const [fixture, setFixture] = useState(4, null);
-        expect(fixture.setState).toBeTruthy();
+        expect((fixture as State).setState).toBeTruthy();
     });
 });
 
@@ -376,7 +376,7 @@ describe('nested state object', () => {
         expect(nested.wow.wow).toHaveProperty('value');
         expect(nested.hey).toHaveProperty('setState');
 
-        expect(nested.wow.wow.value).toEqual('wow');
+        expect((nested.wow.wow as State).value).toEqual('wow');
     });
 
     it('should update containers with new values', () => {
@@ -486,5 +486,52 @@ describe('nested state object', () => {
         setElement(fixture.expected);
 
         expect(testContainer.childNodes[0].textContent).toEqual(fixture.expected);
+    });
+
+    describe('state value', () => {
+        it('should return the value of the state object', () => {
+            const fixture = {
+                initial: 'hello',
+                expected: 'there'
+            };
+
+            const [state, setState] = useState(fixture.initial);
+
+            expect(value(state)).toEqual(fixture.initial);
+            // expect(state.initial).toEqual(fixture.initial);
+        });
+        it('should return the value of a nested state object', () => {
+            const fixture = {
+                initial: 'hello',
+                expected: 'there'
+            };
+
+            const [state, setState] = useState(fixture);
+
+            expect(value(state).initial).toEqual(fixture.initial);
+            expect(value(state).expected).toEqual(fixture.expected);
+            expect(value(state)).toEqual(fixture);
+        });
+
+        it('should return the value of a state object that is an empty array', () => {
+            const [state, setState] = useState([]);
+
+            expect(value(state)).toEqual([]);
+        });
+        it('should return the value of a state object that is an empty object', () => {
+            const [state, setState] = useState({});
+
+            expect(value(state)).toEqual({});
+        });
+        it('should return the value of a state object that is an empty string', () => {
+            const [state, setState] = useState('');
+
+            expect(value(state)).toEqual('');
+        });
+        it('should return the value of a state object that is 0', () => {
+            const [state, setState] = useState(0);
+
+            expect(value(state)).toEqual(0);
+        });
     });
 });

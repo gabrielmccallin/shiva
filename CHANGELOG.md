@@ -1,5 +1,9 @@
 # Change Log
 
+## `[3.3.0]`
+- ✨ `value()` to get the value of a state object
+- 🏷 added types for things returned by `useState`
+
 ## `[3.2.3]`
 - 🛠 refactor of internal state data structure
 - ⬇️ remove lodash.merge

@@ -16,7 +16,7 @@ export const updateState = (element, properties) => {
     Object.entries(properties)
         // property is attributes / style / properties, value should be an object
         .forEach(([property, valueObj]) => Object.entries(valueObj)
-            .filter(([key, value]: [string, State]) => value.setState)
+            .filter(([key, state]: [string, State]) => state.setState)
             // [['hiya', state]]
             .forEach(([key, state]: [string, State]) => {
                 state.element = element;
@@ -30,35 +30,34 @@ export const updateState = (element, properties) => {
         );
 };
 
-export const createState = (
-    value,
-    reducer?: (state) => any
-) => {
+export const createState = <T, U>(
+    initial: T | State,
+    reducer?: (state) => U
+): [(T extends U ? T : U), (state) => void] => {
     let callback: (state) => void;
     const state: State = {
-        // tslint:disable-next-line: no-shadowed-variable
-        setState: state => {
-            setState(state);
+        setState: newState => {
+            setState(newState);
         },
         set subscribe(subscriberCallback) {
             callback = subscriberCallback;
         },
         get value() {
-            return value;
+            return initial;
         },
         set value(newValue) {
-            value = newValue;
+            initial = newValue;
         },
         reducer
     };
 
     const setState = (newState) => statePropertyArraysSetState(state, newState, callback, reducer);
 
-    if (value && (<State>value).setState) {
-        (<State>value).subscribe = newState => setState(newState);
+    if (initial && (<State>initial).setState) {
+        (<State>initial).subscribe = newState => setState(newState);
     }
 
-    return [state, setState];
+    return [state as (T extends U ? T : U), setState];
 };
 
 const statePropertyArraysSetState = (currentState, newState, callback, reducer?) => {
@@ -81,7 +80,7 @@ const statePropertyArraysSetState = (currentState, newState, callback, reducer?)
 };
 
 const isObject = (obj) => {
-    return obj === Object(obj) && !obj.length;
+    return obj === Object(obj) && !Array.isArray(obj);
 };
 
 const deepState = (target: State | any = {}, src: State | any = {}): State => {
@@ -96,10 +95,10 @@ const deepState = (target: State | any = {}, src: State | any = {}): State => {
     return target;
 };
 
-export const useState = (
-    value,
-    reducer?: (state) => any
-) => {
+export const useState = <T, U>(
+    initial: T | State,
+    reducer?: (state) => U
+): [(T extends U ? T : U), (state) => void] => {
     let cachedState;
 
     const updateAll = (stateObj) => {
@@ -115,10 +114,31 @@ export const useState = (
         deepUpdate(cachedState, reducer ? reducer(stateObj) : stateObj);
     };
 
-    if (isObject(value) && !(<State>value).setState) {
-        cachedState = deepState(cachedState, value);
+    if (isObject(initial) && !(<State>initial).setState) {
+        cachedState = deepState(cachedState, initial);
         return [cachedState, updateAll];
     } else {
-        return createState(value, reducer);
+        return createState(initial, reducer);
+    }
+};
+
+export const value = <T>(state: T): T => {
+    const extractValues = (acc, nestedState) => {
+        Object.entries(nestedState)
+            .forEach(([key, stateValue]) => {
+                if ((<State>stateValue).value) {
+                    acc[key] = (<State>stateValue).value;
+                } else {
+                    acc[key] = {};
+                    extractValues(acc[key], nestedState[key]);
+                }
+            });
+        return acc;
+    };
+
+    if ((<State>state).value || (<State>state).value === 0 || (<State>state).value === '' || (<State>state).value === []) {
+        return (<State>state).value;
+    } else {
+        return extractValues({}, state);
     }
 };
