@@ -1,5 +1,8 @@
 # Change Log
 
+## `[3.4.0]`
+- ✨ added `customElement` field to `ContainerSchema` for creating custom elements
+
 ## `[3.3.0]`
 - ✨ `value()` to get the value of a state object
 - 🏷 added types for things returned by `useState`

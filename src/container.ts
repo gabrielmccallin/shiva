@@ -27,6 +27,7 @@ export type ContainerSchema<T = HTMLElement> = Merge<
         root?: boolean;
         style?: GenericOrState<Partial<CSSStyleDeclaration>>;
         tagName?: HTMLTagName;
+        customElement?: string;
     }
 >;
 
@@ -60,6 +61,7 @@ export const container = <T extends HTMLElement = HTMLElement>(
         root = false,
         style = {},
         tagName = 'div',
+        customElement = '',
         ...props
     }: ContainerSchema<T> = {} as ContainerSchema<T>
 ): T => {
@@ -75,7 +77,8 @@ export const container = <T extends HTMLElement = HTMLElement>(
             document.body.prepend(element);
         }
     } else {
-        element = document.createElement(tagName as string);
+        const elementName = customElement !== '' ? customElement : tagName;
+        element = document.createElement(elementName as string);
     }
 
     updateState(element, { attributes, properties: props, style });

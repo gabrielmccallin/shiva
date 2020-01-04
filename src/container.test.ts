@@ -150,12 +150,25 @@ describe('container', () => {
     });
 
     it('create input with properties', () => {
+        const inputTagName = 'input';
+
         const testContainer = container<HTMLInputElement>({
-            tagName: 'input',
+            tagName: inputTagName,
             value: 'hello'
         });
 
         expect(testContainer.value).toEqual('hello');
+        expect(testContainer.tagName.toLowerCase()).toEqual(inputTagName);
+    });
+
+    it('create custom element', () => {
+        const customElementName = 'custom-element';
+
+        const testContainer = container({
+            customElement: customElementName
+        });
+
+        expect(testContainer.tagName.toLowerCase()).toEqual(customElementName);
     });
 
     it('should update container', () => {
