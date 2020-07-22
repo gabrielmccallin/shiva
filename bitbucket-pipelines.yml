@@ -3,25 +3,22 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: node:11
+image: node:12
 
 pipelines:
   default:
     - step:
         script:
           - echo "And in all, the creator, preserver, destroyer, revealer and concealer of all that is."
-          - npm install
-          - npm run lint
+          - npm ci
           - npm run test
-          - npm run build
   branches:
     master:
       - step:
           name: test & build
           script:
             - echo "This script runs only on commit to the master branch."
-            - npm install
-            - npm run lint
+            - npm ci
             - npm run test
             - npm run build
           artifacts:

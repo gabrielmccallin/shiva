@@ -1,5 +1,12 @@
 # Change Log
 
+## `[4.0.0]`
+- 🎉 This major release focuses on a simple JavaScript API for creating and nesting HTML elements. 
+- 🛠 `tag()` takes children, textContent and options in any order in an argument list. Partial application of `tagName` with `tag()` gives us `div()`, `p()` and `img()`. This can be extended to create a function for any HTML element.
+- ➕ added `pubsub()` for local state management
+- ➕ added `createStore()` for global state management
+- ➖ removed data binding with elements for a simpler library
+
 ## `[3.4.0]`
 - ✨ added `customElement` field to `ContainerSchema` for creating custom elements
 

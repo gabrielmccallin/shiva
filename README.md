@@ -1,259 +1,236 @@
-# [**shiva** 🔱](https://shiva.gabrielmccallin.now.sh/)
+# [**`shiva`**](https://shiva.gabrielmccallin.now.sh/)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://bitbucket.org/gabrielmccallin/shiva/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/shiva.svg?style=flat)](https://www.npmjs.com/package/shiva "View this project on npm") [![Bitbucket Pipeline Status](https://img.shields.io/badge/pipeline-passing-green.svg)](https://bitbucket.org/gabrielmccallin/shiva/addon/pipelines/home#!/results/branch/master/page/1) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://bitbucket.org/gabrielmccallin/shiva)
 ![javascript](https://img.shields.io/badge/-javascript-informational.svg) ![frontend](https://img.shields.io/badge/-frontend-informational.svg) ![declarative](https://img.shields.io/badge/-declarative-informational.svg) ![ui](https://img.shields.io/badge/-ui-informational.svg) ![library](https://img.shields.io/badge/-library-informational.svg)
 
 **`shiva`** is a minimal JavaScript library for building user interfaces.
 
-**Declarative**
-Describe component behaviour with a standard JavaScript syntax and **`shiva`** will efficiently update views when your data changes. Declarative views make your code more predictable, simpler to understand, and easier to debug.
+## **Aim**
+The aim of **`shiva`** is to use JavaScript to create HTML elements without templating. It abstracts the DOM JavaScript API for a declarative and easy to use syntax.
 
-**Modular**
-Build encapsulated components that manage their own state, then compose them to make complex UIs. Since component logic is written in JavaScript instead of templates, you can easily pass data through your app and keep state out of the DOM.
+So instead of:
+```html
+<div>Hi there 👋</div>
+```
 
-**State management**
-Render views with a simple unidirectional data binding syntax.
+**`shiva`** provides a function called `div`:
+```javascript
+import { div } from "shiva";
+
+const HTMLDivElement = div("Hi there 👋");
+```
+
+This will create the same element as the `html` version. 
+
+## **Nested**
+Nested elements are easy to construct:
+```javascript
+import { div } from "shiva";
+
+const nestedHTMLDivElement = div(
+    div("Hi there 👋"),
+    div("Hi there 👋"),
+);
+```
+
+This will produce:
+```html
+<div>
+    <div>Hi there 👋</div>
+    <div>Hi there 👋</div>
+</div>
+```
+
+**`shiva`** will append HTML elements if they are passed as an argument. It will set `textContent` on the element if a string is passed.
+
+## **Attributes**
+To pass attributes to an element:
+```javascript
+import { div } from "shiva";
+
+const handler = () => {
+    console.log("handled it 👊");
+};
+
+const superDiv = div("Hi there 👋", { 
+    onclick: handler,
+    class: style,
+    id: "Super Div 🦸‍♂️" 
+});
+```
+
+**`shiva`** will apply attributes if an object is passed as one of the arguments.
+
+## **Elements**
+**`shiva`** provides `div()`, `img()` and `p()` to create HTML elements. To create other HTML elements **`shiva`** provides a more generic `element()` function.
+
+```javascript
+import { element } from "shiva";
+
+const HTMLButtonElement = element("button", "Click me ⬇️");
+```
+Any HTML element, including custom elements, can be created.
+
+## **Components**
+Element functions like `div()` or `element()`  take a HTML element as an argument for appending to themselves.
+
+```javascript
+import { div } from "shiva";
+
+const component = (title) => {
+    return div(title); 
+    // returns a HTMLDivElement
+};
+
+const divAndComponent = div(
+    component("The TITLE")
+);
+```
+This pattern can be used to build an application out of pieces, each component just needs to return a HTML element (or array of HTML elements).
+
+Of course, `component()` can be imported from another file.
+
 
 ## **Installation**
 ```
 npm install shiva --save
 ```
 
-`shiva` is distributed as an ES module. Use a module aware build tool to `import` functions.
-See https://bitbucket.org/gabrielmccallin/shiva-site for an example of how to include `shiva` in a project.
+**`shiva`** is distributed as an ES module. Please use a module aware build tool to import.
+See https://bitbucket.org/gabrielmccallin/shiva-site for an example of how to include **`shiva`** in a project.
 
 ## **Getting started**
 
-#### Create root container
-The `container()` function creates HTML elements and declares attributes, children, events, styles and many other properties.
-
+### Create root element  
+To append a root element that all other elements will attach to:
 ```javascript
-import { container } from 'shiva';
+import { div } from 'shiva';
 
 const app = () => {
-    container({
-        root: true,
-        textContent: 'Hi there 🙋‍'
-    });
+    div({ root: true }, 
+        componentA(),
+        componentB()
+    );
 };
 
 app();
 ```
 
-This will append a HTMLElement `<div>` to the body of the page with text content of 'Hi there 🙋‍'.
+This will append a HTMLElement `<div>` to the body of the page with `componentA` and `componentB` nested inside.  
 
-#### Create container
-
-```javascript
-import { container } from 'shiva';
-
-const view = container({
-    textContent: `I'm a view`
-});
-```
-
-#### Add child containers
-
-```javascript
-const view = container({
-    textContent: `I'm a view`,
-    children: [
-        container({
-            textContent: 'child 1 🙍‍'
-        }),
-        container({
-            textContent: 'child 2 🙍‍'
-        }),
-    ]
-});
-```
-
-#### Declare containers anywhere and add them to the view
-
-```javascript
-const childFactory = () => {
-    return container({
-        textContent: 'child 1 🙍‍'
-    });
-};
-
-const view = container({
-    textContent: `I'm a view`,
-    children: childFactory()
-});
-
-```
-
-#### Event listeners
-
-```javascript
-const clickHandler = e => {
-    // do something
-};
-
-const clickMe = container({
-    textContent: 'Click me!',
-    events: [{
-        name: 'click',
-        handler: clickHandler
-    }]
-});
-```
-
-#### Configuration
-
-`container()` takes a configuration object described by this interface:
-
-```typescript
-interface ContainerConfig {
-    attributes?: [key: string]: string | boolean | number | State;
-    children?: HTMLElement[] | HTMLElement | State;
-    events?: EventSchema[] | EventSchema;
-    root?: boolean;
-    style?: Partial<CSSStyleDeclaration> | State;
-    tagName?: HTMLTagName;
-}
-```
-
-* **attributes**
-An object to populate HTML attributes, keys are string, values are primitives or a State object.
-
-* **children**
-A HTMLElement, array of HTMLElements to append to the container or State object.
-
-* **events**
-An object or array of objects that describe a event type and handler to add to the container.
-
-* **root**
-Appends the container to the body of the page. Use at the entrypoint of the application to attach all children to.
-
-* **style**
-Style the element with inline css declarations, this can also be a State object.
-
-* **tagName**
-Type of container, e.g. paragraph, input, anchor, select etc
-
-#### **Example**
-
-```javascript
-const app = container({
-    textContent: 'Hello there 💋',
-    tagName: 'p',
-    id: 'viewA',
-    attributes: {
-        data-shiva: '🔱',
-        ...otherAttributes
-    },
-    style: {
-        color: 'blue',
-        ...otherCSSStyles
-    },
-    children: [
-        container({
-            textContent: 'child 1'
-        }),
-        container({
-            textContent: 'child 2'
-        })
-    ],
-    events: [{
-        name: 'custom',
-        handler: customHandler
-    }],
-    root: true;
-});
-```
+👉 `componentA` and `componentB` **_must_** return a HTML element or array of HTML elements to be appended to the parent. 
 
 ## **State**
+**`shiva`** provides a very simple publish / subscribe utility.
 
-Declare one-way data binding to keep views up to date with data changes.
-
-#### Setting state
-Inspired by React hooks, `useState()` will return a tuple; the first item is a state variable, the second item a function to update the variable.
+`pubsub()` returns an array where the first element is the **subscribe** function and the second element is the **publish** function.
 
 ```javascript
-const [temperature, setTemperature] = useState('21°C');
+import { pubsub } from "shiva";
 
-const view = container({
-    textContent: temperature,
+const [subscribe, publish] = pubsub([1, 2, 4, 5]);
+
+subscribe(data => {
+    console.log(data);
+    // logs the value passed to publish()
 });
-// component shows 21°C
 
-setTemperature('31°C');
-// component shows 31°C ☀️
+// some time later
+publish([6,7,9,12]); // logs [6,7,9,12]
+
 ```
 
-#### Setting state with a nested data structure
+Combined with `updateElement()`, this pattern can used to declare reactive behaviour.
+e.g.
+
 ```javascript
-const [state, setState] = useState({
-    hello: 'there',
-    nested: 'data'
-});
+import { div, updateElement } from "shiva";
 
-const hello = container({
-    textContent: state.hello,
-});
-// hello component shows 'there'
+const [subscribe, publish] = pubsub("starting data");
 
-const nested = container({
-    textContent: state.nested,
-});
-// nested component shows 'data'
+const list = div();
 
-setState({
-    nested: 'updatedData'
+subscribe(data =>
+    updateElement({ 
+        element: list,
+        textContent: data
+    });
+);
+
+const clicker = div("click me!", {
+    onclick: () => publish("new data")
 });
-// nested component shows 'updatedData'
+```
+This will update the `textContent` attribute of the `list` element with the string "new data" when the `clicker` element is clicked.
+
+🙋 Of course, feel free to bring your own state management! Use `updateElement()` to re-render data at any time.
+
+
+```javascript
+import { div, updateElement } from "shiva";
+
+const list = div();
+
+const clicker = div("click me!", {
+    onclick: () => updateElement({ 
+        element: list,
+        textContent: data
+    });
+});
 ```
 
-#### Setting state with a reducer function
-Second parameter of `useState()` is a reducer function that will run every time the update function is called.
+This acheives the same; directly updating the `list` element when clicking `clicker`.
 
-```javascript
-const addDegrees = temperature => `${temperature}°C`;
-
-const [temperature, setTemperature] = useState('21', addDegrees);
-
-const view = container({
-    textContent: temperature,
-});
-// component shows 21°C
-
-setTemperature('31');
-// component shows 31°C ☀️
+### **API**
+```typescript
+pubsub(
+    initial?: any,
+    reducer?: (current: any, next: any) => void
+);
 ```
 
-#### Access state value
-A state variable is an object that contains all the properties required to update a container. The value that the container will be updated with can be accessed with `.value`;
+Initialise state with `initial`.
+
+Run a function on new state with a `reducer` function. Can be used for more complex logic or when the next state depends on the previous one.
 
 ```javascript
-const addDegrees = temperature => `${temperature}°C`;
 
-const [temperature, setTemperature] = useState('21', addDegrees);
+const reducer = (state, newState) => return state + newState;
 
-console.log(temperature.value); // 21°C
+const [subscribe, publish] = pubsub("DOGE", reducer);
 
-const view = container({
-    textContent: temperature,
+subscribe(state => {
+    console.log(state);
 });
-// component shows 21°C
 
-setTemperature('31');
-// component shows 31°C ☀️
+publish(" to the moon 🚀"); // logs "DOGE to the moon 🚀" 
 
-console.log(temperature.value); // 31°C
 ```
 
-#### Use reducer for templating
-Container attributes only take a `State` object. If you want to template, use the reducer argument of `useState(value, reducer)`.
+## **Global store**
+Extending the publish / subscribe pattern across components creates a global store, useful if you don't want to pass subscribers and publishers through nested components.
+
+**`shiva`** provides a `createStore()` function to create this global store.
 
 ```javascript
-const [temperature, setTemperature] = useState('21', addDegrees);
+// global-store.js
+import { createStore } from "shiva";
 
-const view = container({
-    textContent: `${temperature}°C`,
-});
-// No, this won't work
+const globalStore = createStore("🌍");
 
-## License
+export default globalStore;
+```
 
-[MIT license](./LICENSE).
+Now subscribe or publish to this store.
+```javascript
+// another file
+import { globalStore } from "./global-store";
+
+const [subscriberGlobal, publishGlobal] = globalStore;
+
+// Here we can name the subscribe / publish functions, note we don't call the globalStore, it is already a subscribe / publish tuple.
+```
+See https://bitbucket.org/gabrielmccallin/shiva-site for an example of state management.
+
+## **License**
+
+[MIT license](./LICENSE)
