@@ -20,12 +20,12 @@ pipelines:
             - echo "This script runs only on commit to the master branch."
             - npm ci
             - npm run test
-            - npm run build
       - step:
           name: npm publish
           deployment: npm publish
           script:
             - echo "Publish to NPM"
+            - npm ci
             - npm run build
             - pipe: atlassian/npm-publish:0.2.3
               variables:
