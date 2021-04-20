@@ -20,6 +20,7 @@ pipelines:
             - echo "This script runs only on commit to the master branch."
             - npm ci
             - npm run test
+            - npm run build
       - step:
           name: npm publish
           deployment: npm publish
