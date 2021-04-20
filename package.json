@@ -10,7 +10,7 @@
         "start": "echo And in all, the creator, preserver, destroyer, revealer and concealer of all that is",
         "test": "jest",
         "test-watch": "jest --watch",
-        "prepublish": "npm run build"
+        "prepublishOnly": "npm run build"
     },
     "repository": {
         "type": "git",
