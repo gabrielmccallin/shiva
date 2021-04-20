@@ -20,9 +20,6 @@ pipelines:
             - echo "This script runs only on commit to the master branch."
             - npm ci
             - npm run test
-            - npm run build
-          artifacts:
-            - dist/**
       - step:
           name: npm publish
           deployment: npm publish
@@ -31,4 +28,3 @@ pipelines:
             - pipe: atlassian/npm-publish:0.2.3
               variables:
                 NPM_TOKEN: "$NPM_TOKEN"
-                FOLDER: "dist"
