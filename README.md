@@ -12,7 +12,7 @@ So instead of:
 <div>Hi there 👋</div>
 ```
 
-**`shiva`** provides a function called `div`:
+**`shiva`** provides a function called `div()`:
 ```javascript
 import { div } from "shiva";
 
