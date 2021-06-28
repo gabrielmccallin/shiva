@@ -13,7 +13,7 @@ pipelines:
           - npm ci
           - npm run test
   branches:
-    master:
+    main:
       - step:
           name: test & build
           script:
