@@ -27,6 +27,6 @@ pipelines:
             - echo "Publish to NPM"
             - npm ci
             - npm run build
-            - pipe: atlassian/npm-publish:0.2.3
+            - pipe: atlassian/npm-publish:0.3.2
               variables:
                 NPM_TOKEN: "$NPM_TOKEN"
