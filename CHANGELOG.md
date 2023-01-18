@@ -1,5 +1,17 @@
 # Change Log
 
+## `[4.1.6]`
+
+- ⬆️ update for `CVE-2022-46175`  
+  `json5` 2.0.0 - 2.2.1
+  
+  Prototype Pollution in JSON5 via Parse Method - <https://github.com/advisories/GHSA-9c47-m6qq-7p4h>
+- ⬆️ update for `CVE-2022-3517`  
+  `minimatch`  <3.0.5
+  
+  minimatch ReDoS vulnerability - <https://github.com/advisories/GHSA-f8q6-p94x-37v3>
+- ➕ added `jest-environment-jsdom` package
+
 ## `[4.1.5]`
 
 - ⬆️ update for `CVE-2021-44906`  

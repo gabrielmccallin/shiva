@@ -3,7 +3,7 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: node:12
+image: node:18
 
 pipelines:
   default:
@@ -17,7 +17,7 @@ pipelines:
       - step:
           name: test & build
           script:
-            - echo "This script runs only on commit to the master branch."
+            - echo "This script runs only on commit to the main branch."
             - npm ci
             - npm run test
       - step:
