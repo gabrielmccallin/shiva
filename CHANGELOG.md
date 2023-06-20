@@ -1,5 +1,9 @@
 # Change Log
 
+## `[4.1.7]`
+
+- ⬆️ update dependencies
+
 ## `[4.1.6]`
 
 - ⬆️ update for `CVE-2022-46175`  
