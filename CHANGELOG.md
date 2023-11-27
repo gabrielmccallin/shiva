@@ -1,5 +1,10 @@
 # Change Log
 
+## `[4.1.8]`
+
+- ⬆️ update for [CVE-2023-45133](https://github.com/advisories/GHSA-67hx-6x53-jw92)
+ `@babel/traverse` < 7.23.2
+
 ## `[4.1.7]`
 
 - ⬆️ update dependencies
