@@ -1,22 +1,20 @@
 {
     "compilerOptions": {
-        "target": "ES2020",
-        "module": "ES2020",
-        "lib": [
-            "dom",
-            "dom.iterable",
-            "esnext"
-        ],
+        "target": "ES2022",
+        "module": "ESNext",
         "esModuleInterop": true,
+        "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "outDir": "lib",
         "moduleResolution": "node",
-        "declaration": true
+        "declaration": true,
+        "lib": [ "DOM", "ES2022" ],
+        "types": [ "node" ]
     },
     "include": [
-        "src"
+        "src/**/*"
     ],
     "exclude": [
-        "src/**/*.test.ts"
+        "node_modules", "**/*.test.ts"
     ]
 }
