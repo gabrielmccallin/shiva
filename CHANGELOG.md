@@ -1,5 +1,29 @@
 # Change Log
 
+## `[5.0.4]`
+
+- ⬆️ update CHANGELOG
+
+## `[5.0.3]`
+
+🔖 v5.0.3 ⬆️ ts config updates
+
+## `[5.0.2]`
+
+🔖 v5.0.2 ⬆️ ts config updates
+
+## `[5.0.1]`
+
+🔖 v5.0.1 ⬆️ publish to npm
+
+## `[5.0.0]`
+
+💔
+
+- element function instead of tag
+- updated README
+- example site
+
 ## `[4.1.8]`
 
 - ⬆️ update for [CVE-2023-45133](https://github.com/advisories/GHSA-67hx-6x53-jw92)
