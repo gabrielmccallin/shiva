@@ -1,5 +1,10 @@
 # Change Log
 
+## `[5.0.5]`
+
+- ⬆️ update for [CVE-2025-7783](https://github.com/advisories/GHSA-fjxv-7rqg-78g4)
+ `form-data` uses unsafe random function in choosing boundary < 4.0.4
+
 ## `[5.0.4]`
 
 - ⬆️ update CHANGELOG
