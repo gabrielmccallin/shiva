@@ -1,45 +1,47 @@
 name: Publish to npm
 
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - main
 
 permissions:
-  id-token: write
-  contents: read
+    id-token: write
+    contents: read
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+    publish:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          registry-url: "https://registry.npmjs.org"
+            - uses: actions/setup-node@v6
+              with:
+                  node-version: "24"
+                  registry-url: "https://registry.npmjs.org"
 
-      - name: Install dependencies
-        run: npm ci
+            - name: Install dependencies
+              run: npm ci
 
-      - name: Run tests
-        run: npm test
+            - name: Run tests
+              run: npm test
 
-      - name: Check version is unpublished
-        id: version_check
-        run: |
-          PACKAGE_NAME=$(node -p "require('./package.json').name")
-          LOCAL_VERSION=$(node -p "require('./package.json').version")
-          PUBLISHED_VERSION=$(npm view "$PACKAGE_NAME" version 2>/dev/null || echo "unpublished")
-          if [ "$LOCAL_VERSION" = "$PUBLISHED_VERSION" ]; then
-            echo "Version $LOCAL_VERSION is already published. Skipping."
-            echo "skip=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "Publishing version $LOCAL_VERSION"
-            echo "skip=false" >> "$GITHUB_OUTPUT"
-          fi
+            - name: Check version is unpublished
+              id: version_check
+              run: |
+                  PACKAGE_NAME=$(node -p "require('./package.json').name")
+                  LOCAL_VERSION=$(node -p "require('./package.json').version")
+                  PUBLISHED_VERSION=$(npm view "$PACKAGE_NAME" version 2>/dev/null || echo "unpublished")
+                  if [ "$LOCAL_VERSION" = "$PUBLISHED_VERSION" ]; then
+                    echo "Version $LOCAL_VERSION is already published. Skipping."
+                    echo "skip=true" >> "$GITHUB_OUTPUT"
+                  else
+                    echo "Publishing version $LOCAL_VERSION"
+                    echo "skip=false" >> "$GITHUB_OUTPUT"
+                  fi
 
-      - name: Publish
-        if: steps.version_check.outputs.skip == 'false'
-        run: npm publish --provenance --access public
+            - name: Publish
+              if: steps.version_check.outputs.skip == 'false'
+              run: npm publish --provenance --access public
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
