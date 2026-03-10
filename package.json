@@ -1,6 +1,6 @@
 {
     "name": "shiva",
-    "version": "5.0.5",
+    "version": "5.0.6",
     "description": "Minimal JavaScript library for building user interfaces",
     "main": "lib/shiva.js",
     "module": "lib/shiva.js",
@@ -14,7 +14,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://bitbucket.org/gabrielmccallin/shiva"
+        "url": "https://github.com/gabrielmccallin/shiva"
     },
     "author": "Gabriel McCallin",
     "license": "MIT",

@@ -1,5 +1,14 @@
 # Change Log
 
+## `[5.0.6]`
+
+🔖 v5.0.6
+
+- ⬆️ Updates minimatch from 3.1.2 to 3.1.5
+- 😵 Removes @tootallnate/once
+- ⬆️ Updates jest-environment-jsdom from 29.7.0 to 30.2.0
+- ⬆️ Bump js-yaml from 3.14.1 to 3.14.2
+
 ## `[5.0.5]`
 
 - ⬆️ update for [CVE-2025-7783](https://github.com/advisories/GHSA-fjxv-7rqg-78g4)
