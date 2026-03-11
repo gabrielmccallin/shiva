@@ -8,14 +8,14 @@ import {
     span,
     strong,
     ul,
-} from "../../src/shiva"
+} from "shiva"
 
 export const elements = () =>
     div([
         h2("Elements"),
         p(
             span(strong(code("shiva"))),
-            span("provides:")
+            span(" provides:"),
         ),
         ul(
             li(code("div()")),
@@ -39,21 +39,21 @@ export const elements = () =>
             li(code("br()")),
             li(code("code()")),
             li(code("pre()")),
-            li(code("button()"))
+            li(code("button()")),
         ),
         p(
             span(
-                "To create other HTML elements not included in the API,"
+                "To create other HTML elements not included in the API, ",
             ),
             strong(code("shiva")),
-            span("provides a more generic"),
+            span(" provides a more generic "),
             strong(code("element()")),
-            span("function.")
+            span(" function."),
         ),
         pre(`import { element } from "shiva"
 
 const HTMLButtonElement = element("button", "Click me ⬇️")`),
         p(
-            "Any HTML element, including custom elements, can be created."
+            "Any HTML element, including custom elements, can be created.",
         ),
     ])

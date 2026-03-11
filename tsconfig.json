@@ -1,12 +1,12 @@
 {
     "compilerOptions": {
-        "target": "es6",
+        "target": "es2020",
         "declarationDir": "dist",
         "declaration": true,
-        "module": "es2015",
+        "module": "es2020",
         "moduleResolution": "node",
         "outDir": "dist",
-        "lib": [ "es6", "es2017.object", "dom" ],
+        "lib": [ "es2020", "dom" ],
         "skipLibCheck": true,
         "esModuleInterop": true
     },

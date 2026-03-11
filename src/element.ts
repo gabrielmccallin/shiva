@@ -2,6 +2,22 @@ import {
     container,
     ContainerOptions,
 } from "./container"
+import { Signal, isSignal } from "./signal"
+
+export type ReactiveStyle = {
+    [key: string]: string | Signal<string> | undefined
+}
+
+type ReactiveAttributes = {
+    [key: string]: string | Signal<string>
+}
+
+type ReactiveContainerOptions<
+    K extends keyof HTMLElementTagNameMap = "div"
+> = Omit<ContainerOptions<K>, "style" | "attributes"> & {
+    style?: ReactiveStyle | Signal<ReactiveStyle>
+    attributes?: ReactiveAttributes | Signal<ReactiveAttributes>
+}
 
 type TagOptions<
     K extends keyof HTMLElementTagNameMap = "div"
@@ -9,7 +25,8 @@ type TagOptions<
     | string
     | number
     | boolean
-    | ContainerOptions<K>
+    | Signal<string | number>
+    | ReactiveContainerOptions<K>
     | HTMLElement[]
     | (HTMLElement | string)[]
     | HTMLElement
@@ -19,14 +36,70 @@ const chooseOption = <
 >(
     option: TagOptions<K>
 ): ContainerOptions<K> => {
+    if (isSignal(option))
+        return {
+            textContent: String(option.get()),
+        } as ContainerOptions<K>
+
     if (typeof option === "string")
         return {
             textContent: option,
         } as ContainerOptions<K>
 
+    if (
+        option instanceof HTMLElement ||
+        option instanceof Array
+    )
+        return {} as ContainerOptions<K>
+
     if (typeof option === "object") {
+        const { style, attributes, ...rest } =
+            option as ReactiveContainerOptions<K>
+
+        const resolveStyle = (
+            s: ReactiveStyle
+        ): Partial<CSSStyleDeclaration> =>
+            Object.fromEntries(
+                Object.entries(s).map(([k, v]) => [
+                    k,
+                    isSignal(v) ? v.get() : v,
+                ])
+            ) as Partial<CSSStyleDeclaration>
+
+        const resolvedStyle = style
+            ? resolveStyle(
+                  isSignal(style)
+                      ? style.get()
+                      : style
+              )
+            : undefined
+
+        const resolveAttributes = (
+            a: ReactiveAttributes
+        ) =>
+            Object.fromEntries(
+                Object.entries(a).map(([k, v]) => [
+                    k,
+                    isSignal(v) ? v.get() : v,
+                ])
+            )
+
+        const resolvedAttributes = attributes
+            ? resolveAttributes(
+                  isSignal(attributes)
+                      ? attributes.get()
+                      : attributes
+              )
+            : undefined
+
         return {
-            ...(option as ContainerOptions<K>),
+            ...(rest as unknown as ContainerOptions<K>),
+            ...(resolvedStyle !== undefined && {
+                style: resolvedStyle,
+            }),
+            ...(resolvedAttributes !== undefined && {
+                attributes: resolvedAttributes,
+            }),
         }
     }
 }
@@ -54,30 +127,20 @@ export const createOptions = <
             ...mergedOptions,
             children,
         }
-        const textContent = children.reduce(
-            (prev, current) => {
-                if (typeof current === "string")
-                    return prev + current
-            },
-            ""
+        const elementChildren = children.filter(
+            (child) => typeof child !== "string"
         )
-        mergedOptions.children = [
-            ...mergedOptions.children,
-            document.createTextNode(textContent),
-        ]
+        const textNodes = children
+            .filter((child) => typeof child === "string")
+            .map((text) => document.createTextNode(text))
 
-        mergedOptions.children = children.filter(
-            (child) =>
-                typeof child !== "string" ||
-                typeof child !== "object"
-        )
+        mergedOptions.children = [
+            ...elementChildren,
+            ...textNodes,
+        ]
     }
 
     return mergedOptions
-}
-
-export const div = (...options: TagOptions[]) => {
-    return container(createOptions(...options))
 }
 
 const createContainer = <
@@ -86,12 +149,150 @@ const createContainer = <
     tagName: keyof HTMLElementTagNameMap,
     options: TagOptions<K>[]
 ) => {
-    const mergedOptions = createOptions<K>(
-        ...options
-    )
-    mergedOptions.tagName = tagName as K
+    const containerOpts = {
+        tagName: tagName as K,
+    } as ContainerOptions<K>
+    const orderedChildren: Node[] = []
+    const reactiveOpts: ReactiveContainerOptions<K>[] =
+        []
 
-    return container<K>(mergedOptions)
+    const processItem = (
+        item:
+            | TagOptions<K>
+            | string
+            | HTMLElement
+    ) => {
+        if (isSignal(item)) {
+            const textNode = document.createTextNode(
+                String(item.get())
+            )
+            orderedChildren.push(textNode)
+            item.subscribe(() => {
+                textNode.textContent = String(
+                    item.get()
+                )
+            })
+        } else if (
+            typeof item === "string" ||
+            typeof item === "number" ||
+            typeof item === "boolean"
+        ) {
+            orderedChildren.push(
+                document.createTextNode(String(item))
+            )
+        } else if (item instanceof HTMLElement) {
+            orderedChildren.push(item)
+        } else if (item instanceof Array) {
+            item.forEach((child) => processItem(child))
+        } else if (
+            typeof item === "object" &&
+            item !== null
+        ) {
+            const { style, attributes, ...rest } =
+                item as ReactiveContainerOptions<K>
+            Object.assign(containerOpts, rest)
+            reactiveOpts.push({
+                style,
+                attributes,
+            } as ReactiveContainerOptions<K>)
+        }
+    }
+
+    options.forEach((option) => processItem(option))
+
+    if (orderedChildren.length > 0) {
+        containerOpts.children = orderedChildren
+    }
+
+    const element = container<K>(containerOpts)
+
+    const setStyle = (k: string, v: string) => {
+        if (isNaN(Number(k))) {
+            element.style.setProperty(
+                k.replace(
+                    /[A-Z]/g,
+                    (m) => `-${m.toLowerCase()}`
+                ),
+                v
+            )
+        }
+    }
+
+    reactiveOpts.forEach(({ style, attributes }) => {
+        if (isSignal(style)) {
+            Object.entries(style.get()).forEach(
+                ([k, v]) =>
+                    setStyle(
+                        k,
+                        isSignal(v)
+                            ? v.get()
+                            : (v as string)
+                    )
+            )
+            style.subscribe(() =>
+                Object.entries(style.get()).forEach(
+                    ([k, v]) =>
+                        setStyle(
+                            k,
+                            isSignal(v)
+                                ? v.get()
+                                : (v as string)
+                        )
+                )
+            )
+        } else if (style) {
+            Object.entries(style).forEach(([k, v]) => {
+                if (isSignal(v)) {
+                    setStyle(k, v.get())
+                    v.subscribe(() => setStyle(k, v.get()))
+                } else {
+                    setStyle(k, v as string)
+                }
+            })
+        }
+
+        if (isSignal(attributes)) {
+            Object.entries(attributes.get()).forEach(
+                ([k, v]) =>
+                    element.setAttribute(
+                        k,
+                        isSignal(v) ? v.get() : v
+                    )
+            )
+            attributes.subscribe(() =>
+                Object.entries(
+                    attributes.get()
+                ).forEach(([k, v]) =>
+                    element.setAttribute(
+                        k,
+                        isSignal(v) ? v.get() : v
+                    )
+                )
+            )
+        } else if (attributes) {
+            Object.entries(attributes).forEach(
+                ([k, v]) => {
+                    if (isSignal(v)) {
+                        element.setAttribute(k, v.get())
+                        v.subscribe(() =>
+                            element.setAttribute(
+                                k,
+                                v.get()
+                            )
+                        )
+                    } else {
+                        element.setAttribute(k, v)
+                    }
+                }
+            )
+        }
+    })
+
+    return element
+}
+
+export const div = (...options: TagOptions[]) => {
+    return createContainer("div", options)
 }
 
 export const img = (

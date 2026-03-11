@@ -1,11 +1,10 @@
-import { div } from "../../src/shiva"
+import { div } from "shiva"
 import { aim } from "./aim"
 import { attributes } from "./attributes"
-import { counter } from "./counter"
-import { counterExample } from "./counter-example"
 import { elements } from "./elements"
 import { intro } from "./intro"
 import { nested } from "./nested"
+import { reactive } from "./reactive"
 
 div(
     {
@@ -16,6 +15,5 @@ div(
     nested(),
     attributes(),
     elements(),
-    counterExample(),
-    counter()
+    reactive(),
 )

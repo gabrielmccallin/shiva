@@ -164,9 +164,62 @@ This will append a HTMLElement `<div>` to the body of the page with `componentA`
 
 👉 `componentA` and `componentB` **_must_** return a HTML element or array of HTML elements to be appended to the parent.
 
-## State
+## Reactive state with signals
 
-**`shiva`** provides a very simple publish / subscribe utility.
+**`shiva`** provides a `signal` factory for reactive state. A signal holds a value and notifies the DOM automatically when it changes.
+
+```javascript
+import { signal, p, code } from "shiva"
+
+const count = signal(0)
+
+const counter = p(code(count))
+// counter.textContent updates automatically when count changes
+
+count.set(1) // counter now shows "1"
+```
+
+### Reactive style
+
+A signal can be passed as a `style` value to reactively update an element's styles.
+
+```javascript
+import { signal, div } from "shiva"
+
+const style = signal({ color: "crimson", fontSize: "2rem" })
+
+const el = div("hello", { style })
+
+style.set({ color: "royalblue", fontSize: "2rem" }) // el style updates in place
+```
+
+Individual style properties can also be signals:
+
+```javascript
+const color = signal("crimson")
+
+const el = div("hello", { style: { color } })
+
+color.set("royalblue") // only color updates
+```
+
+The same patterns apply to `attributes`.
+
+### Signal API
+
+```typescript
+signal<T>(initialValue: T): Signal<T>
+
+signal.get(): T
+signal.set(value: T): void
+signal.subscribe(fn: () => void): () => void  // returns unsubscribe
+```
+
+---
+
+## State (pubsub)
+
+**`shiva`** also provides a simple publish / subscribe utility.
 
 `pubsub()` returns an array where the first element is the **subscribe** function and the second element is the **publish** function.
 

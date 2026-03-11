@@ -6,13 +6,13 @@ import {
     pre,
     span,
     strong,
-} from "../../src/shiva"
+} from "shiva"
 
 export const nested = () =>
     div([
         h2("Nested"),
         p(
-            "Nested elements are easy to construct:"
+            "Nested elements are easy to construct:",
         ),
         pre(`import { div } from "shiva"
 
@@ -28,7 +28,11 @@ const nestedHTMLDivElement = div(
         p(
             strong(code("shiva")),
             span(
-                "will append HTML elements if they are passed as an argument. It will set `textContent` on the element if a string is passed."
-            )
+                " will append HTML elements if they are passed as an argument. It will set ",
+            ),
+            code("textContent"),
+            span(
+                " on the element if a string is passed.",
+            ),
         ),
     ])

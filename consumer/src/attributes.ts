@@ -1,4 +1,4 @@
-import { div, h2, pre } from "../../src/shiva"
+import { div, h2, pre } from "shiva"
 
 export const attributes = () =>
     div([

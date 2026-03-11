@@ -1,4 +1,4 @@
-import { div, h2, p } from "../../src/shiva"
+import { div, h2, p } from "shiva"
 
 export const counterExample = () => {
     return div(

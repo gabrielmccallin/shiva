@@ -1,12 +1,18 @@
 {
     "name": "shiva",
-    "version": "5.0.6",
+    "version": "6.0.0",
     "description": "Minimal JavaScript library for building user interfaces",
-    "main": "lib/shiva.js",
-    "module": "lib/shiva.js",
-    "types": "lib/shiva.d.ts",
+    "main": "dist/shiva.js",
+    "module": "dist/shiva.js",
+    "types": "dist/shiva.d.mts",
+    "exports": {
+        ".": {
+            "import": "./dist/shiva.js",
+            "types": "./dist/shiva.d.mts"
+        }
+    },
     "scripts": {
-        "build": "tsc",
+        "build": "tsup",
         "start": "echo And in all, the creator, preserver, destroyer, revealer and concealer of all that is",
         "test": "jest",
         "test-watch": "jest --watch",
@@ -23,7 +29,8 @@
         "jest": "^29.3.1",
         "jest-environment-jsdom": "^30.2.0",
         "ts-jest": "^29.0.5",
-        "typescript": "^4.9.4"
+        "tsup": "^8.5.1",
+        "typescript": "^5.9.3"
     },
     "keywords": [
         "declarative",
@@ -32,7 +39,8 @@
         "library",
         "ui"
     ],
+    "sideEffects": false,
     "files": [
-        "lib/"
+        "dist/"
     ]
 }

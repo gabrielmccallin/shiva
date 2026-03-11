@@ -4,13 +4,13 @@ import {
     h1,
     p,
     strong,
-} from "../../src/shiva"
+} from "shiva"
 
 export const intro = () =>
     div([
         h1("shiva example"),
         p([
             strong(code("shiva")),
-            "is a minimal JavaScript library for building user interfaces.",
+            " is a minimal JavaScript library for building user interfaces.",
         ]),
     ])

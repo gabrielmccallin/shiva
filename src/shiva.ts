@@ -1,7 +1,7 @@
-export {
-    container,
-    updateElement,
-} from "./container"
+export { container } from "./container"
+export type { ContainerOptions } from "./container"
 export { pubsub } from "./pubsub"
 export { createStore } from "./store"
 export * from "./element"
+export { signal, isSignal } from "./signal"
+export type { Signal } from "./signal"

@@ -1,19 +1,19 @@
-export const pubsub = (
-    initial?: any,
-    reducer?: (current: any, next?: any) => void
-) => {
-    const callbacks = []
-    let state = initial
+type Callback<T> = (state: T) => void
+type Reducer<T> = (current: T, next: T) => T
 
-    return [
-        subscribe({ callbacks, state }),
-        publish({ state, reducer, callbacks }),
-    ]
-}
+export const pubsub = <T>(
+    initial?: T,
+    reducer?: Reducer<T>
+): [(callback: Callback<T>) => void, (payload: T) => T] => {
+    const callbacks: Callback<T>[] = []
+    let state = initial as T
 
-export const publish =
-    ({ state, reducer, callbacks }) =>
-    (payload) => {
+    const subscribe = (callback: Callback<T>) => {
+        callbacks.push(callback)
+        callback(state)
+    }
+
+    const publish = (payload: T) => {
         if (state) {
             if (reducer) {
                 state = reducer(state, payload)
@@ -29,9 +29,5 @@ export const publish =
         return state
     }
 
-export const subscribe =
-    ({ callbacks, state }) =>
-    (callback) => {
-        callbacks.push(callback)
-        callback(state)
-    }
+    return [subscribe, publish]
+}

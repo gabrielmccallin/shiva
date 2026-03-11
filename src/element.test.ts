@@ -6,6 +6,7 @@ import {
     createOptions,
     element,
 } from "./element"
+import { signal } from "./signal"
 
 describe("create options", () => {
     it("should return an object with textContent", () => {
@@ -16,7 +17,7 @@ describe("create options", () => {
         }
 
         expect(createOptions(fixture)).toEqual(
-            expected
+            expected,
         )
     })
 
@@ -34,7 +35,7 @@ describe("create options", () => {
         }
 
         expect(createOptions(fixture)).toEqual(
-            expected
+            expected,
         )
     })
 
@@ -46,7 +47,7 @@ describe("create options", () => {
         }
 
         expect(
-            createOptions(fixture)
+            createOptions(fixture),
         ).toHaveProperty("children")
     })
 
@@ -58,12 +59,12 @@ describe("create options", () => {
 
         const options = createOptions(
             fixture.textContent,
-            fixture.children
+            fixture.children,
         )
 
         expect(options).toHaveProperty("children")
         expect(options).toHaveProperty(
-            "textContent"
+            "textContent",
         )
     })
 
@@ -75,12 +76,12 @@ describe("create options", () => {
 
         const options = createOptions(
             fixture.children,
-            fixture.textContent
+            fixture.textContent,
         )
 
         expect(options).toHaveProperty("children")
         expect(options).toHaveProperty(
-            "textContent"
+            "textContent",
         )
     })
 
@@ -98,15 +99,15 @@ describe("create options", () => {
         const options = createOptions(
             fixture.children,
             fixture.textContent,
-            fixture.options
+            fixture.options,
         )
 
         expect(options).toHaveProperty("children")
         expect(options).toHaveProperty(
-            "textContent"
+            "textContent",
         )
         expect(options.style).toEqual(
-            fixture.options.style
+            fixture.options.style,
         )
     })
 
@@ -124,15 +125,15 @@ describe("create options", () => {
         const options = createOptions(
             fixture.textContent,
             fixture.children,
-            fixture.options
+            fixture.options,
         )
 
         expect(options).toHaveProperty("children")
         expect(options).toHaveProperty(
-            "textContent"
+            "textContent",
         )
         expect(options.style).toEqual(
-            fixture.options.style
+            fixture.options.style,
         )
     })
 })
@@ -145,7 +146,7 @@ describe("div", () => {
         })
 
         expect(testDiv.textContent).toEqual(
-            fixture
+            fixture,
         )
     })
 
@@ -154,7 +155,7 @@ describe("div", () => {
         const testDiv = div(fixture)
 
         expect(testDiv.textContent).toEqual(
-            fixture
+            fixture,
         )
     })
 
@@ -167,30 +168,30 @@ describe("div", () => {
                 style: {
                     color: "blue",
                 },
-            }
+            },
         )
 
         expect(testDiv.children.length).toEqual(1)
         expect(
-            testDiv.children[0].textContent
+            testDiv.children[0].textContent,
         ).toEqual("hello")
         expect(testDiv.style.color).toEqual(
-            "blue"
+            "blue",
         )
     })
 
     it("should have children with just text passed", () => {
         const testDiv = div(
             div("first"),
-            div("second")
+            div("second"),
         )
 
         expect(testDiv.children.length).toEqual(2)
         expect(
-            testDiv.children[0].textContent
+            testDiv.children[0].textContent,
         ).toEqual("first")
         expect(
-            testDiv.children[1].textContent
+            testDiv.children[1].textContent,
         ).toEqual("second")
     })
 })
@@ -211,7 +212,7 @@ describe("img", () => {
             },
         })
         expect(element.tagName).toEqual(
-            fixture.tag
+            fixture.tag,
         )
     })
 })
@@ -223,7 +224,72 @@ describe("p", () => {
     it(`should be a p`, () => {
         const element = p()
         expect(element.tagName).toEqual(
-            fixture.tag
+            fixture.tag,
+        )
+    })
+})
+
+describe("signal as textContent", () => {
+    it("should render initial signal value", () => {
+        const s = signal<string | number>("hello")
+        const el = p(s)
+        expect(el.textContent).toBe("hello")
+    })
+
+    it("should update textContent when signal changes", () => {
+        const s = signal<string | number>(0)
+        const el = p(s)
+        s.set(5)
+        expect(el.textContent).toBe("5")
+    })
+})
+
+describe("reactive style", () => {
+    it("should apply initial style from signal", () => {
+        const color = signal("crimson")
+        const el = div("hi", { style: { color } })
+        expect(el.style.color).toBe("crimson")
+    })
+
+    it("should update style property when signal changes", () => {
+        const color = signal("crimson")
+        const el = p("hi", { style: { color } })
+        color.set("royalblue")
+        expect(el.style.color).toBe("royalblue")
+    })
+
+    it("should update all styles when whole-object style signal changes", () => {
+        const style = signal({ color: "red" })
+        const el = p("hi", { style })
+        style.set({ color: "blue" })
+        expect(el.style.color).toBe("blue")
+    })
+})
+
+describe("reactive attributes", () => {
+    it("should apply initial attribute from signal", () => {
+        const src = signal("image.jpg")
+        const el = img({ attributes: { src } })
+        expect(el.getAttribute("src")).toBe(
+            "image.jpg",
+        )
+    })
+
+    it("should update attribute when signal changes", () => {
+        const src = signal("image.jpg")
+        const el = img({ attributes: { src } })
+        src.set("other.jpg")
+        expect(el.getAttribute("src")).toBe(
+            "other.jpg",
+        )
+    })
+
+    it("should update all attributes when whole-object attributes signal changes", () => {
+        const attrs = signal({ src: "a.jpg" })
+        const el = img({ attributes: attrs })
+        attrs.set({ src: "b.jpg" })
+        expect(el.getAttribute("src")).toBe(
+            "b.jpg",
         )
     })
 })
@@ -241,15 +307,15 @@ describe("element", () => {
         const p = element(
             "p",
             div("first"),
-            div("second")
+            div("second"),
         )
 
         expect(p.children.length).toEqual(2)
         expect(p.children[0].textContent).toEqual(
-            "first"
+            "first",
         )
         expect(p.children[1].textContent).toEqual(
-            "second"
+            "second",
         )
     })
 

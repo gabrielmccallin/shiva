@@ -1,17 +1,8 @@
-import { subscribe, publish } from "./pubsub"
+import { pubsub } from "./pubsub"
 
-let state
-let reducer
-const callbacks = []
-
-export const createStore = (
-    initial?: any,
-    _reducer?: any
+export const createStore = <T>(
+    initial?: T,
+    reducer?: (current: T, next: T) => T
 ) => {
-    state = initial
-    reducer = _reducer
-    return [
-        subscribe({ callbacks, state }),
-        publish({ state, reducer, callbacks }),
-    ]
+    return pubsub<T>(initial, reducer)
 }

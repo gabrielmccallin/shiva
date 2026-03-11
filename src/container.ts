@@ -5,7 +5,7 @@ type omitted =
     | "tagName"
 
 export type ContainerOptions<
-    K extends keyof HTMLElementTagNameMap = "div"
+    K extends keyof HTMLElementTagNameMap = "div",
 > = Partial<
     Omit<HTMLElementTagNameMap[K], omitted>
 > & {
@@ -18,7 +18,7 @@ export type ContainerOptions<
 }
 
 export const container = <
-    K extends keyof HTMLElementTagNameMap = "div"
+    K extends keyof HTMLElementTagNameMap = "div",
 >({
     customElement,
     root,
@@ -39,14 +39,14 @@ export const container = <
             element.innerHTML = ""
         } else {
             element = document.createElement(
-                elementName
+                elementName,
             ) as HTMLElementTagNameMap[K]
             element.id = "app"
             document.body.prepend(element)
         }
     } else {
         element = document.createElement(
-            elementName
+            elementName,
         ) as HTMLElementTagNameMap[K]
     }
 
@@ -63,9 +63,7 @@ type UpdateContainerOptions<H = HTMLDivElement> =
         children?: HTMLElement | HTMLElement[]
     }
 
-export const updateElement = <
-    H extends HTMLElement
->({
+const updateElement = <H extends HTMLElement>({
     element,
     attributes = {},
     style = {},
@@ -76,9 +74,9 @@ export const updateElement = <
         ([key, value]) => {
             element.setAttribute(
                 key,
-                value as string
+                value as string,
             )
-        }
+        },
     )
 
     Object.assign(element, props)

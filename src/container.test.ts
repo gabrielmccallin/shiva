@@ -1,7 +1,4 @@
-import {
-    container,
-    updateElement,
-} from "./container"
+import { container } from "./container"
 
 describe("typed container", () => {
     it("should return a HTMLAnchorElement", () => {
@@ -237,12 +234,13 @@ describe("typed container", () => {
             },
         }
 
-        const element = container()
-
-        updateElement({ element, ...config })
+        const element = container(config)
 
         expect(element.style.color).toEqual(
             config.style.color
+        )
+        expect(element.textContent).toEqual(
+            config.textContent
         )
     })
 })
