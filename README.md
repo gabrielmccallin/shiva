@@ -3,14 +3,11 @@
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/gabrielmccallin/shiva/blob/main/LICENSE) [![npm version](https://img.shields.io/npm/v/shiva.svg?style=flat)](https://www.npmjs.com/package/shiva "View this project on npm") [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/gabrielmccallin/shiva)
 ![javascript](https://img.shields.io/badge/-javascript-informational.svg) ![front-end](https://img.shields.io/badge/-frontend-informational.svg) ![declarative](https://img.shields.io/badge/-declarative-informational.svg) ![ui](https://img.shields.io/badge/-ui-informational.svg) ![library](https://img.shields.io/badge/-library-informational.svg)
 
-**`shiva`** is a minimal JavaScript library for building user interfaces.
+**`shiva`** is a minimal JavaScript library for building reactive user interfaces — no templates, no virtual DOM.
 
 ## Aim
 
-The aim of **`shiva`** is to use JavaScript to create HTML elements with a more declarative DSL (yes I know, another DSL 😁).
-
-- No need for a HTML templating language like `jsx`
-- Have access to the HTML element for further manipulation after creation
+**`shiva`** wraps the DOM API with a functional syntax for creating and composing reactive HTML elements.
 
 So instead of:
 
@@ -49,6 +46,22 @@ This will produce:
 ```
 
 **`shiva`** will append HTML elements if they are passed as an argument. It will create and append a `textNode` element if a string is passed.
+
+## Mixed content
+
+Strings, elements, and signals can be mixed freely as arguments. Order is preserved:
+
+```javascript
+import { p, code } from "shiva"
+
+const sentence = p("The value is ", code("42"), " and that's final.")
+```
+
+This produces:
+
+```html
+<p>The value is <code>42</code> and that's final.</p>
+```
 
 ## Attributes
 
@@ -134,7 +147,7 @@ Of course, `component()` can be imported from another file.
 ## Installation
 
 ```javascript
-npm install shiva --save
+npm install shiva
 ```
 
 **`shiva`** is distributed as an ES module. Please use a module aware build tool to import.
@@ -203,16 +216,50 @@ const el = div("hello", { style: { color } })
 color.set("royalblue") // only color updates
 ```
 
-The same patterns apply to `attributes`.
+### Reactive attributes
+
+The same patterns apply to `attributes`:
+
+```javascript
+import { signal, div } from "shiva"
+
+const attributes = signal({ "data-count": "0", id: "counter" })
+
+const el = div("hello", { attributes })
+
+attributes.set({ "data-count": "1", id: "counter" }) // attributes update in place
+```
+
+Individual attribute values can also be signals:
+
+```javascript
+const dataCount = signal("0")
+
+const el = div("hello", { attributes: { "data-count": dataCount } })
+
+dataCount.set("1") // only data-count updates
+```
 
 ### Signal API
 
 ```typescript
-signal<T>(initialValue: T): Signal<T>
+const s = signal<T>(initialValue: T): Signal<T>
 
-signal.get(): T
-signal.set(value: T): void
-signal.subscribe(fn: () => void): () => void  // returns unsubscribe
+s.get(): T
+s.set(value: T): void
+s.subscribe(fn: () => void): () => void  // returns unsubscribe
+```
+
+#### `isSignal`
+
+A type guard for duck-typed signal detection:
+
+```javascript
+import { signal, isSignal } from "shiva"
+
+isSignal(signal(0))  // true
+isSignal({ get: () => 0, set: () => {}, subscribe: () => () => {} })  // true
+isSignal("hello")    // false
 ```
 
 ---
@@ -240,10 +287,10 @@ publish([6,7,9,12]) // logs [6,7,9,12]
 ### API
 
 ```typescript
-pubsub(
-    initial?: any,
-    reducer?: (current: any, next: any) => void
-)
+pubsub<T>(
+    initial?: T,
+    reducer?: (current: T, next: T) => T
+): [(callback: (state: T) => void) => void, (payload: T) => T]
 ```
 
 Initialise state with `initial`.
@@ -251,7 +298,7 @@ Initialise state with `initial`.
 Run a function on new state with a `reducer` function. Can be used for more complex logic or when the next state depends on the previous one.
 
 ```javascript
-const reducer = (state, newState) => return state + newState
+const reducer = (state, newState) => state + newState
 
 const [subscribe, publish] = pubsub("DOGE", reducer)
 
@@ -287,6 +334,23 @@ const [subscriberGlobal, publishGlobal] = globalStore
 
 // Here we can name the subscribe / publish functions, note we don't call the globalStore, it is already a subscribe / publish tuple.
 ```
+
+## TypeScript
+
+**`shiva`** ships with type definitions. Types are available for import:
+
+```typescript
+import { signal } from "shiva"
+import type { Signal, ReactiveStyle, ContainerOptions } from "shiva"
+
+const count: Signal<number> = signal(0)
+
+const style = signal<ReactiveStyle>({ color: "blue" })
+```
+
+## Tree shaking
+
+**`shiva`** is marked as side-effect free. Bundlers like webpack, rollup, and vite will tree-shake unused exports.
 
 ## License
 

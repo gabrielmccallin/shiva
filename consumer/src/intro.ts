@@ -11,6 +11,6 @@ export const intro = () =>
         h1("shiva example"),
         p([
             strong(code("shiva")),
-            " is a minimal JavaScript library for building user interfaces.",
+            " is a minimal JavaScript library for building reactive user interfaces — no templates, no virtual DOM.",
         ]),
     ])

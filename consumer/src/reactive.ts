@@ -12,9 +12,16 @@ import {
 export const reactive = () => {
     const count = signal<string | number>(0)
     const color = signal("royalblue")
+    const dataCount = signal("0")
 
     const increment = () => {
         count.set((count.get() as number) + 1)
+    }
+
+    const incrementAttr = () => {
+        dataCount.set(
+            String(Number(dataCount.get()) + 1),
+        )
     }
 
     const colours = [
@@ -68,6 +75,27 @@ color.set("crimson") // only color updates`),
         }),
         button("cycle colour", {
             onclick: cycleColor,
+        }),
+        h3("Reactive attributes"),
+        pre(`import { signal, div } from "shiva"
+
+const dataCount = signal("0")
+const el = div("hello", { attributes: { "data-count": dataCount } })
+
+dataCount.set("1") // only data-count updates`),
+        p("Live example:"),
+        div("data-count is ", dataCount, {
+            attributes: {
+                "data-count": dataCount,
+            },
+        }),
+        p(
+            "Inspect the element above — ",
+            code("data-count"),
+            " updates when you click increment.",
+        ),
+        button("increment", {
+            onclick: incrementAttr,
         }),
     )
 }

@@ -8,7 +8,7 @@ export type ReactiveStyle = {
     [key: string]: string | Signal<string> | undefined
 }
 
-type ReactiveAttributes = {
+export type ReactiveAttributes = {
     [key: string]: string | Signal<string>
 }
 
@@ -25,6 +25,8 @@ type TagOptions<
     | string
     | number
     | boolean
+    | Signal<string>
+    | Signal<number>
     | Signal<string | number>
     | ReactiveContainerOptions<K>
     | HTMLElement[]

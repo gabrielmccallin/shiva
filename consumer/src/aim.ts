@@ -12,10 +12,9 @@ export const aim = () =>
     div([
         h2("Aim"),
         p(
-            span("The aim of "),
             strong(code("shiva")),
             span(
-                " is to use JavaScript to create HTML elements without HTML. It abstracts the DOM JavaScript API for a declarative and easy to use syntax.",
+                " wraps the DOM API with a functional syntax for creating and composing HTML elements.",
             ),
         ),
         p("So instead of:"),

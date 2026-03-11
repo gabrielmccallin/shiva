@@ -1,5 +1,16 @@
 # Change Log
 
+## `[6.0.1]`
+
+🔖 v6.0.1
+
+- ✨ Export additional types: `ReactiveAttributes`, `ReactiveStyle`, `Signal`, `ContainerOptions`
+- 📝 Updated README with mixed content and reactive attributes examples
+- 📝 Added TypeScript usage section
+- 📝 Added tree shaking documentation
+- 🛠 Updated consumer examples to demonstrate new features
+- 🛠 Added type annotations to tests for better type safety
+
 ## `[6.0.0]`
 
 🔖 v6.0.0

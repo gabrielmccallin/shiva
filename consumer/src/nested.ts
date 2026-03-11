@@ -28,11 +28,11 @@ const nestedHTMLDivElement = div(
         p(
             strong(code("shiva")),
             span(
-                " will append HTML elements if they are passed as an argument. It will set ",
+                " will append HTML elements if they are passed as an argument. It will create and append a ",
             ),
-            code("textContent"),
+            code("textNode"),
             span(
-                " on the element if a string is passed.",
+                " element if a string is passed.",
             ),
         ),
     ])

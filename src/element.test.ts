@@ -5,6 +5,8 @@ import {
     img,
     createOptions,
     element,
+    type ReactiveAttributes,
+    type ReactiveStyle,
 } from "./element"
 import { signal } from "./signal"
 
@@ -259,7 +261,9 @@ describe("reactive style", () => {
     })
 
     it("should update all styles when whole-object style signal changes", () => {
-        const style = signal({ color: "red" })
+        const style = signal<ReactiveStyle>({
+            color: "red",
+        })
         const el = p("hi", { style })
         style.set({ color: "blue" })
         expect(el.style.color).toBe("blue")
@@ -285,7 +289,9 @@ describe("reactive attributes", () => {
     })
 
     it("should update all attributes when whole-object attributes signal changes", () => {
-        const attrs = signal({ src: "a.jpg" })
+        const attrs = signal<ReactiveAttributes>({
+            src: "a.jpg",
+        })
         const el = img({ attributes: attrs })
         attrs.set({ src: "b.jpg" })
         expect(el.getAttribute("src")).toBe(
