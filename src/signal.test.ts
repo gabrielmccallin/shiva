@@ -51,6 +51,108 @@ describe("signal", () => {
     })
 })
 
+describe("signal with object - reactive fields", () => {
+    it("should expose a signal for each field", () => {
+        const s = signal({ name: "Alice", age: 30 })
+        expect(s.name.get()).toBe("Alice")
+        expect(s.age.get()).toBe(30)
+    })
+
+    it("should notify field subscriber when that field changes", () => {
+        const s = signal({ name: "Alice", age: 30 })
+        const fn = jest.fn()
+        s.name.subscribe(fn)
+        s.set({ name: "Bob", age: 30 })
+        expect(fn).toHaveBeenCalledTimes(1)
+    })
+
+    it("should not notify field subscriber when a different field changes", () => {
+        const s = signal({ name: "Alice", age: 30 })
+        const fn = jest.fn()
+        s.name.subscribe(fn)
+        s.set({ name: "Alice", age: 31 })
+        expect(fn).not.toHaveBeenCalled()
+    })
+
+    it("should reflect the latest value after source update", () => {
+        const s = signal({ name: "Alice", age: 30 })
+        s.set({ name: "Bob", age: 30 })
+        expect(s.name.get()).toBe("Bob")
+    })
+
+    it("should return the same signal instance for repeated field access", () => {
+        const s = signal({ name: "Alice", age: 30 })
+        expect(s.name).toBe(s.name)
+    })
+
+    it("should write back to source when field signal is set", () => {
+        const s = signal({ name: "Alice", age: 30 })
+        s.name.set("Carol")
+        expect(s.get().name).toBe("Carol")
+        expect(s.get().age).toBe(30)
+    })
+
+    it("should notify source subscribers when a field signal is set", () => {
+        const s = signal({ name: "Alice", age: 30 })
+        const fn = jest.fn()
+        s.subscribe(fn)
+        s.name.set("Carol")
+        expect(fn).toHaveBeenCalledTimes(1)
+    })
+
+    it("should unsubscribe field signal correctly", () => {
+        const s = signal({ name: "Alice", age: 30 })
+        const fn = jest.fn()
+        const unsubscribe = s.name.subscribe(fn)
+        unsubscribe()
+        s.set({ name: "Bob", age: 30 })
+        expect(fn).not.toHaveBeenCalled()
+    })
+})
+
+describe("signal with nested object - deep reactive fields", () => {
+    it("should expose a signal for a nested field", () => {
+        const s = signal({ description: { nested: "hello" } })
+        expect(s.description.nested.get()).toBe("hello")
+    })
+
+    it("should notify nested field subscriber when that field changes", () => {
+        const s = signal({ description: { nested: "hello" } })
+        const fn = jest.fn()
+        s.description.nested.subscribe(fn)
+        s.set({ description: { nested: "world" } })
+        expect(fn).toHaveBeenCalledTimes(1)
+    })
+
+    it("should not notify nested field subscriber when a sibling field changes", () => {
+        const s = signal({ description: { nested: "hello", other: "x" } })
+        const fn = jest.fn()
+        s.description.nested.subscribe(fn)
+        s.set({ description: { nested: "hello", other: "y" } })
+        expect(fn).not.toHaveBeenCalled()
+    })
+
+    it("should reflect latest value after source update", () => {
+        const s = signal({ description: { nested: "hello" } })
+        s.set({ description: { nested: "updated" } })
+        expect(s.description.nested.get()).toBe("updated")
+    })
+
+    it("should write back through nested field signal", () => {
+        const s = signal({ description: { nested: "hello" } })
+        s.description.nested.set("written")
+        expect(s.get().description.nested).toBe("written")
+    })
+
+    it("should notify source subscribers when a nested field signal is set", () => {
+        const s = signal({ description: { nested: "hello" } })
+        const fn = jest.fn()
+        s.subscribe(fn)
+        s.description.nested.set("written")
+        expect(fn).toHaveBeenCalledTimes(1)
+    })
+})
+
 describe("isSignal", () => {
     it("should return true for a signal", () => {
         const s = signal(0)

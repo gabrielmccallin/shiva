@@ -39,12 +39,22 @@ export const reactive = () => {
         color.set(colours[next])
     }
 
-    return div(
+    const data = signal({
+        meta: {
+            title: "shiva",
+            description: "A minimal UI library",
+        },
+    })
+
+    const { meta } = data
+    const { title, description } = meta
+
+    return [
         h2("Reactive signals"),
         p(
             "Pass a ",
             code("signal()"),
-            " to any element — the DOM updates automatically when the value changes.",
+            " to any element - the DOM updates automatically when the value changes.",
         ),
         h3("Reactive text"),
         pre(`import { signal, p, code } from "shiva"
@@ -90,12 +100,52 @@ dataCount.set("1") // only data-count updates`),
             },
         }),
         p(
-            "Inspect the element above — ",
+            "Inspect the element above - ",
             code("data-count"),
             " updates when you click increment.",
         ),
         button("increment", {
             onclick: incrementAttr,
         }),
-    )
+        h3("Deeply nested reactive fields"),
+        pre(`import { signal, p } from "shiva"
+
+const data = signal({
+    meta: {
+        title: "shiva",
+        description: "A minimal UI library"
+    }
+})
+
+const { meta } = data
+const { title, description } = meta
+
+const view = p(title, " - ", description)
+
+data.set({ meta: { title: "shiva", description: "No virtual DOM" } })
+// only description updates - title did not change`),
+        p("Live example:"),
+        p(title, " - ", description),
+        button("update description", {
+            onclick: () =>
+                data.set({
+                    meta: {
+                        title: "shiva",
+                        description:
+                            "No virtual DOM",
+                    },
+                }),
+        }),
+        button("reset", {
+            onclick: () =>
+                data.set({
+                    meta: {
+                        title: "shiva",
+                        description:
+                            "A minimal UI library",
+                    },
+                }),
+            style: { marginLeft: "0.5rem" },
+        }),
+    ]
 }

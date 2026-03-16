@@ -300,6 +300,29 @@ describe("reactive attributes", () => {
     })
 })
 
+describe("reactive signal object field as child", () => {
+    it("should render initial field value from signal(object)", () => {
+        const { heading } = signal({ heading: "Aim" })
+        const el = p(heading)
+        expect(el.textContent).toBe("Aim")
+    })
+
+    it("should update when field signal is set", () => {
+        const { heading } = signal({ heading: "Aim" })
+        const el = p(heading)
+        heading.set("reactive!")
+        expect(el.textContent).toBe("reactive!")
+    })
+
+    it("should update when parent signal is set", () => {
+        const s = signal({ heading: "Aim" })
+        const { heading } = s
+        const el = p(heading)
+        s.set({ heading: "updated" })
+        expect(el.textContent).toBe("updated")
+    })
+})
+
 describe("element", () => {
     const fixture = {
         tag: "P",

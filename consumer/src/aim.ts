@@ -1,38 +1,43 @@
-import {
-    code,
-    div,
-    h2,
-    p,
-    pre,
-    span,
-    strong,
-} from "shiva"
+import { code, h2, p, pre, strong } from "shiva"
 
-export const aim = () =>
-    div([
-        h2("Aim"),
+export const aim = () => {
+    const aimData = {
+        heading: "Aim",
+        description:
+            " wraps the DOM API with a functional syntax for creating and composing HTML elements.",
+        soInsteadOf: "So instead of:",
+        htmlExample: "<div>Hi there 👋</div>",
+        providesFunction:
+            " provides a function called ",
+        codeExample: `import { div } from "shiva"
+    
+    const HTMLDivElement = div("Hi there 👋")`,
+        conclusion:
+            "This will create the same element as the ",
+    }
+
+    const {
+        heading,
+        description,
+        soInsteadOf,
+        htmlExample,
+        providesFunction,
+        codeExample,
+        conclusion,
+    } = aimData
+
+    return [
+        h2(heading),
+        p(strong(code("shiva")), description),
+        p(soInsteadOf),
+        pre(htmlExample),
         p(
             strong(code("shiva")),
-            span(
-                " wraps the DOM API with a functional syntax for creating and composing HTML elements.",
-            ),
-        ),
-        p("So instead of:"),
-        pre("<div>Hi there 👋</div>"),
-        p(
-            strong(code("shiva")),
-            span(" provides a function called "),
+            providesFunction,
             code("div()"),
-            span(":"),
+            ":",
         ),
-        pre(`import { div } from "shiva"
-
-const HTMLDivElement = div("Hi there 👋")`),
-        p(
-            span(
-                "This will create the same element as the ",
-            ),
-            code("html"),
-            span(" version."),
-        ),
-    ])
+        pre(codeExample),
+        p(conclusion, code("html"), " version."),
+    ]
+}

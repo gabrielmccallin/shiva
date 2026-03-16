@@ -14,7 +14,14 @@ export type ReactiveAttributes = {
 
 type ReactiveContainerOptions<
     K extends keyof HTMLElementTagNameMap = "div"
-> = Omit<ContainerOptions<K>, "style" | "attributes"> & {
+> = {
+    [P in keyof Omit<
+        ContainerOptions<K>,
+        "style" | "attributes"
+    >]: ContainerOptions<K>[P] extends string | undefined
+        ? ContainerOptions<K>[P] | Signal<string>
+        : ContainerOptions<K>[P]
+} & {
     style?: ReactiveStyle | Signal<ReactiveStyle>
     attributes?: ReactiveAttributes | Signal<ReactiveAttributes>
 }
@@ -157,6 +164,7 @@ const createContainer = <
     const orderedChildren: Node[] = []
     const reactiveOpts: ReactiveContainerOptions<K>[] =
         []
+    const reactiveProps: [string, Signal<any>][] = []
 
     const processItem = (
         item:
@@ -192,11 +200,18 @@ const createContainer = <
         ) {
             const { style, attributes, ...rest } =
                 item as ReactiveContainerOptions<K>
-            Object.assign(containerOpts, rest)
             reactiveOpts.push({
                 style,
                 attributes,
             } as ReactiveContainerOptions<K>)
+
+            Object.entries(rest).forEach(([k, v]) => {
+                if (isSignal(v)) {
+                    reactiveProps.push([k, v])
+                } else {
+                    ;(containerOpts as any)[k] = v
+                }
+            })
         }
     }
 
@@ -207,6 +222,13 @@ const createContainer = <
     }
 
     const element = container<K>(containerOpts)
+
+    reactiveProps.forEach(([k, signal]) => {
+        ;(element as any)[k] = signal.get()
+        signal.subscribe(() => {
+            ;(element as any)[k] = signal.get()
+        })
+    })
 
     const setStyle = (k: string, v: string) => {
         if (isNaN(Number(k))) {

@@ -1,9 +1,8 @@
-import { div, h2, pre } from "shiva"
+import { h2, pre } from "shiva"
 
-export const attributes = () =>
-    div([
-        h2("Attributes"),
-        pre(`import { div } from "shiva"
+export const attributes = () => [
+    h2("Attributes"),
+    pre(`import { div } from "shiva"
 
 const handler = () => {
     console.log("handled it 👊")
@@ -17,4 +16,4 @@ const superDiv = div("Hi there 👋", {
         fontSize: "3rem"
     }
 })`),
-    ])
+]

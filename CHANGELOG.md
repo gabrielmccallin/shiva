@@ -1,5 +1,18 @@
 # Change Log
 
+## `[6.1.0]`
+
+🔖 v6.1.0
+
+### New features
+
+- ✨ `signal()` returns a `ReactiveSignal<T>` when given an object - every field is automatically a derived `Signal` accessible via property access
+- ✨ Deep nested reactivity - nested object fields recursively produce `ReactiveSignal`, enabling chains like `s.description.nested`
+- ✨ Field signals write back to the parent signal - `s.name.set("x")` updates the root object and notifies its subscribers
+- ✨ Fine-grained updates - field subscribers only fire when their specific value changes (strict equality check)
+- ✨ Export `ReactiveSignal<T>` type for consumers
+- 📝 Updated README with object signal, nested signal, and `ReactiveSignal` TypeScript examples
+
 ## `[6.0.1]`
 
 🔖 v6.0.1
@@ -17,24 +30,24 @@
 
 ### Breaking changes
 
-- 💔 `updateElement` removed from public API — use `container()` directly
-- 💔 `publish` and `subscribe` no longer exported individually — use `pubsub()` which returns `[subscribe, publish]`
-- 💔 `createContainer` now processes arguments in order — strings become text nodes, HTMLElements are appended as children, objects are treated as options
+- 💔 `updateElement` removed from public API - use `container()` directly
+- 💔 `publish` and `subscribe` no longer exported individually - use `pubsub()` which returns `[subscribe, publish]`
+- 💔 `createContainer` now processes arguments in order - strings become text nodes, HTMLElements are appended as children, objects are treated as options
 - 💔 Build output moved from `lib/` to `dist/` via tsup
 
 ### New features
 
 - ✨ Add `signal<T>(initialValue)` factory function for reactive state
 - ✨ Add `isSignal` type guard for duck-typed signal detection
-- ✨ Reactive `style` and `attributes` — pass a signal as a whole object or per-property
+- ✨ Reactive `style` and `attributes` - pass a signal as a whole object or per-property
 - ✨ All elements are now reactive (pass signals as text, style, or attributes)
-- ✨ Mixed text and element children preserve order — `p("hello", code("world"), "!")` works as expected
+- ✨ Mixed text and element children preserve order - `p("hello", code("world"), "!")` works as expected
 - ✨ Export `ReactiveStyle`, `Signal`, and `ContainerOptions` types for consumers
 
 ### Improvements
 
 - 🛠 Switched build tooling from tsc to tsup (ESM output, `.d.mts` declarations)
-- 🛠 Added generics to `pubsub` and `createStore` — fully typed state management
+- 🛠 Added generics to `pubsub` and `createStore` - fully typed state management
 - 🛠 `createStore` now delegates to `pubsub` instead of duplicating logic
 - ⬆️ TypeScript 5.x, target `es2020`
 - 📦 `sideEffects: false` for tree shaking
