@@ -1,5 +1,13 @@
 # Change Log
 
+## `[6.1.1]`
+
+🔖 v6.1.1
+
+- ⬆️ Bump vite from 6.4.1 to 6.4.2 in /consumer
+- ⬆️ Bump picomatch from 4.0.3 to 4.0.4 in /consumer
+- ⬆️ Bump picomatch from 2.3.1 to 2.3.2
+
 ## `[6.1.0]`
 
 🔖 v6.1.0
