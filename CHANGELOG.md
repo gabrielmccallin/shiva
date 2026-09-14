@@ -1,5 +1,23 @@
 # Change Log
 
+## `[6.1.2]`
+
+🔖 v6.1.2
+
+- ⬆️
+️Bump @babel/core from 7.26.0 to 7.29.7
+- ⬆️
+Bump brace-expansion
+-  ⬆️
+Bump js-yaml from 3.14.2 to 3.15.2
+- ⬆️
+Bump browserslist from 4.24.4 to 4.28.9
+- ⬆️
+ Bump ws from 8.19.0 to 8.21.1
+- ⬆️
+Bump postcss from 8.5.15 to 8.5.25 in /consumer 
+
+- ⬆️ Bump esbuild and vite in /consumer
 ## `[6.1.1]`
 
 🔖 v6.1.1
