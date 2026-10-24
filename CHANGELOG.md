@@ -1,5 +1,13 @@
 # Change Log
 
+## `[6.1.3]`
+
+🔖 v6.1.3
+
+- 🐛 Fix release workflow and set version back to 6.1.2 (#27)
+- 👷 Auto-bump version, tag and update changelog on push to main (#26)
+- Bump brace-expansion (#24)
+
 ## `[6.1.2]`
 
 🔖 v6.1.2
