@@ -51,7 +51,22 @@ jobs:
             - name: Run tests
               run: npm test
 
+            # If the version in package.json is not on npm yet, an earlier
+            # publish failed. Publish that version instead of bumping again.
+            - name: Check if current version is published
+              id: published
+              run: |
+                  PACKAGE_NAME=$(node -p "require('./package.json').name")
+                  VERSION=$(node -p "require('./package.json').version")
+                  if [ "$(npm view "$PACKAGE_NAME@$VERSION" version 2>/dev/null)" = "$VERSION" ]; then
+                    echo "published=true" >> "$GITHUB_OUTPUT"
+                  else
+                    echo "$VERSION is not on npm yet. Publishing it without a bump."
+                    echo "published=false" >> "$GITHUB_OUTPUT"
+                  fi
+
             - name: Find commits since last release
+              if: steps.published.outputs.published == 'true'
               id: range
               run: |
                   # The last release is the tag for the version in package.json.
@@ -69,6 +84,7 @@ jobs:
                   fi
 
             - name: Choose bump
+              if: steps.published.outputs.published == 'true'
               id: bump
               env:
                   INPUT_BUMP: ${{ inputs.bump }}
@@ -89,6 +105,7 @@ jobs:
                   echo "bump=$BUMP" >> "$GITHUB_OUTPUT"
 
             - name: Bump version and update changelog
+              if: steps.published.outputs.published == 'true'
               id: version
               run: |
                   VERSION=$(npm version ${{ steps.bump.outputs.bump }} --no-git-tag-version | sed 's/^v//')
@@ -113,6 +130,7 @@ jobs:
                   mv CHANGELOG.tmp CHANGELOG.md
 
             - name: Commit and tag release
+              if: steps.published.outputs.published == 'true'
               run: |
                   VERSION=${{ steps.version.outputs.version }}
                   git config user.name "github-actions[bot]"
