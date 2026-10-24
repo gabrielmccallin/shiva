@@ -1,19 +1,44 @@
-name: Publish to npm
+name: Release to npm
+
+# Every push to main publishes a new version.
+# The default bump is patch. Put [minor] or [major] in any commit message
+# since the last release to bump that part instead, or run this workflow
+# manually and pick the bump.
 
 on:
     push:
         branches:
             - main
+    workflow_dispatch:
+        inputs:
+            bump:
+                description: "Version bump"
+                type: choice
+                options:
+                    - patch
+                    - minor
+                    - major
+                default: patch
 
 permissions:
     id-token: write
-    contents: read
+    contents: write
+
+# Run releases one at a time so two merges cannot claim the same version.
+concurrency:
+    group: release
+    cancel-in-progress: false
 
 jobs:
-    publish:
+    release:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v6
+              with:
+                  # Check out the branch tip, not the triggering commit, so a
+                  # queued run includes the release commit from the run before it.
+                  ref: main
+                  fetch-depth: 0
 
             - uses: actions/setup-node@v6
               with:
@@ -26,17 +51,74 @@ jobs:
             - name: Run tests
               run: npm test
 
-            - name: Check version is unpublished
+            - name: Find commits since last release
+              id: range
               run: |
-                  PACKAGE_NAME=$(node -p "require('./package.json').name")
-                  LOCAL_VERSION=$(node -p "require('./package.json').version")
-                  PUBLISHED_VERSION=$(npm view "$PACKAGE_NAME" version 2>/dev/null || echo "unpublished")
-                  if [ "$LOCAL_VERSION" = "$PUBLISHED_VERSION" ]; then
-                    echo "Error: Version $LOCAL_VERSION is already published."
-                    exit 1
+                  LAST_TAG=$(git describe --tags --abbrev=0 --match 'v*' 2>/dev/null || true)
+                  if [ -n "$LAST_TAG" ]; then
+                    BASE="$LAST_TAG"
                   else
-                    echo "Publishing version $LOCAL_VERSION"
+                    # No tags yet: fall back to the last manual release commit.
+                    BASE=$(git log --grep='^🔖' -1 --format=%H)
                   fi
+                  if [ -n "$BASE" ]; then
+                    echo "range=$BASE..HEAD" >> "$GITHUB_OUTPUT"
+                  else
+                    echo "range=HEAD" >> "$GITHUB_OUTPUT"
+                  fi
+
+            - name: Choose bump
+              id: bump
+              env:
+                  INPUT_BUMP: ${{ inputs.bump }}
+              run: |
+                  MESSAGES=$(git log ${{ steps.range.outputs.range }} --format=%B)
+                  if [ -n "$INPUT_BUMP" ]; then
+                    BUMP="$INPUT_BUMP"
+                  elif echo "$MESSAGES" | grep -qF '[major]'; then
+                    BUMP=major
+                  elif echo "$MESSAGES" | grep -qF '[minor]'; then
+                    BUMP=minor
+                  else
+                    BUMP=patch
+                  fi
+                  echo "Bump: $BUMP"
+                  echo "bump=$BUMP" >> "$GITHUB_OUTPUT"
+
+            - name: Bump version and update changelog
+              id: version
+              run: |
+                  VERSION=$(npm version ${{ steps.bump.outputs.bump }} --no-git-tag-version | sed 's/^v//')
+                  echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+                  ENTRIES=$(git log ${{ steps.range.outputs.range }} --no-merges --format='- %s' | grep -v '^- 🔖' || true)
+                  if [ -z "$ENTRIES" ]; then
+                    ENTRIES="- No changes recorded"
+                  fi
+
+                  {
+                    echo "# Change Log"
+                    echo
+                    echo "## \`[$VERSION]\`"
+                    echo
+                    echo "🔖 v$VERSION"
+                    echo
+                    echo "$ENTRIES"
+                    echo
+                    tail -n +2 CHANGELOG.md | sed '1{/^$/d}'
+                  } > CHANGELOG.tmp
+                  mv CHANGELOG.tmp CHANGELOG.md
+
+            - name: Commit and tag release
+              run: |
+                  VERSION=${{ steps.version.outputs.version }}
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  git add package.json package-lock.json CHANGELOG.md
+                  git commit -m "🔖 v$VERSION [skip ci]"
+                  git tag "v$VERSION"
+                  git push origin HEAD:main
+                  git push origin "v$VERSION"
 
             - name: Publish
               run: npm publish --provenance --access public
