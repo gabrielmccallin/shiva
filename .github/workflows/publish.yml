@@ -59,8 +59,8 @@ jobs:
                   if git rev-parse -q --verify "refs/tags/$CURRENT_TAG" >/dev/null; then
                     BASE="$CURRENT_TAG"
                   else
-                    # No tag for this version: fall back to the last release commit.
-                    BASE=$(git log --grep='^🔖' -1 --format=%H)
+                    # No tag for this version: fall back to its release commit.
+                    BASE=$(git log --grep="^🔖 $CURRENT_TAG\b" -1 --format=%H)
                   fi
                   if [ -n "$BASE" ]; then
                     echo "range=$BASE..HEAD" >> "$GITHUB_OUTPUT"
