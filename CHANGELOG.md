@@ -1,44 +1,5 @@
 # Change Log
 
-## `[7.0.0]`
-
-🔖 v7.0.0
-
-- 👷 Auto-bump version, tag and update changelog on push to main (#26)
-- Bump brace-expansion (#24)
-- Bump @babel/core from 7.26.0 to 7.29.7 (#23)
-- Bump brace-expansion (#22)
-- Bump js-yaml from 3.14.2 to 3.15.2 (#21)
-- Bump browserslist from 4.24.4 to 4.28.9 (#20)
-- Bump ws from 8.19.0 to 8.21.1 (#18)
-- Bump postcss from 8.5.15 to 8.5.25 in /consumer (#19)
-- Bump esbuild and vite in /consumer (#16)
-- 💚 pipeline improvement
-- Bump vite from 6.4.1 to 6.4.2 in /consumer (#15)
-- Bump picomatch from 4.0.3 to 4.0.4 in /consumer (#14)
-- Bump picomatch (#13)
-- Bump @tootallnate/once and jest-environment-jsdom
-- Bump minimatch
-- Bump js-yaml from 3.14.1 to 3.14.2
-- ⬆️ update `ws` and `braces transitive deps
-- ⬆️ update for [CVE-2023-45133]
-- 💚 update npm publish task
-- version up for path-parse CVE
-- 💚 add main branch trigger for publish to npm
-- Removed hompage from `package.json`
-- 💚 need to install packages 😀
-- 💚 wow, npm publish cannot run the build script
-- 💚 add prepublishOnly script
-- 💚 prepublish did not run, explicitly run build
-- 💚 no artifact required for npm publish
-- 🔧🔑 npm keywords
-- Merged in v3 (pull request #66)
-- 🏃‍ Playground 🔖v2.5.3
-- 🚀 v2.5.2
-- 👀 Observer / Bus fix for removing a listener if it doesn't exist
-- © LICENSE.md
-- © LICENSE.md
-
 ## `[6.1.2]`
 
 🔖 v6.1.2
