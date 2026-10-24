@@ -1,6 +1,6 @@
 {
     "name": "shiva",
-    "version": "6.1.5",
+    "version": "0.0.0-development",
     "description": "Minimal JavaScript library for building user interfaces",
     "main": "dist/shiva.js",
     "module": "dist/shiva.js",

@@ -1,5 +1,9 @@
 # Change Log
 
+Releases from 6.1.6 onwards are listed in [GitHub Releases](https://github.com/gabrielmccallin/shiva/releases).
+
+The version in `package.json` is not updated in the repo. The release workflow sets it from the latest `v*` tag when it publishes.
+
 ## `[6.1.5]`
 
 🔖 v6.1.5
