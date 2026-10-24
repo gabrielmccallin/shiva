@@ -1,5 +1,11 @@
 # Change Log
 
+## `[6.1.5]`
+
+🔖 v6.1.5
+
+- 🔧 Remove skip ci from release commit title (#30)
+
 ## `[6.1.4]`
 
 🔖 v6.1.4
