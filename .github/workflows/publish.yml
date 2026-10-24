@@ -1,7 +1,7 @@
 name: Release to npm
 
 # Every push to main publishes a new version.
-# The default bump is patch. Put [minor] or [major] in any commit message
+# The default bump is patch. Put [minor] or [major] in the subject line of any commit
 # since the last release to bump that part instead, or run this workflow
 # manually and pick the bump.
 
@@ -54,11 +54,12 @@ jobs:
             - name: Find commits since last release
               id: range
               run: |
-                  LAST_TAG=$(git describe --tags --abbrev=0 --match 'v*' 2>/dev/null || true)
-                  if [ -n "$LAST_TAG" ]; then
-                    BASE="$LAST_TAG"
+                  # The last release is the tag for the version in package.json.
+                  CURRENT_TAG="v$(node -p "require('./package.json').version")"
+                  if git rev-parse -q --verify "refs/tags/$CURRENT_TAG" >/dev/null; then
+                    BASE="$CURRENT_TAG"
                   else
-                    # No tags yet: fall back to the last manual release commit.
+                    # No tag for this version: fall back to the last release commit.
                     BASE=$(git log --grep='^🔖' -1 --format=%H)
                   fi
                   if [ -n "$BASE" ]; then
@@ -72,12 +73,14 @@ jobs:
               env:
                   INPUT_BUMP: ${{ inputs.bump }}
               run: |
-                  MESSAGES=$(git log ${{ steps.range.outputs.range }} --format=%B)
+                  # Only read commit subjects (first lines), so text in commit
+                  # bodies or Dependabot descriptions cannot change the bump.
+                  SUBJECTS=$(git log ${{ steps.range.outputs.range }} --format=%s)
                   if [ -n "$INPUT_BUMP" ]; then
                     BUMP="$INPUT_BUMP"
-                  elif echo "$MESSAGES" | grep -qF '[major]'; then
+                  elif echo "$SUBJECTS" | grep -qF '[major]'; then
                     BUMP=major
-                  elif echo "$MESSAGES" | grep -qF '[minor]'; then
+                  elif echo "$SUBJECTS" | grep -qF '[minor]'; then
                     BUMP=minor
                   else
                     BUMP=patch
