@@ -1,5 +1,13 @@
 # Change Log
 
+## `[6.1.4]`
+
+🔖 v6.1.4
+
+- 🐛 Bump as usual when a retry publish finds the version already on npm (#29)
+- Bump vite from 8.0.16 to 8.1.6 in /consumer (#25)
+- 🐛 Publish the current version without a bump if it is not on npm (#28)
+
 ## `[6.1.3]`
 
 🔖 v6.1.3
