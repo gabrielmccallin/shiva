@@ -4,6 +4,10 @@ name: Release to npm
 # The default bump is patch. Put [minor] or [major] in the subject line of any commit
 # since the last release to bump that part instead, or run this workflow
 # manually and pick the bump.
+#
+# The release does not add a commit to main. The version comes from the
+# latest v* tag, is set in package.json for this run only, and the merge
+# commit is tagged with it. Release notes go to GitHub Releases.
 
 on:
     push:
@@ -36,7 +40,7 @@ jobs:
             - uses: actions/checkout@v6
               with:
                   # Check out the branch tip, not the triggering commit, so a
-                  # queued run includes the release commit from the run before it.
+                  # queued run includes everything merged before it.
                   ref: main
                   fetch-depth: 0
 
@@ -51,111 +55,87 @@ jobs:
             - name: Run tests
               run: npm test
 
-            # If the version in package.json is not on npm yet, an earlier
-            # publish failed. Publish that version instead of bumping again.
-            # npm can report a just-published version as missing for a few
-            # minutes, so if npm says it already exists, bump as usual.
-            - name: Publish current version if it is not on npm
-              id: retry
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-              run: |
-                  PACKAGE_NAME=$(node -p "require('./package.json').name")
-                  VERSION=$(node -p "require('./package.json').version")
-                  if [ "$(npm view "$PACKAGE_NAME@$VERSION" version 2>/dev/null)" = "$VERSION" ]; then
-                    echo "bump=true" >> "$GITHUB_OUTPUT"
-                    exit 0
-                  fi
-                  echo "$VERSION is not on npm yet. Publishing it without a bump."
-                  if OUTPUT=$(npm publish --provenance --access public 2>&1); then
-                    echo "$OUTPUT"
-                    echo "bump=false" >> "$GITHUB_OUTPUT"
-                  elif echo "$OUTPUT" | grep -q 'cannot publish over the previously published version'; then
-                    echo "$VERSION is already on npm. Bumping as usual."
-                    echo "bump=true" >> "$GITHUB_OUTPUT"
-                  else
-                    echo "$OUTPUT"
-                    exit 1
-                  fi
-
-            - name: Find commits since last release
-              if: steps.retry.outputs.bump == 'true'
-              id: range
-              run: |
-                  # The last release is the tag for the version in package.json.
-                  CURRENT_TAG="v$(node -p "require('./package.json').version")"
-                  if git rev-parse -q --verify "refs/tags/$CURRENT_TAG" >/dev/null; then
-                    BASE="$CURRENT_TAG"
-                  else
-                    # No tag for this version: fall back to its release commit.
-                    BASE=$(git log --grep="^🔖 $CURRENT_TAG\b" -1 --format=%H)
-                  fi
-                  if [ -n "$BASE" ]; then
-                    echo "range=$BASE..HEAD" >> "$GITHUB_OUTPUT"
-                  else
-                    echo "range=HEAD" >> "$GITHUB_OUTPUT"
-                  fi
-
-            - name: Choose bump
-              if: steps.retry.outputs.bump == 'true'
-              id: bump
+            - name: Work out the release version
+              id: release
               env:
                   INPUT_BUMP: ${{ inputs.bump }}
               run: |
-                  # Only read commit subjects (first lines), so text in commit
-                  # bodies or Dependabot descriptions cannot change the bump.
-                  SUBJECTS=$(git log ${{ steps.range.outputs.range }} --format=%s)
-                  if [ -n "$INPUT_BUMP" ]; then
-                    BUMP="$INPUT_BUMP"
-                  elif echo "$SUBJECTS" | grep -qF '[major]'; then
-                    BUMP=major
-                  elif echo "$SUBJECTS" | grep -qF '[minor]'; then
-                    BUMP=minor
+                  PACKAGE_NAME=$(node -p "require('./package.json').name")
+                  TAGS=$(git tag --merged HEAD --list 'v*' --sort=-v:refname)
+                  LAST_TAG=$(echo "$TAGS" | sed -n 1p)
+
+                  if [ "$(git rev-parse "$LAST_TAG^{commit}")" = "$(git rev-parse HEAD)" ]; then
+                    # This commit is already tagged, so an earlier run failed
+                    # after tagging. Finish that release.
+                    TAG="$LAST_TAG"
+                    PREVIOUS_TAG=$(echo "$TAGS" | sed -n 2p)
+                    VERSION="${TAG#v}"
+                    if [ "$(npm view "$PACKAGE_NAME@$VERSION" version 2>/dev/null)" = "$VERSION" ]; then
+                      echo "publish=false" >> "$GITHUB_OUTPUT"
+                    else
+                      echo "publish=true" >> "$GITHUB_OUTPUT"
+                    fi
+                    echo "new_tag=false" >> "$GITHUB_OUTPUT"
                   else
-                    BUMP=patch
+                    # Only read commit subjects (first lines), so text in commit
+                    # bodies or Dependabot descriptions cannot change the bump.
+                    SUBJECTS=$(git log "$LAST_TAG..HEAD" --format=%s)
+                    if [ -n "$INPUT_BUMP" ]; then
+                      BUMP="$INPUT_BUMP"
+                    elif echo "$SUBJECTS" | grep -qF '[major]'; then
+                      BUMP=major
+                    elif echo "$SUBJECTS" | grep -qF '[minor]'; then
+                      BUMP=minor
+                    else
+                      BUMP=patch
+                    fi
+                    PREVIOUS_TAG="$LAST_TAG"
+                    VERSION=$(node -e '
+                      const [bump, last] = process.argv.slice(1);
+                      let [major, minor, patch] = last.split(".").map(Number);
+                      if (bump === "major") { major++; minor = 0; patch = 0; }
+                      else if (bump === "minor") { minor++; patch = 0; }
+                      else { patch++; }
+                      console.log(`${major}.${minor}.${patch}`);
+                    ' "$BUMP" "${LAST_TAG#v}")
+                    TAG="v$VERSION"
+                    echo "Bump: $BUMP"
+                    echo "publish=true" >> "$GITHUB_OUTPUT"
+                    echo "new_tag=true" >> "$GITHUB_OUTPUT"
                   fi
-                  echo "Bump: $BUMP"
-                  echo "bump=$BUMP" >> "$GITHUB_OUTPUT"
 
-            - name: Bump version and update changelog
-              if: steps.retry.outputs.bump == 'true'
-              id: version
-              run: |
-                  VERSION=$(npm version ${{ steps.bump.outputs.bump }} --no-git-tag-version | sed 's/^v//')
+                  echo "Release: $TAG"
                   echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+                  echo "tag=$TAG" >> "$GITHUB_OUTPUT"
 
-                  ENTRIES=$(git log ${{ steps.range.outputs.range }} --no-merges --format='- %s' | grep -v '^- 🔖' || true)
-                  if [ -z "$ENTRIES" ]; then
-                    ENTRIES="- No changes recorded"
+                  git log "$PREVIOUS_TAG..HEAD" --no-merges --format='- %s' | grep -v '^- 🔖' > "$RUNNER_TEMP/notes.md" || true
+                  if [ ! -s "$RUNNER_TEMP/notes.md" ]; then
+                    echo "- No changes recorded" > "$RUNNER_TEMP/notes.md"
                   fi
 
-                  {
-                    echo "# Change Log"
-                    echo
-                    echo "## \`[$VERSION]\`"
-                    echo
-                    echo "🔖 v$VERSION"
-                    echo
-                    echo "$ENTRIES"
-                    echo
-                    tail -n +2 CHANGELOG.md | sed '1{/^$/d}'
-                  } > CHANGELOG.tmp
-                  mv CHANGELOG.tmp CHANGELOG.md
-
-            - name: Commit and tag release
-              if: steps.retry.outputs.bump == 'true'
+            # Tag before publishing so a failed publish can be retried by
+            # re-running this workflow.
+            - name: Tag release
+              if: steps.release.outputs.new_tag == 'true'
               run: |
-                  VERSION=${{ steps.version.outputs.version }}
-                  git config user.name "github-actions[bot]"
-                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-                  git add package.json package-lock.json CHANGELOG.md
-                  git commit -m "🔖 v$VERSION"
-                  git tag "v$VERSION"
-                  git push origin HEAD:main
-                  git push origin "v$VERSION"
+                  git tag "${{ steps.release.outputs.tag }}"
+                  git push origin "${{ steps.release.outputs.tag }}"
 
             - name: Publish
-              if: steps.retry.outputs.bump == 'true'
-              run: npm publish --provenance --access public
+              if: steps.release.outputs.publish == 'true'
+              run: |
+                  npm version "${{ steps.release.outputs.version }}" --no-git-tag-version --allow-same-version
+                  npm publish --provenance --access public
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+            - name: Create GitHub release
+              env:
+                  GH_TOKEN: ${{ github.token }}
+              run: |
+                  TAG="${{ steps.release.outputs.tag }}"
+                  if gh release view "$TAG" >/dev/null 2>&1; then
+                    echo "GitHub release $TAG already exists."
+                  else
+                    gh release create "$TAG" --title "$TAG" --notes-file "$RUNNER_TEMP/notes.md"
+                  fi
