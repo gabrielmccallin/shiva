@@ -1,14 +1,5 @@
 # Change Log
 
-## `[7.0.0]`
-
-🔖 v7.0.0
-
-No breaking changes. This version was published as a major by mistake. The code is the same as 6.1.2 plus one dependency update.
-
-- 👷 Auto-bump version, tag and update changelog on push to main (#26)
-- Bump brace-expansion (#24)
-
 ## `[6.1.2]`
 
 🔖 v6.1.2
